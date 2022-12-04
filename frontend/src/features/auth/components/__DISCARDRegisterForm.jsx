@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../store/reducers/auth";
+import { registerUser } from "../store";
 
-export function LoginForm({ onSuccess }) {
+export function RegisterForm({ onSuccess }) {
   const dispatch = useDispatch();
 
   const [formValues, setFormValues] = useState({
@@ -17,14 +17,14 @@ export function LoginForm({ onSuccess }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = { email: formValues.email, password: formValues.password };
-    dispatch(loginUser(user));
+    dispatch(registerUser(user));
     // TODO:
     onSuccess();
   };
 
   return (
     <div>
-      <h1>Login Form</h1>
+      <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>
@@ -47,8 +47,20 @@ export function LoginForm({ onSuccess }) {
             onChange={handleChange}
           />
         </div>
+
+        {/* <div>
+        <label htmlFor="passwordConfirmation">Password Confirmation</label>
+        <input
+          type="password"
+          name="password_confirmation"
+          id="passwordConfirmation"
+          value={formValues.passwordConfirmation}
+          onChange={handleChange}
+        />
+      </div> */}
+
         <div>
-          <button type="submit">Sign In</button>
+          <button type="submit">Register</button>
         </div>
       </form>
     </div>

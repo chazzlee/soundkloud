@@ -1,3 +1,9 @@
+/**
+ *
+ * @param {string} url
+ * @param {RequestInit} options
+ * @returns {Promise<Response>}
+ */
 export async function csrfFetch(url, options = {}) {
   options.method ||= "GET";
   options.headers ||= {

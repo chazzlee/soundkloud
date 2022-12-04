@@ -1,12 +1,14 @@
-import { Route, Routes } from "react-router-dom";
-import { HomePage } from "./components/HomePage";
+import { Outlet, useLocation } from "react-router-dom";
+import { TopNavigation } from "./components/TopNavigation";
 
 function App() {
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/";
+
   return (
     <div className="App">
-      <Routes>
-        <Route element={<HomePage />} path="/" />
-      </Routes>
+      {!isLandingPage ? <TopNavigation /> : null}
+      <Outlet />
     </div>
   );
 }
