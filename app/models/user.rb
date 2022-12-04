@@ -7,10 +7,10 @@ class User < ApplicationRecord
 
   validates :password, length: { minimum: 6 }, allow_nil: true
   validates :email, presence: true, uniqueness: true # TODO: email regex
-  validates :session_token, presence: true, uniqueness: true #TODO:
+  validates :session_token, presence: true, uniqueness: true # TODO:
 
-  def self.find_by_credentials(username:, password:)
-    user = User.find_by(username:)
+  def self.find_by_credentials(email:, password:)
+    user = User.find_by(email:)
     user&.authenticate(password) ? user : nil
   end
 
