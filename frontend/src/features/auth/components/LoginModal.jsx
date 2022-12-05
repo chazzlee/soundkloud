@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { csrfFetch } from "../../../api/csrfFetch";
 import { Modal } from "../../../context/Modal";
 import { loginUser } from "../store";
+import styles from "./LoginModal.module.css";
+import "./LoginModal.css";
 
 //TODO: validations - form state errors etc...
 export function LoginModal({ onClose, onSuccess }) {
@@ -79,11 +81,45 @@ export function LoginModal({ onClose, onSuccess }) {
 
   return (
     <Modal onClose={onClose}>
-      <h1>Login</h1>
-      <div style={{ height: 400, width: 400 }}>
+      <div className={styles.modalForm}>
         {step === "email" ? (
           <>
-            <button onClick={onClose}>x</button>
+            <button onClick={onClose} className={styles.closeBtn} title="Close">
+              x
+            </button>
+            <div className={styles.socialButtonGroup}>
+              <button className="social-login-btn facebook">
+                <img
+                  src="https://secure.sndcdn.com/assets/facebook-8d9809.png"
+                  alt=""
+                  height="15px"
+                  width="15px"
+                  style={{ marginRight: "0.5rem" }}
+                />
+                <div>Continue with Facebook</div>
+              </button>
+              <button className="social-login-btn google">
+                <img
+                  src="https://secure.sndcdn.com/assets/google-a6c367.svg"
+                  alt=""
+                  height="15px"
+                  width="15px"
+                  style={{ marginRight: "0.5rem" }}
+                />
+                <div>Continue with Google</div>
+              </button>
+              <button className="social-login-btn apple">
+                <img
+                  src="https://secure.sndcdn.com/assets/apple-0a88d2.svg"
+                  alt=""
+                  height="28px"
+                  width="28px"
+                  style={{ marginRight: "0.3rem", display: "block" }}
+                />
+                <div>Continue with Apple</div>
+              </button>
+            </div>
+            <div className={styles.or}>or</div>
             <form onSubmit={handleNextStep} noValidate>
               <input
                 type="email"

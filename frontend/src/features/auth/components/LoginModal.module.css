@@ -1,0 +1,47 @@
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeBtn {
+  align-self: flex-end;
+  padding: 12px;
+  background-color: transparent;
+}
+
+.socialButtonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.or {
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  position: relative;
+  width: 88%;
+  font-weight: 500;
+}
+
+.or::before {
+  left: 0;
+  border-top: 1px solid #333;
+  content: " ";
+  display: inline-block;
+  position: absolute;
+  top: 0.7em;
+  width: 43%;
+}
+
+.or::after {
+  right: 0;
+  border-top: 1px solid #333;
+  content: " ";
+  display: inline-block;
+  position: absolute;
+  top: 0.7em;
+  width: 43%;
+}
