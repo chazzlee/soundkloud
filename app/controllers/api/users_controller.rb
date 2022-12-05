@@ -16,7 +16,11 @@ class Api::UsersController < ApplicationController
 
   def check
     user = User.find_by(email: params[:email])
-    render json: { success: true } if user # TODO: if no user found
+    if user
+      render json: { success: true }
+    else
+      render json: { success: false }
+    end
   end
 
   private
