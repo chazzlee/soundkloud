@@ -62,6 +62,7 @@
 .continueBtn {
   background-color: var(--primary-orange);
   border-color: var(--primary-orange);
+  border-radius: 3px;
   color: #fff;
   width: 100%;
   padding: 10px 15px;
@@ -85,4 +86,9 @@
   color: #999;
   font-size: 12px;
   line-height: 1.6;
+}
+
+.welcomeTitle {
+  font-size: 32px;
+  font-weight: 400;
 }

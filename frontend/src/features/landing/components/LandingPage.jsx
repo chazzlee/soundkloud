@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginModal } from "../../auth/components/LoginModal";
-import { RegisterModal } from "../../auth/components/RegisterModal";
+// import { RegisterModal } from "../../auth/components/RegisterModal";
 import styles from "./LandingPage.module.css";
 import "./LandingPage.css";
 import { IoSearch } from "react-icons/io5";
 import { CSSTransition } from "react-transition-group";
+// import { Title } from "react-head";
 
 const carousels = [
   {
@@ -105,18 +106,22 @@ const trendingPlaylists = [
   },
 ];
 
-//TODO: combine modals/add search icon/clean up styles/images
+//TODO: combine modals/break out into components/banner slider transitions/login modal dropin transition
 export function LandingPage() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const [carousel, setCarousel] = useState(carousels[0]);
+  // TODO:
   const nodeRef = useRef();
   const [inProp, setInProp] = useState(false);
 
+  const [search, setSearch] = useState("");
+
   return (
     <>
+      {/* <Title>Stream and listen to music online for free with SoundCloud</Title> FIXME: doesn't work! */}
       <div className={styles.landingPage}>
         <main className={styles.container}>
           <header className={styles.header}>
@@ -208,6 +213,8 @@ export function LandingPage() {
                   id="search"
                   placeholder="Search for artists, bands, tracks, podcasts"
                   autoComplete="off"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
                 <span
                   style={{
@@ -216,7 +223,9 @@ export function LandingPage() {
                     top: 10,
                     right: 10,
                     color: "darkgray",
+                    cursor: "pointer",
                   }}
+                  onClick={() => console.log("searching...", search)}
                 >
                   <IoSearch />
                 </span>
@@ -353,27 +362,3 @@ export function LandingPage() {
     </>
   );
 }
-
-// <div>
-//   <h1>Landing page</h1>
-//   <button onClick={() => setLoginModalOpen(true)}>Sign in</button>
-//   <button onClick={() => setRegisterModalOpen(true)}>Create account</button>
-//   {loginModalOpen ? (
-//     <LoginModal
-//       onClose={() => setLoginModalOpen(false)}
-//       onSuccess={() => {
-//         setLoginModalOpen(false);
-//         navigate("/discover");
-//       }}
-//     />
-//   ) : null}
-//   {registerModalOpen ? (
-//     <RegisterModal
-//       onClose={() => setRegisterModalOpen(false)}
-//       onSuccess={() => {
-//         setRegisterModalOpen(false);
-//         navigate("/discover");
-//       }}
-//     />
-//   ) : null}
-// </div>

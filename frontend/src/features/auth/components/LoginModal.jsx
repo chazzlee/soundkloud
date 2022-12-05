@@ -4,6 +4,7 @@ import { csrfFetch } from "../../../api/csrfFetch";
 import { Modal } from "../../../context/Modal";
 import { loginUser } from "../store";
 import { IoMdClose } from "react-icons/io";
+import { IoCaretBack } from "react-icons/io5";
 
 import styles from "./LoginModal.module.css";
 import "./LoginModal.css";
@@ -11,9 +12,10 @@ import "./LoginModal.css";
 //TODO: validations - form state errors etc...
 export function LoginModal({ onClose, onSuccess }) {
   const [formValues, setFormValues] = useState({
-    email: "test@test.com",
+    email: "jdoe@test.com",
     password: "password",
   });
+
   const [formState, setFormState] = useState({
     submitted: false,
     touched: false,
@@ -58,7 +60,7 @@ export function LoginModal({ onClose, onSuccess }) {
     if (data.success) {
       setStep("password");
     } else {
-      console.log("NO USER"); //TODO:
+      console.log("NO USER"); //TODO: set to register step instead
     }
   };
 
@@ -136,17 +138,46 @@ export function LoginModal({ onClose, onSuccess }) {
                 Continue
               </button>
             </form>
+            <div className={styles.modalFooter}>
+              <a href="#help" className={styles.needHelpLink}>
+                Need help?
+              </a>
+              <p className={styles.privacyPolicy}>
+                When registering, you agree that we may use your provided data
+                for the registration and to send you notifications on our
+                products and services. You can unsubscribe from notifications at
+                any time in your settings. For additional info please refer to
+                our{" "}
+                <a href="#privacy-policy" style={{ textDecoration: "none" }}>
+                  Privacy Policy
+                </a>
+                .
+              </p>
+            </div>
           </>
         ) : (
           <>
-            <button onClick={onClose}>x</button>
-            <h3>Welcome back!</h3>
-            <div>
-              <p onClick={() => setStep("email")}>BACK</p>
-              <input type="text" disabled value={formValues.email} />
-            </div>
+            <button onClick={onClose} className={styles.closeBtn} title="Close">
+              <IoMdClose />
+            </button>
+            <h3 className={styles.welcomeTitle}>Welcome back!</h3>
             <form onSubmit={handleLogin} noValidate>
+              <div
+                className={styles.input}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  marginBottom: "14px",
+                }}
+              >
+                <IoCaretBack
+                  style={{ marginRight: "9px" }}
+                  onClick={() => setStep("email")}
+                />
+                <span>{formValues.email}</span>
+              </div>
               <input
+                className={styles.input}
                 type="password"
                 name="password"
                 placeholder="Your Password"
@@ -154,26 +185,23 @@ export function LoginModal({ onClose, onSuccess }) {
                 onChange={handleInputChange}
               />
               {error ? error : null}
-              <button type="submit">Sign In</button>
+              <button type="submit" className={styles.continueBtn}>
+                Sign In
+              </button>
             </form>
-            <p>Don't know your password?</p>
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "12px",
+                color: "#044dd2",
+                margin: 0,
+                paddingBottom: "80px",
+              }}
+            >
+              Don't know your password?
+            </p>
           </>
         )}
-        <div className={styles.modalFooter}>
-          <a href="#help" className={styles.needHelpLink}>
-            Need help?
-          </a>
-          <p className={styles.privacyPolicy}>
-            When registering, you agree that we may use your provided data for
-            the registration and to send you notifications on our products and
-            services. You can unsubscribe from notifications at any time in your
-            settings. For additional info please refer to our{" "}
-            <a href="#privacy-policy" style={{ textDecoration: "none" }}>
-              Privacy Policy
-            </a>
-            .
-          </p>
-        </div>
       </div>
     </Modal>
   );
