@@ -6,7 +6,7 @@ class User < ApplicationRecord
   before_validation :ensure_session_token
 
   validates :password, length: { minimum: 6 }, allow_nil: true
-  validates :email, presence: true, uniqueness: true # TODO: email regex
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :session_token, presence: true, uniqueness: true # TODO:
 
   def self.find_by_credentials(email:, password:)
