@@ -45,3 +45,10 @@
   top: 0.7em;
   width: 43%;
 }
+
+.input {
+  border-radius: 5px;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 7px 8px;
+}

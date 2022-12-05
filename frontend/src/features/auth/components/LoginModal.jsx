@@ -122,6 +122,7 @@ export function LoginModal({ onClose, onSuccess }) {
             <div className={styles.or}>or</div>
             <form onSubmit={handleNextStep} noValidate>
               <input
+                className={styles.input}
                 type="email"
                 name="email"
                 placeholder="Your email address or profile URL"
