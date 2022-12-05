@@ -49,3 +49,21 @@
   border-color: #cecece;
   transition: border-color ease-in 120ms;
 }
+
+/* TODO: make slider not fader */
+/* .slide-enter {
+  width: 300%;
+  transform: translateX(0%);
+}
+.slide-enter-active {
+  transform: translateX(100%);
+  transition: transform 0.6s ease-in-out 0s;
+  width: 300%;
+}
+.slide-exit {
+  opacity: 1;
+}
+.slide-exit-active {
+  opacity: 1;
+  transition: opacity 300ms;
+} */

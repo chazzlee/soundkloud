@@ -104,7 +104,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 400;
-  width: 580px;
+  width: 600px;
   line-height: 1.4;
 }
 
@@ -128,6 +128,17 @@
 }
 
 .ctaRight {
+  display: block;
+  font-size: 18px;
+  height: 46px;
+  padding: 0px 15px;
+  color: #fff;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 4px;
+}
+
+.ctaMiddle {
   display: block;
   font-size: 18px;
   height: 46px;
@@ -168,15 +179,22 @@
   width: 100%;
 }
 
-.inputBox {
+.inputContainer {
   background-color: var(--white);
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputBox {
+  position: relative;
 }
 
 .or {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-left: 18px;
+  margin-right: 18px;
   font-size: 16px;
 }
 
@@ -211,6 +229,8 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
 }
 
 .trendingList {
@@ -229,11 +249,13 @@
   margin: 0;
   margin-bottom: 2px;
   color: rgb(73, 73, 73);
+  max-width: 180px;
 }
 
 .trendingListItemSubtitle {
   font-size: 12px;
   margin: 0;
+  margin-bottom: 12px;
   color: #999;
 }
 
@@ -254,6 +276,7 @@
 .appStoreContainer {
   background-color: var(--bg-light);
   display: flex;
+  padding-top: 42px;
 }
 
 .appStoreImageContainer {
@@ -272,6 +295,20 @@
 .appStoreTitle {
   font-size: 34px;
   font-weight: 400;
+  margin: 0;
+}
+
+.fancyBorder {
+  background-image: linear-gradient(
+    90deg,
+    rgb(125, 1, 161),
+    rgb(255, 51, 0) 50%,
+    rgb(255, 85, 0)
+  );
+  height: 3px;
+  width: 70px;
+  margin-top: 15px;
+  line-height: 42px;
 }
 
 .appStoreSubtitle {
