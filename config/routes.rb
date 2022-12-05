@@ -6,4 +6,6 @@ Rails.application.routes.draw do
     resources :users, only: %i[show create]
     resource :session, only: %i[create show destroy]
   end
+
+  get '*path', to: 'static_pages#frontend_index'
 end
