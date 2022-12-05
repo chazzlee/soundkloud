@@ -6,10 +6,10 @@ function App() {
   const isLandingPage = location.pathname === "/";
 
   return (
-    <div className="App">
+    <>
       {!isLandingPage ? <TopNavigation /> : null}
       <Outlet />
-    </div>
+    </>
   );
 }
 

@@ -1,0 +1,386 @@
+:root {
+  --bg-light: #f2f2f2;
+  --container-width: 1240px;
+  --container-padding: 30px;
+  --primary-orange: #f50;
+  --black: #333333;
+  --white: #fff;
+}
+
+.landingPage {
+  height: 100%;
+  background-color: var(--bg-light);
+  color: var(--black);
+  font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Regular",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.container {
+  width: var(--container-width);
+  background-color: var(--bg-light);
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+}
+
+.heroContainer {
+  border-top: 4px solid var(--primary-orange);
+  height: 450px;
+  width: 100%;
+  background-color: #000;
+  /* background-color: #666; */
+  color: var(--white);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 140px;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  position: absolute;
+  top: 24px;
+  z-index: 1;
+}
+
+.navLogo {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.1ex;
+  cursor: default;
+  color: var(--white);
+}
+
+.signIn {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 2px 15px;
+  height: 30px;
+  margin-right: 12px;
+}
+
+.createAccount {
+  background-color: var(--primary-orange);
+  color: #fff;
+  border: 1px solid var(--primary-orange);
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 2px 15px;
+  height: 30px;
+  margin-right: 12px;
+}
+
+.artistsLink {
+  font-size: 14px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.heroTitle {
+  font-size: 36px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.heroSubtitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+  width: 580px;
+  line-height: 1.4;
+}
+
+.ctaButtonGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.ctaLeft {
+  display: block;
+  font-size: 18px;
+  width: 164px;
+  height: 46px;
+  padding: 12px 15px 10px 15px;
+  color: #fff;
+  background-color: transparent;
+  border: 1px solid #fff;
+  border-radius: 4px;
+}
+
+.ctaRight {
+  display: block;
+  font-size: 18px;
+  height: 46px;
+  padding: 0px 15px;
+  color: #fff;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 4px;
+}
+
+.heroFooter {
+  position: absolute;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.toggleHeroBtn {
+  border-radius: 100%;
+  height: 12px;
+  width: 12px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.searchContainer {
+  background-color: var(--white);
+  height: 140px;
+  padding-top: 49px;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.inputBox {
+  background-color: var(--white);
+  height: 100%;
+  width: 100%;
+}
+
+.or {
+  margin-left: 16px;
+  margin-right: 16px;
+  font-size: 16px;
+}
+
+.uploadBtn {
+  font-size: 16px;
+  height: 46px;
+  padding: 0px 24px;
+  color: #fff;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 4px;
+}
+
+.trendingContainer {
+  background-color: var(--white);
+  height: 100%;
+}
+
+.trendingTitle {
+  color: var(--black);
+  /* font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans,
+    Garuda, Verdana, Tahoma, sans-serif; */
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
+  padding-bottom: 40px;
+}
+
+.center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.trendingList {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.trendingListItemImage {
+  margin-bottom: 4px;
+}
+
+.trendingListItemTitle {
+  font-size: 14px;
+  margin: 0;
+  margin-bottom: 2px;
+  color: rgb(73, 73, 73);
+}
+
+.trendingListItemSubtitle {
+  font-size: 12px;
+  margin: 0;
+  color: #999;
+}
+
+.exploreContainer {
+  padding: 64px 0;
+}
+
+.exploreBtn {
+  font-size: 16px;
+  height: 46px;
+  padding: 0px 26px;
+  color: #fff;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 4px;
+}
+
+.appStoreContainer {
+  background-color: var(--bg-light);
+  display: flex;
+}
+
+.appStoreImageContainer {
+  width: 730px;
+  height: 450px;
+  background-color: rgb(209, 208, 208);
+  margin-right: 45px;
+}
+
+.appStoreContentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.appStoreTitle {
+  font-size: 34px;
+  font-weight: 400;
+}
+
+.appStoreSubtitle {
+  font-size: 22px;
+  font-weight: 400;
+  width: 340px;
+  line-height: 1.4;
+  padding-bottom: 12px;
+}
+
+.appleStoreMargin {
+  margin-right: 8px;
+}
+
+.creatorContainer {
+  background-color: #141414;
+  background-image: url("https://a-v2.sndcdn.com/assets/images/hp_creator_image_featured_artists-798050ae.jpg");
+  background-position: right;
+  background-size: cover;
+  color: var(--white);
+  padding-top: 48px;
+  padding-left: 70px;
+  padding-bottom: 48px;
+}
+
+.creatorLeft {
+  width: 545px;
+}
+
+.creatorTitle {
+  font-size: 34px;
+  font-weight: 400;
+}
+
+.creatorSubtitle {
+  font-size: 22px;
+  margin: 11px 0 26px;
+  line-height: 1.4;
+}
+
+.thanksContainer {
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 375px;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.thanksTitle {
+  margin: 0;
+  line-height: 2;
+  font-size: 34px;
+  font-weight: 400;
+}
+
+.thanksSubtitle {
+  margin-top: 0;
+  margin-bottom: 22px;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.createAccountBtn {
+  font-size: 16px;
+  height: 46px;
+  padding: 0px 24px;
+  width: 200px;
+  color: #fff;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 4px;
+}
+
+.accountButtonGroup {
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.accountContent {
+  font-size: 12px;
+  color: #333;
+  margin-right: 10px;
+}
+
+.footer {
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  height: 100%;
+  background-color: var(--white);
+  padding-top: 8px;
+  padding-bottom: 80px;
+}
+
+.footer a {
+  color: #ccc;
+  font-size: 14px;
+  text-decoration: none;
+  margin-right: 12px;
+}
+
+.languageBtn {
+  background-color: var(--white);
+  font-size: 14px;
+  color: #3388dd;
+  margin-top: 8px;
+}
