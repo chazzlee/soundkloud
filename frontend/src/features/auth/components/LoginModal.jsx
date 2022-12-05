@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { csrfFetch } from "../../../api/csrfFetch";
 import { Modal } from "../../../context/Modal";
 import { loginUser } from "../store";
+import { IoMdClose } from "react-icons/io";
+
 import styles from "./LoginModal.module.css";
 import "./LoginModal.css";
 
@@ -85,7 +87,7 @@ export function LoginModal({ onClose, onSuccess }) {
         {step === "email" ? (
           <>
             <button onClick={onClose} className={styles.closeBtn} title="Close">
-              x
+              <IoMdClose />
             </button>
             <div className={styles.socialButtonGroup}>
               <button className="social-login-btn facebook">
@@ -130,7 +132,9 @@ export function LoginModal({ onClose, onSuccess }) {
                 onChange={handleInputChange}
               />
               {error ? error : null}
-              <button type="submit">Continue</button>
+              <button type="submit" className={styles.continueBtn}>
+                Continue
+              </button>
             </form>
           </>
         ) : (
@@ -155,6 +159,21 @@ export function LoginModal({ onClose, onSuccess }) {
             <p>Don't know your password?</p>
           </>
         )}
+        <div className={styles.modalFooter}>
+          <a href="#help" className={styles.needHelpLink}>
+            Need help?
+          </a>
+          <p className={styles.privacyPolicy}>
+            When registering, you agree that we may use your provided data for
+            the registration and to send you notifications on our products and
+            services. You can unsubscribe from notifications at any time in your
+            settings. For additional info please refer to our{" "}
+            <a href="#privacy-policy" style={{ textDecoration: "none" }}>
+              Privacy Policy
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </Modal>
   );

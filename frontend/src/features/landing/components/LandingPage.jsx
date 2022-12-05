@@ -5,11 +5,32 @@ import { RegisterModal } from "../../auth/components/RegisterModal";
 import styles from "./LandingPage.module.css";
 import "./LandingPage.css";
 
+const carousels = [
+  {
+    id: 1,
+    title: "Discover more with SoundCloud Go+",
+    subTitle:
+      "SoundCloud Go+ lets you listen offline, ad-free, with over 150 million tracks — and growing.",
+    imageUrl:
+      "https://a-v2.sndcdn.com/assets/images/sc_landing_header_web_c-318d7eed.jpg",
+  },
+  {
+    id: 2,
+    title: "What's next in music is first on SoundCloud",
+    subTitle:
+      "Upload your first track and begin your journey. SoundCloud gives you space to create, find your fans, and connect with other artists.",
+    imageUrl:
+      "https://a-v2.sndcdn.com/assets/images/sc_landing_header_web_featured_artists-8081257b.jpg",
+  },
+];
+
 //TODO: combine modals/add search icon/clean up styles/images
 export function LandingPage() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const [carousel, setCarousel] = useState(carousels[0]);
 
   return (
     <>
@@ -35,15 +56,15 @@ export function LandingPage() {
               </a>
             </div>
           </header>
-          <section className={styles.heroContainer}>
+          <section
+            className={styles.heroContainer}
+            style={{
+              backgroundImage: `url(${carousel.imageUrl})`,
+            }}
+          >
             <div className={styles.heroContent}>
-              <h2 className={styles.heroTitle}>
-                Discover more with SoundCloud Go+
-              </h2>
-              <p className={styles.heroSubtitle}>
-                SoundCloud Go+ lets you listen offline, ad-free, with over 150
-                million tracks — and growing.
-              </p>
+              <h2 className={styles.heroTitle}>{carousel.title}</h2>
+              <p className={styles.heroSubtitle}>{carousel.subTitle}</p>
             </div>
 
             <div className={styles.ctaButtonGroup}>
@@ -54,8 +75,20 @@ export function LandingPage() {
             </div>
 
             <div className={styles.heroFooter}>
-              <div className={styles.toggleHeroBtn}></div>
-              <div className={styles.toggleHeroBtn}></div>
+              <div
+                className={styles.toggleHeroBtn}
+                style={{
+                  backgroundColor: carousel.id === 1 ? "#fff" : "transparent",
+                }}
+                onClick={() => setCarousel(carousels[0])}
+              />
+              <div
+                className={styles.toggleHeroBtn}
+                style={{
+                  backgroundColor: carousel.id === 2 ? "#fff" : "transparent",
+                }}
+                onClick={() => setCarousel(carousels[1])}
+              />
             </div>
           </section>
 
