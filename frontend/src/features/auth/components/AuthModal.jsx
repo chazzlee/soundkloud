@@ -192,27 +192,28 @@ export function AuthModal({ onClose, onSuccess }) {
       profileErrors.age ||
       profileErrors.gender
     ) {
+      //TODO: still submitting...
       return;
-    }
+    } else {
+      const newUser = {
+        ...formValues,
+        ...profileValues,
+      };
 
-    const newUser = {
-      ...formValues,
-      ...profileValues,
-    };
-
-    dispatch(registerUser(newUser))
-      .then((response) => {
-        if (response.ok) {
-          onSuccess();
-        }
-      })
-      .catch((_err) => {
-        setErrors({
-          password: "",
-          email: "",
-          unique: "Email has already been taken",
+      dispatch(registerUser(newUser))
+        .then((response) => {
+          if (response.ok) {
+            onSuccess();
+          }
+        })
+        .catch((_err) => {
+          setErrors({
+            password: "",
+            email: "",
+            unique: "Email has already been taken",
+          });
         });
-      });
+    }
   };
 
   let currentStep = null;
@@ -419,32 +420,25 @@ export function AuthModal({ onClose, onSuccess }) {
         <form onSubmit={handleRegister} noValidate>
           <div>
             <label htmlFor="displayName">Choose your display name</label>
-            <input
-              type="text"
+            <AuthInput
               id="displayName"
               name="displayName"
-              className={`${authInputStyles.input} ${
-                profileErrors.displayName && styles.invalid
-              }`}
+              errorMessage={profileErrors.displayName}
               value={profileValues.displayName}
               onChange={handleProfileChange}
             />
-            <AuthErrorMessage errorMessage={profileErrors.displayName} />
           </div>
 
           <div>
             <label htmlFor="age">Enter your age</label>
-            <input
+            <AuthInput
               type="number"
               id="age"
               name="age"
-              className={`${authInputStyles.input} ${
-                profileErrors.age && styles.invalid
-              }`}
+              errorMessage={profileErrors.age}
               value={profileValues.age}
               onChange={handleProfileChange}
             />
-            <AuthErrorMessage errorMessage={profileErrors.age} />
           </div>
 
           <div>
@@ -468,9 +462,10 @@ export function AuthModal({ onClose, onSuccess }) {
             <AuthErrorMessage errorMessage={errors.unique} />
           </div>
 
-          {errors.password ? (
+          {/* FIXME: why is this here? */}
+          {/* {errors.password ? (
             <p className={styles.invalidMessage}>{errors.password}</p>
-          ) : null}
+          ) : null} */}
           <button type="submit" className={styles.continueBtn}>
             Continue
           </button>
