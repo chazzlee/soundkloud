@@ -1,3 +1,7 @@
+:root {
+  --error-red: #d61348;
+}
+
 .modalForm {
   display: flex;
   flex-direction: column;
@@ -59,6 +63,21 @@
   color: #333;
 }
 
+.invalid {
+  border: 1px solid var(--error-red);
+}
+
+.invalidMessage {
+  color: var(--error-red);
+  margin: 8px 0;
+  font-size: 12px;
+  transition: margin ease-in 100ms;
+}
+
+.invalid:focus {
+  outline: none;
+}
+
 .continueBtn {
   background-color: var(--primary-orange);
   border-color: var(--primary-orange);
@@ -66,8 +85,8 @@
   color: #fff;
   width: 100%;
   padding: 10px 15px;
-  margin-top: 16px;
-  margin-bottom: 20px;
+  margin-top: 12px;
+  margin-bottom: 16px;
 }
 
 .modalFooter {
