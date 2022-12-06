@@ -5,6 +5,7 @@ import { Modal } from "../../../context/Modal";
 import { loginUser } from "../store";
 import { IoMdClose } from "react-icons/io";
 import { IoCaretBack } from "react-icons/io5";
+import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 
 import styles from "./LoginModal.module.css";
 import "./LoginModal.css";
@@ -12,8 +13,8 @@ import "./LoginModal.css";
 //TODO: validations - form state errors etc...
 export function LoginModal({ onClose, onSuccess }) {
   const [formValues, setFormValues] = useState({
-    email: "test@test.com",
-    password: "password",
+    email: "",
+    password: "",
   });
 
   const [formState, setFormState] = useState({
@@ -28,6 +29,8 @@ export function LoginModal({ onClose, onSuccess }) {
   const isCreateNewStep = step === "create";
 
   const dispatch = useDispatch();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   /**
    * @param {React.ChangeEvent<HTMLInputElement>} event
@@ -50,7 +53,7 @@ export function LoginModal({ onClose, onSuccess }) {
   const handleNextStep = async (event) => {
     event.preventDefault();
     //TODO:
-    setFormState((prev) => ({ ...prev, submitted: true }));
+    // setFormState((prev) => ({ ...prev, submitted: true }));
     if (!formValues.email) {
       setError("Enter a valid email address or profile url.");
       return;
@@ -61,6 +64,7 @@ export function LoginModal({ onClose, onSuccess }) {
       body: JSON.stringify({ email: formValues.email }),
     });
     const data = await response.json();
+    console.log(data.success);
     if (data.success) {
       setStep("password");
     } else {
@@ -164,7 +168,7 @@ export function LoginModal({ onClose, onSuccess }) {
         <button onClick={onClose} className={styles.closeBtn} title="Close">
           <IoMdClose />
         </button>
-        <h3 className={styles.welcomeTitle}>Welcome back!</h3>
+        <h3 className={styles.modalTitle}>Welcome back!</h3>
         <form onSubmit={handleLogin} noValidate>
           <div
             className={styles.input}
@@ -188,7 +192,6 @@ export function LoginModal({ onClose, onSuccess }) {
             value={formValues.password}
             onChange={handleInputChange}
           />
-          {error ? error : null}
           <button type="submit" className={styles.continueBtn}>
             Sign In
           </button>
@@ -204,6 +207,79 @@ export function LoginModal({ onClose, onSuccess }) {
         >
           Don't know your password?
         </p>
+      </div>
+    );
+  } else if (isCreateNewStep) {
+    currentStep = (
+      <div className={styles.modalForm}>
+        <button onClick={onClose} className={styles.closeBtn} title="Close">
+          <IoMdClose />
+        </button>
+        <h3 className={styles.modalTitle}>Create your SoundCloud account</h3>
+        <form onSubmit={handleNextStep} noValidate>
+          <div
+            className={styles.input}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              marginBottom: "14px",
+            }}
+          >
+            <IoCaretBack
+              style={{ marginRight: "9px" }}
+              onClick={() => setStep("email")}
+            />
+            <span>{formValues.email}</span>
+          </div>
+          <div>
+            <label htmlFor="password">Choose a password</label>
+            <div className={styles.passwordInput}>
+              <input
+                className={styles.input}
+                id="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formValues.password}
+                onChange={handleInputChange}
+              />
+              {showPassword ? (
+                <AiTwotoneEyeInvisible
+                  className={styles.eyeIcon}
+                  onClick={() => setShowPassword(false)}
+                />
+              ) : (
+                <AiTwotoneEye
+                  className={styles.eyeIcon}
+                  onClick={() => setShowPassword(true)}
+                />
+              )}
+            </div>
+          </div>
+          {error ? <p className={styles.invalidMessage}>{error}</p> : null}
+          <button type="submit" className={styles.continueBtn}>
+            Accept & continue
+          </button>
+        </form>
+        <div className={styles.modalFooter}>
+          <a href="#help" className={styles.needHelpLink}>
+            Need help?
+          </a>
+          <p className={styles.privacyPolicy}>
+            When registering, you agree that we may use your provided data for
+            the registration and to send you notifications on our products and
+            services. You can unsubscribe from notifications at any time in your
+            settings. For additional info please refer to our{" "}
+            <a href="#privacy-policy" style={{ textDecoration: "none" }}>
+              Privacy Policy
+            </a>
+            .
+          </p>
+          <div className={styles.suggestions}>
+            <p>Are you trying to sign in?</p>
+            <p>The email address that you entered was not found.</p>
+            <p>Double-check your email address.</p>
+          </div>
+        </div>
       </div>
     );
   }

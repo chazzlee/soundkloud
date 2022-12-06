@@ -107,7 +107,32 @@
   line-height: 1.6;
 }
 
-.welcomeTitle {
+.modalTitle {
   font-size: 32px;
   font-weight: 400;
+  margin: 0;
+  text-align: center;
+}
+
+.passwordInput {
+  position: relative;
+  display: block;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+  z-index: 1;
+  color: rgb(63, 62, 62);
+}
+
+.suggestions {
+  text-align: center;
+  font-size: 12px;
+}
+
+.suggestions p {
+  margin: 6px auto;
 }
