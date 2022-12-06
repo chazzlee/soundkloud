@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logoutUser, selectCurrentUser } from "../features/auth/store";
-import { LoginModal } from "../features/auth/components/LoginModal";
-import { RegisterModal } from "../features/auth/components/RegisterModal";
+import { AuthModal } from "../features/auth/components/AuthModal";
 
 //TODO: combine navigation from LandingPage/combine modals
 export function TopNavigation() {
@@ -11,8 +10,7 @@ export function TopNavigation() {
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
 
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logoutUser()).then((response) => {
@@ -42,8 +40,8 @@ export function TopNavigation() {
         <div>
           {!currentUser && (
             <>
-              <button onClick={() => setLoginModalOpen(true)}>Sign in</button>
-              <button onClick={() => setRegisterModalOpen(true)}>
+              <button onClick={() => setAuthModalOpen(true)}>Sign in</button>
+              <button onClick={() => setAuthModalOpen(true)}>
                 Create account
               </button>
             </>
@@ -53,20 +51,11 @@ export function TopNavigation() {
           <NavLink to={"/upload"}>Upload</NavLink>
         </div>
       </div>
-      {loginModalOpen ? (
-        <LoginModal
-          onClose={() => setLoginModalOpen(false)}
+      {authModalOpen ? (
+        <AuthModal
+          onClose={() => setAuthModalOpen(false)}
           onSuccess={() => {
-            setLoginModalOpen(false);
-            navigate("/discover");
-          }}
-        />
-      ) : null}
-      {registerModalOpen ? (
-        <RegisterModal
-          onClose={() => setRegisterModalOpen(false)}
-          onSuccess={() => {
-            setRegisterModalOpen(false);
+            setAuthModalOpen(false);
             navigate("/discover");
           }}
         />

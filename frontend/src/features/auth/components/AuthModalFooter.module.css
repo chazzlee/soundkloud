@@ -1,0 +1,34 @@
+.modalFooter {
+  width: 400px;
+  padding-bottom: 60px;
+}
+
+.needHelpLink {
+  display: block;
+  font-size: 12px;
+  text-decoration: none;
+  text-align: right;
+}
+
+.privacyPolicy {
+  color: #999;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.suggestions {
+  text-align: center;
+  font-size: 12px;
+}
+
+.suggestions p {
+  margin: 6px auto;
+}
+
+.terms {
+  text-align: left;
+  font-size: 12px;
+}
+.terms p {
+  line-height: 1.4;
+}

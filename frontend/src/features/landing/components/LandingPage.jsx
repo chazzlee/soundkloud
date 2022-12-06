@@ -1,12 +1,10 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoginModal } from "../../auth/components/LoginModal";
-// import { RegisterModal } from "../../auth/components/RegisterModal";
+import { AuthModal } from "../../auth/components/AuthModal";
 import styles from "./LandingPage.module.css";
 import "./LandingPage.css";
 import { IoSearch } from "react-icons/io5";
 import { CSSTransition } from "react-transition-group";
-// import { Title } from "react-head";
 
 const carousels = [
   {
@@ -108,8 +106,7 @@ const trendingPlaylists = [
 
 //TODO: combine modals/break out into components/banner slider transitions/login modal dropin transition
 export function LandingPage() {
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const [carousel, setCarousel] = useState(carousels[0]);
@@ -129,13 +126,13 @@ export function LandingPage() {
             <div className={styles.authButtonGroup}>
               <button
                 className={styles.signIn}
-                onClick={() => setLoginModalOpen(true)}
+                onClick={() => setAuthModalOpen(true)}
               >
                 Sign in
               </button>
               <button
                 className={styles.createAccount}
-                onClick={() => setRegisterModalOpen(true)}
+                onClick={() => setAuthModalOpen(true)}
               >
                 Create account
               </button>
@@ -350,11 +347,11 @@ export function LandingPage() {
           </footer>
         </main>
       </div>
-      {loginModalOpen ? (
-        <LoginModal
-          onClose={() => setLoginModalOpen(false)}
+      {authModalOpen ? (
+        <AuthModal
+          onClose={() => setAuthModalOpen(false)}
           onSuccess={() => {
-            setLoginModalOpen(false);
+            setAuthModalOpen(false);
             navigate("/discover");
           }}
         />

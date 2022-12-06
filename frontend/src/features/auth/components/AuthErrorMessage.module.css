@@ -1,0 +1,6 @@
+.invalidMessage {
+  color: var(--error-red);
+  margin: 8px 0;
+  font-size: 12px;
+  transition: margin ease-in 100ms;
+}

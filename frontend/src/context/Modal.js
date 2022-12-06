@@ -21,6 +21,20 @@ export function ModalProvider({ children }) {
 }
 
 export function Modal({ onClose, children }) {
+  useEffect(() => {
+    const closeOnEsc = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", closeOnEsc);
+
+    return () => {
+      window.removeEventListener("keydown", closeOnEsc);
+    };
+  }, [onClose]);
+
   const modalNode = useContext(ModalContext);
   if (!modalNode) return null;
 

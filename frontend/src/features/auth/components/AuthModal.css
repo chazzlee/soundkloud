@@ -30,3 +30,9 @@
   background-color: #000;
   color: #fff;
 }
+
+.demo {
+  color: #fff;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+}

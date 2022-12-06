@@ -1,0 +1,18 @@
+.input {
+  display: block;
+  border-radius: 5px;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 7px 8px;
+  width: 400px;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.invalid {
+  border: 1px solid var(--error-red);
+}
+
+.invalid:focus {
+  outline: none;
+}

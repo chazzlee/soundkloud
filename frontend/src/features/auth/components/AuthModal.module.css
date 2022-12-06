@@ -52,32 +52,6 @@
   width: 43%;
 }
 
-.input {
-  display: block;
-  border-radius: 5px;
-  font-size: 18px;
-  line-height: 24px;
-  padding: 7px 8px;
-  width: 400px;
-  border: 1px solid #ccc;
-  color: #333;
-}
-
-.invalid {
-  border: 1px solid var(--error-red);
-}
-
-.invalidMessage {
-  color: var(--error-red);
-  margin: 8px 0;
-  font-size: 12px;
-  transition: margin ease-in 100ms;
-}
-
-.invalid:focus {
-  outline: none;
-}
-
 .continueBtn {
   background-color: var(--primary-orange);
   border-color: var(--primary-orange);
@@ -87,24 +61,6 @@
   padding: 10px 15px;
   margin-top: 12px;
   margin-bottom: 16px;
-}
-
-.modalFooter {
-  width: 400px;
-  padding-bottom: 60px;
-}
-
-.needHelpLink {
-  display: block;
-  font-size: 12px;
-  text-decoration: none;
-  text-align: right;
-}
-
-.privacyPolicy {
-  color: #999;
-  font-size: 12px;
-  line-height: 1.6;
 }
 
 .modalTitle {
@@ -126,13 +82,4 @@
   cursor: pointer;
   z-index: 1;
   color: rgb(63, 62, 62);
-}
-
-.suggestions {
-  text-align: center;
-  font-size: 12px;
-}
-
-.suggestions p {
-  margin: 6px auto;
 }
