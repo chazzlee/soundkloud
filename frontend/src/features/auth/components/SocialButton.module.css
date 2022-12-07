@@ -1,0 +1,14 @@
+.socialLoginBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-size: 16px;
+  padding: 10px 15px;
+  height: 40px;
+  line-height: 18px;
+  width: 400px;
+  border-radius: 3px;
+  font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans,
+    Garuda, Verdana, Tahoma, sans-serif;
+}

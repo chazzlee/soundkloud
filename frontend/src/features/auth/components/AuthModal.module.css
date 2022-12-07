@@ -67,7 +67,15 @@
   font-size: 32px;
   font-weight: 400;
   margin: 0;
+  padding-top: 32px;
+  margin-bottom: 32px;
   text-align: center;
+}
+
+.inputLabel {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 2px;
 }
 
 .passwordInput {

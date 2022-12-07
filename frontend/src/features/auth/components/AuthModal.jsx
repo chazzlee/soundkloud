@@ -8,11 +8,11 @@ import { IoCaretBack } from "react-icons/io5";
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 
 import styles from "./AuthModal.module.css";
-import "./AuthModal.css";
 import { AuthModalFooter } from "./AuthModalFooter";
 import { AuthErrorMessage } from "./AuthErrorMessage";
 import { AuthInput } from "./AuthInput";
 import authInputStyles from "./AuthInput.module.css";
+import { SocialButton } from "./SocialButton";
 
 export function AuthModal({ onClose, onSuccess }) {
   const dispatch = useDispatch();
@@ -28,7 +28,8 @@ export function AuthModal({ onClose, onSuccess }) {
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState({ email: "", password: "", unique: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [serverError, setServerError] = useState("");
 
   const [profileValues, setProfileValues] = useState({
     displayName: "",
@@ -63,16 +64,6 @@ export function AuthModal({ onClose, onSuccess }) {
    * @param {React.ChangeEvent<HTMLInputElement>} event
    */
   const handleProfileChange = (event) => {
-    if (profileErrors.displayName) {
-      setProfileErrors((prev) => ({ ...prev, displayName: "" }));
-    }
-    if (profileErrors.age) {
-      setProfileErrors((prev) => ({ ...prev, age: "" }));
-    }
-    if (profileErrors.gender) {
-      setProfileErrors((prev) => ({ ...prev, gender: "" }));
-    }
-
     setProfileValues((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -166,24 +157,45 @@ export function AuthModal({ onClose, onSuccess }) {
     }
   };
 
+  const isEmpty = (value) => value === "" || !value || value.length === 0;
+
+  const profileErrorMessages = {
+    displayName: "Enter your display name.",
+    age: "Enter your age.",
+    gender: "Please indicate your gender.",
+  };
+
+  const validateProfile = (profileValues) => {
+    setProfileErrors({
+      displayName: "",
+      age: "",
+      gender: "",
+    });
+
+    let profileKeys = Object.keys(profileValues);
+    let isValid = true;
+    for (let key of profileKeys) {
+      if (isEmpty(profileValues[key])) {
+        isValid = false;
+        setProfileErrors((prev) => ({
+          ...prev,
+          [key]: profileErrorMessages[key],
+        }));
+      }
+    }
+
+    return isValid;
+  };
+
   /**
    * @param {React.FormEvent<HTMLFormElement>} event
    */
   const handleRegister = (event) => {
     event.preventDefault();
-    //FIXME:
 
-    console.log("profileerrrs", profileErrors);
-    if (Object.values(profileValues).some((value) => value === "")) {
-      console.log("CHECK ERROS");
-      return;
-    } else if (Object.values(profileValues).every((value) => value === "")) {
-      setProfileErrors({
-        displayName: "Enter your display name.",
-        age: "Enter your age.",
-        gender: "Please indicate your gender.",
-      });
-      console.log("CHECK ERROS");
+    const isValid = validateProfile(profileValues);
+
+    if (!isValid) {
       return;
     }
 
@@ -191,34 +203,32 @@ export function AuthModal({ onClose, onSuccess }) {
       ...formValues,
       ...profileValues,
     };
-    console.log("creatin", newUser);
+    dispatch(registerUser(newUser))
+      .then((response) => {
+        if (response.ok) {
+          onSuccess();
+        }
+      })
+      .catch((_err) => {
+        setServerError(
+          "This email address can’t be used. Please enter another email address to continue."
+        );
+      });
+  };
 
-    // if (
-    //   profileErrors.displayName &&
-    //   profileErrors.age &&
-    //   profileErrors.gender
-    // ) {
-    //   const newUser = {
-    //     ...formValues,
-    //     ...profileValues,
-    //   };
-    //   console.log("creating", newUser);
-    //   // dispatch(registerUser(newUser))
-    //   //   .then((response) => {
-    //   //     if (response.ok) {
-    //   //       onSuccess();
-    //   //     }
-    //   //   })
-    //   //   .catch((_err) => {
-    //   //     setErrors({
-    //   //       password: "",
-    //   //       email: "",
-    //   //       unique: "Something went wrong...",
-    //   //     });
-    //   //   });
-    // } else {
-    //   return;
-    // }
+  const handleDemoLogin = () => {
+    dispatch(
+      loginUser({
+        email: "demo@demo.com",
+        password: "password",
+      })
+    )
+      .then((response) => {
+        if (response.ok) {
+          onSuccess();
+        }
+      })
+      .catch((err) => console.error("Demo User: Somethign went wrong", err));
   };
 
   let currentStep = null;
@@ -229,57 +239,32 @@ export function AuthModal({ onClose, onSuccess }) {
           <IoMdClose />
         </button>
         <div className={styles.socialButtonGroup}>
-          <button className="social-login-btn facebook">
-            <img
-              src="https://secure.sndcdn.com/assets/facebook-8d9809.png"
-              alt=""
-              height="15px"
-              width="15px"
-              style={{ marginRight: "0.5rem" }}
-            />
-            <div>Continue with Facebook</div>
-          </button>
-          <button className="social-login-btn google">
-            <img
-              src="https://secure.sndcdn.com/assets/google-a6c367.svg"
-              alt=""
-              height="15px"
-              width="15px"
-              style={{ marginRight: "0.5rem" }}
-            />
-            <div>Continue with Google</div>
-          </button>
-          <button className="social-login-btn apple">
-            <img
-              src="https://secure.sndcdn.com/assets/apple-0a88d2.svg"
-              alt=""
-              height="28px"
-              width="28px"
-              style={{ marginRight: "0.3rem", display: "block" }}
-            />
-            <div>Continue with Apple</div>
-          </button>
-          <button
-            className="social-login-btn demo"
-            onClick={(e) => {
-              dispatch(
-                loginUser({
-                  email: "demo@demo.com",
-                  password: "password",
-                })
-              )
-                .then((response) => {
-                  if (response.ok) {
-                    onSuccess();
-                  }
-                })
-                .catch((err) =>
-                  console.error("Demo User: Somethign went wrong", err)
-                );
+          <SocialButton
+            label="Continue with Facebook"
+            className="facebook"
+            iconUrl="https://secure.sndcdn.com/assets/facebook-8d9809.png"
+          />
+          <SocialButton
+            label="Continue with Google"
+            className="google"
+            iconUrl="https://secure.sndcdn.com/assets/google-a6c367.svg"
+          />
+          <SocialButton
+            label="Continue with Apple"
+            className="apple"
+            iconUrl="https://secure.sndcdn.com/assets/apple-0a88d2.svg"
+            style={{
+              marginRight: "0.3rem",
+              display: "block",
+              height: "28px",
+              width: "28px",
             }}
-          >
-            Continue with Demo
-          </button>
+          />
+          <SocialButton
+            label="Continue with Demo"
+            className="demo"
+            onClick={handleDemoLogin}
+          />
         </div>
         <div className={styles.or}>or</div>
         <form onSubmit={handleNextStep} noValidate>
@@ -343,6 +328,7 @@ export function AuthModal({ onClose, onSuccess }) {
               />
             )}
           </div>
+          <AuthErrorMessage errorMessage={errors.password} />
           <button type="submit" className={styles.continueBtn}>
             Sign in
           </button>
@@ -382,11 +368,13 @@ export function AuthModal({ onClose, onSuccess }) {
             <span>{formValues.email}</span>
           </div>
           <div>
-            <label htmlFor="password">Choose a password</label>
+            <label htmlFor="password" className={styles.inputLabel}>
+              Choose a password
+            </label>
             <div className={styles.passwordInput}>
               <input
                 className={`${authInputStyles.input} ${
-                  errors.password && styles.invalid
+                  errors.password && authInputStyles.invalid
                 }`}
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -423,27 +411,31 @@ export function AuthModal({ onClose, onSuccess }) {
         </button>
         <h3 className={styles.modalTitle}>Create your SoundCloud account</h3>
         <form onSubmit={handleRegister} noValidate>
-          <div>
-            <label htmlFor="displayName">Choose your display name</label>
+          <div
+            style={{
+              paddingBottom: "12px",
+            }}
+          >
+            <label htmlFor="displayName" className={styles.inputLabel}>
+              Choose your display name
+            </label>
             <AuthInput
               id="displayName"
               name="displayName"
               errorMessage={profileErrors.displayName}
               value={profileValues.displayName}
               onChange={handleProfileChange}
-              onBlur={(e) => {
-                if (!e.target.value) {
-                  setProfileErrors((prev) => ({
-                    ...prev,
-                    displayName: "Enter your display name.",
-                  }));
-                }
-              }}
             />
           </div>
 
-          <div>
-            <label htmlFor="age">Enter your age</label>
+          <div
+            style={{
+              paddingBottom: "12px",
+            }}
+          >
+            <label htmlFor="age" className={styles.inputLabel}>
+              Enter your age
+            </label>
             <AuthInput
               type="number"
               id="age"
@@ -451,19 +443,17 @@ export function AuthModal({ onClose, onSuccess }) {
               errorMessage={profileErrors.age}
               value={profileValues.age}
               onChange={handleProfileChange}
-              onBlur={(e) => {
-                if (!e.target.value) {
-                  setProfileErrors((prev) => ({
-                    ...prev,
-                    age: "Enter your age.",
-                  }));
-                }
-              }}
             />
           </div>
 
-          <div>
-            <label htmlFor="gender">Enter your gender</label>
+          <div
+            style={{
+              paddingBottom: "12px",
+            }}
+          >
+            <label htmlFor="gender" className={styles.inputLabel}>
+              Enter your gender
+            </label>
             <select
               name="gender"
               id="gender"
@@ -472,14 +462,6 @@ export function AuthModal({ onClose, onSuccess }) {
               }`}
               value={profileValues.gender}
               onChange={handleProfileChange}
-              onBlur={(e) => {
-                if (!e.target.value) {
-                  setProfileErrors((prev) => ({
-                    ...prev,
-                    gender: "Please indicate your gender.",
-                  }));
-                }
-              }}
             >
               <option value=""></option>
               <option value="female">Female</option>
@@ -488,17 +470,15 @@ export function AuthModal({ onClose, onSuccess }) {
               <option value="none">Prefer not to say</option>
             </select>
             <AuthErrorMessage errorMessage={profileErrors.gender} />
-            <AuthErrorMessage errorMessage={errors.unique} />
           </div>
 
-          {/* FIXME: why is this here? */}
-          {/* {errors.password ? (
-            <p className={styles.invalidMessage}>{errors.password}</p>
-          ) : null} */}
           <button type="submit" className={styles.continueBtn}>
             Continue
           </button>
         </form>
+        <div style={{ padding: "0 20px", textAlign: "center" }}>
+          <AuthErrorMessage errorMessage={serverError} />
+        </div>
         <AuthModalFooter showTerms={true} />
       </div>
     );
