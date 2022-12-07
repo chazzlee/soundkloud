@@ -4,19 +4,18 @@ import { csrfFetch } from "../../../api/csrfFetch";
 import { Modal } from "../../../context/Modal";
 import { loginUser, registerUser } from "../store";
 import { IoMdClose } from "react-icons/io";
-import { IoCaretBack } from "react-icons/io5";
-import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 
 import styles from "./AuthModal.module.css";
 import { AuthModalFooter } from "./AuthModalFooter";
 import { AuthErrorMessage } from "./AuthErrorMessage";
 import { AuthInput } from "./AuthInput";
-import authInputStyles from "./AuthInput.module.css";
-import { SocialButton } from "./SocialButton";
+import { EmailDisplayWithBack } from "./EmailDisplayWithBack";
+import { GenderSelectInput } from "./GenderSelectInput";
+import { SocialButtonGroup } from "./SocialButtonGroup";
+import { PasswordInput } from "./PasswordInput";
 
 export function AuthModal({ onClose, onSuccess }) {
   const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState("email");
 
   const isEmailStep = step === "email";
@@ -201,7 +200,9 @@ export function AuthModal({ onClose, onSuccess }) {
 
     const newUser = {
       ...formValues,
-      ...profileValues,
+      profile: {
+        ...profileValues,
+      },
     };
     dispatch(registerUser(newUser))
       .then((response) => {
@@ -216,21 +217,6 @@ export function AuthModal({ onClose, onSuccess }) {
       });
   };
 
-  const handleDemoLogin = () => {
-    dispatch(
-      loginUser({
-        email: "demo@demo.com",
-        password: "password",
-      })
-    )
-      .then((response) => {
-        if (response.ok) {
-          onSuccess();
-        }
-      })
-      .catch((err) => console.error("Demo User: Somethign went wrong", err));
-  };
-
   let currentStep = null;
   if (isEmailStep) {
     currentStep = (
@@ -238,34 +224,7 @@ export function AuthModal({ onClose, onSuccess }) {
         <button onClick={onClose} className={styles.closeBtn} title="Close">
           <IoMdClose />
         </button>
-        <div className={styles.socialButtonGroup}>
-          <SocialButton
-            label="Continue with Facebook"
-            className="facebook"
-            iconUrl="https://secure.sndcdn.com/assets/facebook-8d9809.png"
-          />
-          <SocialButton
-            label="Continue with Google"
-            className="google"
-            iconUrl="https://secure.sndcdn.com/assets/google-a6c367.svg"
-          />
-          <SocialButton
-            label="Continue with Apple"
-            className="apple"
-            iconUrl="https://secure.sndcdn.com/assets/apple-0a88d2.svg"
-            style={{
-              marginRight: "0.3rem",
-              display: "block",
-              height: "28px",
-              width: "28px",
-            }}
-          />
-          <SocialButton
-            label="Continue with Demo"
-            className="demo"
-            onClick={handleDemoLogin}
-          />
-        </div>
+        <SocialButtonGroup />
         <div className={styles.or}>or</div>
         <form onSubmit={handleNextStep} noValidate>
           <AuthInput
@@ -291,44 +250,15 @@ export function AuthModal({ onClose, onSuccess }) {
         </button>
         <h3 className={styles.modalTitle}>Welcome back!</h3>
         <form onSubmit={handleLogin} noValidate>
-          <div
+          <EmailDisplayWithBack
+            displayValue={formValues.email}
             onClick={handlePrevStep}
-            className={authInputStyles.input}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              marginBottom: "14px",
-              cursor: "pointer",
-            }}
-          >
-            <IoCaretBack style={{ marginRight: "9px" }} />
-            <span>{formValues.email}</span>
-          </div>
-          <div className={styles.passwordInput}>
-            <input
-              className={`${authInputStyles.input} ${
-                errors.password && styles.invalid
-              }`}
-              id="password"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Your Password"
-              value={formValues.password}
-              onChange={handleInputChange}
-            />
-            {showPassword ? (
-              <AiTwotoneEyeInvisible
-                className={styles.eyeIcon}
-                onClick={() => setShowPassword(false)}
-              />
-            ) : (
-              <AiTwotoneEye
-                className={styles.eyeIcon}
-                onClick={() => setShowPassword(true)}
-              />
-            )}
-          </div>
-          <AuthErrorMessage errorMessage={errors.password} />
+          />
+          <PasswordInput
+            value={formValues.password}
+            onChange={handleInputChange}
+            errorMessage={errors.password}
+          />
           <button type="submit" className={styles.continueBtn}>
             Sign in
           </button>
@@ -354,48 +284,16 @@ export function AuthModal({ onClose, onSuccess }) {
         </button>
         <h3 className={styles.modalTitle}>Create your SoundCloud account</h3>
         <form onSubmit={handleAcceptAndContinue} noValidate>
-          <div
-            className={authInputStyles.input}
+          <EmailDisplayWithBack
+            displayValue={formValues.email}
             onClick={handlePrevStep}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              marginBottom: "14px",
-              cursor: "pointer",
-            }}
-          >
-            <IoCaretBack style={{ marginRight: "9px" }} />
-            <span>{formValues.email}</span>
-          </div>
-          <div>
-            <label htmlFor="password" className={styles.inputLabel}>
-              Choose a password
-            </label>
-            <div className={styles.passwordInput}>
-              <input
-                className={`${authInputStyles.input} ${
-                  errors.password && authInputStyles.invalid
-                }`}
-                id="password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formValues.password}
-                onChange={handleInputChange}
-              />
-              {showPassword ? (
-                <AiTwotoneEyeInvisible
-                  className={styles.eyeIcon}
-                  onClick={() => setShowPassword(false)}
-                />
-              ) : (
-                <AiTwotoneEye
-                  className={styles.eyeIcon}
-                  onClick={() => setShowPassword(true)}
-                />
-              )}
-            </div>
-          </div>
-          <AuthErrorMessage errorMessage={errors.password} />
+          />
+          <PasswordInput
+            value={formValues.password}
+            onChange={handleInputChange}
+            errorMessage={errors.password}
+            withLabel={true}
+          />
           <button type="submit" className={styles.continueBtn}>
             Accept & continue
           </button>
@@ -446,32 +344,11 @@ export function AuthModal({ onClose, onSuccess }) {
             />
           </div>
 
-          <div
-            style={{
-              paddingBottom: "12px",
-            }}
-          >
-            <label htmlFor="gender" className={styles.inputLabel}>
-              Enter your gender
-            </label>
-            <select
-              name="gender"
-              id="gender"
-              className={`${authInputStyles.input} ${
-                profileErrors.gender && authInputStyles.invalid
-              }`}
-              value={profileValues.gender}
-              onChange={handleProfileChange}
-            >
-              <option value=""></option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="custom">Custom</option>
-              <option value="none">Prefer not to say</option>
-            </select>
-            <AuthErrorMessage errorMessage={profileErrors.gender} />
-          </div>
-
+          <GenderSelectInput
+            value={profileValues.gender}
+            onChange={handleProfileChange}
+            errorMessage={profileErrors.gender}
+          />
           <button type="submit" className={styles.continueBtn}>
             Continue
           </button>

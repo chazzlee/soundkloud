@@ -4,9 +4,8 @@ import styles from "./AuthInput.module.css";
 export function AuthInput({
   onChange,
   value,
-  classNames,
   errorMessage,
-  children,
+  icon = null,
   ...rest
 }) {
   return (
@@ -18,7 +17,7 @@ export function AuthInput({
         onChange={onChange}
         {...rest}
       />
-      {children}
+      {icon}
       <AuthErrorMessage errorMessage={errorMessage} />
     </>
   );

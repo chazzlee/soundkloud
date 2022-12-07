@@ -9,10 +9,37 @@
   color: #333;
 }
 
+.emailWithBack {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
 .invalid {
   border: 1px solid var(--error-red);
 }
 
 .invalid:focus {
   outline: none;
+}
+
+.inputLabel {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.passwordInput {
+  position: relative;
+  display: block;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+  z-index: 1;
+  color: rgb(63, 62, 62);
 }

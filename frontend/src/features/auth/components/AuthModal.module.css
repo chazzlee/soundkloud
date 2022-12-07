@@ -17,12 +17,6 @@
   background-color: transparent;
 }
 
-.socialButtonGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .or {
   text-align: center;
   margin-top: 16px;
@@ -76,18 +70,4 @@
   font-size: 14px;
   display: block;
   margin-bottom: 2px;
-}
-
-.passwordInput {
-  position: relative;
-  display: block;
-}
-
-.eyeIcon {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  cursor: pointer;
-  z-index: 1;
-  color: rgb(63, 62, 62);
 }

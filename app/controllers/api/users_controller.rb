@@ -6,7 +6,12 @@ class Api::UsersController < ApplicationController
 
   def create
     user = User.new(user_params)
+
     if user.save
+      profile = Profile.new(profile_params)
+      profile.user = user
+      profile.save
+
       login!(user)
       render :show, locals: { user: }, status: :created
     else
@@ -27,5 +32,9 @@ class Api::UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password)
+  end
+
+  def profile_params
+    params.require(:profile).permit(:display_name, :age, :gender)
   end
 end
