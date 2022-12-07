@@ -115,6 +115,7 @@ export function AuthModal({ onClose, onSuccess }) {
       email: "",
       password: "",
     });
+    setServerError("");
     setFormValues((prev) => ({ ...prev, password: "" }));
     setStep("email");
   };
@@ -124,6 +125,7 @@ export function AuthModal({ onClose, onSuccess }) {
    */
   const handleLogin = (event) => {
     event.preventDefault();
+    setServerError("");
 
     if (isPasswordStep && !formValues.password) {
       setErrors({ email: "", password: "Enter a valid password." });
@@ -136,6 +138,7 @@ export function AuthModal({ onClose, onSuccess }) {
       return;
     }
 
+    setSubmitted(true);
     dispatch(
       loginUser({
         email: formValues.email,
@@ -144,10 +147,15 @@ export function AuthModal({ onClose, onSuccess }) {
     )
       .then((response) => {
         if (response.ok) {
+          setSubmitted(false);
           onSuccess();
         }
       })
-      .catch((_err) => setErrors({ password: "This password is incorrect." }));
+      .catch(async (response) => {
+        const data = await response.json();
+        setSubmitted(false);
+        setServerError(data.errors[0]);
+      });
   };
 
   /**
@@ -199,9 +207,9 @@ export function AuthModal({ onClose, onSuccess }) {
   const handleRegister = (event) => {
     event.preventDefault();
 
-    const isValid = validateProfile(profileValues);
+    const isProfileValid = validateProfile(profileValues);
 
-    if (!isValid) {
+    if (!isProfileValid) {
       return;
     }
 
@@ -211,16 +219,18 @@ export function AuthModal({ onClose, onSuccess }) {
         ...profileValues,
       },
     };
+    setSubmitted(true);
     dispatch(registerUser(newUser))
       .then((response) => {
         if (response.ok) {
+          setSubmitted(false);
           onSuccess();
         }
       })
-      .catch((_err) => {
-        setServerError(
-          "This email address can’t be used. Please enter another email address to continue."
-        );
+      .catch(async (response) => {
+        const data = await response.json();
+        setSubmitted(false);
+        setServerError(data.errors[0]);
       });
   };
 
@@ -266,7 +276,10 @@ export function AuthModal({ onClose, onSuccess }) {
             errorMessage={errors.password}
             autoFocus={true}
           />
-          <AuthButton label="Sign in" />
+          <div style={{ padding: "10px 20px 0", textAlign: "center" }}>
+            <AuthErrorMessage errorMessage={serverError} />
+          </div>
+          <AuthButton label="Sign in" disabled={submitted} />
         </form>
         <p
           style={{
@@ -354,7 +367,7 @@ export function AuthModal({ onClose, onSuccess }) {
             onChange={handleProfileChange}
             errorMessage={profileErrors.gender}
           />
-          <AuthButton label={"Continue"} />
+          <AuthButton label={"Continue"} disabled={submitted} />
         </form>
         <div style={{ padding: "0 20px", textAlign: "center" }}>
           <AuthErrorMessage errorMessage={serverError} />
