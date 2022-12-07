@@ -22,7 +22,7 @@ export function SocialButtonGroup({ onSuccess }) {
 
   return (
     <div className={styles.socialButtonGroup}>
-      <SocialButton
+      {/* <SocialButton
         label="Continue with Facebook"
         className="facebook"
         iconUrl="https://secure.sndcdn.com/assets/facebook-8d9809.png"
@@ -42,7 +42,7 @@ export function SocialButtonGroup({ onSuccess }) {
           height: "28px",
           width: "28px",
         }}
-      />
+      /> */}
       <SocialButton
         label="Continue with Demo"
         className="demo"
