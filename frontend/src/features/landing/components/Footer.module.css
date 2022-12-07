@@ -1,0 +1,22 @@
+.footer {
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  height: 100%;
+  background-color: var(--white);
+  padding-top: 8px;
+  padding-bottom: 80px;
+}
+
+.footer a {
+  color: #ccc;
+  font-size: 14px;
+  text-decoration: none;
+  margin-right: 12px;
+}
+
+.languageBtn {
+  background-color: var(--white);
+  font-size: 14px;
+  color: #3388dd;
+  margin-top: 8px;
+}

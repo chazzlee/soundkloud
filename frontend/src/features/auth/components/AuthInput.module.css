@@ -9,11 +9,8 @@
   color: #333;
 }
 
-.emailWithBack {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 14px;
-  cursor: pointer;
+.input:focus {
+  outline: 1px solid #ccc;
 }
 
 .invalid {
@@ -42,4 +39,11 @@
   cursor: pointer;
   z-index: 1;
   color: rgb(63, 62, 62);
+}
+
+.emailWithBack {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 14px;
+  cursor: pointer;
 }

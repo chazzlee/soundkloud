@@ -298,6 +298,7 @@ export function AuthModal({ onClose, onSuccess }) {
             onChange={handleInputChange}
             errorMessage={errors.password}
             withLabel={true}
+            autoFocus={true}
           />
           <AuthButton label={"Accept & continue"} />
         </form>

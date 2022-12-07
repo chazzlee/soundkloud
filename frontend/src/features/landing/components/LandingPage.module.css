@@ -241,6 +241,12 @@
   gap: 20px;
 }
 
+.trendingListItemContainer {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
 .trendingListItemImage {
   margin-bottom: 4px;
 }
@@ -258,6 +264,24 @@
   margin: 0;
   margin-bottom: 12px;
   color: #999;
+}
+
+.playOverlay {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circularPlayBtn {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
 }
 
 .exploreContainer {
@@ -398,27 +422,4 @@
   font-size: 12px;
   color: #333;
   margin-right: 10px;
-}
-
-.footer {
-  padding-left: var(--container-padding);
-  padding-right: var(--container-padding);
-  height: 100%;
-  background-color: var(--white);
-  padding-top: 8px;
-  padding-bottom: 80px;
-}
-
-.footer a {
-  color: #ccc;
-  font-size: 14px;
-  text-decoration: none;
-  margin-right: 12px;
-}
-
-.languageBtn {
-  background-color: var(--white);
-  font-size: 14px;
-  color: #3388dd;
-  margin-top: 8px;
 }
