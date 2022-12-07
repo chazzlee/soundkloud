@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_07_154632) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_07_222536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "label", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["label"], name: "index_genres_on_label", unique: true
+    t.index ["name"], name: "index_genres_on_name", unique: true
+  end
 
   create_table "profiles", force: :cascade do |t|
     t.string "display_name", null: false
@@ -26,6 +35,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_154632) do
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
+  create_table "tracks", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "artist", null: false
+    t.string "permalink", null: false
+    t.text "description"
+    t.string "caption"
+    t.string "privacy", default: "public", null: false
+    t.bigint "user_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["genre_id"], name: "index_tracks_on_genre_id"
+    t.index ["user_id"], name: "index_tracks_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -37,4 +61,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_154632) do
   end
 
   add_foreign_key "profiles", "users"
+  add_foreign_key "tracks", "genres"
+  add_foreign_key "tracks", "users"
 end
