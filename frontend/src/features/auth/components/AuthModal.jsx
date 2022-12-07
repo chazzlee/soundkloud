@@ -171,49 +171,54 @@ export function AuthModal({ onClose, onSuccess }) {
    */
   const handleRegister = (event) => {
     event.preventDefault();
-    if (!profileValues.displayName) {
-      setProfileErrors((prev) => ({
-        ...prev,
-        displayName: "Enter your display name",
-      }));
-    }
-    if (!profileValues.age) {
-      setProfileErrors((prev) => ({ ...prev, age: "Enter your age." }));
-    }
-    if (!profileValues.gender) {
-      setProfileErrors((prev) => ({
-        ...prev,
-        gender: "Please indicate your gender.",
-      }));
-    }
+    //FIXME:
 
-    if (
-      profileErrors.displayName ||
-      profileErrors.age ||
-      profileErrors.gender
-    ) {
-      //TODO: still submitting...
+    console.log("profileerrrs", profileErrors);
+    if (Object.values(profileValues).some((value) => value === "")) {
+      console.log("CHECK ERROS");
       return;
-    } else {
-      const newUser = {
-        ...formValues,
-        ...profileValues,
-      };
-
-      dispatch(registerUser(newUser))
-        .then((response) => {
-          if (response.ok) {
-            onSuccess();
-          }
-        })
-        .catch((_err) => {
-          setErrors({
-            password: "",
-            email: "",
-            unique: "Email has already been taken",
-          });
-        });
+    } else if (Object.values(profileValues).every((value) => value === "")) {
+      setProfileErrors({
+        displayName: "Enter your display name.",
+        age: "Enter your age.",
+        gender: "Please indicate your gender.",
+      });
+      console.log("CHECK ERROS");
+      return;
     }
+
+    const newUser = {
+      ...formValues,
+      ...profileValues,
+    };
+    console.log("creatin", newUser);
+
+    // if (
+    //   profileErrors.displayName &&
+    //   profileErrors.age &&
+    //   profileErrors.gender
+    // ) {
+    //   const newUser = {
+    //     ...formValues,
+    //     ...profileValues,
+    //   };
+    //   console.log("creating", newUser);
+    //   // dispatch(registerUser(newUser))
+    //   //   .then((response) => {
+    //   //     if (response.ok) {
+    //   //       onSuccess();
+    //   //     }
+    //   //   })
+    //   //   .catch((_err) => {
+    //   //     setErrors({
+    //   //       password: "",
+    //   //       email: "",
+    //   //       unique: "Something went wrong...",
+    //   //     });
+    //   //   });
+    // } else {
+    //   return;
+    // }
   };
 
   let currentStep = null;
@@ -426,6 +431,14 @@ export function AuthModal({ onClose, onSuccess }) {
               errorMessage={profileErrors.displayName}
               value={profileValues.displayName}
               onChange={handleProfileChange}
+              onBlur={(e) => {
+                if (!e.target.value) {
+                  setProfileErrors((prev) => ({
+                    ...prev,
+                    displayName: "Enter your display name.",
+                  }));
+                }
+              }}
             />
           </div>
 
@@ -438,6 +451,14 @@ export function AuthModal({ onClose, onSuccess }) {
               errorMessage={profileErrors.age}
               value={profileValues.age}
               onChange={handleProfileChange}
+              onBlur={(e) => {
+                if (!e.target.value) {
+                  setProfileErrors((prev) => ({
+                    ...prev,
+                    age: "Enter your age.",
+                  }));
+                }
+              }}
             />
           </div>
 
@@ -447,10 +468,18 @@ export function AuthModal({ onClose, onSuccess }) {
               name="gender"
               id="gender"
               className={`${authInputStyles.input} ${
-                profileErrors.gender && styles.invalid
+                profileErrors.gender && authInputStyles.invalid
               }`}
               value={profileValues.gender}
               onChange={handleProfileChange}
+              onBlur={(e) => {
+                if (!e.target.value) {
+                  setProfileErrors((prev) => ({
+                    ...prev,
+                    gender: "Please indicate your gender.",
+                  }));
+                }
+              }}
             >
               <option value=""></option>
               <option value="female">Female</option>
