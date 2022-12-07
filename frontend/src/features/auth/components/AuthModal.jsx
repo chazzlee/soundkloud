@@ -231,7 +231,7 @@ export function AuthModal({ onClose, onSuccess }) {
         <button onClick={onClose} className={styles.closeBtn} title="Close">
           <IoMdClose />
         </button>
-        <SocialButtonGroup />
+        <SocialButtonGroup onSuccess={onSuccess} />
         <div className={styles.or}>or</div>
         <form onSubmit={handleNextStep} noValidate>
           <AuthInput
