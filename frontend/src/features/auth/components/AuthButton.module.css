@@ -1,0 +1,16 @@
+.authButton {
+  background-color: var(--primary-orange);
+  border-color: var(--primary-orange);
+  border-radius: 3px;
+  color: #fff;
+  width: 100%;
+  padding: 10px 15px;
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+
+/* TODO: */
+.authButton:disabled {
+  background-color: rgb(189, 189, 189);
+  cursor: not-allowed;
+}

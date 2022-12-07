@@ -13,6 +13,13 @@ import { EmailDisplayWithBack } from "./EmailDisplayWithBack";
 import { GenderSelectInput } from "./GenderSelectInput";
 import { SocialButtonGroup } from "./SocialButtonGroup";
 import { PasswordInput } from "./PasswordInput";
+import { AuthButton } from "./AuthButton";
+
+const profileErrorMessages = {
+  displayName: "Enter your display name.",
+  age: "Enter your age.",
+  gender: "Please indicate your gender.",
+};
 
 export function AuthModal({ onClose, onSuccess }) {
   const dispatch = useDispatch();
@@ -29,6 +36,7 @@ export function AuthModal({ onClose, onSuccess }) {
   });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [serverError, setServerError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const [profileValues, setProfileValues] = useState({
     displayName: "",
@@ -83,18 +91,23 @@ export function AuthModal({ onClose, onSuccess }) {
       return;
     }
 
-    //-============
+    setSubmitted(true);
+    //-===============================//
     const response = await csrfFetch("/api/user", {
       method: "POST",
       body: JSON.stringify({ email: formValues.email }),
     });
-    const data = await response.json();
+    //TODO:
+    setTimeout(async () => {
+      const data = await response.json();
 
-    if (data.success) {
-      setStep("password");
-    } else {
-      setStep("create");
-    }
+      if (data.success) {
+        setStep("password");
+      } else {
+        setStep("create");
+      }
+      setSubmitted(false);
+    }, 500);
   };
 
   const handlePrevStep = () => {
@@ -157,12 +170,6 @@ export function AuthModal({ onClose, onSuccess }) {
   };
 
   const isEmpty = (value) => value === "" || !value || value.length === 0;
-
-  const profileErrorMessages = {
-    displayName: "Enter your display name.",
-    age: "Enter your age.",
-    gender: "Please indicate your gender.",
-  };
 
   const validateProfile = (profileValues) => {
     setProfileErrors({
@@ -234,10 +241,9 @@ export function AuthModal({ onClose, onSuccess }) {
             onChange={handleInputChange}
             placeholder="Your email address or profile URL"
             errorMessage={errors.email}
+            autoFocus={true}
           />
-          <button type="submit" className={styles.continueBtn}>
-            Continue
-          </button>
+          <AuthButton label={"Continue"} disabled={submitted} />
         </form>
         <AuthModalFooter showPrivacyPolicy={true} />
       </div>
@@ -258,10 +264,9 @@ export function AuthModal({ onClose, onSuccess }) {
             value={formValues.password}
             onChange={handleInputChange}
             errorMessage={errors.password}
+            autoFocus={true}
           />
-          <button type="submit" className={styles.continueBtn}>
-            Sign in
-          </button>
+          <AuthButton label="Sign in" />
         </form>
         <p
           style={{
@@ -294,9 +299,7 @@ export function AuthModal({ onClose, onSuccess }) {
             errorMessage={errors.password}
             withLabel={true}
           />
-          <button type="submit" className={styles.continueBtn}>
-            Accept & continue
-          </button>
+          <AuthButton label={"Accept & continue"} />
         </form>
         <AuthModalFooter showSuggestions={true} showPrivacyPolicy={true} />
       </div>
@@ -323,6 +326,7 @@ export function AuthModal({ onClose, onSuccess }) {
               errorMessage={profileErrors.displayName}
               value={profileValues.displayName}
               onChange={handleProfileChange}
+              autoFocus={true}
             />
           </div>
 
@@ -349,9 +353,7 @@ export function AuthModal({ onClose, onSuccess }) {
             onChange={handleProfileChange}
             errorMessage={profileErrors.gender}
           />
-          <button type="submit" className={styles.continueBtn}>
-            Continue
-          </button>
+          <AuthButton label={"Continue"} />
         </form>
         <div style={{ padding: "0 20px", textAlign: "center" }}>
           <AuthErrorMessage errorMessage={serverError} />

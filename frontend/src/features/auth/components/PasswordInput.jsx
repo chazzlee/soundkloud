@@ -8,6 +8,7 @@ export function PasswordInput({
   onChange,
   errorMessage,
   withLabel = false,
+  ...rest
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,6 +41,7 @@ export function PasswordInput({
               />
             )
           }
+          {...rest}
         />
       </div>
     </>

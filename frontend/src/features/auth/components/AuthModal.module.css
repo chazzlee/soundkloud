@@ -46,17 +46,6 @@
   width: 43%;
 }
 
-.continueBtn {
-  background-color: var(--primary-orange);
-  border-color: var(--primary-orange);
-  border-radius: 3px;
-  color: #fff;
-  width: 100%;
-  padding: 10px 15px;
-  margin-top: 12px;
-  margin-bottom: 16px;
-}
-
 .modalTitle {
   font-size: 32px;
   font-weight: 400;

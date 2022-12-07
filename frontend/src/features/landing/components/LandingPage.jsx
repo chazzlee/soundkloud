@@ -318,10 +318,20 @@ export function LandingPage() {
             <p className={styles.thanksSubtitle}>
               Save tracks, follow artists and build playlists. All for free.
             </p>
-            <button className={styles.createAccountBtn}>Create account</button>
+            <button
+              className={styles.createAccountBtn}
+              onClick={() => setAuthModalOpen(true)}
+            >
+              Create account
+            </button>
             <div className={styles.accountButtonGroup}>
               <p className={styles.accountContent}>Already have an account?</p>
-              <button className="sign-in-transparent-btn">Sign in</button>
+              <button
+                className="sign-in-transparent-btn"
+                onClick={() => setAuthModalOpen(true)}
+              >
+                Sign in
+              </button>
             </div>
           </section>
 
