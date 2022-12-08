@@ -8,6 +8,9 @@
 
 puts 'Seeding...'
 
+demo_user = User.create!(email: 'demo@demo.com', password: 'password')
+Profile.create!(age: 100, gender: 'none', display_name: 'Demo User', user: demo_user)
+
 Genre.create!(name: 'none', label: 'None')
 Genre.create!(name: 'custom', label: 'Custom')
 Genre.create!(name: 'alternative_rock', label: 'Alternative Rock')
