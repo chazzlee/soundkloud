@@ -1,2 +1,2 @@
-server: bin/rails server
+server: bin/rails server -p 5000
 client: cd frontend && npm start

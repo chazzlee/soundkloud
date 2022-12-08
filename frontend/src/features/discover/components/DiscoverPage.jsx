@@ -35,37 +35,39 @@ export function DiscoverPage() {
   }
 
   return (
-    <div>
-      <div>
-        <h1>More of what you like</h1>
-        {/* TODO: only 20 tracks/playlists needed */}
-        <div>
-          <Carousel dataList={tracks} subcaption="Related tracks" />
+    <div className="full-page">
+      <main className="page-container">
+        <div className="">
+          <h1>More of what you like</h1>
+          {/* TODO: only 20 tracks/playlists needed */}
+          <div>
+            <Carousel dataList={tracks} subcaption="Related tracks" />
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h1>Recently Played</h1>
-        {/* TODO: only 20 tracks/playlists needed */}
         <div>
-          <Carousel dataList={tracks} subcaption="Related tracks" />
+          <h1>Recently Played</h1>
+          {/* TODO: only 20 tracks/playlists needed */}
+          <div>
+            <Carousel dataList={tracks} subcaption="Related tracks" />
+          </div>
         </div>
-      </div>
-      <div>
-        <h1>Next Wav Miami</h1>
-        {/* TODO: only 20 tracks/playlists needed */}
         <div>
-          <Carousel dataList={tracks} subcaption="Related tracks" />
+          <h1>Next Wav Miami</h1>
+          {/* TODO: only 20 tracks/playlists needed */}
+          <div>
+            <Carousel dataList={tracks} subcaption="Related tracks" />
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h1>Fresh Pressed</h1>
-        {/* TODO: only 20 tracks/playlists needed */}
         <div>
-          <Carousel dataList={tracks} subcaption="Related tracks" />
+          <h1>Fresh Pressed</h1>
+          {/* TODO: only 20 tracks/playlists needed */}
+          <div>
+            <Carousel dataList={tracks} subcaption="Related tracks" />
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

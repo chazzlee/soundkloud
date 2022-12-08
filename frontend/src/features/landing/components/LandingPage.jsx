@@ -7,7 +7,6 @@ import { IoSearch } from "react-icons/io5";
 import { CSSTransition } from "react-transition-group";
 import { carousels } from "../data";
 import { Footer } from "./Footer";
-
 import { TrendingSection } from "./TrendingSection";
 
 //TODO: combine modals/break out into components/banner slider transitions/login modal dropin transition
@@ -25,10 +24,10 @@ export function LandingPage() {
   return (
     <>
       {/* <Title>Stream and listen to music online for free with SoundCloud</Title> FIXME: doesn't work! */}
-      <div className={styles.landingPage}>
-        <main className={styles.container}>
+      <div className="full-page">
+        <main className="page-container">
           <header className={styles.header}>
-            <h1 className={styles.navLogo}>SOUNDCLOUD</h1>
+            <h1 className={styles.navLogo}>SOUNDKLOUD</h1>
             <div className={styles.authButtonGroup}>
               <button
                 className={styles.signIn}

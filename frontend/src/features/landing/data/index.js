@@ -1,17 +1,17 @@
 export const carousels = [
   {
     id: 1,
-    title: "Discover more with SoundCloud Go+",
+    title: "Discover more with SoundKloud Go+",
     subTitle:
-      "SoundCloud Go+ lets you listen offline, ad-free, with over 150 million tracks — and growing.",
+      "SoundKloud Go+ lets you listen offline, ad-free, with over 150 million tracks — and growing.",
     imageUrl:
       "https://a-v2.sndcdn.com/assets/images/sc_landing_header_web_c-318d7eed.jpg",
   },
   {
     id: 2,
-    title: "What's next in music is first on SoundCloud",
+    title: "What's next in music is first on SoundKloud",
     subTitle:
-      "Upload your first track and begin your journey. SoundCloud gives you space to create, find your fans, and connect with other artists.",
+      "Upload your first track and begin your journey. SoundKloud gives you space to create, find your fans, and connect with other artists.",
     imageUrl:
       "https://a-v2.sndcdn.com/assets/images/sc_landing_header_web_featured_artists-8081257b.jpg",
   },

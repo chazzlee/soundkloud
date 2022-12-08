@@ -1,5 +1,15 @@
 @import "~modern-normalize/modern-normalize.css";
 
+:root {
+  --bg-light: #f2f2f2;
+  --container-width: 1240px;
+  --container-padding: 30px;
+  --primary-orange: #f50;
+  --black: #333333;
+  --white: #fff;
+  --link-blue: #044dd2;
+}
+
 #root {
   height: 100%;
   background-color: var(--bg-light);
@@ -13,4 +23,21 @@ button {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+}
+
+.full-page {
+  height: 100%;
+  background-color: var(--bg-light);
+  color: var(--black);
+  font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Regular",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.page-container {
+  width: var(--container-width);
+  max-width: var(--container-width);
+  background-color: var(--bg-light);
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
 }
