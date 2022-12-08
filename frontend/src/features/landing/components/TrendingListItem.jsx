@@ -26,7 +26,7 @@ export function TrendingListItem({ playlist }) {
         }}
       />
       <p className={styles.trendingListItemTitle}>
-        {playlist.title.length >= 21
+        {playlist.title.length >= 22
           ? `${playlist.title.substring(0, 21)}...`
           : playlist.title}
       </p>

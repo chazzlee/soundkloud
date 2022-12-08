@@ -1,0 +1,2 @@
+server: bin/rails server
+client: cd frontend && npm start

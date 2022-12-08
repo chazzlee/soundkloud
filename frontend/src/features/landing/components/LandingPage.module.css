@@ -256,6 +256,8 @@
   margin: 0;
   margin-bottom: 2px;
   color: rgb(73, 73, 73);
+  text-overflow: ellipsis;
+  width: 180px;
   max-width: 180px;
 }
 

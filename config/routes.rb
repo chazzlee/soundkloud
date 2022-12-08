@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     post '/user', to: 'users#check'
     resources :users, only: %i[show create]
     resource :session, only: %i[create show destroy]
+    resources :tracks, only: [:index]
   end
 
   get '*path', to: 'static_pages#frontend_index'
