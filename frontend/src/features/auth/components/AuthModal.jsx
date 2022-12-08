@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { csrfFetch } from "../../../api/csrfFetch";
 import { Modal } from "../../../context/Modal";
 import { loginUser, registerUser } from "../store";
 import { IoMdClose } from "react-icons/io";
@@ -14,11 +13,24 @@ import { GenderSelectInput } from "./GenderSelectInput";
 import { SocialButtonGroup } from "./SocialButtonGroup";
 import { PasswordInput } from "./PasswordInput";
 import { AuthButton } from "./AuthButton";
+import { checkIfEmailExists } from "../../../api/auth";
+import { wait } from "../../../utils/wait";
 
 const profileErrorMessages = {
   displayName: "Enter your display name.",
   age: "Enter your age.",
   gender: "Please indicate your gender.",
+};
+
+const initialFormValues = {
+  email: "",
+  password: "",
+};
+
+const initialProfileValues = {
+  displayName: "",
+  age: "",
+  gender: "",
 };
 
 export function AuthModal({ onClose, onSuccess }) {
@@ -30,12 +42,9 @@ export function AuthModal({ onClose, onSuccess }) {
   const isCreateNewStep = step === "create";
   const isCreateProfileStep = step === "profile";
 
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({ email: "", password: "" });
-  const [serverError, setServerError] = useState("");
+  const [formValues, setFormValues] = useState(initialFormValues);
+  const [errors, setErrors] = useState(initialFormValues);
+  const [serverError, setServerError] = useState(null);
   const [submitted, setSubmitted] = useState(false);
 
   const [profileValues, setProfileValues] = useState({
@@ -49,6 +58,22 @@ export function AuthModal({ onClose, onSuccess }) {
     age: "",
     gender: "",
   });
+
+  const resetFormValues = () => {
+    setFormValues(initialFormValues);
+  };
+
+  const resetFormErrors = () => {
+    setErrors(initialFormValues);
+  };
+
+  const resetProfileValues = () => {
+    setProfileValues(initialProfileValues);
+  };
+
+  const resetProfileErrors = () => {
+    setProfileErrors(initialProfileValues);
+  };
 
   /**
    * @param {React.ChangeEvent<HTMLInputElement>} event
@@ -93,29 +118,22 @@ export function AuthModal({ onClose, onSuccess }) {
 
     setSubmitted(true);
     //-===============================//
-    const response = await csrfFetch("/api/user", {
-      method: "POST",
-      body: JSON.stringify({ email: formValues.email }),
-    });
-    //TODO:
-    setTimeout(async () => {
-      const data = await response.json();
+    const response = await checkIfEmailExists();
 
+    wait(500).then(async () => {
+      const data = await response.json();
       if (data.success) {
         setStep("password");
       } else {
         setStep("create");
       }
       setSubmitted(false);
-    }, 500);
+    });
   };
 
   const handlePrevStep = () => {
-    setErrors({
-      email: "",
-      password: "",
-    });
-    setServerError("");
+    resetFormErrors();
+    setServerError(null);
     setFormValues((prev) => ({ ...prev, password: "" }));
     setStep("email");
   };
@@ -125,7 +143,8 @@ export function AuthModal({ onClose, onSuccess }) {
    */
   const handleLogin = (event) => {
     event.preventDefault();
-    setServerError("");
+
+    setServerError(null);
 
     if (isPasswordStep && !formValues.password) {
       setErrors({ email: "", password: "Enter a valid password." });
@@ -139,6 +158,7 @@ export function AuthModal({ onClose, onSuccess }) {
     }
 
     setSubmitted(true);
+
     dispatch(
       loginUser({
         email: formValues.email,
@@ -180,11 +200,7 @@ export function AuthModal({ onClose, onSuccess }) {
   const isEmpty = (value) => value === "" || !value || value.length === 0;
 
   const validateProfile = (profileValues) => {
-    setProfileErrors({
-      displayName: "",
-      age: "",
-      gender: "",
-    });
+    resetProfileErrors();
 
     let profileKeys = Object.keys(profileValues);
     let isValid = true;
@@ -235,6 +251,7 @@ export function AuthModal({ onClose, onSuccess }) {
   };
 
   let currentStep = null;
+
   if (isEmailStep) {
     currentStep = (
       <div className={styles.modalForm}>

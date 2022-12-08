@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IoMdPlay } from "react-icons/io";
+import { wait } from "../../../utils/wait";
 import styles from "./LandingPage.module.css";
 
 export function TrendingListItem({ playlist }) {
@@ -8,8 +9,8 @@ export function TrendingListItem({ playlist }) {
   return (
     <div
       key={playlist.id}
-      onMouseEnter={() => setTimeout(() => setShowPlay(true), 120)}
-      onMouseLeave={() => setTimeout(() => setShowPlay(false), 120)}
+      onMouseEnter={() => wait(120).then(() => setShowPlay(true))}
+      onMouseLeave={() => wait(120).then(() => setShowPlay(false))}
       className={styles.trendingListItemContainer}
     >
       <img
