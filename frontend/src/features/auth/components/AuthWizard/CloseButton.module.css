@@ -1,0 +1,7 @@
+.closeBtn {
+  align-self: flex-end;
+  padding: 12px;
+  padding-bottom: 36px;
+  font-size: 22px;
+  background-color: transparent;
+}
