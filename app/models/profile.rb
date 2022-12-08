@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Profile < ApplicationRecord
+  extend FriendlyId
+  friendly_id :display_name, use: :slugged
+
   belongs_to :user
 
   validates :display_name, presence: true, uniqueness: true

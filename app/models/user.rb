@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_one :profile
+
   has_secure_password
 
   before_validation :ensure_session_token
