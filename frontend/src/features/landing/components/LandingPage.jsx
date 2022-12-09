@@ -9,6 +9,15 @@ import { carousels } from "../data";
 import { Footer } from "./Footer";
 import { TrendingSection } from "./TrendingSection";
 
+import {
+  CarouselProvider,
+  Slider,
+  Slide,
+  ButtonBack,
+  ButtonNext,
+} from "pure-react-carousel";
+import "pure-react-carousel/dist/react-carousel.es.css";
+
 //TODO: combine modals/break out into components/banner slider transitions/login modal dropin transition
 export function LandingPage() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -47,63 +56,70 @@ export function LandingPage() {
             </div>
           </header>
 
-          <CSSTransition
-            nodeRef={nodeRef}
-            in={inProp}
-            timeout={200}
-            classNames="slide"
+          <CarouselProvider
+            naturalSlideWidth={1240}
+            naturalSlideHeight={450}
+            totalSlides={2}
           >
-            <section
-              ref={nodeRef}
-              className={styles.heroContainer}
-              style={{
-                backgroundImage: `url(${carousel.imageUrl})`,
-              }}
-            >
-              <div className={styles.heroContent}>
-                <h2 className={styles.heroTitle}>{carousel.title}</h2>
-                <p className={styles.heroSubtitle}>{carousel.subTitle}</p>
-              </div>
+            <Slider>
+              {carousels.map((carousel, index) => (
+                <Slide index={index} key={carousel.id}>
+                  <section
+                    ref={nodeRef}
+                    className={styles.heroContainer}
+                    style={{
+                      backgroundImage: `url(${carousel.imageUrl})`,
+                    }}
+                  >
+                    <div className={styles.heroContent}>
+                      <h2 className={styles.heroTitle}>{carousel.title}</h2>
+                      <p className={styles.heroSubtitle}>{carousel.subTitle}</p>
+                    </div>
 
-              <div className={styles.ctaButtonGroup}>
-                {carousel.id === 1 ? (
-                  <>
-                    <button className={styles.ctaLeft}>Learn more</button>
-                    <button className={styles.ctaRight}>
-                      Try it free for 30 days
-                    </button>
-                  </>
-                ) : (
-                  <button className={styles.ctaMiddle}>
-                    Start uploading today
-                  </button>
-                )}
-              </div>
+                    <div className={styles.ctaButtonGroup}>
+                      {carousel.id === 1 ? (
+                        <>
+                          <button className={styles.ctaLeft}>Learn more</button>
+                          <button className={styles.ctaRight}>
+                            Try it free for 30 days
+                          </button>
+                        </>
+                      ) : (
+                        <button className={styles.ctaMiddle}>
+                          Start uploading today
+                        </button>
+                      )}
+                    </div>
 
-              <div className={styles.heroFooter}>
-                <div
-                  className={styles.toggleHeroBtn}
-                  style={{
-                    backgroundColor: carousel.id === 1 ? "#fff" : "transparent",
-                  }}
-                  onClick={() => {
-                    setInProp((prev) => !prev);
-                    setCarousel(carousels[0]);
-                  }}
-                />
-                <div
-                  className={styles.toggleHeroBtn}
-                  style={{
-                    backgroundColor: carousel.id === 2 ? "#fff" : "transparent",
-                  }}
-                  onClick={() => {
-                    setInProp((prev) => !prev);
-                    setCarousel(carousels[1]);
-                  }}
-                />
-              </div>
-            </section>
-          </CSSTransition>
+                    <div className={styles.heroFooter}>
+                      <div
+                        className={styles.toggleHeroBtn}
+                        style={{
+                          backgroundColor:
+                            carousel.id === 1 ? "#fff" : "transparent",
+                        }}
+                        onClick={() => {
+                          setInProp((prev) => !prev);
+                          setCarousel(carousel);
+                        }}
+                      />
+                      <div
+                        className={styles.toggleHeroBtn}
+                        style={{
+                          backgroundColor:
+                            carousel.id === 2 ? "#fff" : "transparent",
+                        }}
+                        onClick={() => {
+                          setInProp((prev) => !prev);
+                          setCarousel(carousel);
+                        }}
+                      />
+                    </div>
+                  </section>
+                </Slide>
+              ))}
+            </Slider>
+          </CarouselProvider>
 
           <section className={styles.searchContainer}>
             <div className={styles.inputContainer}>
