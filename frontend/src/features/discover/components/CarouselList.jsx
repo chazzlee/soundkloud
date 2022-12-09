@@ -1,4 +1,4 @@
-export function Carousel({ dataList, subcaption }) {
+export function CarouselList({ dataList, subcaption }) {
   return (
     <div style={{ display: "flex" }}>
       {dataList.map((item) => (

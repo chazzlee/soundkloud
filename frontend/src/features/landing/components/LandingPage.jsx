@@ -24,7 +24,7 @@ export function LandingPage() {
   return (
     <>
       {/* <Title>Stream and listen to music online for free with SoundCloud</Title> FIXME: doesn't work! */}
-      <div className="full-page">
+      <div className="landing-page">
         <main className="page-container">
           <header className={styles.header}>
             <h1 className={styles.navLogo}>SOUNDKLOUD</h1>

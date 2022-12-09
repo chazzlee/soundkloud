@@ -7,7 +7,8 @@ import {
   selectIsTracksLoading,
   selectTracksError,
 } from "../../tracks/store";
-import { Carousel } from "./Carousel";
+import { CarouselList } from "./CarouselList";
+import styles from "./DiscoverPage.module.css";
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
@@ -36,36 +37,24 @@ export function DiscoverPage() {
 
   return (
     <div className="full-page">
-      <main className="page-container">
-        <div className="">
-          <h1>More of what you like</h1>
-          {/* TODO: only 20 tracks/playlists needed */}
-          <div>
-            <Carousel dataList={tracks} subcaption="Related tracks" />
+      <main className={`page-container ${styles.innerContainer}`}>
+        <div className={styles.columnMain}>
+          <div className={styles.carouselContainer}>
+            <h2 className={styles.carouselHeading}>More of what you like</h2>
+            <CarouselList dataList={tracks} subcaption="Related tracks" />
           </div>
-        </div>
 
-        <div>
-          <h1>Recently Played</h1>
-          {/* TODO: only 20 tracks/playlists needed */}
-          <div>
-            <Carousel dataList={tracks} subcaption="Related tracks" />
+          <div className={styles.carouselContainer}>
+            <h2 className={styles.carouselHeading}>More of what you like</h2>
+            <CarouselList dataList={tracks} subcaption="Related tracks" />
+          </div>
+          <div className={styles.carouselContainer}>
+            <h2 className={styles.carouselHeading}>More of what you like</h2>
+            <CarouselList dataList={tracks} subcaption="Related tracks" />
           </div>
         </div>
-        <div>
-          <h1>Next Wav Miami</h1>
-          {/* TODO: only 20 tracks/playlists needed */}
-          <div>
-            <Carousel dataList={tracks} subcaption="Related tracks" />
-          </div>
-        </div>
-
-        <div>
-          <h1>Fresh Pressed</h1>
-          {/* TODO: only 20 tracks/playlists needed */}
-          <div>
-            <Carousel dataList={tracks} subcaption="Related tracks" />
-          </div>
+        <div className={styles.columnAside}>
+          <p>ASIDE</p>
         </div>
       </main>
     </div>

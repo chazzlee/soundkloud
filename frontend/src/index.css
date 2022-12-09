@@ -25,13 +25,21 @@ button {
   vertical-align: baseline;
 }
 
+.landing-page {
+  height: 100%;
+  background-color: var(--bg-light);
+  color: var(--black);
+  font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Regular",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
 .full-page {
   height: 100%;
   background-color: var(--bg-light);
   color: var(--black);
   font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Regular",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  /* padding-top: 30px; */
+  padding-top: 44px;
 }
 
 .page-container {

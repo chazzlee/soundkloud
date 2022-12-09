@@ -1,0 +1,25 @@
+.innerContainer {
+  height: 100%;
+  padding: 30px 30px 0;
+  background-color: white;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.columnMain {
+  border-right: 1px solid black;
+  padding-right: 30px;
+}
+
+.carouselContainer {
+}
+
+.columnAside {
+}
+
+.carouselHeading {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
