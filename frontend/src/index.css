@@ -31,6 +31,7 @@ button {
   color: var(--black);
   font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Regular",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  /* padding-top: 30px; */
 }
 
 .page-container {
