@@ -1,9 +1,74 @@
 :root {
   --navWidth: 30%;
   --navBorderColor: rgb(17, 17, 17);
+  --bg-dark-gray: #333;
+  --text-light: rgb(204, 204, 204);
 }
 
-.topNavigationContainer {
+.header {
+  background-color: var(--bg-dark-gray);
+  color: var(--text-light);
+  font-family: Interstate, "Lucida Grande", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  width: 100%;
+  height: 46px;
+  position: sticky;
+}
+
+.header li {
+  list-style-type: none;
+}
+
+.header a {
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+.header a:visited {
+  color: var(--text-light);
+}
+
+.navContainer {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navGroupLeft {
+  min-width: var(--navWidth);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.navLogo > a {
+  /* background-position-x: 12px;
+  background-size: 48px 22px;
+  width: 69px;
+  margin-right: unset; */
+  /* background: transparent url(./soundcloud-logo.svg) no-repeat; */
+ }
+
+.navLinksLeft > ul {
+  display: flex;
+}
+
+.navGroupMiddle {
+}
+
+.navLinksRight {
+  min-width: var(--navWidth);
+  height: 100%;
+  display: flex;
+  align-items: center;
+} 
+
+/* .topNavigationContainer {
   background-color: #333;
   color: rgb(204, 204, 204);
   font-family: Interstate, "Lucida Grande", Arial, sans-serif;
@@ -46,6 +111,7 @@
 
 .navLogoLink {
   margin-right: 12px;
+  background-color: red;
 }
 
 .homeWithLogo {

@@ -28,74 +28,107 @@ export function TopNavigation() {
   };
 
   return (
-    <header className={styles.topNavigationContainer}>
-      <div className={styles.innerContainer}>
-        <nav className={styles.navGroup}>
-          <div className={`${styles.homeWithLogo} ${styles.logoHighlight}`}>
-            <NavLink to={"/"} className={styles.navLogoLink}>
-              <span className={styles.navLogo}>LOGO</span>
-            </NavLink>
-            <NavLink to={"/discover"}>
-              <span className={styles.homeLink}>Home</span>
-            </NavLink>
+    <header className={styles.header}>
+      {/* <div className={styles.navContainer}>
+        <div className={styles.navGroupLeft}>
+          <div className={styles.navLogo}>
+            <a href="/">SOUNDKLOUD</a>
           </div>
-          <div className={styles.navBtn} style={{ borderRight: "none" }}>
-            <NavLink to={"/feed"}>Feed</NavLink>
-          </div>
-          <div className={styles.navBtn}>
-            <NavLink to={"/you/library"}>Library</NavLink>
-          </div>
-        </nav>
-        <div className={styles.searchBarContainer}>
-          <input
-            id="search"
-            type="search"
-            name="search"
-            className={styles.searchBar}
-            placeholder="Search"
-            autoComplete="off"
-          />
-          <span
-            style={{
-              position: "absolute",
-              fontSize: "20px",
-              top: 2,
-              right: 6,
-              color: "darkgray",
-              cursor: "pointer",
-            }}
-          >
-            <IoSearch />
-          </span>
+          <nav className={styles.navLinksLeft}>
+            <ul>
+              <li>
+                <NavLink>Home</NavLink>
+              </li>
+              <li>
+                <NavLink>Feed</NavLink>
+              </li>
+              <li>
+                <NavLink>Library</NavLink>
+              </li>
+            </ul>
+          </nav>
         </div>
-
-        <nav className={styles.navGroup}>
-          <div className={styles.navBtn}>
-            <NavLink to={"/upload"}>Upload</NavLink>
-          </div>
-          <div className={styles.profileTrigger}>
-            <img
-              src="https://via.placeholder.com/26"
-              alt="Profile"
-              className={styles.profileImage}
-            />
-            <span>APEX1</span>
-          </div>
-          <div>
-            <BsFillBellFill />
-          </div>
-          <div>
-            <IoMdMail />
-          </div>
-          <div>
-            <FiMoreHorizontal />
-          </div>
-        </nav>
-      </div>
+        <div className={styles.navGroupMiddle}>
+          <input type="search" />
+        </div>
+        <div className={styles.navGroupRight}>
+          <nav className={styles.navLinksRight}></nav>
+        </div>
+      </div> */}
     </header>
   );
 }
 
+// return (
+//   <header className={styles.topNavigationContainer}>
+//     <div className={styles.innerContainer}>
+//       <nav className={styles.navGroup}>
+//         <div className={`${styles.homeWithLogo} ${styles.logoHighlight}`}>
+//           <NavLink to={"/"} className={styles.navLogoLink}>
+//             <span className={styles.navLogo}>
+//               <Logo />
+//             </span>
+//           </NavLink>
+//           <NavLink to={"/discover"}>
+//             <span className={styles.homeLink}>Home</span>
+//           </NavLink>
+//         </div>
+//         <div className={styles.navBtn} style={{ borderRight: "none" }}>
+//           <NavLink to={"/feed"}>Feed</NavLink>
+//         </div>
+//         <div className={styles.navBtn}>
+//           <NavLink to={"/you/library"}>Library</NavLink>
+//         </div>
+//       </nav>
+//       <div className={styles.searchBarContainer}>
+//         <input
+//           id="search"
+//           type="search"
+//           name="search"
+//           className={styles.searchBar}
+//           placeholder="Search"
+//           autoComplete="off"
+//         />
+//         <span
+//           style={{
+//             position: "absolute",
+//             fontSize: "20px",
+//             top: 2,
+//             right: 6,
+//             color: "darkgray",
+//             cursor: "pointer",
+//           }}
+//         >
+//           <IoSearch />
+//         </span>
+//       </div>
+
+//       <nav className={styles.navGroup}>
+//         <div className={styles.navBtn}>
+//           <NavLink to={"/upload"}>Upload</NavLink>
+//         </div>
+//         <div className={styles.profileTrigger}>
+//           <img
+//             src="https://via.placeholder.com/26"
+//             alt="Profile"
+//             className={styles.profileImage}
+//           />
+//           <span>APEX1</span>
+//         </div>
+//         <div>
+//           <BsFillBellFill />
+//         </div>
+//         <div>
+//           <IoMdMail />
+//         </div>
+//         <div>
+//           <FiMoreHorizontal />
+//         </div>
+//         <button onClick={handleLogout}>Logout</button>
+//       </nav>
+//     </div>
+//   </header>
+// );
 //   <NavLink to={"/"}>
 //     <h1>SOUNDCLOUD</h1>
 //   </NavLink>
