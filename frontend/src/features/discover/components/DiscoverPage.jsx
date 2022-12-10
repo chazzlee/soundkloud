@@ -39,7 +39,10 @@ export function DiscoverPage() {
 
   return (
     <div className="full-page">
-      <main className={`page-container ${styles.innerContainer}`}>
+      <main
+        className={`page-container ${styles.innerContainer}`}
+        style={{ paddingTop: 0, paddingBottom: "80px" }}
+      >
         <div className={styles.columnMain}>
           <CarouselSlider
             title="More of what you like"

@@ -7,27 +7,22 @@
 }
 
 .columnMain {
-  border-right: 1px solid black;
+  border-right: 1px solid var(--bg-light);
   padding-right: 30px;
-  overflow-y: auto;
-  min-height: 1200px;
-  height: 1200px;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.columnMain::-webkit-scrollbar {
-  display: none;
 }
 
 .columnAside {
+  position: fixed;
+  top: 46px;
+  /* TODO: */
+  left: 1240px;
 }
 
 /* ------carousel----- */
 
 .carouselContainer {
   width: 100%;
+  padding-top: 30px;
 }
 
 .relative {

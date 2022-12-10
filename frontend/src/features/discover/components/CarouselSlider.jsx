@@ -27,7 +27,7 @@ export function CarouselSlider({ title, slides }) {
       <h2 className={styles.carouselHeading}>{title}</h2>
       <CarouselProvider
         naturalSlideWidth={180}
-        naturalSlideHeight={240}
+        naturalSlideHeight={230}
         totalSlides={slides.length}
         dragEnabled={false}
         visibleSlides={4.25}
@@ -46,7 +46,7 @@ export function CarouselSlider({ title, slides }) {
         <Slider>
           {slides.map((slide, index) => (
             <Slide key={slide.id} index={index}>
-              <div>
+              <div style={{ position: "relative" }}>
                 <Image
                   src="https://www.metalkingdom.net/album-cover-artwork/2018/02/3/3062-Nile-Annihilation-of-the-Wicked.jpg"
                   style={{
@@ -55,6 +55,19 @@ export function CarouselSlider({ title, slides }) {
                     height: "90%",
                   }}
                 />
+                <div
+                  onClick={() => console.log("play")}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "45%",
+                    transform: "translate(-50%, -45%)",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  PLAY
+                </div>
               </div>
               <div style={{ marginTop: "6px" }}>
                 <p className={styles.title}>{slide.title}</p>
