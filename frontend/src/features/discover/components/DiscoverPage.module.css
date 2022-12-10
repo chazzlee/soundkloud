@@ -9,6 +9,19 @@
 .columnMain {
   border-right: 1px solid black;
   padding-right: 30px;
+  overflow-y: auto;
+  min-height: 1200px;
+  height: 1200px;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.columnMain::-webkit-scrollbar {
+  display: none;
+}
+
+.columnAside {
 }
 
 /* ------carousel----- */
@@ -17,9 +30,9 @@
   width: 100%;
 }
 
-.columnAside {
+.relative {
+  position: relative;
 }
-
 .carouselHeading {
   margin: 0;
   font-size: 22px;
@@ -50,14 +63,14 @@
 
 .carouselControl {
   position: absolute;
-  top: 46%;
+  top: 30%;
   height: 32px;
   width: 32px;
   margin: auto;
   background-color: white;
   border: 1px solid var(--bg-light);
   border-radius: 2px;
-  z-index: 2;
+  z-index: 1;
 }
 
 .carouselControl:hover {
