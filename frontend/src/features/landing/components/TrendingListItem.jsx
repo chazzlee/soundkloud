@@ -25,11 +25,7 @@ export function TrendingListItem({ playlist }) {
           transition: "filter ease-in 120ms",
         }}
       />
-      <p className={styles.trendingListItemTitle}>
-        {playlist.title.length >= 22
-          ? `${playlist.title.substring(0, 21)}...`
-          : playlist.title}
-      </p>
+      <p className={styles.trendingListItemTitle}>{playlist.title}</p>
       <p className={styles.trendingListItemSubtitle}>{playlist.user}</p>
       {showPlay ? (
         <div className={styles.playOverlay}>

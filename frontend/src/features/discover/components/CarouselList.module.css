@@ -1,0 +1,20 @@
+.title {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+  line-height: 1.6;
+  width: 173px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subcaption {
+  margin: 0;
+  color: #999;
+  font-size: 12px;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+}

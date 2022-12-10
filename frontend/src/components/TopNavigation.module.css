@@ -24,7 +24,7 @@
 }
 
 .navLogo {
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 1px;
   background-color: var(--navBorderColor);
   width: 170px;
@@ -32,7 +32,7 @@
 }
 
 .navLogo > a {
-  color: var(--text-light);
+  color: rgb(245, 245, 245);
   text-decoration: none;
   display: block;
   height: 100%;
@@ -161,7 +161,7 @@
   align-items: center;
   height: 40px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .profileDropdown a {
@@ -217,6 +217,10 @@
   transition: background-color ease-in 120ms;
 }
 
+.settingsBtn:hover {
+  color: var(--primary-orange);
+}
+
 .settingsDropdown {
   position: absolute;
   height: 100%;
@@ -232,7 +236,7 @@
 .logoutBtn {
   height: 40px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   padding-left: 8px;
   border-left: 1px solid rgb(179, 179, 179);
   border-right: 1px solid rgb(179, 179, 179);

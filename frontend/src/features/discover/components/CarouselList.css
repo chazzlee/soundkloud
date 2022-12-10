@@ -1,0 +1,9 @@
+.carousel__slide {
+}
+
+.carousel__inner-slide,
+.carousel__inner-slide:focus,
+.carousel__inner-slide:focus-within {
+  border: none;
+  outline: none;
+}

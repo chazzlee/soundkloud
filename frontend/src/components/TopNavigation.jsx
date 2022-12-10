@@ -33,6 +33,8 @@ export function TopNavigation() {
   };
 
   const handleLogout = () => {
+    setProfileDropdownOpen(false);
+    setSettingsDropdownOpen(false);
     dispatch(logoutUser()).then((response) => {
       if (response.ok) {
         navigate("/logout");
@@ -112,8 +114,8 @@ export function TopNavigation() {
                     style={{
                       display: "inline-block",
                       marginRight: "6px",
-                      verticalAlign: "middle",
-                      fontSize: "1rem",
+                      verticalAlign: "text-top",
+                      fontSize: "14px",
                       color: "var(--primary-orange)",
                     }}
                   >
@@ -133,12 +135,9 @@ export function TopNavigation() {
                 </span>
                 {profileDropdownOpen ? (
                   <div className={styles.profileDropdown}>
-                    <NavLink
-                      className={styles.profileDropdownBtn}
-                      role="button"
-                    >
+                    <NavLink className={styles.profileDropdownBtn} to={`/`}>
                       <div style={{ marginRight: "4px", paddingLeft: "8px" }}>
-                        <IoPersonSharp style={{ verticalAlign: "sub" }} />
+                        <IoPersonSharp style={{ verticalAlign: "middle" }} />
                       </div>
                       <div>Profile</div>
                     </NavLink>
@@ -161,7 +160,7 @@ export function TopNavigation() {
                     className={styles.iconBtn}
                     onClick={handleShowSettingsDropdown}
                   >
-                    <FiMoreHorizontal />
+                    <FiMoreHorizontal className={styles.settingsBtn} />
                   </button>
                   {settingsDropdownOpen ? (
                     <div className={styles.settingsDropdown}>

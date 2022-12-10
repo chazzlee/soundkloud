@@ -15,7 +15,7 @@ export function DiscoverPage() {
   const loading = useSelector(selectIsTracksLoading);
   const loaded = useSelector(selectHasTracksLoaded);
   const error = useSelector(selectTracksError);
-  const tracks = useSelector(selectAllTracks).slice(0, 4);
+  const tracks = useSelector(selectAllTracks);
 
   useEffect(() => {
     if (!loaded) {
@@ -44,14 +44,14 @@ export function DiscoverPage() {
             <CarouselList dataList={tracks} subcaption="Related tracks" />
           </div>
 
-          <div className={styles.carouselContainer}>
+          {/* <div className={styles.carouselContainer}>
             <h2 className={styles.carouselHeading}>More of what you like</h2>
             <CarouselList dataList={tracks} subcaption="Related tracks" />
           </div>
           <div className={styles.carouselContainer}>
             <h2 className={styles.carouselHeading}>More of what you like</h2>
             <CarouselList dataList={tracks} subcaption="Related tracks" />
-          </div>
+          </div> */}
         </div>
         <div className={styles.columnAside}>
           <p>ASIDE</p>

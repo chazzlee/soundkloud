@@ -190,8 +190,8 @@
 
 .trendingTitle {
   color: var(--black);
-  /* font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans,
-    Garuda, Verdana, Tahoma, sans-serif; */
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
   font-size: 22px;
   font-weight: 400;
   text-align: center;
@@ -230,9 +230,11 @@
   margin: 0;
   margin-bottom: 2px;
   color: rgb(73, 73, 73);
-  text-overflow: ellipsis;
   width: 180px;
   max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .trendingListItemSubtitle {
