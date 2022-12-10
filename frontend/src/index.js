@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "pure-react-carousel/dist/react-carousel.es.css";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -11,7 +12,6 @@ import { ModalProvider } from "./context/Modal";
 import { LandingPage } from "./features/landing/components/LandingPage";
 import { DiscoverPage } from "./features/discover/components/DiscoverPage";
 import { LogoutPage } from "./features/auth/components/LogoutPage";
-import "pure-react-carousel/dist/react-carousel.es.css";
 
 const store = configureStore();
 

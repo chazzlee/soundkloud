@@ -10,15 +10,7 @@ import "./CarouselList.css";
 
 export function CarouselList({ dataList, subcaption }) {
   return (
-    <CarouselProvider
-      naturalSlideWidth={170}
-      naturalSlideHeight={240}
-      totalSlides={dataList.length}
-      visibleSlides={4}
-      step={4}
-      dragEnabled={false}
-      isIntrinsicHeight={true}
-    >
+    <CarouselProvider>
       <Slider>
         {dataList.map((item, index) => (
           <Slide

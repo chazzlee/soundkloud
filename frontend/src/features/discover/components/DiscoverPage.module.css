@@ -3,13 +3,15 @@
   padding: 30px 30px 0;
   background-color: white;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2.6fr 1fr;
 }
 
 .columnMain {
   border-right: 1px solid black;
   padding-right: 30px;
 }
+
+/* ------carousel----- */
 
 .carouselContainer {
   width: 100%;
@@ -23,4 +25,52 @@
   font-size: 22px;
   font-weight: 400;
   margin-bottom: 24px;
+}
+
+.title {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+  line-height: 1.6;
+  width: 173px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subcaption {
+  margin: 0;
+  color: #999;
+  font-size: 12px;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+}
+
+.carouselControl {
+  position: absolute;
+  top: 46%;
+  height: 32px;
+  width: 32px;
+  margin: auto;
+  background-color: white;
+  border: 1px solid var(--bg-light);
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.carouselControl:hover {
+  border-color: var(--primary-orange);
+  transition: border-color ease-in 120ms;
+}
+
+.carouselControl:hover .arrowIcon {
+  color: var(--primary-orange);
+  transition: color ease-in 120ms;
+}
+
+.arrowIcon {
+  color: rgb(107, 107, 107);
+  font-size: 1.8rem;
 }
