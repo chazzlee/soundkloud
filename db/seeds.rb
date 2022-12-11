@@ -15,42 +15,42 @@ ApplicationRecord.transaction do
 
   puts 'Creating seed data...'
 
+  genre1 = Genre.create!(name: 'metal', label: 'Metal')
+  genre2 = Genre.create!(name: 'pop', label: 'Pop')
+  genre3 = Genre.create!(name: 'r&b', label: 'R&B & Soul')
+  genre4 = Genre.create!(name: 'techno', label: 'Techno')
+  genre5 = Genre.create!(name: 'classical', label: 'Classical')
+  genre6 = Genre.create!(name: 'ambient', label: 'Ambient')
+  genre7 = Genre.create!(name: 'deep_house', label: 'Deep House')
+  genre8 = Genre.create!(name: 'dubstep', label: 'Dubstep')
+  genre9 = Genre.create!(name: 'trance', label: 'Trance')
+  genre10 = Genre.create!(name: 'trap', label: 'Trap')
+  genre11 = Genre.create!(name: 'drum_n_bass', label: 'Drum & Bass')
+  genre12 = Genre.create!(name: 'dance_edm', label: 'Dance & EDM')
+  genre13 = Genre.create!(name: 'piano', label: 'Piano')
   Genre.create!(name: 'none', label: 'None')
   Genre.create!(name: 'custom', label: 'Custom')
   Genre.create!(name: 'alternative_rock', label: 'Alternative Rock')
-  Genre.create!(name: 'ambient', label: 'Ambient')
-  Genre.create!(name: 'classical', label: 'Classical')
   Genre.create!(name: 'country', label: 'Country')
-  Genre.create!(name: 'dance_edm', label: 'Dance & EDM')
   Genre.create!(name: 'dancehall', label: 'Dancehall')
-  Genre.create!(name: 'deep_house', label: 'Deep House')
   Genre.create!(name: 'disco', label: 'Disco')
-  Genre.create!(name: 'drum_n_bass', label: 'Drum & Bass')
-  Genre.create!(name: 'dubstep', label: 'Dubstep')
   Genre.create!(name: 'electronic', label: 'Electronic')
   Genre.create!(name: 'folk', label: 'Folk & Singer-Songwriter')
   Genre.create!(name: 'hip_hop', label: 'Hip-hop & Rap')
   Genre.create!(name: 'house', label: 'House')
   Genre.create!(name: 'jazz_blues', label: 'Jazz & Blues')
   Genre.create!(name: 'latin', label: 'Latin')
-  Genre.create!(name: 'metal', label: 'Metal')
-  Genre.create!(name: 'piano', label: 'Piano')
-  Genre.create!(name: 'pop', label: 'Pop')
-  Genre.create!(name: 'r&b', label: 'R&B & Soul')
   Genre.create!(name: 'reggae', label: 'Reggae')
   Genre.create!(name: 'reggaeton', label: 'Reggaeton')
   Genre.create!(name: 'rock', label: 'Rock')
   Genre.create!(name: 'soundtrack', label: 'Soundtrack')
-  Genre.create!(name: 'techno', label: 'Techno')
-  Genre.create!(name: 'trance', label: 'Trance')
-  Genre.create!(name: 'trap', label: 'Trap')
   Genre.create!(name: 'triphop', label: 'Triphop')
   Genre.create!(name: 'world', label: 'World')
 
   demo_user = User.create!(email: 'demo@demo.com', password: 'password')
   demo_profile = Profile.create!(age: 100, gender: 'none', display_name: 'Demo User', user: demo_user)
 
-  50.times do |_n|
+  200.times do |_n|
     title = Faker::Music::RockBand.song
     track = Track.new(
       title:,
@@ -61,8 +61,19 @@ ApplicationRecord.transaction do
       privacy: %w[public private].sample
     )
     track.user = demo_user
-    track.genre = Genre.all.sample
+    track.genre = [genre1, genre2, genre3, genre4, genre5, genre6, genre7, genre8, genre9, genre10, genre11, genre12,
+                   genre13].sample
     track.save!
+  end
+
+  100.times do
+    demo_user.play_track(Track.all.sample)
+  end
+
+  20.times do
+    Track.limit(10).each do |track|
+      demo_user.play_track(track)
+    end
   end
 
   puts 'Finished'

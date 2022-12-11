@@ -50,3 +50,7 @@ button {
   height: 100%;
   position: relative;
 }
+
+.active {
+  background-color: var(--navBorderColor);
+}

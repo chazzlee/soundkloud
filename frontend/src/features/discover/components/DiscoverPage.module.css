@@ -82,3 +82,21 @@
   color: rgb(107, 107, 107);
   font-size: 1.8rem;
 }
+
+.playOverlay {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circularPlayBtn {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}

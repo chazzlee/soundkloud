@@ -52,7 +52,11 @@ const initialState = {
   error: null,
   loading: false,
   loaded: false,
-  entities: {},
+  entities: {
+    recentlyPlayed: {},
+    mostPlayed: {},
+    byGenre: {},
+  },
   ids: [],
 };
 
@@ -67,8 +71,10 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.error = null;
       state.loading = false;
       state.loaded = true;
-      state.entities = action.payload;
-      state.ids = Object.values(action.payload).map((track) => track.id);
+      state.entities.recentlyPlayed = action.payload.recentlyPlayed;
+      state.entities.mostPlayed = action.payload.mostPlayed;
+      state.entities.byGenre = action.payload.byGenre;
+      state.ids = Object.keys(action.payload);
       break;
     }
     case FETCH_TRACKS_FAILED: {
@@ -82,7 +88,16 @@ export const tracksReducer = produce((state = initialState, action) => {
   }
 });
 
+// TODO: use createSelector/reselect
 export const selectTracksError = (state) => state.tracks.error;
 export const selectIsTracksLoading = (state) => state.tracks.loading;
 export const selectHasTracksLoaded = (state) => state.tracks.loaded;
-export const selectAllTracks = (state) => Object.values(state.tracks.entities);
+
+export const selectRecentlyPlayedTracks = (state) =>
+  Object.values(state.tracks.entities.recentlyPlayed);
+
+export const selectMostPlayedTracks = (state) =>
+  Object.values(state.tracks.entities.mostPlayed);
+
+export const selectTracksByGenre = (genre) => (state) =>
+  Object.values(state.tracks?.entities?.byGenre?.[genre] || {});

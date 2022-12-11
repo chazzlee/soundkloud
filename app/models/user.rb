@@ -2,6 +2,13 @@
 
 class User < ApplicationRecord
   has_one :profile
+  has_many :tracks
+
+  has_many :recent_plays
+  has_many :recently_played_tracks, through: :recent_plays, source: :track
+
+  has_many :popular_plays
+  has_many :most_played_tracks, through: :popular_plays, source: :track
 
   has_secure_password
 
@@ -10,6 +17,16 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, allow_nil: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :session_token, presence: true, uniqueness: true # TODO:
+
+  def play_track(track)
+    recent_play = RecentPlay.find_or_initialize_by(user: self, track:)
+    recent_play.last_played_at = Time.now unless recent_play.new_record?
+    recent_play.save!
+
+    popular_play = PopularPlay.find_or_initialize_by(user: self, track:)
+    popular_play.play_count += 1 unless popular_play.new_record?
+    popular_play.save!
+  end
 
   def self.find_by_credentials(email:, password:)
     user = User.find_by(email:)

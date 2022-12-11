@@ -7,6 +7,13 @@ class Track < ApplicationRecord
   belongs_to :user
   belongs_to :genre
 
+  # FIXME:
+  has_many :recent_plays
+  # has_many :recently_played_by_user, through: :recent_plays, source: :user
+
+  has_many :popular_plays
+  # has_many :most_played_by_user, through: :popular_plays, source: :user
+
   validates :title, presence: true
   validates :artist, presence: true
   validates :permalink, presence: true
