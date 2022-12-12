@@ -14,6 +14,9 @@ class Track < ApplicationRecord
   has_many :popular_plays
   # has_many :most_played_by_user, through: :popular_plays, source: :user
 
+  has_one_attached :cover
+  has_one_attached :upload
+
   validates :title, presence: true
   validates :artist, presence: true
   validates :permalink, presence: true

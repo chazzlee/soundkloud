@@ -45,4 +45,31 @@ class Api::TracksController < ApplicationController
 
     render template: 'api/tracks/show', locals: { track: }
   end
+
+  def create
+    track = current_user.tracks.build
+    track.title = params[:title]
+    track.artist = params[:artist]
+    track.permalink = params[:permalink]
+    track.description = params[:description]
+    track.caption = params[:caption]
+    track.privacy = params[:privacy]
+    track.genre_id = params[:genre_id]
+
+    track.upload.attach(params[:upload]) if params[:upload]
+
+    if track.save
+      render template: 'api/tracks/show', locals: { track: }, status: :created
+    else
+      render json: { errors: track.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  # TODO: keep getting unpermitted params :format
+  # private
+  # def track_params
+  #   params
+  #     .permit(:title, :artist, :permalink, :description, :caption, :privacy, :genre_id, :upload)
+  #   params.permit(:format)
+  # end
 end

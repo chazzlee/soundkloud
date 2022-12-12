@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       get '/tracks/:id', to: 'tracks#show'
     end
     resource :session, only: %i[create show destroy]
-    resources :tracks, only: %i[index]
+    resources :tracks, only: %i[index create]
     resources :genres, only: [:index]
   end
 

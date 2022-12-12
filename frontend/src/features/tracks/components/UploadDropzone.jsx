@@ -1,40 +1,92 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import { fetchAllGenres, selectGenres } from "../../genres/store";
+import { uploadNewTrack } from "../store";
 import styles from "./UploadDropzone.module.css";
+
+const initialValues = {
+  playlist: false,
+  title: "",
+  artist: "",
+  permalink: "test",
+  genre_id: "",
+  tags: "",
+  description: "",
+  caption: "",
+  privacy: "public",
+};
 
 export function UploadDropzone() {
   const [dropped, setDropped] = useState(false);
 
   const onDrop = useCallback((acceptedFiles) => {
     setDropped(true);
-    console.log(acceptedFiles);
   }, []);
 
   const dispatch = useDispatch();
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     onDrop,
     multiple: true,
   });
 
   const genres = useSelector(selectGenres);
 
-  const initialValues = {
-    title: "",
-    permalink: "",
-    genre: "",
-    tags: [],
-    description: "",
-    caption: "",
-    privacy: "public",
-  };
   const [formValues, setFormValues] = useState(initialValues);
-  const handleInputChange = (e) => {};
+  const [submitted, setSubmitted] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleInputChange = (e) => {
+    setFormValues((prev) => {
+      if (e.target.type === "checkbox") {
+        return {
+          ...prev,
+          [e.target.name]: e.target.checked,
+        };
+      }
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+  const resetForm = () => {
+    setFormValues(initialValues);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // setSubmitted(true);
+    const file = acceptedFiles[0];
+    const formData = new FormData();
+    formData.set("title", formValues.title);
+    formData.set("artist", formValues.artist);
+    formData.set("permalink", formValues.permalink);
+    formData.set("description", formValues.description);
+    formData.set("caption", formValues.caption);
+    formData.set("privacy", formValues.privacy);
+    formData.set("genre_id", parseInt(formValues.genre_id, 10));
+    formData.set("upload", file, file.name);
+    // const newTrack = {
+    //   track: {
+    //     ...formValues,
+    //     genre_id: parseInt(formValues.genre_id, 10),
+    //   },
+    // };
+    dispatch(uploadNewTrack(formData)).then(() => {
+      setSubmitted(false);
+      setSuccess(true);
+    });
+  };
+  const handleCancel = () => {
+    resetForm();
+    setDropped(false);
+  };
 
   useEffect(() => {
     dispatch(fetchAllGenres());
   }, [dispatch]);
+
+  if (success) {
+    return <h1>SUCCESS</h1>;
+  }
 
   if (dropped) {
     return (
@@ -62,7 +114,7 @@ export function UploadDropzone() {
               <img src="" alt="" height={260} width={260} />
             </div>
             <div className={styles.column2}>
-              <form>
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className={styles.formControl}>
                   <label className={styles.label} htmlFor="title">
                     Title <span className={styles.required}>*</span>
@@ -74,6 +126,22 @@ export function UploadDropzone() {
                     name="title"
                     placeholder="Name your track"
                     value={formValues.title}
+                    onChange={handleInputChange}
+                    autoFocus
+                  />
+                </div>
+
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="artist">
+                    Artist <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    className={styles.formInput}
+                    type="text"
+                    id="artist"
+                    name="artist"
+                    placeholder="Name the artist"
+                    value={formValues.artist}
                     onChange={handleInputChange}
                     autoFocus
                   />
@@ -97,10 +165,10 @@ export function UploadDropzone() {
                     Genre
                   </label>
                   <select
-                    name="genre"
+                    name="genre_id"
                     id="genre"
                     className={`${styles.formInput} ${styles.formSelect}`}
-                    value={formValues.genre}
+                    value={formValues.genre_id}
                     onChange={handleInputChange}
                   >
                     {genres.map((genre) => (
@@ -159,9 +227,8 @@ export function UploadDropzone() {
                       id="public"
                       name="privacy"
                       style={{ marginRight: "8px" }}
-                      value={formValues.privacy}
+                      value="public"
                       onChange={handleInputChange}
-                      defaultChecked
                     />
                     <div>
                       <label className={styles.label} htmlFor="public">
@@ -178,7 +245,7 @@ export function UploadDropzone() {
                       id="private"
                       name="privacy"
                       style={{ marginRight: "8px" }}
-                      value={formValues.privacy}
+                      value="private"
                       onChange={handleInputChange}
                     />
                     <label className={styles.label} htmlFor="private">
@@ -192,10 +259,18 @@ export function UploadDropzone() {
                     <span className={styles.required}>*</span> Required fields
                   </p>
                   <div className={styles.formActions}>
-                    <button className={`${styles.btn} ${styles.cancelBtn}`}>
+                    <button
+                      type="button"
+                      className={`${styles.btn} ${styles.cancelBtn}`}
+                      onClick={handleCancel}
+                    >
                       Cancel
                     </button>
-                    <button className={`${styles.btn} ${styles.saveBtn}`}>
+                    <button
+                      type="submit"
+                      className={`${styles.btn} ${styles.saveBtn}`}
+                      disabled={submitted}
+                    >
                       Save
                     </button>
                   </div>
@@ -237,7 +312,12 @@ export function UploadDropzone() {
         </button>
       </div>
       <div style={{ marginTop: "16px", marginBottom: "6px" }}>
-        <input type="checkbox" />{" "}
+        <input
+          type="checkbox"
+          name="playlist"
+          checked={formValues.playlist}
+          onChange={handleInputChange}
+        />{" "}
         <span
           style={{
             fontSize: "12px",
@@ -249,7 +329,22 @@ export function UploadDropzone() {
         </span>
       </div>
       <div style={{ fontSize: "12px" }}>
-        Privacy: <input type="radio" /> Public <input type="radio" /> Private
+        Privacy:{" "}
+        <input
+          type="radio"
+          name="privacy"
+          value="public"
+          onChange={handleInputChange}
+          defaultChecked
+        />{" "}
+        Public{" "}
+        <input
+          type="radio"
+          name="privacy"
+          value="private"
+          onChange={handleInputChange}
+        />{" "}
+        Private
       </div>
       <div style={{ position: "absolute", bottom: 30 }}>
         <p

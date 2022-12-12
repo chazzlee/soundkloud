@@ -9,14 +9,23 @@ const FETCH_TRACK_START = "tracks/fetchTrackInitiate";
 const FETCH_TRACK_SUCCESS = "tracks/fetchTrackSuccess";
 const FETCH_TRACK_FAILED = "tracks/fetchTrackFailed";
 
-// const CREATE_TRACK = "tracks/trackCreated";
+const UPLOAD_TRACK_START = "tracks/createTrackStart";
+const UPLOAD_TRACK_SUCCESS = "tracks/createTrackSuccess";
+const UPLOAD_TRACK_FAILED = "tracks/createTrackFailed";
 // const REMOVE_TRACK = "tracks/trackRemoved";
 // const UPDATE_TRACK = "tracks/trackUpdated";
+const uploadTrackInitiate = () => ({
+  type: UPLOAD_TRACK_START,
+});
+const uploadTrackSuccess = (track) => ({
+  type: UPLOAD_TRACK_SUCCESS,
+  payload: track,
+});
+const uploadTrackFailed = (error) => ({
+  type: UPLOAD_TRACK_SUCCESS,
+  payload: error,
+});
 
-// const trackCreated = (track) => ({
-//   type: CREATE_TRACK,
-//   payload: track,
-// });
 // const trackRemoved = (trackId) => ({
 //   type: REMOVE_TRACK,
 //   payload: trackId,
@@ -57,14 +66,26 @@ export const fetchAllTracks = () => async (dispatch) => {
   }
 };
 
-export const fetchTrack = (userId, trackId) => async (dispatch) => {
+export const fetchTrack = (profileId, trackId) => async (dispatch) => {
   dispatch(fetchTrackInitiate());
   try {
-    const response = await TracksApi.fetchOne(userId, trackId);
+    const response = await TracksApi.fetchOne(profileId, trackId);
     const data = await response.json();
     dispatch(fetchTrackSuccess(data));
   } catch (error) {
     dispatch(fetchTrackFailed(error));
+  }
+};
+
+export const uploadNewTrack = (track) => async (dispatch) => {
+  dispatch(uploadTrackInitiate());
+  try {
+    const response = await TracksApi.uploadOne(track);
+    const data = await response.json();
+    dispatch(uploadTrackSuccess(data));
+  } catch (error) {
+    console.error(error);
+    dispatch(uploadTrackFailed(error));
   }
 };
 
@@ -116,6 +137,22 @@ export const tracksReducer = produce((state = initialState, action) => {
       break;
     }
     case FETCH_TRACK_FAILED: {
+      state.error = action.payload;
+      state.loading = false;
+      break;
+    }
+    case UPLOAD_TRACK_START: {
+      state.error = null;
+      state.loading = true;
+      break;
+    }
+    case UPLOAD_TRACK_SUCCESS: {
+      // TODO:
+      state.error = null;
+      state.loading = false;
+      break;
+    }
+    case UPLOAD_TRACK_FAILED: {
       state.error = action.payload;
       state.loading = false;
       break;

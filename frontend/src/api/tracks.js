@@ -7,4 +7,16 @@ export const TracksApi = {
   fetchOne(profileId, trackId) {
     return csrfFetch(`/api/profiles/${profileId}/tracks/${trackId}`);
   },
+  uploadOne(track) {
+    return csrfFetch("/api/tracks", {
+      method: "POST",
+      body: track,
+    });
+  },
+  // uploadOne(profileId, track) {
+  //   return csrfFetch(`/api/profiles/${profileId}/tracks`, {
+  //     method: "POST",
+  //     body: JSON.stringify(track),
+  //   });
+  // },
 };

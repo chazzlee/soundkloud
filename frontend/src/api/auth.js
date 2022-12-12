@@ -7,6 +7,7 @@ import { csrfFetch } from "./csrfFetch";
 export const checkIfEmailExists = (email) => {
   return csrfFetch("/api/user", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
   });
 };
