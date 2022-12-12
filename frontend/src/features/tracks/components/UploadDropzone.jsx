@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import { fetchAllGenres, selectGenres } from "../../genres/store";
+import styles from "./UploadDropzone.module.css";
 
 export function UploadDropzone() {
   const [dropped, setDropped] = useState(false);
@@ -19,95 +20,196 @@ export function UploadDropzone() {
 
   const genres = useSelector(selectGenres);
 
+  const initialValues = {
+    title: "",
+    permalink: "",
+    genre: "",
+    tags: [],
+    description: "",
+    caption: "",
+    privacy: "public",
+  };
+  const [formValues, setFormValues] = useState(initialValues);
+  const handleInputChange = (e) => {};
+
   useEffect(() => {
     dispatch(fetchAllGenres());
   }, [dispatch]);
 
   if (dropped) {
     return (
-      <div
-        style={{
-          height: "650px",
-          width: "800px",
-          border: "1px solid #e5e5e5",
-          borderRadius: "3px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          boxShadow: "0 2px 12px -5px rgb(0 0 0 / 10%)",
-          position: "relative",
-        }}
-      >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <div>
-            <label htmlFor="title">Title</label>
-            <input type="text" id="title" name="title" />
-          </div>
-          <div>
-            <label htmlFor="permalink">Permalink</label>
-            <input type="text" id="permalink" name="permalink" disabled />
-          </div>
-          <div>
-            <label htmlFor="genre">Genre</label>
-            <select name="genre" id="genre">
-              <option value=""></option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="tags">Additional tags</label>
-            <input type="text" />
-          </div>
-          <div>
-            <label htmlFor="description">Description</label>
-            <textarea name="description" id="description" cols="30" rows="10" />
-          </div>
-          <div>
-            <label htmlFor="caption">Caption</label>
-            <textarea name="caption" id="caption" />
-          </div>
-          <div>
-            <label htmlFor="privacy">Privacy:</label>
-            <div>
-              <input type="radio" />
-              <p>Public</p>
-              <p>Anyone will be able to listen to this track</p>
+      <>
+        <nav className={styles.tabs}>
+          <div className={styles.activeTab}>Upload</div>
+        </nav>
+        <div className={styles.qualityBanner}>
+          Provide FLAC, WAV, ALAC, or AIFF for highest audio quality.
+        </div>
+        <div className={styles.uploadedTitle}>
+          <p>06-Swine of the Cross.mp3</p>
+          <p>Ready. Click Save to post this track.</p>
+        </div>
+        <div className={styles.progress} />
+
+        {/* FORM */}
+        <div className={styles.details}>
+          <header className={styles.formHeader}>
+            <p className={styles.headerTab}>Basic info</p>
+          </header>
+          <div className={styles.form}>
+            <div className={styles.column1}>
+              {/* TODO: */}
+              <img src="" alt="" height={260} width={260} />
             </div>
-            <div>
-              <input type="radio" />
-              <p>Private</p>
+            <div className={styles.column2}>
+              <form>
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="title">
+                    Title <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    className={styles.formInput}
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Name your track"
+                    value={formValues.title}
+                    onChange={handleInputChange}
+                    autoFocus
+                  />
+                </div>
+
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="permalink">
+                    Permalink
+                  </label>
+                  <input
+                    className={styles.formInput}
+                    type="text"
+                    id="permalink"
+                    name="permalink"
+                    disabled
+                    value={formValues.permalink}
+                  />
+                </div>
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="genre">
+                    Genre
+                  </label>
+                  <select
+                    name="genre"
+                    id="genre"
+                    className={`${styles.formInput} ${styles.formSelect}`}
+                    value={formValues.genre}
+                    onChange={handleInputChange}
+                  >
+                    {genres.map((genre) => (
+                      <option key={genre.id} value={genre.id}>
+                        {genre.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="tags">
+                    Additional tags
+                  </label>
+                  <input
+                    className={styles.formInput}
+                    type="text"
+                    id="tags"
+                    name="tags"
+                    value={formValues.tags}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="description">
+                    Description
+                  </label>
+                  <textarea
+                    className={`${styles.formInput} ${styles.area}`}
+                    name="description"
+                    id="description"
+                    placeholder="Describe your track"
+                    value={formValues.description}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="caption">
+                    Caption
+                  </label>
+                  <textarea
+                    className={`${styles.formInput} ${styles.area} ${styles.areaSmall}`}
+                    name="caption"
+                    id="caption"
+                    placeholder="Add a caption to your post (optional)"
+                    value={formValues.caption}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.formControl}>
+                  <label className={styles.label} htmlFor="privacy">
+                    Privacy:
+                  </label>
+                  <div className={styles.radioControl}>
+                    <input
+                      type="radio"
+                      id="public"
+                      name="privacy"
+                      style={{ marginRight: "8px" }}
+                      value={formValues.privacy}
+                      onChange={handleInputChange}
+                      defaultChecked
+                    />
+                    <div>
+                      <label className={styles.label} htmlFor="public">
+                        Public
+                      </label>
+                      <p className={styles.label}>
+                        Anyone will be able to listen to this track
+                      </p>
+                    </div>
+                  </div>
+                  <div className={styles.radioControl}>
+                    <input
+                      type="radio"
+                      id="private"
+                      name="privacy"
+                      style={{ marginRight: "8px" }}
+                      value={formValues.privacy}
+                      onChange={handleInputChange}
+                    />
+                    <label className={styles.label} htmlFor="private">
+                      Private
+                    </label>
+                  </div>
+                </div>
+                {/* TODO: styles */}
+                <div className={styles.formFooter}>
+                  <p className={styles.requiredHelper}>
+                    <span className={styles.required}>*</span> Required fields
+                  </p>
+                  <div className={styles.formActions}>
+                    <button className={`${styles.btn} ${styles.cancelBtn}`}>
+                      Cancel
+                    </button>
+                    <button className={`${styles.btn} ${styles.saveBtn}`}>
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-          <div>
-            <p>* Required fields</p>
-            <div>
-              <button>Cancel</button>
-              <button type="submit">Save</button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+      </>
     );
   }
 
   return (
-    <div
-      style={{
-        height: "350px",
-        width: "800px",
-        border: "1px solid #e5e5e5",
-        borderRadius: "3px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        boxShadow: "0 2px 12px -5px rgb(0 0 0 / 10%)",
-        position: "relative",
-      }}
-    >
+    <div className={`${styles.container}`}>
       <div
         {...getRootProps()}
         style={{

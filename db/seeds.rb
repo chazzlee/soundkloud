@@ -15,6 +15,8 @@ ApplicationRecord.transaction do
 
   puts 'Creating seed data...'
 
+  Genre.create!(name: 'none', label: 'None')
+  Genre.create!(name: 'custom', label: 'Custom')
   genre1 = Genre.create!(name: 'metal', label: 'Metal')
   genre2 = Genre.create!(name: 'pop', label: 'Pop')
   genre3 = Genre.create!(name: 'r&b', label: 'R&B & Soul')
@@ -28,8 +30,6 @@ ApplicationRecord.transaction do
   genre11 = Genre.create!(name: 'drum_n_bass', label: 'Drum & Bass')
   genre12 = Genre.create!(name: 'dance_edm', label: 'Dance & EDM')
   genre13 = Genre.create!(name: 'piano', label: 'Piano')
-  Genre.create!(name: 'none', label: 'None')
-  Genre.create!(name: 'custom', label: 'Custom')
   Genre.create!(name: 'alternative_rock', label: 'Alternative Rock')
   Genre.create!(name: 'country', label: 'Country')
   Genre.create!(name: 'dancehall', label: 'Dancehall')

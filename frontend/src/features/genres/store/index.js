@@ -2,8 +2,8 @@ import produce from "immer";
 import { GenresApi } from "../../../api/genres";
 
 const FETCH_GENRES_START = "genres/fetchGenresInitiate";
-const FETCH_GENRES_SUCCESS = "genres/fetchGenresInitiate";
-const FETCH_GENRES_FAILED = "genres/fetchGenresInitiate";
+const FETCH_GENRES_SUCCESS = "genres/fetchGenresSuccess";
+const FETCH_GENRES_FAILED = "genres/fetchGenresFailed";
 
 const fetchGenresInitiate = () => ({ type: FETCH_GENRES_START });
 const fetchGenresSuccess = (genres) => ({
