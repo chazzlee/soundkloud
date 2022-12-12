@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import {
   ButtonBack,
@@ -6,8 +7,8 @@ import {
   Slide,
   Slider,
 } from "pure-react-carousel";
+import { Link } from "react-router-dom";
 import styles from "./DiscoverPage.module.css";
-import { useState } from "react";
 import { PlayCard } from "./PlayCard";
 
 const VISIBLE_SLIDES = 4;
@@ -46,7 +47,9 @@ export function CarouselSlider({ title, slides }) {
         <Slider>
           {slides.map((slide, index) => (
             <Slide key={slide.id} index={index}>
-              <PlayCard item={slide} />
+              <Link to={`${slide.permalink}`}>
+                <PlayCard item={slide} />
+              </Link>
             </Slide>
           ))}
         </Slider>

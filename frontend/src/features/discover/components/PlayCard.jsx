@@ -26,7 +26,10 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
         {showPlay ? (
           <div className={styles.playOverlay}>
             <button
-              onClick={() => console.log("playing...", item.title)}
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("playing...", item.title);
+              }}
               title="Play"
               className={styles.circularPlayBtn}
               style={{

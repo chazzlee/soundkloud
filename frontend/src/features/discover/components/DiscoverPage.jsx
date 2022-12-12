@@ -18,8 +18,8 @@ export function DiscoverPage() {
   const loaded = useSelector(selectHasTracksLoaded);
   const error = useSelector(selectTracksError);
 
-  const recentlyPlayedTracks = useSelector(selectRecentlyPlayedTracks);
   const mostPlayedTracks = useSelector(selectMostPlayedTracks);
+  const recentlyPlayedTracks = useSelector(selectRecentlyPlayedTracks);
   const popTracks = useSelector(selectTracksByGenre("pop"));
   const metalTracks = useSelector(selectTracksByGenre("metal"));
   const rnbTracks = useSelector(selectTracksByGenre("rnb"));

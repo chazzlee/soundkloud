@@ -50,6 +50,25 @@ ApplicationRecord.transaction do
   demo_user = User.create!(email: 'demo@demo.com', password: 'password')
   demo_profile = Profile.create!(age: 100, gender: 'none', display_name: 'Demo User', user: demo_user)
 
+  other_user = User.create!(email: 'jane@demo.com', password: 'password')
+  other_profile = Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other_user)
+
+  10.times do |_n|
+    title = Faker::Music::PearlJam.song
+    track = Track.new(
+      title:,
+      artist: Faker::Music::PearlJam.musician,
+      permalink: "http://localhost:5000/#{other_profile.slug}/#{title.parameterize}",
+      description: Faker::Quote.famous_last_words,
+      caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
+      privacy: %w[public private].sample
+    )
+    track.user = other_user
+    track.genre = [genre1, genre2, genre3, genre4, genre5, genre6, genre7, genre8, genre9, genre10, genre11, genre12,
+                   genre13].sample
+    track.save!
+  end
+
   200.times do |_n|
     title = Faker::Music::RockBand.song
     track = Track.new(
@@ -68,11 +87,13 @@ ApplicationRecord.transaction do
 
   100.times do
     demo_user.play_track(Track.all.sample)
+    other_user.play_track(Track.all.sample)
   end
 
   20.times do
     Track.limit(10).each do |track|
       demo_user.play_track(track)
+      other_user.play_track(track)
     end
   end
 

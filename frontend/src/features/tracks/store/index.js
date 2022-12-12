@@ -5,6 +5,10 @@ const FETCH_TRACKS_START = "tracks/fetchTracksInitiate";
 const FETCH_TRACKS_SUCCESS = "tracks/fetchTracksSuccess";
 const FETCH_TRACKS_FAILED = "tracks/fetchTracksFailed";
 
+const FETCH_TRACK_START = "tracks/fetchTrackInitiate";
+const FETCH_TRACK_SUCCESS = "tracks/fetchTrackSuccess";
+const FETCH_TRACK_FAILED = "tracks/fetchTrackFailed";
+
 // const FETCH_TRACK = "tracks/trackFetched";
 // const CREATE_TRACK = "tracks/trackCreated";
 // const REMOVE_TRACK = "tracks/trackRemoved";
@@ -37,6 +41,16 @@ const fetchTracksFailed = (error) => ({
   payload: error,
 });
 
+const fetchTrackInitiate = () => ({ type: FETCH_TRACK_START });
+const fetchTrackSuccess = (track) => ({
+  type: FETCH_TRACK_SUCCESS,
+  payload: track,
+});
+const fetchTrackFailed = (error) => ({
+  type: FETCH_TRACK_FAILED,
+  payload: error,
+});
+
 export const fetchAllTracks = () => async (dispatch) => {
   dispatch(fetchTracksInitiate());
   try {
@@ -45,6 +59,17 @@ export const fetchAllTracks = () => async (dispatch) => {
     dispatch(fetchTracksSuccess(data));
   } catch (error) {
     dispatch(fetchTracksFailed(error));
+  }
+};
+
+export const fetchTrack = (userId, trackId) => async (dispatch) => {
+  dispatch(fetchTrackInitiate());
+  try {
+    const response = await TracksApi.fetchOne(userId, trackId);
+    const data = await response.json();
+    dispatch(fetchTrackSuccess(data));
+  } catch (error) {
+    dispatch(fetchTrackFailed(error));
   }
 };
 
@@ -57,6 +82,7 @@ const initialState = {
     mostPlayed: {},
     byGenre: {},
   },
+  current: null,
   ids: [],
 };
 
@@ -83,6 +109,22 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.loaded = false;
       break;
     }
+    case FETCH_TRACK_START: {
+      state.error = null;
+      state.loading = true;
+      break;
+    }
+    case FETCH_TRACK_SUCCESS: {
+      state.error = null;
+      state.loading = false;
+      state.current = action.payload;
+      break;
+    }
+    case FETCH_TRACK_FAILED: {
+      state.error = action.payload;
+      state.loading = false;
+      break;
+    }
     default:
       return state;
   }
@@ -101,3 +143,5 @@ export const selectMostPlayedTracks = (state) =>
 
 export const selectTracksByGenre = (genre) => (state) =>
   Object.values(state.tracks?.entities?.byGenre?.[genre] || {});
+
+export const selectCurrentTrack = (state) => state.tracks.current;

@@ -63,7 +63,7 @@
   width: 32px;
   margin: auto;
   background-color: white;
-  border: 1px solid var(--bg-light);
+  border: 1px solid rgb(107, 107, 107);
   border-radius: 2px;
   z-index: 1;
 }
@@ -99,4 +99,9 @@
   border-radius: 50%;
   height: 50px;
   width: 50px;
+}
+
+.circularPlayBtn:hover {
+  filter: brightness(90%);
+  transition: filter ease-in 140ms;
 }

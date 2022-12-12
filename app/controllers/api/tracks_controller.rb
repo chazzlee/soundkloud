@@ -38,5 +38,11 @@ class Api::TracksController < ApplicationController
     }
   end
 
-  def show; end
+  def show
+    profile = Profile.friendly.find(params[:profile_id])
+    user = profile.user
+    track = user.tracks.friendly.find(params[:id])
+
+    render template: 'api/tracks/show', locals: { track: }
+  end
 end

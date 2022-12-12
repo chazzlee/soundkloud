@@ -153,7 +153,9 @@
   width: 135px;
   text-align: left;
   color: rgb(17, 17, 17);
-  border-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background-color: #fff;
 }
 
 .profileDropdownBtn {
@@ -223,6 +225,8 @@
 
 .settingsDropdown {
   position: absolute;
+  background-color: #fff;
+  border-bottom-left-radius: 2px;
   height: 100%;
   top: 37px;
   right: 0;
@@ -234,6 +238,7 @@
 }
 
 .logoutBtn {
+  background-color: #fff;
   height: 40px;
   font-size: 14px;
   font-weight: 600;

@@ -18,6 +18,8 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :session_token, presence: true, uniqueness: true # TODO:
 
+  delegate :slug, to: :profile
+
   def play_track(track)
     recent_play = RecentPlay.find_or_initialize_by(user: self, track:)
     recent_play.last_played_at = Time.now unless recent_play.new_record?
