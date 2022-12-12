@@ -13,10 +13,4 @@ export const TracksApi = {
       body: track,
     });
   },
-  // uploadOne(profileId, track) {
-  //   return csrfFetch(`/api/profiles/${profileId}/tracks`, {
-  //     method: "POST",
-  //     body: JSON.stringify(track),
-  //   });
-  // },
 };

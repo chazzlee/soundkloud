@@ -57,6 +57,7 @@ class Api::TracksController < ApplicationController
     track.genre_id = params[:genre_id]
 
     track.upload.attach(params[:upload]) if params[:upload]
+    track.cover.attach(params[:cover]) if params[:cover]
 
     if track.save
       render template: 'api/tracks/show', locals: { track: }, status: :created

@@ -9,9 +9,9 @@ const FETCH_TRACK_START = "tracks/fetchTrackInitiate";
 const FETCH_TRACK_SUCCESS = "tracks/fetchTrackSuccess";
 const FETCH_TRACK_FAILED = "tracks/fetchTrackFailed";
 
-const UPLOAD_TRACK_START = "tracks/createTrackStart";
-const UPLOAD_TRACK_SUCCESS = "tracks/createTrackSuccess";
-const UPLOAD_TRACK_FAILED = "tracks/createTrackFailed";
+const UPLOAD_TRACK_START = "tracks/uploadTrackStart";
+const UPLOAD_TRACK_SUCCESS = "tracks/uploadTrackSuccess";
+const UPLOAD_TRACK_FAILED = "tracks/uploadTrackFailed";
 // const REMOVE_TRACK = "tracks/trackRemoved";
 // const UPDATE_TRACK = "tracks/trackUpdated";
 const uploadTrackInitiate = () => ({
@@ -77,16 +77,17 @@ export const fetchTrack = (profileId, trackId) => async (dispatch) => {
   }
 };
 
+//TODO: errors not being caught
 export const uploadNewTrack = (track) => async (dispatch) => {
-  dispatch(uploadTrackInitiate());
+  let response;
   try {
-    const response = await TracksApi.uploadOne(track);
-    const data = await response.json();
-    dispatch(uploadTrackSuccess(data));
+    response = await TracksApi.uploadOne(track);
   } catch (error) {
-    console.error(error);
     dispatch(uploadTrackFailed(error));
+    return;
   }
+  const data = await response.json();
+  dispatch(uploadTrackSuccess(data));
 };
 
 const initialState = {

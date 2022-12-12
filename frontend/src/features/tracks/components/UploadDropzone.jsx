@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import { fetchAllGenres, selectGenres } from "../../genres/store";
 import { uploadNewTrack } from "../store";
+import { BsCameraFill } from "react-icons/bs";
 import styles from "./UploadDropzone.module.css";
+import { CoverImagePreview } from "./CoverImagePreview";
+import { ProgressBar } from "./ProgressBar";
 
 const initialValues = {
   playlist: false,
@@ -33,6 +36,7 @@ export function UploadDropzone() {
   const genres = useSelector(selectGenres);
 
   const [formValues, setFormValues] = useState(initialValues);
+  const [coverImage, setCoverImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -48,6 +52,10 @@ export function UploadDropzone() {
     });
   };
   const resetForm = () => {
+    setCoverImage(null);
+    setDropped(false);
+    setSubmitted(false);
+    setSubmitted(false);
     setFormValues(initialValues);
   };
 
@@ -64,12 +72,7 @@ export function UploadDropzone() {
     formData.set("privacy", formValues.privacy);
     formData.set("genre_id", parseInt(formValues.genre_id, 10));
     formData.set("upload", file, file.name);
-    // const newTrack = {
-    //   track: {
-    //     ...formValues,
-    //     genre_id: parseInt(formValues.genre_id, 10),
-    //   },
-    // };
+
     dispatch(uploadNewTrack(formData)).then(() => {
       setSubmitted(false);
       setSuccess(true);
@@ -101,8 +104,8 @@ export function UploadDropzone() {
           <p>06-Swine of the Cross.mp3</p>
           <p>Ready. Click Save to post this track.</p>
         </div>
-        <div className={styles.progress} />
 
+        <ProgressBar />
         {/* FORM */}
         <div className={styles.details}>
           <header className={styles.formHeader}>
@@ -111,7 +114,10 @@ export function UploadDropzone() {
           <div className={styles.form}>
             <div className={styles.column1}>
               {/* TODO: */}
-              <img src="" alt="" height={260} width={260} />
+              <CoverImagePreview
+                image={coverImage}
+                onChange={(e) => setCoverImage(e.target.files[0])}
+              />
             </div>
             <div className={styles.column2}>
               <form onSubmit={handleSubmit} encType="multipart/form-data">
