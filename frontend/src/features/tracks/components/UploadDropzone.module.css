@@ -36,15 +36,16 @@
  */
 
 .tabs {
-  height: 50px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 0px 30px;
   border-bottom: 1px solid #e5e5e5;
   width: 100%;
-  line-height: 48px;
+  line-height: 45px;
   font-size: 14px;
+  margin-top: 6px;
   margin-bottom: 46px;
 }
 
@@ -63,6 +64,7 @@
   color: #333;
   font-size: 12px;
   display: flex;
+  line-height: 2;
   align-items: center;
   border: 1px solid hsla(0, 0%, 59.2%, 0.2);
   border-radius: 6px;

@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import { fetchAllGenres, selectGenres } from "../../genres/store";
 import { uploadNewTrack } from "../store";
-import { BsCameraFill } from "react-icons/bs";
 import styles from "./UploadDropzone.module.css";
 import { CoverImagePreview } from "./CoverImagePreview";
 import { ProgressBar } from "./ProgressBar";
@@ -38,7 +37,7 @@ export function UploadDropzone() {
   const [formValues, setFormValues] = useState(initialValues);
   const [coverImage, setCoverImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
 
   const handleInputChange = (e) => {
     setFormValues((prev) => {
@@ -55,26 +54,27 @@ export function UploadDropzone() {
     setCoverImage(null);
     setDropped(false);
     setSubmitted(false);
-    setSubmitted(false);
     setFormValues(initialValues);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // setSubmitted(true);
+    setSubmitted(true);
+
     const file = acceptedFiles[0];
     const formData = new FormData();
-    formData.set("title", formValues.title);
-    formData.set("artist", formValues.artist);
-    formData.set("permalink", formValues.permalink);
-    formData.set("description", formValues.description);
-    formData.set("caption", formValues.caption);
+    formData.set("title", formValues.title.trim());
+    formData.set("artist", formValues.artist.trim());
+    formData.set("permalink", formValues.permalink.trim());
+    formData.set("description", formValues.description.trim());
+    formData.set("caption", formValues.caption.trim());
     formData.set("privacy", formValues.privacy);
     formData.set("genre_id", parseInt(formValues.genre_id, 10));
     formData.set("upload", file, file.name);
+    formData.set("cover", coverImage, coverImage.name);
 
     dispatch(uploadNewTrack(formData)).then(() => {
-      setSubmitted(false);
+      resetForm();
       setSuccess(true);
     });
   };
@@ -88,7 +88,53 @@ export function UploadDropzone() {
   }, [dispatch]);
 
   if (success) {
-    return <h1>SUCCESS</h1>;
+    return (
+      <>
+        <nav className={styles.tabs}>
+          <div className={styles.activeTab}>Upload</div>
+        </nav>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            {...getRootProps({
+              style: {
+                border: "1px dashed #e5e5e5",
+                width: "800px",
+                height: "90px",
+                color: "#333",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "0px 12px",
+                fontSize: "14px",
+                cursor: "pointer",
+              },
+            })}
+          >
+            <input {...getInputProps()} />
+            <p>Drag and drop your tracks & albums here</p>
+            <button
+              style={{
+                backgroundColor: "var(--primary-orange)",
+                color: "#fff",
+                fontSize: "14px",
+                padding: "10px 32px",
+                border: "1px solid var(--primary-orange)",
+                borderRadius: "3px",
+              }}
+            >
+              Upload a file
+            </button>
+          </div>
+        </div>
+      </>
+    );
   }
 
   if (dropped) {
