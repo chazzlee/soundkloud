@@ -9,15 +9,10 @@ const FETCH_TRACK_START = "tracks/fetchTrackInitiate";
 const FETCH_TRACK_SUCCESS = "tracks/fetchTrackSuccess";
 const FETCH_TRACK_FAILED = "tracks/fetchTrackFailed";
 
-// const FETCH_TRACK = "tracks/trackFetched";
 // const CREATE_TRACK = "tracks/trackCreated";
 // const REMOVE_TRACK = "tracks/trackRemoved";
 // const UPDATE_TRACK = "tracks/trackUpdated";
 
-// const trackFetched = (track) => ({
-//   type: FETCH_TRACK,
-//   payload: track,
-// });
 // const trackCreated = (track) => ({
 //   type: CREATE_TRACK,
 //   payload: track,

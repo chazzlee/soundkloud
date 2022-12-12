@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     end
     resource :session, only: %i[create show destroy]
     resources :tracks, only: %i[index]
+    resources :genres, only: [:index]
   end
 
   get '*path', to: 'static_pages#frontend_index'
