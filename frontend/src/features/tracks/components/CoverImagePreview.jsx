@@ -20,6 +20,7 @@ export function CoverImagePreview({ image, onChange }) {
           height="100%"
           width="100%"
           style={{ objectFit: "cover" }}
+          onLoad={() => URL.revokeObjectURL(image)}
         />
       )}
       <div
@@ -37,7 +38,6 @@ export function CoverImagePreview({ image, onChange }) {
             name="cover"
             style={{ display: "none" }}
             onChange={onChange}
-            onLoad={() => URL.revokeObjectURL(image)}
           />
           <BsCameraFill />
           <span style={{ marginLeft: "6px" }}>

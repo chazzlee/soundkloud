@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
@@ -15,8 +15,10 @@ import { TfiMoreAlt } from "react-icons/tfi";
 import { SlPencil } from "react-icons/sl";
 import { ImUsers, ImUserPlus } from "react-icons/im";
 import { BsSoundwave } from "react-icons/bs";
+import { IoMdPause } from "react-icons/io";
 
 import WaveSurfer from "wavesurfer.js";
+const MAX_LENGTH = 49;
 
 export function TrackShowPage() {
   const dispatch = useDispatch();
@@ -29,6 +31,9 @@ export function TrackShowPage() {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
+  const headerFontSize = (track, length = MAX_LENGTH) =>
+    track?.artist.length + track?.title.length >= length ? "20px" : "22px";
+
   useEffect(() => {
     dispatch(fetchTrack(user, trackSlug));
   }, [dispatch, user, trackSlug]);
@@ -38,11 +43,11 @@ export function TrackShowPage() {
       wavesurfer.current = WaveSurfer.create({
         container: waveformRef.current,
         waveColor: "#eee",
-        progressColor: "OrangeRed",
-        cursorColor: "OrangeRed",
+        progressColor: "#f50",
+        cursorColor: "transparent",
         barWidth: 3,
         barRadius: 3,
-        // responsive: true,
+        responsive: true,
         height: 100,
       });
       wavesurfer.current.load(
@@ -51,30 +56,63 @@ export function TrackShowPage() {
     }
   }, [track]);
 
+  // TODO:
+  const [isPlaying, setIsPlaying] = useState(false);
+
   if (!track) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="full-page">
       <main className="page-container">
         <div className={styles.bannerPlayerContainer}>
           <div className={styles.bannerHeader}>
             <div>
-              <button title="Play" className={styles.circularPlayBtn}>
-                <IoMdPlay
-                  style={{
-                    fontSize: "30px",
-                    color: "white",
-                    verticalAlign: "middle",
-                    marginLeft: "6px",
+              {!isPlaying ? (
+                <button
+                  title="Play"
+                  className={styles.circularPlayBtn}
+                  onClick={() => {
+                    wavesurfer.current?.play();
+                    setIsPlaying(true);
                   }}
-                />
-              </button>
+                >
+                  <IoMdPlay
+                    style={{
+                      fontSize: "30px",
+                      color: "white",
+                      verticalAlign: "middle",
+                      marginLeft: "6px",
+                    }}
+                  />
+                </button>
+              ) : (
+                <button
+                  title="Pause"
+                  className={styles.circularPlayBtn}
+                  onClick={() => {
+                    wavesurfer.current?.pause();
+                    setIsPlaying(false);
+                  }}
+                >
+                  <IoMdPause
+                    style={{
+                      fontSize: "30px",
+                      color: "white",
+                      verticalAlign: "middle",
+                    }}
+                  />
+                </button>
+              )}
             </div>
 
             <div className={styles.heading}>
               <div>
-                <h1 className={styles.title}>
+                <h1
+                  className={styles.title}
+                  style={{ fontSize: headerFontSize(track) }}
+                >
                   {track.artist} - {track.title}
                 </h1>
                 <h2 className={styles.subTitle}>

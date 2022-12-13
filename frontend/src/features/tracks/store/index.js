@@ -80,7 +80,7 @@ export const fetchTrack = (profileId, trackId) => async (dispatch) => {
 //TODO: errors not being caught
 export const uploadNewTrack = (track) => async (dispatch) => {
   dispatch(uploadTrackInitiate());
-  return await TracksApi.uploadOne(track)
+  await TracksApi.uploadOne(track)
     .then((res) => res.json())
     .then((data) => dispatch(uploadTrackSuccess(data)));
   // .catch((err) => dispatch(uploadTrackFailed(err)));
@@ -90,11 +90,7 @@ const initialState = {
   error: null,
   loading: false,
   loaded: false,
-  entities: {
-    recentlyPlayed: {},
-    mostPlayed: {},
-    byGenre: {},
-  },
+  entities: {},
   current: null,
   ids: [],
 };
@@ -144,9 +140,9 @@ export const tracksReducer = produce((state = initialState, action) => {
       break;
     }
     case UPLOAD_TRACK_SUCCESS: {
-      // TODO:
       state.error = null;
       state.loading = false;
+      state.current = action.payload;
       break;
     }
     case UPLOAD_TRACK_FAILED: {

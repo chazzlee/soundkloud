@@ -13,7 +13,7 @@ function App() {
     <>
       {!isLandingPage ? <TopNavigation /> : null}
       <Outlet />
-      <div
+      {/* <div
         style={{
           position: "fixed",
           bottom: 0,
@@ -27,7 +27,7 @@ function App() {
           style={{ backgroundColor: "#f2f2f2" }}
           layout="horizontal"
         />
-      </div>
+      </div> */}
     </>
   );
 }
