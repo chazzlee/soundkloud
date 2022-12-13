@@ -267,9 +267,9 @@
 }
 
 .exploreBtn {
+  display: block;
   font-size: 16px;
-  height: 46px;
-  padding: 0px 26px;
+  padding: 13px 26px;
   color: #fff;
   background-color: var(--primary-orange);
   border: 1px solid var(--primary-orange);

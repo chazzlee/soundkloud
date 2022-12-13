@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./LandingPage.module.css";
 import { TrendingList } from "./TrendingList";
 
@@ -10,9 +11,9 @@ export function TrendingSection() {
       <div className={styles.center}>
         <TrendingList />
         <div className={styles.exploreContainer}>
-          <button className={styles.exploreBtn}>
+          <Link className={styles.exploreBtn} to="/discover">
             Explore trending playlists
-          </button>
+          </Link>
         </div>
       </div>
     </section>
