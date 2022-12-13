@@ -10,6 +10,8 @@ import {
   selectDiscoverLoading,
 } from "../store";
 import { Spinner } from "../../../components/Spinner";
+import { ImSoundcloud, ImUsers } from "react-icons/im";
+import { GrRefresh } from "react-icons/gr";
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
@@ -68,10 +70,7 @@ export function DiscoverPage() {
 
   return (
     <div className="full-page">
-      <main
-        className={`page-container ${styles.innerContainer}`}
-        style={{ paddingTop: 0, paddingBottom: "80px" }}
-      >
+      <main className={`page-container ${styles.innerContainer}`}>
         <div className={styles.columnMain}>
           <CarouselSlider title="More of what you like" slides={mostPlayed} />
           <CarouselSlider title="Recently Played" slides={recentlyPlayed} />
@@ -93,8 +92,86 @@ export function DiscoverPage() {
           <CarouselSlider title="Trap" slides={trapTracks} />
           <CarouselSlider title="Piano" slides={pianoTracks} />
         </div>
-        <div className={styles.columnAside}>
-          <p>ASIDE</p>
+        <div className={styles.relative}>
+          <div className={styles.columnAside}>
+            <h3 className={styles.asideHeading}>
+              <ImSoundcloud
+                style={{
+                  verticalAlign: "middle",
+                  fontSize: "1rem",
+                  marginRight: "4px",
+                }}
+              />
+              New tracks
+            </h3>
+            <div className={styles.avatarRow}>
+              <div className={styles.avatar}>
+                <div className={styles.artistAvatar} />
+                <p>Slayer</p>
+              </div>
+              <div className={styles.avatar}>
+                <div className={styles.artistAvatar} />
+                <p>Slayer</p>
+              </div>
+              <div className={styles.avatar}>
+                <div className={styles.artistAvatar} />
+                <p>Slayer</p>
+              </div>
+              <div className={styles.avatar}>
+                <div className={styles.artistAvatar} />
+                <p>Slayer</p>
+              </div>
+              <div className={styles.avatar}>
+                <div className={styles.artistAvatar} />
+                <p>Slayer</p>
+              </div>
+            </div>
+            <h3
+              className={styles.asideHeading}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                <ImUsers
+                  style={{
+                    verticalAlign: "middle",
+                    fontSize: "1rem",
+                    marginRight: "4px",
+                  }}
+                />
+                Artists you should follow
+              </div>
+              <div>
+                <GrRefresh
+                  style={{
+                    marginRight: "4px",
+                    verticalAlign: "middle",
+                    color: "#999",
+                  }}
+                />
+                Refresh list
+              </div>
+            </h3>
+            <div className={styles.artistCardHorizontal}>
+              <div className={styles.artistAvatar} />
+              <div className={styles.cardContent}>
+                <p className={styles.artistName}>Silence</p>
+                <div className={styles.cardFooter}>
+                  {/* TODO: */}
+                  <div className={styles.insights}>
+                    <p>I 34324</p>
+                    <p>I 4324</p>
+                  </div>
+                  <p className={styles.followBtn}>follow</p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.artistCardHorizontal}></div>
+            <div className={styles.artistCardHorizontal}></div>
+          </div>
         </div>
       </main>
     </div>
