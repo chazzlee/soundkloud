@@ -9,6 +9,7 @@ import {
   selectDiscoverListByGenre,
   selectDiscoverLoading,
 } from "../store";
+import { Spinner } from "../../../components/Spinner";
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ export function DiscoverPage() {
   //   );
   // }
 
+  //TODO: show spinner...
   if (loading) {
     return (
       <div
@@ -59,7 +61,7 @@ export function DiscoverPage() {
           overflowY: "scroll",
         }}
       >
-        loading...
+        <Spinner />
       </div>
     );
   }
