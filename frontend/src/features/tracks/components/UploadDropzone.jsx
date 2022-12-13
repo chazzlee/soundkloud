@@ -22,6 +22,8 @@ const initialValues = {
 
 export const withoutExtensionExp = /\.[^/.]+$/;
 
+//TODO: FIX bug, --current track---put it to recentlyuploaded in store
+
 export function UploadDropzone() {
   const currentUser = useSelector(selectCurrentUser);
   const [dropped, setDropped] = useState(false);
