@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     end
     resource :session, only: %i[create show destroy]
     resources :tracks, only: %i[index create]
+    resources :discover, only: [:index]
     resources :genres, only: [:index]
   end
 

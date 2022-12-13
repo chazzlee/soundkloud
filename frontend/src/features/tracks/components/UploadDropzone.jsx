@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import { fetchAllGenres, selectGenres } from "../../genres/store";
@@ -37,7 +38,7 @@ export function UploadDropzone() {
   const [formValues, setFormValues] = useState(initialValues);
   const [coverImage, setCoverImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
 
   const handleInputChange = (e) => {
     setFormValues((prev) => {
@@ -71,12 +72,15 @@ export function UploadDropzone() {
     formData.set("privacy", formValues.privacy);
     formData.set("genre_id", parseInt(formValues.genre_id, 10));
     formData.set("upload", file, file.name);
-    formData.set("cover", coverImage, coverImage.name);
+    // formData.set("cover", coverImage, coverImage.name);
 
-    dispatch(uploadNewTrack(formData)).then(() => {
-      resetForm();
-      setSuccess(true);
-    });
+    dispatch(uploadNewTrack(formData));
+    // dispatch(uploadNewTrack(formData))
+    //   .then(() => {
+    //     resetForm();
+    //     setSuccess(true);
+    //   })
+    //   .catch((ex) => console.log("ex", ex));
   };
   const handleCancel = () => {
     resetForm();
@@ -114,6 +118,7 @@ export function UploadDropzone() {
                 padding: "0px 12px",
                 fontSize: "14px",
                 cursor: "pointer",
+                marginBottom: "32px",
               },
             })}
           >
@@ -131,6 +136,29 @@ export function UploadDropzone() {
             >
               Upload a file
             </button>
+          </div>
+          <div
+            style={{
+              width: "800px",
+              height: "190px",
+              display: "grid",
+              gridTemplateColumns: "20% 50% 30%",
+              padding: "25px",
+              boxShadow: "0 2px 12px -5px rgb(0 0 0 / 10%)",
+            }}
+          >
+            <div>image</div>
+            <div>
+              <h4>TITLE</h4>
+              <p>UPLOADER</p>
+              <p>PRIVATE/PUBLIC</p>
+              <p>CAPTION</p>
+              <p>Upload complete.</p>
+              <Link to={"/TODO"}>Go to your track</Link>
+            </div>
+            <div>
+              <h4>Share your new track</h4>
+            </div>
           </div>
         </div>
       </>

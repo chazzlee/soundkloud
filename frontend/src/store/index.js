@@ -4,9 +4,11 @@ import thunk from "redux-thunk";
 import { authReducer } from "../features/auth/store";
 import { tracksReducer } from "../features/tracks/store";
 import { genresReducer } from "../features/genres/store";
+import { discoverReducer } from "../features/discover/store";
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  discover: discoverReducer,
   tracks: tracksReducer,
   genres: genresReducer,
 });

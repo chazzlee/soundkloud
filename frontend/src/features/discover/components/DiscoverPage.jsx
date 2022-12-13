@@ -1,55 +1,67 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAllTracks,
-  selectHasTracksLoaded,
-  selectIsTracksLoading,
-  selectMostPlayedTracks,
-  selectRecentlyPlayedTracks,
-  selectTracksByGenre,
-  selectTracksError,
-} from "../../tracks/store";
 import styles from "./DiscoverPage.module.css";
 import { CarouselSlider } from "./CarouselSlider";
+import {
+  fetchDiscoverAsync,
+  selectDiscoverLoaded,
+  selectDiscoverListByType,
+  selectDiscoverListByGenre,
+  selectDiscoverLoading,
+} from "../store";
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
-  const loading = useSelector(selectIsTracksLoading);
-  const loaded = useSelector(selectHasTracksLoaded);
-  const error = useSelector(selectTracksError);
 
-  const mostPlayedTracks = useSelector(selectMostPlayedTracks);
-  const recentlyPlayedTracks = useSelector(selectRecentlyPlayedTracks);
-  const popTracks = useSelector(selectTracksByGenre("pop"));
-  const metalTracks = useSelector(selectTracksByGenre("metal"));
-  const rnbTracks = useSelector(selectTracksByGenre("rnb"));
-  const technoTracks = useSelector(selectTracksByGenre("techno"));
-  const classicalTracks = useSelector(selectTracksByGenre("classical"));
-  const ambientTracks = useSelector(selectTracksByGenre("ambient"));
-  const deepHouseTracks = useSelector(selectTracksByGenre("deepHouse"));
-  const dubstepTracks = useSelector(selectTracksByGenre("dubstep"));
-  const tranceTracks = useSelector(selectTracksByGenre("trance"));
-  const trapTracks = useSelector(selectTracksByGenre("trap"));
-  const pianoTracks = useSelector(selectTracksByGenre("piano"));
-  const danceEdmTracks = useSelector(selectTracksByGenre("danceEdm"));
-  const drumNBassTracks = useSelector(selectTracksByGenre("drumNBass"));
+  const loading = useSelector(selectDiscoverLoading);
+  const loaded = useSelector(selectDiscoverLoaded);
+  const mostPlayed = useSelector(selectDiscoverListByType("mostPlayed"));
+  const recentlyPlayed = useSelector(
+    selectDiscoverListByType("recentlyPlayed")
+  );
+  const popTracks = useSelector(selectDiscoverListByGenre("pop"));
+  const rnbTracks = useSelector(selectDiscoverListByGenre("rnb"));
+  const technoTracks = useSelector(selectDiscoverListByGenre("techno"));
+  const classicalTracks = useSelector(selectDiscoverListByGenre("classical"));
+  const ambientTracks = useSelector(selectDiscoverListByGenre("ambient"));
+  const deepHouseTracks = useSelector(selectDiscoverListByGenre("deepHouse"));
+  const dubstepTracks = useSelector(selectDiscoverListByGenre("dubstep"));
+  const tranceTracks = useSelector(selectDiscoverListByGenre("trance"));
+  const trapTracks = useSelector(selectDiscoverListByGenre("trap"));
+  const pianoTracks = useSelector(selectDiscoverListByGenre("piano"));
+  const danceEdmTracks = useSelector(selectDiscoverListByGenre("danceEdm"));
+  const drumNBassTracks = useSelector(selectDiscoverListByGenre("drumNBass"));
+  const metalTracks = useSelector(selectDiscoverListByGenre("metal"));
 
   useEffect(() => {
     if (!loaded) {
-      dispatch(fetchAllTracks());
+      dispatch(fetchDiscoverAsync());
     }
   }, [dispatch, loaded]);
 
-  if (error) {
-    return (
-      <div>
-        <h3>ERROR!</h3>
-      </div>
-    );
-  }
+  // TODO:
+  // if (error) {
+  //   return (
+  //     <div>
+  //       <h3>ERROR!</h3>
+  //     </div>
+  //   );
+  // }
 
   if (loading) {
-    return <div>loading...</div>;
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflowY: "scroll",
+        }}
+      >
+        loading...
+      </div>
+    );
   }
 
   return (
@@ -59,14 +71,8 @@ export function DiscoverPage() {
         style={{ paddingTop: 0, paddingBottom: "80px" }}
       >
         <div className={styles.columnMain}>
-          <CarouselSlider
-            title="More of what you like"
-            slides={mostPlayedTracks}
-          />
-          <CarouselSlider
-            title="Recently Played"
-            slides={recentlyPlayedTracks}
-          />
+          <CarouselSlider title="More of what you like" slides={mostPlayed} />
+          <CarouselSlider title="Recently Played" slides={recentlyPlayed} />
 
           <div></div>
           {/* TODO: Daily Drops?? */}

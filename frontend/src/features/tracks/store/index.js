@@ -79,15 +79,11 @@ export const fetchTrack = (profileId, trackId) => async (dispatch) => {
 
 //TODO: errors not being caught
 export const uploadNewTrack = (track) => async (dispatch) => {
-  let response;
-  try {
-    response = await TracksApi.uploadOne(track);
-  } catch (error) {
-    dispatch(uploadTrackFailed(error));
-    return;
-  }
-  const data = await response.json();
-  dispatch(uploadTrackSuccess(data));
+  dispatch(uploadTrackInitiate());
+  return await TracksApi.uploadOne(track)
+    .then((res) => res.json())
+    .then((data) => dispatch(uploadTrackSuccess(data)));
+  // .catch((err) => dispatch(uploadTrackFailed(err)));
 };
 
 const initialState = {
