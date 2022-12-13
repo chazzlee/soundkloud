@@ -2,17 +2,17 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
+import slug from "slug";
 import { fetchAllGenres, selectGenres } from "../../genres/store";
 import { selectCurrentTrack, uploadNewTrack } from "../store";
 import styles from "./UploadDropzone.module.css";
 import { CoverImagePreview } from "./CoverImagePreview";
 import { ProgressBar } from "./ProgressBar";
+import { selectCurrentUser } from "../../auth/store";
 
 const initialValues = {
   playlist: false,
-  title: "",
   artist: "",
-  permalink: "",
   genre_id: "",
   tags: "",
   description: "",
@@ -20,25 +20,31 @@ const initialValues = {
   privacy: "public",
 };
 
+export const withoutExtensionExp = /\.[^/.]+$/;
+
 export function UploadDropzone() {
+  const currentUser = useSelector(selectCurrentUser);
   const [dropped, setDropped] = useState(false);
-
-  const onDrop = useCallback((acceptedFiles) => {
-    setDropped(true);
-  }, []);
-
   const dispatch = useDispatch();
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
-    onDrop,
-    multiple: true,
-  });
 
   const genres = useSelector(selectGenres);
 
   const [formValues, setFormValues] = useState(initialValues);
+  const [title, setTitle] = useState("");
+  const [permalink, setPermalink] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const onDrop = useCallback((acceptedFiles) => {
+    setDropped(true);
+    setTitle(acceptedFiles[0].name.replace(withoutExtensionExp, ""));
+  }, []);
+
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+    onDrop,
+    multiple: true,
+  });
 
   const uploadedTrack = useSelector(selectCurrentTrack);
 
@@ -66,9 +72,9 @@ export function UploadDropzone() {
 
     const file = acceptedFiles[0];
     const formData = new FormData();
-    formData.set("title", formValues.title.trim());
+    formData.set("title", title.trim());
     formData.set("artist", formValues.artist.trim());
-    formData.set("permalink", formValues.permalink.trim());
+    formData.set("permalink", permalink.trim());
     formData.set("description", formValues.description.trim());
     formData.set("caption", formValues.caption.trim());
     formData.set("privacy", formValues.privacy);
@@ -89,6 +95,10 @@ export function UploadDropzone() {
   useEffect(() => {
     dispatch(fetchAllGenres());
   }, [dispatch]);
+
+  useEffect(() => {
+    setPermalink(slug(title));
+  }, [title]);
 
   if (success) {
     return (
@@ -236,8 +246,8 @@ export function UploadDropzone() {
                       id="title"
                       name="title"
                       placeholder="Name your track"
-                      value={formValues.title}
-                      onChange={handleInputChange}
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
                       autoFocus
                     />
                   </div>
@@ -254,7 +264,6 @@ export function UploadDropzone() {
                       placeholder="Name the artist"
                       value={formValues.artist}
                       onChange={handleInputChange}
-                      autoFocus
                     />
                   </div>
 
@@ -264,11 +273,14 @@ export function UploadDropzone() {
                     </label>
                     <input
                       className={styles.formInput}
+                      style={{ backgroundColor: "lightgray" }}
                       type="text"
                       id="permalink"
                       name="permalink"
                       disabled
-                      value={formValues.permalink}
+                      value={
+                        `http://localhost:3000/${currentUser.slug}/` + permalink
+                      }
                     />
                   </div>
                   <div className={styles.formControl}>

@@ -24,6 +24,7 @@
     "react-use-measure": "^2.1.1",
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.2",
+    "slug": "^8.2.2",
     "wavesurfer.js": "^6.4.0",
     "web-vitals": "^2.1.4"
   },

@@ -19,7 +19,7 @@ class Track < ApplicationRecord
 
   validates :title, presence: true
   validates :artist, presence: true
-  validates :permalink, presence: true
+  validates :permalink, presence: true, allow_nil: true
   validates :privacy, inclusion: %w[public private]
   validates :title, presence: true
 end
