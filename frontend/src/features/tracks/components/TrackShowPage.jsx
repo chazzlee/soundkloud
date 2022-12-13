@@ -2,7 +2,6 @@ import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
-import WaveSurfer from "wavesurfer.js";
 import { fetchTrack, selectCurrentTrack } from "../store";
 import { selectCurrentUser } from "../../auth/store";
 import styles from "./TrackShowPage.module.css";
@@ -17,33 +16,44 @@ import { SlPencil } from "react-icons/sl";
 import { ImUsers, ImUserPlus } from "react-icons/im";
 import { BsSoundwave } from "react-icons/bs";
 
+import WaveSurfer from "wavesurfer.js";
+
 export function TrackShowPage() {
   const dispatch = useDispatch();
   const { user, trackSlug } = useParams();
-  const waveRef = useRef(null);
   const track = useSelector(selectCurrentTrack);
 
   const currentUser = useSelector(selectCurrentUser);
   const isUploader = track && track?.uploader.id === currentUser?.id;
 
+  const waveformRef = useRef(null);
+  const wavesurfer = useRef(null);
+
   useEffect(() => {
     dispatch(fetchTrack(user, trackSlug));
   }, [dispatch, user, trackSlug]);
 
+  useEffect(() => {
+    if (track && !wavesurfer.current && waveformRef.current) {
+      wavesurfer.current = WaveSurfer.create({
+        container: waveformRef.current,
+        waveColor: "#eee",
+        progressColor: "OrangeRed",
+        cursorColor: "OrangeRed",
+        barWidth: 3,
+        barRadius: 3,
+        // responsive: true,
+        height: 100,
+      });
+      wavesurfer.current.load(
+        "https://cors-anywhere.herokuapp.com/https://download.samplelib.com/mp3/sample-15s.mp3"
+      );
+    }
+  }, [track]);
+
   if (!track) {
     return <div>Loading...</div>;
   }
-  // useEffect(() => {
-  //   // TODO:FIXME: won't show
-  //   if (!waveRef.current) {
-  //     waveRef.current = WaveSurfer.create({
-  //       container: "#waveform",
-  //       waveColor: "violet",
-  //       progressColor: "purple",
-  //     });
-  //   }
-  // }, []);
-
   return (
     <div className="full-page">
       <main className="page-container">
@@ -86,8 +96,6 @@ export function TrackShowPage() {
             </div>
 
             <div
-              ref={waveRef}
-              id="waveform"
               style={{
                 color: "white",
                 position: "absolute",
@@ -95,10 +103,14 @@ export function TrackShowPage() {
                 maxWidth: "813px",
                 width: "100%",
                 height: "100px",
-                backgroundColor: "darkblue",
+                backgroundColor: "transparent",
+                zIndex: 1,
               }}
-            />
+            >
+              <div id="waveform" ref={waveformRef} />
+            </div>
           </div>
+
           <div className={styles.coverImage}>
             <img
               src={
