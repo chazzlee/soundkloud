@@ -2,6 +2,7 @@
 
 json.extract! track, :id, :title, :artist, :privacy, :caption, :description, :created_at
 json.permalink URI.parse(track.permalink).path
+json.cover track.cover.url
 json.uploader do
   json.id track.user_id
   json.slug track.user.profile.slug

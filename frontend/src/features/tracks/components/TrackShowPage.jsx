@@ -152,8 +152,10 @@ export function TrackShowPage() {
           <div className={styles.coverImage}>
             <img
               src={
+                track.cover ??
                 "https://heavymag.com.au/wp-content/uploads/2022/12/image003-3-e1670485565713.jpg"
               }
+              style={{ objectFit: "cover" }}
               alt="cover"
               height="100%"
               width="100%"
