@@ -55,10 +55,10 @@ const fetchTrackFailed = (error) => ({
   payload: error,
 });
 
-export const fetchAllTracks = () => async (dispatch) => {
+export const fetchAllTracksByUserAsync = (userId) => async (dispatch) => {
   dispatch(fetchTracksInitiate());
   try {
-    const response = await TracksApi.fetchAll();
+    const response = await TracksApi.fetchAllByUser(userId);
     const data = await response.json();
     dispatch(fetchTracksSuccess(data));
   } catch (error) {
@@ -69,7 +69,7 @@ export const fetchAllTracks = () => async (dispatch) => {
 export const fetchTrack = (profileId, trackId) => async (dispatch) => {
   dispatch(fetchTrackInitiate());
   try {
-    const response = await TracksApi.fetchOne(profileId, trackId);
+    const response = await TracksApi.fetchOneByUser(profileId, trackId);
     const data = await response.json();
     dispatch(fetchTrackSuccess(data));
   } catch (error) {
@@ -106,6 +106,8 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.error = null;
       state.loading = false;
       state.loaded = true;
+      state.entities = action.payload;
+      state.ids = Object.keys(action.payload).map((id) => +id);
       break;
     }
     case FETCH_TRACKS_FAILED: {
@@ -138,6 +140,7 @@ export const tracksReducer = produce((state = initialState, action) => {
     case UPLOAD_TRACK_SUCCESS: {
       state.error = null;
       state.loading = false;
+      state.entities = state.entities[action.payload.id] = action.payload;
       state.current = action.payload;
       break;
     }
@@ -153,16 +156,7 @@ export const tracksReducer = produce((state = initialState, action) => {
 
 // TODO: use createSelector/reselect
 export const selectTracksError = (state) => state.tracks.error;
-export const selectIsTracksLoading = (state) => state.tracks.loading;
+export const selectTracksLoading = (state) => state.tracks.loading;
 export const selectHasTracksLoaded = (state) => state.tracks.loaded;
-
-// export const selectRecentlyPlayedTracks = (state) =>
-//   Object.values(state.tracks.entities.recentlyPlayed);
-
-// export const selectMostPlayedTracks = (state) =>
-//   Object.values(state.tracks.entities.mostPlayed);
-
-// export const selectTracksByGenre = (genre) => (state) =>
-//   Object.values(state.tracks?.entities?.byGenre?.[genre] || {});
 
 export const selectCurrentTrack = (state) => state.tracks.current;

@@ -4,11 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import slug from "slug";
 import { fetchAllGenres, selectGenres } from "../../genres/store";
-import { selectCurrentTrack, uploadNewTrack } from "../store";
+import {
+  selectCurrentTrack,
+  selectTracksLoading,
+  uploadNewTrack,
+} from "../store";
 import styles from "./UploadDropzone.module.css";
 import { CoverImagePreview } from "./CoverImagePreview";
 import { ProgressBar } from "./ProgressBar";
 import { selectCurrentUser } from "../../auth/store";
+import { Spinner } from "../../../components/Spinner";
+import { useRef } from "react";
+import { MdContentCopy } from "react-icons/md";
 
 const initialValues = {
   playlist: false,
@@ -29,6 +36,7 @@ export function UploadDropzone() {
   const dispatch = useDispatch();
 
   const genres = useSelector(selectGenres);
+  const trackLoading = useSelector(selectTracksLoading);
 
   const [formValues, setFormValues] = useState(initialValues);
   const [title, setTitle] = useState("");
@@ -41,7 +49,10 @@ export function UploadDropzone() {
   const [tagInput, setTagInput] = useState("");
   const [tagsDisplay, setTagsDisplay] = useState([]);
 
+  const [showCopyHelper, setShowCopyHelper] = useState(false);
+
   const onDrop = useCallback((acceptedFiles) => {
+    setSuccess(false);
     setDropped(true);
     setOriginalFilename(acceptedFiles[0].name);
     setTitle(acceptedFiles[0].name.replace(withoutExtensionExp, ""));
@@ -73,11 +84,8 @@ export function UploadDropzone() {
   };
 
   const addTag = (tagList) => {
-    console.log(tagList);
     setTagsDisplay(tagList.split(" "));
   };
-
-  console.log(tagsDisplay);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -102,6 +110,9 @@ export function UploadDropzone() {
     setSuccess(true);
     resetForm();
   };
+
+  const shareLinkRef = useRef(null);
+
   const handleCancel = () => {
     resetForm();
     setDropped(false);
@@ -172,28 +183,190 @@ export function UploadDropzone() {
             <div
               style={{
                 width: "800px",
-                height: "190px",
+                height: "210px",
                 display: "grid",
-                gridTemplateColumns: "20% 50% 30%",
+                gridTemplateColumns: "20% 44% 30%",
+                gap: 14,
                 padding: "25px",
                 boxShadow: "0 2px 12px -5px rgb(0 0 0 / 10%)",
               }}
             >
-              <div>image</div>
-              <div>
-                <h4>{uploadedTrack?.title}</h4>
-                <p>{uploadedTrack?.artist}</p>
-                <p>{uploadedTrack?.privacy}</p>
-                <p>{uploadedTrack?.caption}</p>
-                <p>Upload complete.</p>
-                <Link
-                  to={`/${uploadedTrack?.uploader?.slug}/${uploadedTrack?.permalink}`}
+              {!trackLoading ? (
+                <>
+                  <div
+                    style={{
+                      boxShadow: "rgba(17, 17, 26, 0.18) 0px 0px 6px 2px",
+                      background: uploadedTrack?.cover
+                        ? `no-repeat center url(${uploadedTrack.cover})`
+                        : "linear-gradient(135deg, rgb(132, 97, 112), rgb(112, 146, 156))",
+                      backgroundSize: "cover",
+                    }}
+                  />
+                  <div style={{ padding: "4px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <h4
+                        style={{
+                          fontSize: "1rem",
+                          fontWeight: 600,
+                          paddingBottom: "4px",
+                        }}
+                      >
+                        {uploadedTrack?.title}
+                      </h4>
+                      <p
+                        style={{
+                          backgroundColor: "var(--primary-orange)",
+                          color: "#fff",
+                          width: "fit-content",
+                          padding: "0 10px",
+                          lineHeight: "1.6",
+                          fontSize: "13px",
+                          borderRadius: "12px",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {uploadedTrack?.privacy}
+                      </p>
+                    </div>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        color: "#999",
+                        paddingBottom: "8px",
+                      }}
+                    >
+                      {uploadedTrack?.artist}
+                    </p>
+
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        color: "#999",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      {uploadedTrack?.caption}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {uploadedTrack?.tags.slice(0, 4).map((tag) => (
+                        <p
+                          key={tag.id}
+                          style={{
+                            backgroundColor: "rgb(153, 153, 153)",
+                            color: "#fff",
+                            width: "fit-content",
+                            padding: "0 10px",
+                            lineHeight: "1.6",
+                            fontSize: "12px",
+                            borderRadius: "12px",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          #{tag.label}
+                        </p>
+                      ))}
+                    </div>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        color: "#333",
+                        marginBottom: "24px",
+                      }}
+                    >
+                      Upload complete.
+                    </p>
+                    <Link
+                      to={`/${uploadedTrack?.uploader?.slug}/${uploadedTrack?.permalink}`}
+                      style={{ fontSize: "14px", color: "var(--link-blue)" }}
+                    >
+                      Go to your track
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  Go to your track
-                </Link>
-              </div>
-              <div>
-                <h4>Share your new track</h4>
+                  <Spinner />
+                </div>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  borderLeft: "1px solid #e2e2e2",
+                  paddingLeft: "8px",
+                  visibility: uploadedTrack ? "visible" : "hidden",
+                }}
+              >
+                <div>
+                  <h4
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      color: "#999",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Share your new track
+                  </h4>
+                </div>
+                <div style={{ position: "relative" }}>
+                  <input
+                    type="text"
+                    ref={shareLinkRef}
+                    defaultValue={uploadedTrack?.permalink}
+                    disabled
+                    style={{
+                      color: showCopyHelper ? "#333" : "#999",
+                      display: "block",
+                      width: "230px",
+                      fontSize: "12px",
+                      padding: "2px",
+                      borderRadius: "4px",
+                      border: showCopyHelper
+                        ? "2px solid var(--link-blue)"
+                        : "2px solid #999",
+                    }}
+                  />
+                  <button
+                    style={{
+                      position: "absolute",
+                      top: 4,
+                      right: 2,
+                      color: "#999",
+                      background: "transparent",
+                      zIndex: 2,
+                    }}
+                    onClick={() => {
+                      if (shareLinkRef.current) {
+                        const link = shareLinkRef.current;
+                        navigator.clipboard.writeText(link.value);
+                        setShowCopyHelper(true);
+                      }
+                    }}
+                  >
+                    <MdContentCopy />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

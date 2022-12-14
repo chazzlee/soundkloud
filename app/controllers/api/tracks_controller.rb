@@ -2,8 +2,8 @@
 
 class Api::TracksController < ApplicationController
   def index
-    # TODO:
-    render json: { track: Track.all }
+    tracks = current_user.tracks.limit(16)
+    render tempalte: 'api/tracks/index', locals: { tracks: }
   end
 
   def show

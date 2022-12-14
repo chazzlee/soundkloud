@@ -13,12 +13,13 @@ import {
 import { Spinner } from "../../../components/Spinner";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
 import { GrRefresh } from "react-icons/gr";
+import { fetchAllTracksByUserAsync } from "../../tracks/store";
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
-  const loading = useSelector(selectDiscoverLoading);
-  const loaded = useSelector(selectDiscoverLoaded);
+  const discoverLoading = useSelector(selectDiscoverLoading);
+  const discoverLoaded = useSelector(selectDiscoverLoaded);
   const mostPlayed = useSelector(selectDiscoverListByType("mostPlayed"));
   const recentlyPlayed = useSelector(
     selectDiscoverListByType("recentlyPlayed")
@@ -38,10 +39,16 @@ export function DiscoverPage() {
   const metalTracks = useSelector(selectDiscoverListByGenre("metal"));
 
   useEffect(() => {
-    if (!loaded) {
+    if (!discoverLoaded) {
       dispatch(fetchDiscoverAsync());
     }
-  }, [dispatch, loaded]);
+  }, [dispatch, discoverLoaded]);
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(fetchAllTracksByUserAsync(currentUser.id));
+    }
+  }, [dispatch, currentUser]);
 
   // TODO:
   // if (error) {
@@ -53,7 +60,7 @@ export function DiscoverPage() {
   // }
 
   //TODO: show spinner...
-  if (loading) {
+  if (discoverLoading) {
     return (
       <div
         style={{

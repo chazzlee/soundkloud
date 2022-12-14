@@ -44,7 +44,7 @@ export const discoverReducer = produce((state = initialState, action) => {
       state.loaded = true;
       state.loading = false;
       state.entities = action.payload;
-      state.ids = Object.keys(action.payload).map((key) => parseInt(key, 10));
+      state.ids = Object.keys(action.payload);
       break;
     }
     default:

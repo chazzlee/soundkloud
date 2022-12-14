@@ -1,10 +1,10 @@
 import { csrfFetch } from "./csrfFetch";
 
 export const TracksApi = {
-  fetchAll() {
-    return csrfFetch("/api/tracks");
+  fetchAllByUser(userId) {
+    return csrfFetch(`/api/users/${userId}/tracks`);
   },
-  fetchOne(profileId, trackId) {
+  fetchOneByUser(profileId, trackId) {
     return csrfFetch(`/api/profiles/${profileId}/tracks/${trackId}`);
   },
   fetchDiscover() {
