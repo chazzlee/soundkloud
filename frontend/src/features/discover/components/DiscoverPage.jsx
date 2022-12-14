@@ -73,7 +73,7 @@ export function DiscoverPage() {
     <div className="full-page">
       <main className={`page-container ${styles.innerContainer}`}>
         <div className={styles.columnMain}>
-          {currentUser && (
+          {!currentUser && (
             <h1
               style={{
                 marginTop: "48px",

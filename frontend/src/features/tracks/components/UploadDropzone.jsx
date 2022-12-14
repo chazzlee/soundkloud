@@ -14,7 +14,6 @@ const initialValues = {
   playlist: false,
   artist: "",
   genre_id: "",
-  tags: "",
   description: "",
   caption: "",
   privacy: "public",
@@ -38,6 +37,9 @@ export function UploadDropzone() {
   const [submitted, setSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [originalFilename, setOriginalFilename] = useState("");
+
+  const [tagInput, setTagInput] = useState("");
+  const [tagsDisplay, setTagsDisplay] = useState([]);
 
   const onDrop = useCallback((acceptedFiles) => {
     setDropped(true);
@@ -70,6 +72,13 @@ export function UploadDropzone() {
     setFormValues(initialValues);
   };
 
+  const addTag = (tagList) => {
+    console.log(tagList);
+    setTagsDisplay(tagList.split(" "));
+  };
+
+  console.log(tagsDisplay);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -84,10 +93,12 @@ export function UploadDropzone() {
     formData.set("privacy", formValues.privacy);
     formData.set("genre_id", parseInt(formValues.genre_id, 10));
     formData.set("upload", file, file.name);
+    formData.set("tags", JSON.stringify(tagsDisplay));
+
     coverImage && formData.set("cover", coverImage, coverImage.name);
 
     dispatch(uploadNewTrack(formData));
-    //TODO:
+    // TODO:
     setSuccess(true);
     resetForm();
   };
@@ -303,7 +314,10 @@ export function UploadDropzone() {
                       ))}
                     </select>
                   </div>
-                  <div className={styles.formControl}>
+                  <div
+                    className={styles.formControl}
+                    style={{ position: "relative" }}
+                  >
                     <label className={styles.label} htmlFor="tags">
                       Additional tags
                     </label>
@@ -312,8 +326,15 @@ export function UploadDropzone() {
                       type="text"
                       id="tags"
                       name="tags"
-                      value={formValues.tags}
-                      onChange={handleInputChange}
+                      value={tagInput}
+                      placeholder="Add tags to describe the genre and mood of your track"
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addTag(tagInput);
+                        }
+                      }}
                     />
                   </div>
                   <div className={styles.formControl}>
@@ -393,7 +414,7 @@ export function UploadDropzone() {
                       </button>
                       <button
                         type="submit"
-                        className={`${styles.btn} ${styles.saveBtn}`}
+                        className={`${styles.btn}`}
                         disabled={submitted}
                       >
                         Save

@@ -106,10 +106,6 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.error = null;
       state.loading = false;
       state.loaded = true;
-      state.entities.recentlyPlayed = action.payload.recentlyPlayed;
-      state.entities.mostPlayed = action.payload.mostPlayed;
-      state.entities.byGenre = action.payload.byGenre;
-      state.ids = Object.keys(action.payload);
       break;
     }
     case FETCH_TRACKS_FAILED: {
@@ -160,13 +156,13 @@ export const selectTracksError = (state) => state.tracks.error;
 export const selectIsTracksLoading = (state) => state.tracks.loading;
 export const selectHasTracksLoaded = (state) => state.tracks.loaded;
 
-export const selectRecentlyPlayedTracks = (state) =>
-  Object.values(state.tracks.entities.recentlyPlayed);
+// export const selectRecentlyPlayedTracks = (state) =>
+//   Object.values(state.tracks.entities.recentlyPlayed);
 
-export const selectMostPlayedTracks = (state) =>
-  Object.values(state.tracks.entities.mostPlayed);
+// export const selectMostPlayedTracks = (state) =>
+//   Object.values(state.tracks.entities.mostPlayed);
 
-export const selectTracksByGenre = (genre) => (state) =>
-  Object.values(state.tracks?.entities?.byGenre?.[genre] || {});
+// export const selectTracksByGenre = (genre) => (state) =>
+//   Object.values(state.tracks?.entities?.byGenre?.[genre] || {});
 
 export const selectCurrentTrack = (state) => state.tracks.current;

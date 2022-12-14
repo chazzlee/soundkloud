@@ -28,6 +28,13 @@ class Api::TracksController < ApplicationController
     track.cover.attach(params[:cover]) if params[:cover]
 
     if track.save
+      if params[:tags]
+        tag_labels = JSON.parse(params[:tags])
+        tag_labels.each do |label|
+          tag = Tag.find_or_initialize_by(label:, taggable: track)
+          tag.save!
+        end
+      end
       render template: 'api/tracks/show', locals: { track: }, status: :created
     else
       render json: { errors: track.errors.full_messages }, status: :unprocessable_entity
