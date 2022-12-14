@@ -73,6 +73,18 @@ export function DiscoverPage() {
     <div className="full-page">
       <main className={`page-container ${styles.innerContainer}`}>
         <div className={styles.columnMain}>
+          {currentUser && (
+            <h1
+              style={{
+                marginTop: "48px",
+                fontWeight: "500",
+                width: "100%",
+                borderBottom: "1px solid #f2f2f2",
+              }}
+            >
+              Discover Tracks and Playlists
+            </h1>
+          )}
           <CarouselSlider
             title={currentUser ? "More of what you like" : "Charts: Top 50"}
             slides={mostPlayed}

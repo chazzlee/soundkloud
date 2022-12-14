@@ -36,10 +36,12 @@ export function UploadDropzone() {
   const [permalink, setPermalink] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
+  const [originalFilename, setOriginalFilename] = useState("");
 
   const onDrop = useCallback((acceptedFiles) => {
     setDropped(true);
+    setOriginalFilename(acceptedFiles[0].name);
     setTitle(acceptedFiles[0].name.replace(withoutExtensionExp, ""));
   }, []);
 
@@ -210,7 +212,7 @@ export function UploadDropzone() {
             Provide FLAC, WAV, ALAC, or AIFF for highest audio quality.
           </div>
           <div className={styles.uploadedTitle}>
-            <p>06-Swine of the Cross.mp3</p>
+            <p>{originalFilename}</p>
             <p>Ready. Click Save to post this track.</p>
           </div>
 
