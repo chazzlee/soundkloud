@@ -16,8 +16,8 @@ import { SlPencil } from "react-icons/sl";
 import { ImUsers, ImUserPlus } from "react-icons/im";
 import { BsSoundwave } from "react-icons/bs";
 import { IoMdPause } from "react-icons/io";
-
 import WaveSurfer from "wavesurfer.js";
+import { Spinner } from "../../../components/Spinner";
 const MAX_LENGTH = 49;
 
 export function TrackShowPage() {
@@ -60,7 +60,18 @@ export function TrackShowPage() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   if (!track) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -125,11 +136,21 @@ export function TrackShowPage() {
                     addSuffix: true,
                   })}
                 </p>
-                <Link to={"/discover"}>
-                  <p className={styles.tag}>
-                    <span style={{ marginRight: "4px" }}>#</span>Metal
-                  </p>
-                </Link>
+                {!!track.tags?.length ? (
+                  <Link to={"/discover"}>
+                    <p className={styles.tag}>
+                      <span style={{ marginRight: "4px" }}>#</span>
+                      {track.tags[0].label}
+                    </p>
+                  </Link>
+                ) : (
+                  <Link to={"/discover"}>
+                    <p className={styles.tag}>
+                      <span style={{ marginRight: "4px" }}>#</span>
+                      {track.genre}
+                    </p>
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -166,7 +187,10 @@ export function TrackShowPage() {
           <div className={styles.commentInputContainer}>
             <div className={styles.avatar}>
               <img
-                src="https://soundkloud-seeds.s3.amazonaws.com/default-profile.jpg"
+                src={
+                  track?.uploader.photo ??
+                  "https://soundkloud-seeds.s3.amazonaws.com/default-profile.jpg"
+                }
                 alt="Profile Avatar"
                 height="40px"
                 width="40px"
@@ -275,11 +299,21 @@ export function TrackShowPage() {
                   alt="Profile Avatar"
                   height={120}
                   width={120}
-                  style={{ objectFit: "cover", borderRadius: "50%" }}
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    objectPosition: "center",
+                  }}
                 />
               </div>
-              <p className={styles.uploader}>{"UPLOADER"}</p>
-              <div style={{ paddingTop: "2px", paddingBottom: "6px" }}>
+              <p className={styles.uploader}>{track.uploader.displayName}</p>
+              <div
+                style={{
+                  paddingTop: "2px",
+                  paddingBottom: "6px",
+                  textAlign: "center",
+                }}
+              >
                 <span
                   style={{
                     color: "#999",
@@ -303,7 +337,7 @@ export function TrackShowPage() {
                   43
                 </span>
               </div>
-              <div>
+              <div style={{ textAlign: "center", paddingTop: "2px" }}>
                 <button className={styles.followBtn}>
                   <ImUserPlus style={{ verticalAlign: "middle" }} /> Follow
                 </button>
@@ -318,10 +352,9 @@ export function TrackShowPage() {
             >
               <div>
                 <p className={styles.descriptionContent}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi,
-                  repudiandae natus eum impedit nostrum expedita? Rem in
-                  asperiores labore excepturi dicta molestiae recusandae, Lorem
-                  ipsum dolor sit amet.
+                  {track.description
+                    ? track.description
+                    : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, repudiandae natus eum impedit nostrum expedita? Rem in asperiores labore excepturi dicta molestiae recusandae, Lorem ipsum dolor sit amet."}
                 </p>
               </div>
               <div>

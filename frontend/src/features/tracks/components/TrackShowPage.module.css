@@ -73,6 +73,7 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  min-width: 110px;
 }
 
 .postedAt {
@@ -230,6 +231,7 @@ p {
   font-size: 14px;
   color: #333;
   padding-top: 10px;
+  text-align: center;
 }
 
 .followBtn {

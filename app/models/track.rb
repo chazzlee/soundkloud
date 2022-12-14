@@ -19,7 +19,6 @@ class Track < ApplicationRecord
 
   has_many :tags, as: :taggable
 
-
   validates :title, presence: true
   validates :artist, presence: true
   validates :permalink, presence: true, allow_nil: true

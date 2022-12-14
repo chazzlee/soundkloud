@@ -16,6 +16,7 @@ import { selectCurrentUser } from "../../auth/store";
 import { Spinner } from "../../../components/Spinner";
 import { useRef } from "react";
 import { MdContentCopy } from "react-icons/md";
+import { wait } from "../../../utils/wait";
 
 const initialValues = {
   playlist: false,
@@ -79,6 +80,8 @@ export function UploadDropzone() {
   const resetForm = () => {
     setCoverImage(null);
     setDropped(false);
+    setTagInput("");
+    setTagsDisplay([]);
     setSubmitted(false);
     setFormValues(initialValues);
   };
@@ -86,6 +89,14 @@ export function UploadDropzone() {
   const addTag = (tagList) => {
     setTagsDisplay(tagList.split(" "));
   };
+
+  const [readyText, setReadyText] = useState("");
+
+  useEffect(() => {
+    wait(2000).then(() =>
+      setReadyText("Ready. Click Save to post this track.")
+    );
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -397,7 +408,7 @@ export function UploadDropzone() {
           </div>
           <div className={styles.uploadedTitle}>
             <p>{originalFilename}</p>
-            <p>Ready. Click Save to post this track.</p>
+            <p>{readyText}</p>
           </div>
 
           <ProgressBar />
