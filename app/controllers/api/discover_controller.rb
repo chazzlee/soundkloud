@@ -3,8 +3,6 @@
 class Api::DiscoverController < ApplicationController
   def index
     # TODO: find a better way...
-    recently_played_tracks = current_user.recently_played_tracks.order(last_played_at: :asc).limit(16)
-    most_played_tracks = current_user.most_played_tracks.order(play_count: :asc).limit(16)
     metal_tracks = Genre.find_by(name: 'metal').tracks.limit(16)
     pop_tracks = Genre.find_by(name: 'pop').tracks.limit(16)
     rnb_tracks = Genre.find_by(name: 'r&b').tracks.limit(16)
@@ -18,6 +16,14 @@ class Api::DiscoverController < ApplicationController
     piano_tracks = Genre.find_by(name: 'piano').tracks.limit(16)
     dance_edm_tracks = Genre.find_by(name: 'dance_edm').tracks.limit(16)
     drum_n_bass_tracks = Genre.find_by(name: 'drum_n_bass').tracks.limit(16)
+
+    if current_user
+      recently_played_tracks = current_user.recently_played_tracks.order(last_played_at: :asc).limit(16)
+      most_played_tracks = current_user.most_played_tracks.order(play_count: :asc).limit(16)
+    else
+      recently_played_tracks = Track.offset(rand(0..20)).limit(16)
+      most_played_tracks = Track.offset(rand(0..20)).limit(16)
+    end
 
     render template: 'api/discover/index', locals: {
       recently_played_tracks:,

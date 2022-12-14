@@ -36,7 +36,7 @@ export function UploadDropzone() {
   const [permalink, setPermalink] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
 
   const onDrop = useCallback((acceptedFiles) => {
     setDropped(true);
@@ -104,10 +104,7 @@ export function UploadDropzone() {
 
   if (success) {
     return (
-      <div
-        className="full-page"
-        style={{ height: "100vh", overflowY: "hidden" }}
-      >
+      <div className="full-page" style={{ height: "100%" }}>
         <main
           className="page-container"
           style={{
@@ -116,6 +113,7 @@ export function UploadDropzone() {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
+            height: "100%",
           }}
         >
           <div
@@ -193,7 +191,7 @@ export function UploadDropzone() {
 
   if (dropped) {
     return (
-      <div className="full-page" style={{ height: "100%" }}>
+      <div className="full-page">
         <main
           className="page-container"
           style={{
@@ -424,8 +422,9 @@ export function UploadDropzone() {
     );
   }
 
+  // INITIAL STEP
   return (
-    <div className="full-page">
+    <div className="full-page" style={{ height: "100%" }}>
       <main
         className="page-container"
         style={{

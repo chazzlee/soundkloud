@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./DiscoverPage.module.css";
 import { CarouselSlider } from "./CarouselSlider";
+import { selectCurrentUser } from "../../auth/store";
 import {
   fetchDiscoverAsync,
   selectDiscoverLoaded,
@@ -15,7 +16,7 @@ import { GrRefresh } from "react-icons/gr";
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
-
+  const currentUser = useSelector(selectCurrentUser);
   const loading = useSelector(selectDiscoverLoading);
   const loaded = useSelector(selectDiscoverLoaded);
   const mostPlayed = useSelector(selectDiscoverListByType("mostPlayed"));
@@ -72,8 +73,24 @@ export function DiscoverPage() {
     <div className="full-page">
       <main className={`page-container ${styles.innerContainer}`}>
         <div className={styles.columnMain}>
-          <CarouselSlider title="More of what you like" slides={mostPlayed} />
-          <CarouselSlider title="Recently Played" slides={recentlyPlayed} />
+          <CarouselSlider
+            title={currentUser ? "More of what you like" : "Charts: Top 50"}
+            slides={mostPlayed}
+            subTitle={
+              currentUser
+                ? ""
+                : "The most played tracks on SoundKloud this week"
+            }
+          />
+          <CarouselSlider
+            title={currentUser ? "Recently Played" : "Charts: New & hot"}
+            slides={recentlyPlayed}
+            subTitle={
+              currentUser
+                ? ""
+                : "The most played tracks on SoundKloud this week"
+            }
+          />
 
           <div></div>
           {/* TODO: Daily Drops?? */}

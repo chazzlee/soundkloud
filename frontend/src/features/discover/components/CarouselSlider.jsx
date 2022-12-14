@@ -13,7 +13,7 @@ import { PlayCard } from "./PlayCard";
 
 const VISIBLE_SLIDES = 4;
 
-export function CarouselSlider({ title, slides }) {
+export function CarouselSlider({ slides, title, subTitle = "" }) {
   const totalRows = slides.length / VISIBLE_SLIDES;
   const firstRowIndex = 0;
   const lastRowIndex = totalRows - 1;
@@ -25,7 +25,20 @@ export function CarouselSlider({ title, slides }) {
       className={styles.carouselContainer}
       style={{ borderBottom: "1px solid var(--bg-light)" }}
     >
-      <h2 className={styles.carouselHeading}>{title}</h2>
+      <h2
+        className={styles.carouselHeading}
+        style={{ marginBottom: subTitle ? "12px" : "24px" }}
+      >
+        {title}
+      </h2>
+      {subTitle && (
+        <p
+          className={styles.subcaption}
+          style={{ fontSize: "14px", marginBottom: "14px" }}
+        >
+          {subTitle}
+        </p>
+      )}
       <CarouselProvider
         naturalSlideWidth={180}
         naturalSlideHeight={230}

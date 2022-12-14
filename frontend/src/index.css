@@ -10,6 +10,11 @@
   --link-blue: #044dd2;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 .carousel__slide-focus-ring {
   outline: none !important;
   border: none !important;
@@ -65,7 +70,6 @@ button {
 }
 
 .full-page {
-  height: 100%;
   background-color: var(--bg-light);
   color: var(--black);
   font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Regular",

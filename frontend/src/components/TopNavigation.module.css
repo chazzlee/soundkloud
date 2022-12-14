@@ -146,6 +146,7 @@
 }
 
 .profileDropdown {
+  top: 46.5px;
   position: absolute;
   border-left: 1px solid rgb(179, 179, 179);
   border-right: 1px solid rgb(179, 179, 179);
@@ -174,6 +175,16 @@
 .profileDropdownBtn:hover {
   background-color: #e9e9e9;
   transform: all ease-in 120ms;
+}
+
+.signInBtn {
+  padding: 12px 0;
+}
+
+.signInBtn:hover {
+  background-color: var(--primary-orange);
+  color: #fff;
+  transition: all ease-in 120ms;
 }
 
 .navGroupMiddle {
@@ -228,7 +239,7 @@
   background-color: #fff;
   border-bottom-left-radius: 2px;
   height: 100%;
-  top: 37px;
+  top: 38px;
   right: 0;
   width: 170px;
   text-align: left;
