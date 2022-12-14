@@ -2,7 +2,11 @@ import { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
-import { fetchTrack, selectCurrentTrack } from "../store";
+import {
+  fetchTrackAsync,
+  replyToTrackAsync,
+  selectCurrentTrack,
+} from "../store";
 import { selectCurrentUser } from "../../auth/store";
 import styles from "./TrackShowPage.module.css";
 import { formatDistanceToNow } from "date-fns";
@@ -35,7 +39,7 @@ export function TrackShowPage() {
     track?.artist.length + track?.title.length >= length ? "20px" : "22px";
 
   useEffect(() => {
-    dispatch(fetchTrack(user, trackSlug));
+    dispatch(fetchTrackAsync(user, trackSlug));
   }, [dispatch, user, trackSlug]);
 
   useEffect(() => {
@@ -58,6 +62,15 @@ export function TrackShowPage() {
 
   // TODO:
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const [replyBody, setReplyBody] = useState("");
+
+  const handleReplyToTrack = (e) => {
+    e.preventDefault();
+    const reply = { body: replyBody };
+    dispatch(replyToTrackAsync(trackSlug, reply));
+    setReplyBody("");
+  };
 
   if (!track) {
     return (
@@ -198,8 +211,13 @@ export function TrackShowPage() {
               />
             </div>
             <div className={styles.input}>
-              <form>
-                <input type="text" placeholder="Write a comment" />
+              <form onSubmit={handleReplyToTrack}>
+                <input
+                  type="text"
+                  placeholder="Write a comment"
+                  value={replyBody}
+                  onChange={(e) => setReplyBody(e.target.value)}
+                />
               </form>
             </div>
           </div>
@@ -377,14 +395,18 @@ export function TrackShowPage() {
               }}
             >
               <div className={styles.commentFeedHeader}>
-                <FaCommentAlt /> 1 comment
+                <FaCommentAlt /> {track?.replies.length}{" "}
+                {track?.replies.length > 1 ? "comments" : "comment"}
               </div>
               <div className={styles.commentList}>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-                  <div key={n} className={styles.commentCard}>
+                {track?.replies.map((reply) => (
+                  <div key={reply.id} className={styles.commentCard}>
                     <div style={{ marginRight: "10px" }}>
                       <img
-                        src="https://heavymag.com.au/wp-content/uploads/2022/12/image003-3-e1670485565713.jpg"
+                        src={
+                          reply.user.photo ??
+                          "https://heavymag.com.au/wp-content/uploads/2022/12/image003-3-e1670485565713.jpg"
+                        }
                         alt="Profile Avatar"
                         height="40px"
                         width="40px"
@@ -394,15 +416,15 @@ export function TrackShowPage() {
                     <div style={{ width: "100%" }}>
                       <div className={styles.commenter}>
                         <p>
-                          WILO <span>at 5:43</span>
+                          {reply.user.displayName} <span>at 5:43</span>
                         </p>
-                        <p>1 year ago</p>
+                        <p>
+                          {formatDistanceToNow(new Date(reply.createdAt), {
+                            addSuffix: true,
+                          })}
+                        </p>
                       </div>
-                      <p className={styles.commentContent}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Voluptatibus, fugiat. Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit. Iure, vero?
-                      </p>
+                      <p className={styles.commentContent}>{reply.body}</p>
                     </div>
                   </div>
                 ))}

@@ -10,3 +10,15 @@ json.uploader do
   json.display_name track.user.profile.display_name
   json.photo track.user.profile.photo.url
 end
+json.replies track.replies.order(created_at: :desc) do |reply|
+  json.id reply.id
+  json.created_at reply.created_at
+  json.track_id reply.track_id
+  json.body reply.body
+  json.user do
+    json.id reply.user_id
+    json.display_name reply.user.profile.display_name
+    json.slug reply.user.slug
+    json.photo reply.user.profile.photo.url
+  end
+end

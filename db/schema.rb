@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_14_150502) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_14_210401) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -96,6 +96,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_14_150502) do
     t.index ["user_id"], name: "index_recent_plays_on_user_id"
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.text "body"
+    t.bigint "user_id", null: false
+    t.bigint "track_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["track_id"], name: "index_replies_on_track_id"
+    t.index ["user_id"], name: "index_replies_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "label"
     t.string "taggable_type", null: false
@@ -139,6 +149,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_14_150502) do
   add_foreign_key "profiles", "users"
   add_foreign_key "recent_plays", "tracks"
   add_foreign_key "recent_plays", "users"
+  add_foreign_key "replies", "tracks"
+  add_foreign_key "replies", "users"
   add_foreign_key "tracks", "genres"
   add_foreign_key "tracks", "users"
 end

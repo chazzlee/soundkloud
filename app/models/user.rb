@@ -20,6 +20,8 @@ class User < ApplicationRecord
 
   delegate :slug, to: :profile
 
+  has_many :replies
+
   def play_track(track)
     recent_play = RecentPlay.find_or_initialize_by(user: self, track:)
     recent_play.last_played_at = Time.now unless recent_play.new_record?

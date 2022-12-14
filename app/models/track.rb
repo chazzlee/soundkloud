@@ -18,6 +18,7 @@ class Track < ApplicationRecord
   has_one_attached :upload
 
   has_many :tags, as: :taggable
+  has_many :replies
 
   validates :title, presence: true
   validates :artist, presence: true

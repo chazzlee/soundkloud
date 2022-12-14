@@ -97,5 +97,12 @@ ApplicationRecord.transaction do
     end
   end
 
+  10.times do
+    reply = Reply.new(body: Faker::Quote.matz)
+    reply.user = User.all.sample
+    reply.track = Track.first
+    reply.save!
+  end
+
   puts 'Finished'
 end
