@@ -36,6 +36,7 @@ export function Modal({ onClose, children }) {
   }, [onClose]);
 
   const modalNode = useContext(ModalContext);
+
   if (!modalNode) return null;
 
   return createPortal(

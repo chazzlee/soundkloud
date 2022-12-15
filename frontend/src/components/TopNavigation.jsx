@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logoutUser, selectCurrentUser } from "../features/auth/store";
@@ -12,6 +12,7 @@ import { IoSearch } from "react-icons/io5";
 import { BiCaretDown } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoPersonSharp } from "react-icons/io5";
+import useOnClickOutside from "use-onclickoutside";
 
 export function TopNavigation() {
   const dispatch = useDispatch();
@@ -22,6 +23,11 @@ export function TopNavigation() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [settingsDropdownOpen, setSettingsDropdownOpen] = useState(false);
+
+  const profileDropdownRef = useRef(null);
+  useOnClickOutside(profileDropdownRef, () => setProfileDropdownOpen(false));
+  const settingsDropdownRef = useRef(null);
+  useOnClickOutside(settingsDropdownRef, () => setSettingsDropdownOpen(false));
 
   const handleShowProfileDropdown = () => {
     setSettingsDropdownOpen(false);
@@ -125,6 +131,7 @@ export function TopNavigation() {
                     onClick={handleShowProfileDropdown}
                     style={{ width: "50%" }}
                     role="button"
+                    ref={profileDropdownRef}
                   >
                     <button style={{ paddingBottom: "10px" }}>
                       <span
@@ -188,7 +195,10 @@ export function TopNavigation() {
                       <IoMdMail />
                     </button>
                   </div>
-                  <div style={{ position: "relative" }}>
+                  <div
+                    style={{ position: "relative" }}
+                    ref={settingsDropdownRef}
+                  >
                     <button
                       className={styles.iconBtn}
                       onClick={handleShowSettingsDropdown}
