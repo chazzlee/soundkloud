@@ -14,7 +14,10 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
         onMouseLeave={() => setShowPlay(false)}
       >
         <Image
-          src="https://www.metalkingdom.net/album-cover-artwork/2018/02/3/3062-Nile-Annihilation-of-the-Wicked.jpg"
+          src={
+            item.cover ??
+            "https://www.metalkingdom.net/album-cover-artwork/2018/02/3/3062-Nile-Annihilation-of-the-Wicked.jpg"
+          }
           style={{
             objectFit: "cover",
             width: "90%",

@@ -25,10 +25,10 @@ const uploadTrackSuccess = (track) => ({
   type: UPLOAD_TRACK_SUCCESS,
   payload: track,
 });
-const uploadTrackFailed = (error) => ({
-  type: UPLOAD_TRACK_SUCCESS,
-  payload: error,
-});
+// const uploadTrackFailed = (error) => ({
+//   type: UPLOAD_TRACK_SUCCESS,
+//   payload: error,
+// });
 
 const replyToTrackSuccess = (reply) => ({
   type: REPLY_TO_TRACK_SUCCESS,

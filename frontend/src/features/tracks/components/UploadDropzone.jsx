@@ -52,11 +52,25 @@ export function UploadDropzone() {
 
   const [showCopyHelper, setShowCopyHelper] = useState(false);
 
+  let timeoutRef = useRef();
   const onDrop = useCallback((acceptedFiles) => {
     setSuccess(false);
     setDropped(true);
     setOriginalFilename(acceptedFiles[0].name);
     setTitle(acceptedFiles[0].name.replace(withoutExtensionExp, ""));
+
+    timeoutRef.current = setTimeout(
+      () => setReadyText("Ready. Click Save to post this track."),
+      2200
+    );
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
@@ -78,6 +92,7 @@ export function UploadDropzone() {
     });
   };
   const resetForm = () => {
+    setReadyText("");
     setCoverImage(null);
     setDropped(false);
     setTagInput("");
@@ -91,12 +106,6 @@ export function UploadDropzone() {
   };
 
   const [readyText, setReadyText] = useState("");
-
-  useEffect(() => {
-    wait(2000).then(() =>
-      setReadyText("Ready. Click Save to post this track.")
-    );
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

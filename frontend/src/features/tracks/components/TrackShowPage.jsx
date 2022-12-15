@@ -22,6 +22,7 @@ import { BsSoundwave } from "react-icons/bs";
 import { IoMdPause } from "react-icons/io";
 import WaveSurfer from "wavesurfer.js";
 import { Spinner } from "../../../components/Spinner";
+import { BiLockAlt } from "react-icons/bi";
 const MAX_LENGTH = 49;
 
 export function TrackShowPage() {
@@ -139,9 +140,33 @@ export function TrackShowPage() {
                 >
                   {track.artist} - {track.title}
                 </h1>
-                <h2 className={styles.subTitle}>
-                  {track.uploader.displayName}
-                </h2>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <h2 className={styles.subTitle}>
+                    {track.uploader.displayName}
+                  </h2>
+                  {track.private && (
+                    <p
+                      className={styles.subTitle}
+                      style={{
+                        backgroundColor: "var(--primary-orange)",
+                        color: "#fff",
+                        borderRadius: "12px",
+                        border: "1px solid var(--primary-orange)",
+                      }}
+                    >
+                      <span>
+                        <BiLockAlt style={{ verticalAlign: "middle" }} />
+                      </span>{" "}
+                      private
+                    </p>
+                  )}
+                </div>
               </div>
               <div className={styles.infoRight}>
                 <p className={styles.postedAt}>
@@ -313,7 +338,10 @@ export function TrackShowPage() {
             <div style={{ marginRight: "26px" }}>
               <div style={{ width: "15%" }}>
                 <img
-                  src="https://heavymag.com.au/wp-content/uploads/2022/12/image003-3-e1670485565713.jpg"
+                  src={
+                    track.uploader?.photo ??
+                    "https://heavymag.com.au/wp-content/uploads/2022/12/image003-3-e1670485565713.jpg"
+                  }
                   alt="Profile Avatar"
                   height={120}
                   width={120}
@@ -396,7 +424,9 @@ export function TrackShowPage() {
             >
               <div className={styles.commentFeedHeader}>
                 <FaCommentAlt /> {track?.replies.length}{" "}
-                {track?.replies.length > 1 ? "comments" : "comment"}
+                {track?.replies.length > 1 || track?.replies.length === 0
+                  ? "comments"
+                  : "comment"}
               </div>
               <div className={styles.commentList}>
                 {track?.replies.map((reply) => (
@@ -405,7 +435,7 @@ export function TrackShowPage() {
                       <img
                         src={
                           reply.user.photo ??
-                          "https://heavymag.com.au/wp-content/uploads/2022/12/image003-3-e1670485565713.jpg"
+                          "https://soundkloud-seeds.s3.amazonaws.com/default-profile.jpg"
                         }
                         alt="Profile Avatar"
                         height="40px"
@@ -416,7 +446,13 @@ export function TrackShowPage() {
                     <div style={{ width: "100%" }}>
                       <div className={styles.commenter}>
                         <p>
-                          {reply.user.displayName} <span>at 5:43</span>
+                          {reply.user.displayName} <span>at </span>
+                          <span>
+                            {new Date(reply.createdAt).toLocaleTimeString(
+                              "en-US",
+                              { timeStyle: "short" }
+                            )}
+                          </span>
                         </p>
                         <p>
                           {formatDistanceToNow(new Date(reply.createdAt), {
