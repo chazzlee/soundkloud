@@ -7,9 +7,13 @@ ApplicationRecord.transaction do
   User.destroy_all
   Profile.destroy_all
   Track.destroy_all
+  Reply.destroy_all
+  PopularPlay.destroy_all
+  RecentPlay.destroy_all
+  Tag.destroy_all
 
   puts 'Resetting primary keys...'
-  %w[genres users profiles tracks].each do |table_name|
+  %w[tags recent_plays popular_plays genres replies users profiles tracks].each do |table_name|
     ApplicationRecord.connection.reset_pk_sequence!(table_name)
   end
 
@@ -47,11 +51,23 @@ ApplicationRecord.transaction do
   Genre.create!(name: 'triphop', label: 'Triphop')
   Genre.create!(name: 'world', label: 'World')
 
+  genders = %w[male female custom none]
+
   demo_user = User.create!(email: 'demo@demo.com', password: 'password')
   demo_profile = Profile.create!(age: 100, gender: 'none', display_name: 'Demo User', user: demo_user)
 
   other_user = User.create!(email: 'jane@demo.com', password: 'password')
   other_profile = Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other_user)
+
+  10.times do
+    user = User.create!(email: Faker::Internet.email, password: 'password')
+    Profile.create!(
+      age: rand(100),
+      gender: genders.sample,
+      display_name: Faker::Internet.username(specifier: 3..10),
+      user:
+    )
+  end
 
   10.times do |_n|
     title = Faker::Music::PearlJam.song
@@ -100,7 +116,7 @@ ApplicationRecord.transaction do
   10.times do
     reply = Reply.new(body: Faker::Quote.matz)
     reply.user = User.all.sample
-    reply.track = Track.first
+    reply.track = Track.limit(16).sample
     reply.save!
   end
 
