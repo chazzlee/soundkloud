@@ -76,7 +76,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
     formData.set("permalink", permalink.trim());
     formData.set("description", formValues.description.trim());
     formData.set("caption", formValues.caption.trim());
-    formData.set("privacy", formValues.privacy);
+    formData.set("privacy", formValues.privacy.trim());
     formData.set("genre_id", parseInt(formValues.genre_id, 10));
     formData.set("tags", JSON.stringify(tagsDisplay));
     coverImage && formData.set("cover", coverImage, coverImage.name);

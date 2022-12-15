@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Api::TracksController < ApplicationController
+  include Rails.application.routes.url_helpers
   before_action :require_logged_in, only: %i[index destroy]
 
   def index
-    tracks = current_user.tracks.limit(16)
-    render tempalte: 'api/tracks/index', locals: { tracks: }
+    tracks = current_user.tracks.order(updated_at: :desc).limit(16)
+    render template: 'api/tracks/index', locals: { tracks: }
   end
 
   def show
@@ -20,12 +21,17 @@ class Api::TracksController < ApplicationController
     track = current_user.tracks.build
     track.title = params[:title]
     track.artist = params[:artist]
-    track.permalink = params[:permalink]
     track.description = params[:description]
     track.caption = params[:caption]
     track.privacy = params[:privacy]
     track.genre_id = params[:genre_id]
 
+    permalink = if Rails.env == 'development'
+                  "http://localhost:3000/#{current_user.slug}/#{params[:permalink]}"
+                else
+                  "https://soundkloud-rails.onrender.com/#{current_user.slug}/#{params[:permalink]}"
+                end
+    track.permalink = permalink
     track.upload.attach(params[:upload]) if params[:upload]
     track.cover.attach(params[:cover]) if params[:cover]
 
@@ -49,11 +55,16 @@ class Api::TracksController < ApplicationController
     if track.user_id == current_user.id
       track.title = params[:title]
       track.artist = params[:artist]
-      track.permalink = params[:permalink]
       track.description = params[:description]
       track.caption = params[:caption]
       track.privacy = params[:privacy]
       track.genre_id = params[:genre_id]
+      permalink = if Rails.env == 'development'
+                    "http://localhost:3000/#{current_user.slug}/#{params[:permalink]}"
+                  else
+                    "https://soundkloud-rails.onrender.com/#{current_user.slug}/#{params[:permalink]}"
+                  end
+      track.permalink = permalink
       if params[:cover]
         track.cover.purge if track.cover.attached?
         track.cover.attach(params[:cover])

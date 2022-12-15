@@ -117,13 +117,12 @@ export function UploadDropzone() {
     formData.set("permalink", permalink.trim());
     formData.set("description", formValues.description.trim());
     formData.set("caption", formValues.caption.trim());
-    formData.set("privacy", formValues.privacy);
+    formData.set("privacy", formValues.privacy.trim());
     formData.set("genre_id", parseInt(formValues.genre_id, 10));
     formData.set("upload", file, file.name);
     formData.set("tags", JSON.stringify(tagsDisplay));
 
     coverImage && formData.set("cover", coverImage, coverImage.name);
-
     dispatch(uploadNewTrack(formData));
     // TODO:
     setSuccess(true);
