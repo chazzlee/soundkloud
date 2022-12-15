@@ -302,14 +302,17 @@ export function UploadDropzone() {
                       style={{
                         fontSize: "14px",
                         color: "#333",
-                        marginBottom: "24px",
+                        marginBottom: "16px",
                       }}
                     >
                       Upload complete.
                     </p>
                     <Link
                       to={`/${uploadedTrack?.uploader?.slug}/${uploadedTrack?.permalink}`}
-                      style={{ fontSize: "14px", color: "var(--link-blue)" }}
+                      style={{
+                        fontSize: "14px",
+                        color: "var(--link-blue)",
+                      }}
                     >
                       Go to your track
                     </Link>

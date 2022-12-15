@@ -181,3 +181,5 @@ export const selectTracksLoading = (state) => state.tracks.loading;
 export const selectHasTracksLoaded = (state) => state.tracks.loaded;
 
 export const selectCurrentTrack = (state) => state.tracks.current;
+export const selectUserTracks = (state) =>
+  Object.values(state.tracks.entities ?? {});

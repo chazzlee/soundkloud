@@ -37,6 +37,9 @@ export function DiscoverPage() {
   const danceEdmTracks = useSelector(selectDiscoverListByGenre("danceEdm"));
   const drumNBassTracks = useSelector(selectDiscoverListByGenre("drumNBass"));
   const metalTracks = useSelector(selectDiscoverListByGenre("metal"));
+  const userTracks = useSelector((state) =>
+    Object.values(state.tracks.entities)
+  );
 
   useEffect(() => {
     if (!discoverLoaded) {
@@ -92,6 +95,12 @@ export function DiscoverPage() {
               Discover Tracks and Playlists
             </h1>
           )}
+          {currentUser && (
+            <CarouselSlider
+              title={"Your uploaded tracks"}
+              slides={userTracks}
+            />
+          )}
           <CarouselSlider
             title={currentUser ? "More of what you like" : "Charts: Top 50"}
             slides={mostPlayed}
@@ -101,6 +110,7 @@ export function DiscoverPage() {
                 : "The most played tracks on SoundKloud this week"
             }
           />
+
           <CarouselSlider
             title={currentUser ? "Recently Played" : "Charts: New & hot"}
             slides={recentlyPlayed}

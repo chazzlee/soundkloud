@@ -161,7 +161,10 @@ export function TopNavigation() {
                     </button>
                     {profileDropdownOpen ? (
                       <div className={styles.profileDropdown}>
-                        <NavLink className={styles.profileDropdownBtn} to={`/`}>
+                        <NavLink
+                          className={styles.profileDropdownBtn}
+                          to={`/${currentUser?.slug}`}
+                        >
                           <div
                             style={{ marginRight: "4px", paddingLeft: "8px" }}
                           >

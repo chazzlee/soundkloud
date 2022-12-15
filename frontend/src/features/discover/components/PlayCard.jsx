@@ -9,7 +9,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
   return (
     <>
       <div
-        style={{ position: "relative" }}
+        style={{ position: "relative", width: "100%" }}
         onMouseEnter={() => setShowPlay(true)}
         onMouseLeave={() => setShowPlay(false)}
       >
@@ -20,8 +20,8 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
           }
           style={{
             objectFit: "cover",
-            width: "90%",
-            height: "90%",
+            width: "174px",
+            height: "174px",
             filter: showPlay ? "brightness(90%)" : "none",
             transition: "filter ease-in 60ms",
           }}

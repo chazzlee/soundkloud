@@ -3,4 +3,5 @@
 json.user do
   json.extract! user, :id, :email
   json.extract! user.profile, :display_name, :age, :gender, :location, :slug
+  json.photo user.profile.photo.url
 end

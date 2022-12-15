@@ -29,12 +29,6 @@
   width: 60px;
 }
 
-h1,
-h2,
-p {
-  margin: 0;
-}
-
 .heading {
   margin-left: 12px;
   display: flex;

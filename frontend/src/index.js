@@ -14,6 +14,7 @@ import { DiscoverPage } from "./features/discover/components/DiscoverPage";
 import { LogoutPage } from "./features/auth/components/LogoutPage";
 import { TrackShowPage } from "./features/tracks/components/TrackShowPage";
 import { UploadNewTrackPage } from "./features/tracks/components/UploadNewTrackPage";
+import { UserProfilePage } from "./features/profiles/components/UserProfilePage";
 
 const store = configureStore();
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "/discover", element: <DiscoverPage /> },
       { path: "/:user/:trackSlug", element: <TrackShowPage /> },
       { path: "/upload", element: <UploadNewTrackPage /> },
+      { path: "/:slug", element: <UserProfilePage /> },
       { path: "/logout", element: <LogoutPage /> },
     ],
   },
