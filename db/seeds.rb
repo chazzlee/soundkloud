@@ -2,21 +2,21 @@
 
 puts 'Destroying tables...'
 
-# Genre.destroy_all
-# User.destroy_all
-# Profile.destroy_all
-# Track.destroy_all
-# Reply.destroy_all
-# PopularPlay.destroy_all
-# RecentPlay.destroy_all
-# Tag.destroy_all
+Genre.destroy_all
+User.destroy_all
+Profile.destroy_all
+Track.destroy_all
+Reply.destroy_all
+PopularPlay.destroy_all
+RecentPlay.destroy_all
+Tag.destroy_all
 
-# puts 'Resetting primary keys...'
-# %w[tags recent_plays popular_plays genres replies users profiles tracks].each do |table_name|
-#   ApplicationRecord.connection.reset_pk_sequence!(table_name)
-# end
+puts 'Resetting primary keys...'
+%w[tags recent_plays popular_plays genres replies users profiles tracks].each do |table_name|
+  ApplicationRecord.connection.reset_pk_sequence!(table_name)
+end
 
-# puts 'Creating seed data...'
+puts 'Creating seed data...'
 
 def create_genres
   Genre.create!(name: 'none', label: 'None')
@@ -63,17 +63,17 @@ demo_profile = Profile.create!(age: 100, gender: 'none', display_name: 'Demo Use
 other_user = User.create!(email: 'jane@demo.com', password: 'password')
 other_profile = Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other_user)
 
-# 10.times do
-#   user = User.create!(email: Faker::Internet.email, password: 'password')
-#   Profile.create!(
-#     age: rand(100),
-#     gender: genders.sample,
-#     display_name: Faker::Internet.username(specifier: 3..10),
-#     user:
-#   )
-# end
+10.times do
+  user = User.create!(email: Faker::Internet.email, password: 'password')
+  Profile.create!(
+    age: rand(100),
+    gender: genders.sample,
+    display_name: Faker::Internet.username(specifier: 3..10),
+    user:
+  )
+end
 
-2.times do |_n|
+2.times do |n|
   title = Faker::Music::PearlJam.song
   track = Track.new(
     title:,
@@ -85,48 +85,47 @@ other_profile = Profile.create!(age: 34, gender: 'female', display_name: 'Jane D
   )
   track.user = other_user
   track.genre = genres.sample
-  # track.cover.attach(
-  #   io: URI.open(
-  #     'https://soundkloud-seeds.s3.amazonaws.com/(2002)+When+Dream+and+Day+Unite+%5BRemastered%5D.jpg'
-  #   ),
-  #   filename: "cover_#{n + 1}"
-  # )
+  track.cover.attach(
+    io: URI.open(
+      'https://soundkloud-seeds.s3.amazonaws.com/(2002)+When+Dream+and+Day+Unite+%5BRemastered%5D.jpg'
+    ),
+    filename: "cover_#{n + 1}"
+  )
   track.save!
 end
 
-# 200.times do |_n|
-#   title = Faker::Music::RockBand.song
-#   track = Track.new(
-#     title:,
-#     artist: Faker::Music::RockBand.name,
-#     permalink: "http://localhost:5000/#{demo_profile.slug}/#{title.parameterize}",
-#     description: Faker::Quote.matz,
-#     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
-#     privacy: %w[public private].sample
-#   )
-#   track.user = demo_user
-#   track.genre = [genre1, genre2, genre3, genre4, genre5, genre6, genre7, genre8, genre9, genre10, genre11, genre12,
-#                  genre13].sample
-#   track.save!
-# end
+200.times do |_n|
+  title = Faker::Music::RockBand.song
+  track = Track.new(
+    title:,
+    artist: Faker::Music::RockBand.name,
+    permalink: "http://localhost:5000/#{demo_profile.slug}/#{title.parameterize}",
+    description: Faker::Quote.matz,
+    caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
+    privacy: %w[public private].sample
+  )
+  track.user = demo_user
+  track.genre = genres.sample
+  track.save!
+end
 
-# 100.times do
-#   demo_user.play_track(Track.all.sample)
-#   other_user.play_track(Track.all.sample)
-# end
+100.times do
+  demo_user.play_track(Track.all.sample)
+  other_user.play_track(Track.all.sample)
+end
 
-# 20.times do
-#   Track.limit(10).each do |track|
-#     demo_user.play_track(track)
-#     other_user.play_track(track)
-#   end
-# end
+20.times do
+  Track.limit(10).each do |track|
+    demo_user.play_track(track)
+    other_user.play_track(track)
+  end
+end
 
-# 10.times do
-#   reply = Reply.new(body: Faker::Quote.matz)
-#   reply.user = User.all.sample
-#   reply.track = Track.limit(16).sample
-#   reply.save!
-# end
+10.times do
+  reply = Reply.new(body: Faker::Quote.matz)
+  reply.user = User.all.sample
+  reply.track = Track.limit(16).sample
+  reply.save!
+end
 
 puts 'Finished'

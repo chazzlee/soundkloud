@@ -5,7 +5,6 @@ import { authReducer } from "../features/auth/store";
 import { tracksReducer } from "../features/tracks/store";
 import { genresReducer } from "../features/genres/store";
 import { discoverReducer } from "../features/discover/store";
-// import { repliesReducer } from "../features/replies/store";
 
 const rootReducer = combineReducers({
   auth: authReducer,

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     post '/user', to: 'users#check'
     resources :users, only: %i[show create] do
-      resources :tracks, only: [:index]
+      resources :tracks, only: %i[index update]
     end
 
     # TODO: move to users/...

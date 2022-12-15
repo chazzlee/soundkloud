@@ -20,7 +20,7 @@ export function ModalProvider({ children }) {
   );
 }
 
-export function Modal({ onClose, children }) {
+export function Modal({ onClose, children, className = "" }) {
   useEffect(() => {
     const closeOnEsc = (e) => {
       if (e.key === "Escape") {
@@ -42,7 +42,7 @@ export function Modal({ onClose, children }) {
   return createPortal(
     <div className={styles.modal}>
       <div className={styles.modalBackground} onClick={onClose} />
-      <div className={styles.modalContent}>{children}</div>
+      <div className={`${styles.modalContent} ${className}`}>{children}</div>
     </div>,
     modalNode
   );

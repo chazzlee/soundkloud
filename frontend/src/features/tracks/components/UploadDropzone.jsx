@@ -16,7 +16,6 @@ import { selectCurrentUser } from "../../auth/store";
 import { Spinner } from "../../../components/Spinner";
 import { useRef } from "react";
 import { MdContentCopy } from "react-icons/md";
-import { wait } from "../../../utils/wait";
 
 const initialValues = {
   playlist: false,
@@ -571,6 +570,7 @@ export function UploadDropzone() {
                         style={{ marginRight: "8px" }}
                         value="public"
                         onChange={handleInputChange}
+                        checked={formValues.privacy === "public"}
                       />
                       <div>
                         <label className={styles.label} htmlFor="public">
@@ -589,6 +589,7 @@ export function UploadDropzone() {
                         style={{ marginRight: "8px" }}
                         value="private"
                         onChange={handleInputChange}
+                        checked={formValues.privacy === "private"}
                       />
                       <label className={styles.label} htmlFor="private">
                         Private

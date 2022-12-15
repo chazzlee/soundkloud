@@ -13,8 +13,9 @@ const FETCH_TRACK_FAILED = "tracks/fetchTrackFailed";
 const UPLOAD_TRACK_START = "tracks/uploadTrackStart";
 const UPLOAD_TRACK_SUCCESS = "tracks/uploadTrackSuccess";
 const UPLOAD_TRACK_FAILED = "tracks/uploadTrackFailed";
-// const REMOVE_TRACK = "tracks/trackRemoved";
-// const UPDATE_TRACK = "tracks/trackUpdated";
+
+const UPDATE_TRACK_START = "tracks/updateTrackInitiate";
+const UPDATE_TRACK_SUCCESS = "tracks/updateTrackSuccess";
 
 const REPLY_TO_TRACK_SUCCESS = "replies/replyToTrackSuccess";
 
@@ -30,6 +31,14 @@ const uploadTrackSuccess = (track) => ({
 //   payload: error,
 // });
 
+const updateTrackInitiate = () => ({
+  type: UPDATE_TRACK_START,
+});
+const updateTrackSuccess = (track) => ({
+  type: UPDATE_TRACK_SUCCESS,
+  payload: track,
+});
+
 const replyToTrackSuccess = (reply) => ({
   type: REPLY_TO_TRACK_SUCCESS,
   payload: reply,
@@ -38,10 +47,6 @@ const replyToTrackSuccess = (reply) => ({
 // const trackRemoved = (trackId) => ({
 //   type: REMOVE_TRACK,
 //   payload: trackId,
-// });
-// const trackUpdated = (track) => ({
-//   type: UPDATE_TRACK,
-//   payload: track,
 // });
 
 const fetchTracksInitiate = () => ({ type: FETCH_TRACKS_START });
@@ -93,6 +98,17 @@ export const uploadNewTrack = (track) => async (dispatch) => {
     .then((res) => res.json())
     .then((data) => dispatch(uploadTrackSuccess(data)));
   // .catch((err) => dispatch(uploadTrackFailed(err)));
+};
+
+export const updateTrackAsync = (updatedTrack) => async (dispatch) => {
+  dispatch(updateTrackInitiate());
+  try {
+    const response = await TracksApi.updateOne(updatedTrack);
+    const data = await response.json();
+    dispatch(updateTrackSuccess(data));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const replyToTrackAsync = (trackId, reply) => async (dispatch) => {
@@ -157,13 +173,24 @@ export const tracksReducer = produce((state = initialState, action) => {
     case UPLOAD_TRACK_SUCCESS: {
       state.error = null;
       state.loading = false;
-      state.entities = state.entities[action.payload.id] = action.payload;
+      state.entities[action.payload.id] = action.payload;
       state.current = action.payload;
       break;
     }
     case UPLOAD_TRACK_FAILED: {
       state.error = action.payload;
       state.loading = false;
+      break;
+    }
+    case UPDATE_TRACK_START: {
+      state.error = null;
+      state.loading = true;
+      break;
+    }
+    case UPDATE_TRACK_SUCCESS: {
+      state.loading = false;
+      state.error = null;
+      state.entities[action.payload.id] = action.payload;
       break;
     }
     case REPLY_TO_TRACK_SUCCESS: {

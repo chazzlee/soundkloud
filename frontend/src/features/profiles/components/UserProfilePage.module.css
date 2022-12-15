@@ -125,7 +125,18 @@
   width: 36px;
   padding-left: 4px;
   padding-top: 4px;
-  margin-right: 6px;
+  margin-right: 12px;
+}
+
+.pauseBtn {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  color: white;
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  padding-top: 4px;
+  margin-right: 12px;
 }
 
 .playBtn:hover {
@@ -167,4 +178,20 @@
   color: #fff;
   text-align: center;
   border-radius: 4px;
+}
+
+.smBtn {
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  border-radius: 3px;
+  font-size: 11px;
+  padding: 2px 9px 2px 8px;
+  height: 22px;
+  line-height: 16px;
+}
+
+.smBtn:hover {
+  border-color: #ccc;
+  border-radius: 3px;
+  transition: border-color ease-in 120ms;
 }

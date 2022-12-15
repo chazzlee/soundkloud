@@ -221,9 +221,6 @@ textarea::placeholder {
   align-items: flex-start;
 }
 
-.formActions {
-}
-
 .btn {
   font-size: 14px;
   color: #fff;

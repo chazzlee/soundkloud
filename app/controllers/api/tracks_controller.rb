@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::TracksController < ApplicationController
+  before_action :require_logged_in, only: %i[index destroy]
+
   def index
     tracks = current_user.tracks.limit(16)
     render tempalte: 'api/tracks/index', locals: { tracks: }
@@ -41,11 +43,35 @@ class Api::TracksController < ApplicationController
     end
   end
 
-  # TODO: keep getting unpermitted params :format
-  # private
-  # def track_params
-  #   params
-  #     .permit(:title, :artist, :permalink, :description, :caption, :privacy, :genre_id, :upload)
-  #   params.permit(:format)
-  # end
+  def update
+    track = Track.find(params[:id])
+
+    if track.user_id == current_user.id
+      track.title = params[:title]
+      track.artist = params[:artist]
+      track.permalink = params[:permalink]
+      track.description = params[:description]
+      track.caption = params[:caption]
+      track.privacy = params[:privacy]
+      track.genre_id = params[:genre_id]
+      if params[:cover]
+        track.cover.purge if track.cover.attached?
+        track.cover.attach(params[:cover])
+      end
+
+      if track.save
+        render template: 'api/tracks/show', locals: { track: }, status: :created
+      else
+        render json: { errors: track.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+  end
 end
+
+# TODO: keep getting unpermitted params :format
+# private
+
+# def track_params
+#   params
+#     .permit(:title, :artist, :permalink, :description, :caption, :privacy, :genre_id, :upload)
+# end

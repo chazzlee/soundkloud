@@ -16,4 +16,14 @@ export const TracksApi = {
       body: track,
     });
   },
+  updateOne(track) {
+    console.log(track);
+    return csrfFetch(
+      `/api/users/${track.get("uploader")}/tracks/${track.get("id")}`,
+      {
+        method: "PUT",
+        body: track,
+      }
+    );
+  },
 };
