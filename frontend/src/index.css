@@ -62,7 +62,6 @@ button {
 }
 
 .landing-page {
-  height: 100%;
   background-color: var(--bg-light);
   color: var(--black);
   font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Regular",
