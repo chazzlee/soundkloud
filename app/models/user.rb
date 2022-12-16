@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_one :profile
-  has_many :tracks
+  has_one :profile, dependent: :destroy
+  has_many :tracks, dependent: :destroy
 
-  has_many :recent_plays
+  has_many :recent_plays, dependent: :destroy
   has_many :recently_played_tracks, through: :recent_plays, source: :track
 
-  has_many :popular_plays
+  has_many :popular_plays, dependent: :destroy
   has_many :most_played_tracks, through: :popular_plays, source: :track
 
   has_secure_password
@@ -20,7 +20,7 @@ class User < ApplicationRecord
 
   delegate :slug, to: :profile
 
-  has_many :replies
+  has_many :replies, dependent: :destroy
 
   def play_track(track)
     recent_play = RecentPlay.find_or_initialize_by(user: self, track:)

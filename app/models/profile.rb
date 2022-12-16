@@ -10,5 +10,5 @@ class Profile < ApplicationRecord
   validates :age, numericality: { only_integer: true }
   validates :gender, presence: true # TODO: (enum 4 choices --male,female,custom,none)
 
-  has_one_attached :photo
+  has_one_attached :photo, dependent: :destroy
 end
