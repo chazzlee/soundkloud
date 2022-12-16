@@ -86,8 +86,7 @@ export function TrackShowPage() {
         height: 100,
       });
       wavesurfer.current.load(
-        "https://cors-anywhere.herokuapp.com/" +
-          "https://soundkloud-seeds.s3.amazonaws.com/tracks/05+-+No+Will+to+Live.mp3"
+        "https://cors-anywhere.herokuapp.com/https://soundkloud-seeds.s3.amazonaws.com/tracks/05+-+No+Will+to+Live.mp3"
       );
       // wavesurfer.current.load(
       //   "https://cors-anywhere.herokuapp.com/" + track.upload

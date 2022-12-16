@@ -1,24 +1,14 @@
-# README
+## Soundkloud - Soundcloud Clone
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+SoundKloud - Soundcloud clone
 
-Things you may want to cover:
+SoundKloud is a fullstack clone of Soundcloud, a social media app where users can share their music.
+SoundKloud is built with RubyOnRails, Postgresql, AWS S3, and ReactJS.
+Users are able to upload tracks, edit track data, browse tracks, and remove an uploaded track.
+Once a track is posted, users are also able to comment on tracks.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+[![Discover Page](https://i.imgur.com/7VIHraO.png)]
+[![Upload Page Part 1](https://i.imgur.com/nfvhohQ.png)]
+[![Upload Page Part 2](https://i.imgur.com/UHUoL7g.png)]
+[![Upload Page Part 3](https://i.imgur.com/DDM8Eax.png)]
+[![Track Show Page](https://i.imgur.com/G0oVrij.png)]
