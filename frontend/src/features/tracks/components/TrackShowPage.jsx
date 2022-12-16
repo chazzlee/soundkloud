@@ -85,7 +85,9 @@ export function TrackShowPage() {
         responsive: true,
         height: 100,
       });
-      wavesurfer.current.load(track.upload);
+      wavesurfer.current.load(
+        "https://cors-anywhere.herokuapp.com/" + track.upload
+      );
     }
   }, [track]);
 

@@ -34,7 +34,9 @@ export function TrackCard({ track }) {
         responsive: true,
         height: 55,
       });
-      wavesurfer.current.load(track.upload);
+      wavesurfer.current.load(
+        "https://cors-anywhere.herokuapp.com/" + track.upload
+      );
     }
   }, [track]);
 
