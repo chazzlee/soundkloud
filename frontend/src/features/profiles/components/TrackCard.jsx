@@ -5,15 +5,22 @@ import WaveSurfer from "wavesurfer.js";
 import styles from "./UserProfilePage.module.css";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { BiLockAlt } from "react-icons/bi";
+import { IoTrashBinOutline } from "react-icons/io5";
 import { EditTrackModal } from "./EditTrackModal";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { destroyTrackAsync } from "../../tracks/store";
 
 export function TrackCard({ track }) {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const handleRemove = (trackId) => {
+    dispatch(destroyTrackAsync(trackId));
+  };
 
   useEffect(() => {
     if (!wavesurfer.current && waveformRef.current) {
@@ -22,16 +29,14 @@ export function TrackCard({ track }) {
         waveColor: "#333",
         progressColor: "#f50",
         cursorColor: "transparent",
-        barWidth: 3,
+        barWidth: 2,
         barRadius: 3,
         responsive: true,
-        height: 80,
+        height: 55,
       });
-      wavesurfer.current.load(
-        "https://cors-anywhere.herokuapp.com/https://download.samplelib.com/mp3/sample-15s.mp3"
-      );
+      wavesurfer.current.load(track.upload);
     }
-  }, []);
+  }, [track]);
 
   return (
     <>
@@ -76,12 +81,12 @@ export function TrackCard({ track }) {
             <div className={styles.trackCardInfo}>
               <div className={styles.trackHeaderLeft}>
                 <h4>{track.uploader.displayName}</h4>
-                <p>
+                <p style={{ width: "100%" }}>
                   {track.title} - {track.artist}
                 </p>
               </div>
               <div className={styles.trackHeaderRight}>
-                <p style={{ marginBottom: "3px" }}>
+                <p style={{ marginBottom: "3px", minWidth: "100px" }}>
                   {formatDistanceToNow(new Date(track.createdAt), {
                     addSuffix: true,
                   })}
@@ -115,6 +120,20 @@ export function TrackCard({ track }) {
                 }}
               />
               Edit
+            </button>
+            <button
+              className={styles.smBtn}
+              style={{ marginLeft: "4px", color: "red" }}
+              onClick={() => handleRemove(track.id)}
+            >
+              <IoTrashBinOutline
+                style={{
+                  verticalAlign: "sub",
+                  fontSize: "12px",
+                  marginRight: "4px",
+                }}
+              />
+              Remove
             </button>
           </div>
         </div>

@@ -18,6 +18,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
   const [tagInput, setTagInput] = useState("");
   const [tagsDisplay, setTagsDisplay] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+  // const [errors, setErrors] = useState({ title: "", artist: "" });
 
   const [formValues, setFormValues] = useState({
     playlist: false,
@@ -66,8 +67,15 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!formValues.artist || !title) {
+      // setErrors({
+      //   title: "Title is required",
+      //   artist: "Artist is required",
+      // });
+      return;
+    }
 
+    setSubmitted(true);
     const formData = new FormData();
     formData.set("id", track.id);
     formData.set("uploader", track.uploader.id);
@@ -159,7 +167,9 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
                     name="permalink"
                     disabled
                     value={
-                      `http://localhost:3000/${currentUser.slug}/` + permalink
+                      process.env.NODE_ENV === "development"
+                        ? `http://localhost:3000/${currentUser.slug}/${permalink}`
+                        : `https://soundkloud-rails.onrender.com/${currentUser.slug}/${permalink}`
                     }
                   />
                 </div>
@@ -283,7 +293,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
                     <button
                       type="submit"
                       className={`${styles.btn}`}
-                      // disabled={submitted}
+                      disabled={submitted}
                     >
                       Save changes
                     </button>

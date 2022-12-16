@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     end
 
     resource :session, only: %i[create show destroy]
-    resources :tracks, only: %i[create] do
+    resources :tracks, only: %i[create destroy] do
       resources :replies, only: %i[index create]
     end
     resources :replies, only: %i[destroy]

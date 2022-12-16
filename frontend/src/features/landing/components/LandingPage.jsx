@@ -8,13 +8,17 @@ import { carousels } from "../data";
 import { Footer } from "./Footer";
 import { TrendingSection } from "./TrendingSection";
 import { Banner } from "./Banner";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../auth/store";
 
 //TODO: combine modals/break out into components/banner slider transitions/login modal dropin transition
 export function LandingPage() {
+  const currentUser = useSelector(selectCurrentUser);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
+  const [from, setFrom] = useState("/discover");
 
   return (
     <>
@@ -37,12 +41,22 @@ export function LandingPage() {
                 Create account
               </button>
               <a href="#artists" className={styles.artistsLink}>
-                For Artists
+                {/* For Artists */}
               </a>
             </div>
           </header>
 
-          <Banner carousels={carousels} />
+          <Banner
+            carousels={carousels}
+            onClick={() => {
+              if (currentUser) {
+                navigate("/upload");
+              } else {
+                setAuthModalOpen(true);
+                setFrom("/upload");
+              }
+            }}
+          />
 
           <section className={styles.searchContainer}>
             <div className={styles.inputContainer}>
@@ -72,7 +86,19 @@ export function LandingPage() {
                 </span>
               </div>
               <span className={styles.or}>or</span>
-              <button className={styles.uploadBtn}>Upload your own</button>
+              <button
+                className={styles.uploadBtn}
+                onClick={() => {
+                  if (currentUser) {
+                    navigate("/upload");
+                  } else {
+                    setAuthModalOpen(true);
+                    setFrom("/upload");
+                  }
+                }}
+              >
+                Upload your own
+              </button>
             </div>
           </section>
 
@@ -154,7 +180,7 @@ export function LandingPage() {
           onClose={() => setAuthModalOpen(false)}
           onSuccess={() => {
             setAuthModalOpen(false);
-            navigate("/discover");
+            navigate(from);
           }}
         />
       ) : null}

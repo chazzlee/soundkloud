@@ -43,7 +43,7 @@ export function TopNavigation() {
     setSettingsDropdownOpen(false);
     dispatch(logoutUser()).then((response) => {
       if (response.ok) {
-        navigate("/logout");
+        navigate("/");
       }
     });
   };

@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { IoMdPlay } from "react-icons/io";
+import { useDispatch } from "react-redux";
 import { wait } from "../../../utils/wait";
+import { startNowPlaying } from "../../tracks/store";
 import styles from "./LandingPage.module.css";
 
 export function TrendingListItem({ playlist }) {
   const [showPlay, setShowPlay] = useState(false);
+  const dispatch = useDispatch();
+  const handlePlay = (track) => {
+    dispatch(startNowPlaying(track));
+  };
 
   return (
     <div
@@ -37,6 +43,11 @@ export function TrendingListItem({ playlist }) {
               justifyContent: "center",
               alignItems: "center",
             }}
+            onClick={() =>
+              handlePlay(
+                "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Foul+Body+Autopsy.mp3"
+              )
+            }
           >
             <IoMdPlay
               style={{

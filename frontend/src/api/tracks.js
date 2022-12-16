@@ -17,7 +17,6 @@ export const TracksApi = {
     });
   },
   updateOne(track) {
-    console.log(track);
     return csrfFetch(
       `/api/users/${track.get("uploader")}/tracks/${track.get("id")}`,
       {
@@ -25,5 +24,8 @@ export const TracksApi = {
         body: track,
       }
     );
+  },
+  destroyOne(trackId) {
+    return csrfFetch(`/api/tracks/${trackId}`, { method: "DELETE" });
   },
 };

@@ -52,8 +52,9 @@
   width: 50px;
   border: 1px solid transparent;
   border-radius: 50%;
-  background: url("https://i.discogs.com/RuS30A139LitrvN1IiOIcdUd0LvslrX0w38XWABPREY/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE4ODUw/NzAtMTQ1NDUwMDg3/Ny02MjU3LmpwZWc.jpeg");
+  background: #333;
   background-size: cover;
+  background-position: center;
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
   margin-bottom: 4px;
 }

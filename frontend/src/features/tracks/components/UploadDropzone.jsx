@@ -486,7 +486,9 @@ export function UploadDropzone() {
                       name="permalink"
                       disabled
                       value={
-                        `http://localhost:3000/${currentUser.slug}/` + permalink
+                        process.env.NODE_ENV === "development"
+                          ? `http://localhost:3000/${currentUser.slug}/${permalink}`
+                          : `https://soundkloud-rails.onrender.com/${currentUser.slug}/${permalink}`
                       }
                     />
                   </div>

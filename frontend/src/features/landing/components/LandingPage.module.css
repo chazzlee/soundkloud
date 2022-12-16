@@ -94,7 +94,6 @@
   display: block;
   font-size: 18px;
   width: 164px;
-  height: 46px;
   padding: 12px 15px 10px 15px;
   color: #fff;
   background-color: transparent;
@@ -105,8 +104,7 @@
 .ctaRight {
   display: block;
   font-size: 18px;
-  height: 46px;
-  padding: 0px 15px;
+  padding: 12px 15px 10px 15px;
   color: #fff;
   background-color: var(--primary-orange);
   border: 1px solid var(--primary-orange);

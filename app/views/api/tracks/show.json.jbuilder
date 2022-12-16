@@ -10,6 +10,8 @@ json.uploader do
   json.display_name track.user.profile.display_name
   json.photo track.user.profile.photo.url
 end
+# json.upload track.upload.url
+json.upload Rails.env.development? ? 'http://localhost:5000/tracks/saint-phase2.mp3' : 'https://soundkloud-rails.onrender.com/tracks/saint-phase3.mp3'
 json.replies track.replies.order(created_at: :desc) do |reply|
   json.id reply.id
   json.created_at reply.created_at

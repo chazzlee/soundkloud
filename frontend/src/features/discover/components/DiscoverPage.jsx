@@ -12,8 +12,15 @@ import {
 } from "../store";
 import { Spinner } from "../../../components/Spinner";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
-import { GrRefresh } from "react-icons/gr";
+// import { GrRefresh } from "react-icons/gr";
 import { fetchAllTracksByUserAsync } from "../../tracks/store";
+import { sampleArtistsToFollow } from "../data";
+
+const shuffle = (array) => {
+  return array.sort(() => Math.random() - 0.5);
+};
+const artistsToFollow = shuffle(sampleArtistsToFollow).slice(0, 8);
+const newTracks = shuffle(sampleArtistsToFollow).slice(0, 4);
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
@@ -151,26 +158,17 @@ export function DiscoverPage() {
               New tracks
             </h3>
             <div className={styles.avatarRow}>
-              <div className={styles.avatar}>
-                <div className={styles.artistAvatar} />
-                <p>Slayer</p>
-              </div>
-              <div className={styles.avatar}>
-                <div className={styles.artistAvatar} />
-                <p>Slayer</p>
-              </div>
-              <div className={styles.avatar}>
-                <div className={styles.artistAvatar} />
-                <p>Slayer</p>
-              </div>
-              <div className={styles.avatar}>
-                <div className={styles.artistAvatar} />
-                <p>Slayer</p>
-              </div>
-              <div className={styles.avatar}>
-                <div className={styles.artistAvatar} />
-                <p>Slayer</p>
-              </div>
+              {newTracks.map((artist) => (
+                <div className={styles.avatar} key={artist.id}>
+                  <div
+                    className={styles.artistAvatar}
+                    style={{
+                      background: `center / cover no-repeat url(${artist.avatar})`,
+                    }}
+                  />
+                  <p style={{ fontSize: "12px" }}>{artist.name}</p>
+                </div>
+              ))}
             </div>
             <h3
               className={styles.asideHeading}
@@ -190,7 +188,7 @@ export function DiscoverPage() {
                 />
                 Artists you should follow
               </div>
-              <div>
+              {/* <div>
                 <GrRefresh
                   style={{
                     marginRight: "4px",
@@ -199,24 +197,62 @@ export function DiscoverPage() {
                   }}
                 />
                 Refresh list
-              </div>
+              </div> */}
             </h3>
-            <div className={styles.artistCardHorizontal}>
-              <div className={styles.artistAvatar} />
-              <div className={styles.cardContent}>
-                <p className={styles.artistName}>Silence</p>
-                <div className={styles.cardFooter}>
-                  {/* TODO: */}
-                  <div className={styles.insights}>
-                    <p>I 34324</p>
-                    <p>I 4324</p>
+            {artistsToFollow.map((artist) => (
+              <div className={styles.artistCardHorizontal} key={artist.id}>
+                <div
+                  className={styles.artistAvatar}
+                  style={{
+                    background: `center / cover no-repeat url(${artist.avatar})`,
+                  }}
+                />
+                <div className={styles.cardContent}>
+                  <p className={styles.artistName}>{artist.name}</p>
+                  <div className={styles.cardFooter}>
+                    {/* TODO: */}
+                    <div className={styles.insights}>
+                      <p style={{ marginRight: "4px" }}>
+                        Likes: {artist.likes}
+                      </p>
+                      <p>Follows: {artist.follows}</p>
+                    </div>
+                    {/* <p className={styles.followBtn}>follow</p> */}
                   </div>
-                  <p className={styles.followBtn}>follow</p>
                 </div>
               </div>
+            ))}
+            <div style={{ paddingTop: "20px" }}>
+              <a
+                href="https://github.com/chazzlee/soundkloud"
+                style={{
+                  padding: "6px 14px",
+                  background: "#333",
+                  color: "white",
+                  borderRadius: "3px",
+                  fontSize: "14px",
+                  marginRight: "4px",
+                }}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Github
+              </a>
+              <a
+                href="https://linkedin.com"
+                style={{
+                  padding: "6px 14px",
+                  background: "#0073b1",
+                  color: "white",
+                  borderRadius: "3px",
+                  fontSize: "14px",
+                }}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                LinkedIn
+              </a>
             </div>
-            <div className={styles.artistCardHorizontal}></div>
-            <div className={styles.artistCardHorizontal}></div>
           </div>
         </div>
       </main>

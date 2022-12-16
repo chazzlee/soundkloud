@@ -17,7 +17,15 @@ const UPLOAD_TRACK_FAILED = "tracks/uploadTrackFailed";
 const UPDATE_TRACK_START = "tracks/updateTrackInitiate";
 const UPDATE_TRACK_SUCCESS = "tracks/updateTrackSuccess";
 
+const DESTROY_TRACK_SUCCESS = "tracks/destroyTrackSuccess";
+const NOW_PLAYING = "tracks/nowPlaying";
+
 const REPLY_TO_TRACK_SUCCESS = "replies/replyToTrackSuccess";
+
+export const startNowPlaying = (track) => ({
+  type: NOW_PLAYING,
+  payload: track,
+});
 
 const uploadTrackInitiate = () => ({
   type: UPLOAD_TRACK_START,
@@ -26,10 +34,6 @@ const uploadTrackSuccess = (track) => ({
   type: UPLOAD_TRACK_SUCCESS,
   payload: track,
 });
-// const uploadTrackFailed = (error) => ({
-//   type: UPLOAD_TRACK_SUCCESS,
-//   payload: error,
-// });
 
 const updateTrackInitiate = () => ({
   type: UPDATE_TRACK_START,
@@ -39,15 +43,15 @@ const updateTrackSuccess = (track) => ({
   payload: track,
 });
 
+const destroyTrackSuccess = (trackId) => ({
+  type: DESTROY_TRACK_SUCCESS,
+  payload: trackId,
+});
+
 const replyToTrackSuccess = (reply) => ({
   type: REPLY_TO_TRACK_SUCCESS,
   payload: reply,
 });
-
-// const trackRemoved = (trackId) => ({
-//   type: REMOVE_TRACK,
-//   payload: trackId,
-// });
 
 const fetchTracksInitiate = () => ({ type: FETCH_TRACKS_START });
 const fetchTracksSuccess = (tracks) => ({
@@ -119,12 +123,20 @@ export const replyToTrackAsync = (trackId, reply) => async (dispatch) => {
   } catch (error) {}
 };
 
+export const destroyTrackAsync = (trackId) => async (dispatch) => {
+  try {
+    await TracksApi.destroyOne(trackId);
+    dispatch(destroyTrackSuccess(trackId));
+  } catch (error) {}
+};
+
 const initialState = {
   error: null,
   loading: false,
   loaded: false,
   entities: {},
   current: null,
+  nowPlaying: null,
   ids: [],
 };
 
@@ -197,6 +209,15 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.current.replies.unshift(action.payload);
       break;
     }
+    case DESTROY_TRACK_SUCCESS: {
+      delete state.entities[action.payload];
+      state.current = null;
+      break;
+    }
+    case NOW_PLAYING: {
+      state.nowPlaying = action.payload;
+      break;
+    }
     default:
       return state;
   }
@@ -210,3 +231,5 @@ export const selectHasTracksLoaded = (state) => state.tracks.loaded;
 export const selectCurrentTrack = (state) => state.tracks.current;
 export const selectUserTracks = (state) =>
   Object.values(state.tracks.entities ?? {});
+
+export const selectNowPlaying = (state) => state.tracks.nowPlaying;

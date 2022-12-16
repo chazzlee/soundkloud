@@ -59,42 +59,60 @@ genders = %w[male female custom none]
 
 demo_user = User.create!(email: 'demo@demo.com', password: 'password')
 demo_profile = Profile.create!(age: 100, gender: 'none', display_name: 'Demo User', user: demo_user)
-
+demo_profile.photo.attach(
+  io: URI.open('https://i1.sndcdn.com/avatars-000007873027-acd5vm-t200x200.jpg'),
+  filename: 'demo_cover.png'
+)
 other_user = User.create!(email: 'jane@demo.com', password: 'password')
-other_profile = Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other_user)
+Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other_user)
 
-10.times do
+10.times do |n|
   user = User.create!(email: Faker::Internet.email, password: 'password')
-  Profile.create!(
+  profile = Profile.create!(
     age: rand(100),
     gender: genders.sample,
     display_name: Faker::Internet.username(specifier: 3..10),
     user:
   )
+  # profile.photo.attach(
+  #   io: URI.open('https://www.metal-archives.com/images/4/4/1/2/441258.jpg'),
+  #   filename: "cover_#{n + 1}.jpg"
+  # )
 end
 
-2.times do |n|
+10.times do |n|
+  user = User.all.sample
   title = Faker::Music::PearlJam.song
   track = Track.new(
     title:,
     artist: Faker::Music::PearlJam.musician,
-    permalink: "http://localhost:5000/#{other_profile.slug}/#{title.parameterize}",
+    permalink: "http://localhost:5000/#{user.slug}/#{title.parameterize}",
     description: Faker::Quote.famous_last_words,
     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
     privacy: %w[public private].sample
   )
-  track.user = other_user
+  track.user = user
   track.genre = genres.sample
-  track.cover.attach(
-    io: URI.open(
-      'https://soundkloud-seeds.s3.amazonaws.com/(2002)+When+Dream+and+Day+Unite+%5BRemastered%5D.jpg'
-    ),
-    filename: "cover_#{n + 1}"
-  )
+  # track.cover.attach(
+  #   io: URI.open(
+  #     'https://retroscroll.cat/wp-content/uploads/2020/04/hiscoregirl_avatars_005.jpg'
+  #   ),
+  #   filename: "cover_#{n + 1}.jpg"
+  # )
+  # track.upload.attach(
+  #   io: URI.open('https://filesamples.com/samples/audio/mp3/sample1.mp3'),
+  #   filename: "upload_#{n + 1}.mp3"
+  # )
+  # track.cover.attach(
+  #   io: URI.open(
+  #     'https://soundkloud-seeds.s3.amazonaws.com/(2002)+When+Dream+and+Day+Unite+%5BRemastered%5D.jpg'
+  #   ),
+  #   filename: "cover_#{n + 1}"
+  # )
   track.save!
 end
 
-200.times do |_n|
+5.times do |n|
   title = Faker::Music::RockBand.song
   track = Track.new(
     title:,
@@ -104,20 +122,31 @@ end
     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
     privacy: %w[public private].sample
   )
+  # track.upload.attach(
+  #   io: URI.open('https://filesamples.com/samples/audio/mp3/sample1.mp3'),
+  #   filename: "upload_#{n + 1}.mp3"
+  # )
+  # track.cover.attach(
+  #   io: URI.open(
+  #     'https://www.metal-archives.com/images/4/4/1/2/441258.jpg'
+  #   ),
+  #   filename: "cover_#{n + 1}.jpg"
+  # )
   track.user = demo_user
   track.genre = genres.sample
   track.save!
 end
 
-100.times do
+10.times do
   demo_user.play_track(Track.all.sample)
   other_user.play_track(Track.all.sample)
 end
 
-20.times do
-  Track.limit(10).each do |track|
-    demo_user.play_track(track)
-    other_user.play_track(track)
+4.times do
+  Track.all.each do |track|
+    User.all.each do |user|
+      user.play_track(track)
+    end
   end
 end
 

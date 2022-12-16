@@ -77,6 +77,16 @@ class Api::TracksController < ApplicationController
       end
     end
   end
+
+  def destroy
+    track = Track.find(params[:id])
+    if track.user_id == current_user.id
+      track.destroy!
+      head :no_content
+    else
+      render json: { message: 'Cannot perform this action.' }, status: :forbidden
+    end
+  end
 end
 
 # TODO: keep getting unpermitted params :format
