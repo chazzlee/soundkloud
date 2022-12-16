@@ -54,7 +54,6 @@ def create_genres
 end
 
 genres = create_genres
-
 genders = %w[male female custom none]
 
 demo_user = User.create!(email: 'demo@demo.com', password: 'password')
@@ -66,7 +65,7 @@ demo_profile.photo.attach(
 other_user = User.create!(email: 'jane@demo.com', password: 'password')
 Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other_user)
 
-10.times do |n|
+10.times do |_n|
   user = User.create!(email: Faker::Internet.email, password: 'password')
   profile = Profile.create!(
     age: rand(100),
@@ -80,13 +79,13 @@ Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other
   # )
 end
 
-10.times do |n|
+100.times do |_n|
   user = User.all.sample
   title = Faker::Music::PearlJam.song
   track = Track.new(
     title:,
     artist: Faker::Music::PearlJam.musician,
-    permalink: "http://localhost:5000/#{user.slug}/#{title.parameterize}",
+    permalink: "https://soundkloud-rails.onrender.com/#{user.slug}/#{title.parameterize}",
     description: Faker::Quote.famous_last_words,
     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
     privacy: %w[public private].sample
@@ -112,7 +111,7 @@ end
   track.save!
 end
 
-5.times do |n|
+20.times do |_n|
   title = Faker::Music::RockBand.song
   track = Track.new(
     title:,
@@ -150,10 +149,10 @@ end
   end
 end
 
-10.times do
+100.times do
   reply = Reply.new(body: Faker::Quote.matz)
   reply.user = User.all.sample
-  reply.track = Track.limit(16).sample
+  reply.track = Track.all.sample
   reply.save!
 end
 
