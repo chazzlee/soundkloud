@@ -9,10 +9,8 @@ class Track < ApplicationRecord
 
   # FIXME:
   has_many :recent_plays, dependent: :destroy
-  # has_many :recently_played_by_user, through: :recent_plays, source: :user
 
   has_many :popular_plays, dependent: :destroy
-  # has_many :most_played_by_user, through: :popular_plays, source: :user
 
   has_one_attached :cover, dependent: :destroy
   has_one_attached :upload, dependent: :destroy

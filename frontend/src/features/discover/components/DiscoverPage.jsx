@@ -7,14 +7,19 @@ import {
   fetchDiscoverAsync,
   selectDiscoverLoaded,
   selectDiscoverListByType,
-  selectDiscoverListByGenre,
   selectDiscoverLoading,
+  selectDiscoverGroupedByGenres,
 } from "../store";
 import { Spinner } from "../../../components/Spinner";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
 // import { GrRefresh } from "react-icons/gr";
 import { fetchAllTracksByUserAsync } from "../../tracks/store";
 import { sampleArtistsToFollow } from "../data";
+import {
+  fetchAllGenres,
+  selectGenres,
+  selectGenresLoaded,
+} from "../../genres/store";
 
 const shuffle = (array) => {
   return array.sort(() => Math.random() - 0.5);
@@ -27,32 +32,29 @@ export function DiscoverPage() {
   const currentUser = useSelector(selectCurrentUser);
   const discoverLoading = useSelector(selectDiscoverLoading);
   const discoverLoaded = useSelector(selectDiscoverLoaded);
-  const mostPlayed = useSelector(selectDiscoverListByType("mostPlayed"));
-  const recentlyPlayed = useSelector(
-    selectDiscoverListByType("recentlyPlayed")
+  const genresLoaded = useSelector(selectGenresLoaded);
+  const mostPlayed = useSelector((state) =>
+    selectDiscoverListByType(state, "mostPlayed")
   );
-  const popTracks = useSelector(selectDiscoverListByGenre("pop"));
-  const rnbTracks = useSelector(selectDiscoverListByGenre("rnb"));
-  const technoTracks = useSelector(selectDiscoverListByGenre("techno"));
-  const classicalTracks = useSelector(selectDiscoverListByGenre("classical"));
-  const ambientTracks = useSelector(selectDiscoverListByGenre("ambient"));
-  const deepHouseTracks = useSelector(selectDiscoverListByGenre("deepHouse"));
-  const dubstepTracks = useSelector(selectDiscoverListByGenre("dubstep"));
-  const tranceTracks = useSelector(selectDiscoverListByGenre("trance"));
-  const trapTracks = useSelector(selectDiscoverListByGenre("trap"));
-  const pianoTracks = useSelector(selectDiscoverListByGenre("piano"));
-  const danceEdmTracks = useSelector(selectDiscoverListByGenre("danceEdm"));
-  const drumNBassTracks = useSelector(selectDiscoverListByGenre("drumNBass"));
-  const metalTracks = useSelector(selectDiscoverListByGenre("metal"));
+  const recentlyPlayed = useSelector((state) =>
+    selectDiscoverListByType(state, "recentlyPlayed")
+  );
   const userTracks = useSelector((state) =>
     Object.values(state.tracks.entities)
   );
+
+  const genres = useSelector(selectGenres);
+
+  const discoverGroupedByGenres = useSelector(selectDiscoverGroupedByGenres);
 
   useEffect(() => {
     if (!discoverLoaded) {
       dispatch(fetchDiscoverAsync());
     }
-  }, [dispatch, discoverLoaded]);
+    if (!genresLoaded) {
+      dispatch(fetchAllGenres());
+    }
+  }, [dispatch, discoverLoaded, genresLoaded]);
 
   useEffect(() => {
     if (currentUser) {
@@ -131,19 +133,14 @@ export function DiscoverPage() {
           <div></div>
           {/* TODO: Daily Drops?? */}
 
-          <CarouselSlider title="Pop" slides={popTracks} />
-          <CarouselSlider title="Ambient" slides={ambientTracks} />
-          <CarouselSlider title="Deep House" slides={deepHouseTracks} />
-          <CarouselSlider title="R & B" slides={rnbTracks} />
-          <CarouselSlider title="Heavy Metal" slides={metalTracks} />
-          <CarouselSlider title="Classical" slides={classicalTracks} />
-          <CarouselSlider title="EDM & Dance" slides={danceEdmTracks} />
-          <CarouselSlider title="Drum & Bass" slides={drumNBassTracks} />
-          <CarouselSlider title="Techno" slides={technoTracks} />
-          <CarouselSlider title="Trance" slides={tranceTracks} />
-          <CarouselSlider title="Dubstep" slides={dubstepTracks} />
-          <CarouselSlider title="Trap" slides={trapTracks} />
-          <CarouselSlider title="Piano" slides={pianoTracks} />
+          {/* Tracks by Genre */}
+          {discoverGroupedByGenres.map((group) => (
+            <CarouselSlider
+              key={group.genreName}
+              title={group.genreLabel}
+              slides={group.tracks}
+            />
+          ))}
         </div>
         <div className={styles.relative}>
           <div className={styles.columnAside}>

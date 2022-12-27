@@ -1,4 +1,5 @@
 import produce from "immer";
+import { createSelector } from "reselect";
 import { TracksApi } from "../../../api/tracks";
 
 const INITIATE_DISCOVER_REQUEST = "discover/requestInitiated";
@@ -54,16 +55,23 @@ export const discoverReducer = produce((state = initialState, action) => {
 
 export const selectDiscoverLoading = (state) => state.discover?.loading;
 export const selectDiscoverLoaded = (state) => state.discover?.loaded;
-export const selectDiscoverListByType = (type) => (state) =>
+
+export const selectDiscoverListByType = (state, type) =>
   Object.values(state.discover?.entities?.[type] || {});
-export const selectDiscoverListByGenre = (genre) => (state) =>
-  Object.values(state.discover?.entities?.byGenre?.[genre] || {});
 
-// export const selectRecentlyPlayed = (state) =>
-// Object.values(state.tracks.entities.recentlyPlayed);
-
-// export const selectMostPlayed = (state) =>
-// Object.values(state.tracks.entities.mostPlayed);
-
-// export const selectTracksByGenre = (genre) => (state) =>
-// Object.values(state.tracks?.entities?.byGenre?.[genre] || {});
+export const selectDiscoverGroupedByGenres = createSelector(
+  [
+    (state) => Object.values(state.genres?.entities),
+    (state) => state.discover?.entities,
+  ],
+  (genres, tracks) =>
+    genres
+      .filter((genre) => !["none", "custom"].includes(genre.name))
+      .map((genre) => {
+        return {
+          genreName: genre.name,
+          genreLabel: genre.label,
+          tracks: Object.values(tracks[genre.name] ?? {}),
+        };
+      })
+);

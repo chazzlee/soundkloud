@@ -61,3 +61,4 @@ export const genresReducer = produce((state = initialState, action) => {
 
 export const selectGenres = (state) =>
   state.genres?.entities ? Object.values(state.genres.entities) : [];
+export const selectGenresLoaded = (state) => state.genres?.loaded;
