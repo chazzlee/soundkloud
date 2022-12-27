@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :popular_plays, dependent: :destroy
   has_many :most_played_tracks, through: :popular_plays, source: :track
 
+  has_many :playlists, dependent: :destroy
+
   has_secure_password
 
   before_validation :ensure_session_token

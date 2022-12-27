@@ -79,14 +79,20 @@ export function DiscoverPage() {
               Discover Tracks and Playlists
             </h1>
           )}
+
           {currentUser ? (
             <CarouselSlider
               title={"Your uploaded tracks"}
               slides={userTracks}
             />
           ) : null}
+
           <CarouselSlider
-            title={currentUser ? "More of what you like" : "Charts: Top 50"}
+            title={
+              currentUser && mostPlayed.length
+                ? "More of what you like"
+                : "Charts: Top 50"
+            }
             slides={mostPlayed}
             subTitle={
               currentUser
@@ -96,7 +102,11 @@ export function DiscoverPage() {
           />
 
           <CarouselSlider
-            title={currentUser ? "Recently Played" : "Charts: New & hot"}
+            title={
+              currentUser && recentlyPlayed.length
+                ? "Recently Played"
+                : "Charts: New & hot"
+            }
             slides={recentlyPlayed}
             subTitle={
               currentUser

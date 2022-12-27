@@ -13,19 +13,21 @@ import styles from "./TrackShowPage.module.css";
 import { formatDistanceToNow } from "date-fns";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaPlay, FaCommentAlt } from "react-icons/fa";
-// import { BiRepost } from "react-icons/bi";
-// import { RiShareForwardBoxLine } from "react-icons/ri";
-// import { IoLinkOutline } from "react-icons/io5";
-// import { TfiMoreAlt } from "react-icons/tfi";
+import { BiRepost } from "react-icons/bi";
+import { RiShareForwardBoxLine } from "react-icons/ri";
+import { IoLinkOutline } from "react-icons/io5";
+import { TfiMoreAlt } from "react-icons/tfi";
 import { SlPencil } from "react-icons/sl";
 import { ImUsers, ImUserPlus } from "react-icons/im";
 import { BsSoundwave } from "react-icons/bs";
 import { IoMdPause } from "react-icons/io";
+import { RiPlayListAddFill } from "react-icons/ri";
 import WaveSurfer from "wavesurfer.js";
-import { Spinner } from "../../../components/Spinner";
 import { BiLockAlt } from "react-icons/bi";
 import { EditTrackModal } from "../../profiles/components/EditTrackModal";
 import { IoTrashBinOutline } from "react-icons/io5";
+import { FullSpinner } from "../../../components/FullSpinner";
+
 const MAX_LENGTH = 49;
 
 const sampleCovers = [
@@ -124,18 +126,7 @@ export function TrackShowPage() {
   }, []);
 
   if (!track) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-        }}
-      >
-        <Spinner />
-      </div>
-    );
+    return <FullSpinner />;
   }
 
   return (
@@ -301,21 +292,21 @@ export function TrackShowPage() {
             </div>
 
             <div className={styles.asideContainer}>
-              {/* <div>Related Tracks</div>
-              <div>TRACK!</div> */}
+              <div>Related Tracks</div>
+              <div>TRACK!</div>
             </div>
 
             <div className={styles.actionsRow}>
               <div className={styles.actions}>
                 {isUploader ? (
                   <>
-                    {/* <button>Share</button>
+                    <button>Share</button>
                     <button>
                       <div>
                         <IoLinkOutline style={{ verticalAlign: "middle" }} />
                       </div>
                       <div>Copy Link</div>
-                    </button> */}
+                    </button>
                     <button onClick={() => setEditModalOpen(true)}>
                       <div>
                         <SlPencil style={{ verticalAlign: "middle" }} />
@@ -328,12 +319,12 @@ export function TrackShowPage() {
                       </div>
                       <div>Remove</div>
                     </button>
-                    {/* <button>
+                    <button>
                       <div>
-                        <TfiMoreAlt style={{ verticalAlign: "middle" }} />
+                        <RiPlayListAddFill style={{ verticalAlign: "top" }} />
                       </div>
-                      <div>More</div>
-                    </button> */}
+                      <div>Add to playlist</div>
+                    </button>
                   </>
                 ) : (
                   <>
@@ -346,7 +337,7 @@ export function TrackShowPage() {
                       </div>
                       <div>Like</div>
                     </button>
-                    {/* <button>
+                    <button>
                       <div>
                         <BiRepost
                           style={{
@@ -376,7 +367,7 @@ export function TrackShowPage() {
                         <TfiMoreAlt style={{ verticalAlign: "middle" }} />
                       </div>
                       <div>More</div>
-                    </button> */}
+                    </button>
                   </>
                 )}
               </div>
