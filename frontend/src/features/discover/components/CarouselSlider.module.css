@@ -1,0 +1,67 @@
+.carouselContainer {
+  width: 100%;
+  padding-top: 30px;
+  border-bottom: 1px solid var(--bg-light);
+}
+
+.mbSm {
+  margin-bottom: 12px;
+}
+
+.mbLg {
+  margin-bottom: 24px;
+}
+
+.relative {
+  position: relative;
+}
+.carouselHeading {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+.subcaption {
+  margin: 0;
+  color: #999;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+  font-size: "14px";
+  margin-bottom: "14px";
+}
+
+.carouselControl {
+  position: absolute;
+  top: 30%;
+  height: 32px;
+  width: 32px;
+  margin: auto;
+  background-color: white;
+  border: 1px solid rgb(107, 107, 107);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.back {
+  left: -12px;
+}
+
+.next {
+  right: -12px;
+}
+
+.carouselControl:hover {
+  border-color: var(--primary-orange);
+  transition: border-color ease-in 120ms;
+}
+
+.carouselControl:hover .arrowIcon {
+  color: var(--primary-orange);
+  transition: color ease-in 120ms;
+}
+
+.arrowIcon {
+  color: rgb(107, 107, 107);
+  font-size: 1.8rem;
+}

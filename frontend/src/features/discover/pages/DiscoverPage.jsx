@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./DiscoverPage.module.css";
-import { CarouselSlider } from "./CarouselSlider";
+import { CarouselSlider } from "../components/CarouselSlider";
 import { selectCurrentUser } from "../../auth/store";
 import {
   fetchDiscoverAsync,
@@ -10,16 +10,12 @@ import {
   selectDiscoverLoading,
   selectDiscoverGroupedByGenres,
 } from "../store";
-import { Spinner } from "../../../components/Spinner";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
-// import { GrRefresh } from "react-icons/gr";
+import { GrRefresh } from "react-icons/gr";
 import { fetchAllTracksByUserAsync } from "../../tracks/store";
 import { sampleArtistsToFollow } from "../data";
-import {
-  fetchAllGenres,
-  selectGenres,
-  selectGenresLoaded,
-} from "../../genres/store";
+import { fetchAllGenresAsync, selectGenresLoaded } from "../../genres/store";
+import { FullSpinner } from "../../../components/FullSpinner";
 
 const shuffle = (array) => {
   return array.sort(() => Math.random() - 0.5);
@@ -28,10 +24,10 @@ const artistsToFollow = shuffle(sampleArtistsToFollow).slice(0, 8);
 const newTracks = shuffle(sampleArtistsToFollow).slice(0, 4);
 
 export function DiscoverPage() {
-  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const discoverLoading = useSelector(selectDiscoverLoading);
   const discoverLoaded = useSelector(selectDiscoverLoaded);
+  const discoverGroupedByGenres = useSelector(selectDiscoverGroupedByGenres);
   const genresLoaded = useSelector(selectGenresLoaded);
   const mostPlayed = useSelector((state) =>
     selectDiscoverListByType(state, "mostPlayed")
@@ -43,18 +39,17 @@ export function DiscoverPage() {
     Object.values(state.tracks.entities)
   );
 
-  const genres = useSelector(selectGenres);
-
-  const discoverGroupedByGenres = useSelector(selectDiscoverGroupedByGenres);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    //TODO: fetch genres in discover
+    if (!genresLoaded) {
+      dispatch(fetchAllGenresAsync());
+    }
     if (!discoverLoaded) {
       dispatch(fetchDiscoverAsync());
     }
-    if (!genresLoaded) {
-      dispatch(fetchAllGenres());
-    }
-  }, [dispatch, discoverLoaded, genresLoaded]);
+  }, [dispatch, genresLoaded, discoverLoaded]);
 
   useEffect(() => {
     if (currentUser) {
@@ -71,21 +66,8 @@ export function DiscoverPage() {
   //   );
   // }
 
-  //TODO: show spinner...
   if (discoverLoading) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflowY: "scroll",
-        }}
-      >
-        <Spinner />
-      </div>
-    );
+    return <FullSpinner />;
   }
 
   return (
@@ -93,23 +75,16 @@ export function DiscoverPage() {
       <main className={`page-container ${styles.innerContainer}`}>
         <div className={styles.columnMain}>
           {!currentUser && (
-            <h1
-              style={{
-                marginTop: "48px",
-                fontWeight: "500",
-                width: "100%",
-                borderBottom: "1px solid #f2f2f2",
-              }}
-            >
+            <h1 className={styles.discoverTitle}>
               Discover Tracks and Playlists
             </h1>
           )}
-          {currentUser && (
+          {currentUser ? (
             <CarouselSlider
               title={"Your uploaded tracks"}
               slides={userTracks}
             />
-          )}
+          ) : null}
           <CarouselSlider
             title={currentUser ? "More of what you like" : "Charts: Top 50"}
             slides={mostPlayed}
@@ -130,9 +105,6 @@ export function DiscoverPage() {
             }
           />
 
-          <div></div>
-          {/* TODO: Daily Drops?? */}
-
           {/* Tracks by Genre */}
           {discoverGroupedByGenres.map((group) => (
             <CarouselSlider
@@ -142,6 +114,8 @@ export function DiscoverPage() {
             />
           ))}
         </div>
+
+        {/* Aside */}
         <div className={styles.relative}>
           <div className={styles.columnAside}>
             <h3 className={styles.asideHeading}>
@@ -185,7 +159,7 @@ export function DiscoverPage() {
                 />
                 Artists you should follow
               </div>
-              {/* <div>
+              <div>
                 <GrRefresh
                   style={{
                     marginRight: "4px",
@@ -194,7 +168,7 @@ export function DiscoverPage() {
                   }}
                 />
                 Refresh list
-              </div> */}
+              </div>
             </h3>
             {artistsToFollow.map((artist) => (
               <div className={styles.artistCardHorizontal} key={artist.id}>

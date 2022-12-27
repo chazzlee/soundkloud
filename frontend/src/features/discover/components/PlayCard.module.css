@@ -1,0 +1,68 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.coverImage {
+  object-fit: cover;
+  width: 174px;
+  height: 174px;
+  transition: filter ease-in 60ms;
+}
+
+.playOverlay {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circularPlayBtn {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circularPlayBtn:hover {
+  filter: brightness(90%);
+  transition: filter ease-in 140ms;
+}
+
+.playIcon {
+  font-size: 28px;
+  margin-left: 3.5px;
+  color: white;
+}
+
+.titleContainer {
+  margin-top: 6px;
+}
+
+.title {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+  line-height: 1.6;
+  width: 173px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subcaption {
+  margin: 0;
+  color: #999;
+  font-size: 12px;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+}

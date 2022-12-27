@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import slug from "slug";
 import { Modal } from "../../../context/Modal";
 import { selectCurrentUser } from "../../auth/store";
-import { fetchAllGenres, selectGenres } from "../../genres/store";
+import { fetchAllGenresAsync, selectGenres } from "../../genres/store";
 import { CoverImagePreview } from "../../tracks/components/CoverImagePreview";
 import { updateTrackAsync } from "../../tracks/store";
 import styles from "./EditTrackModal.module.css";
@@ -95,7 +95,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
   };
 
   useEffect(() => {
-    dispatch(fetchAllGenres());
+    dispatch(fetchAllGenresAsync());
   }, [dispatch]);
 
   useEffect(() => {

@@ -1,4 +1,6 @@
+import styles from "./CarouselSlider.module.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import {
   ButtonBack,
@@ -7,8 +9,6 @@ import {
   Slide,
   Slider,
 } from "pure-react-carousel";
-import { Link } from "react-router-dom";
-import styles from "./DiscoverPage.module.css";
 import { PlayCard } from "./PlayCard";
 
 const VISIBLE_SLIDES = 4;
@@ -21,24 +21,17 @@ export function CarouselSlider({ slides, title, subTitle = "" }) {
   const [slidesIndex, setSlidesIndex] = useState(firstRowIndex);
 
   return (
-    <div
-      className={styles.carouselContainer}
-      style={{ borderBottom: "1px solid var(--bg-light)" }}
-    >
+    <div className={styles.carouselContainer}>
       <h2
-        className={styles.carouselHeading}
-        style={{ marginBottom: subTitle ? "12px" : "24px" }}
+        className={`${styles.carouselHeading} ${
+          subTitle ? styles.mbSm : styles.mbLg
+        }`}
       >
         {title}
       </h2>
-      {subTitle && (
-        <p
-          className={styles.subcaption}
-          style={{ fontSize: "14px", marginBottom: "14px" }}
-        >
-          {subTitle}
-        </p>
-      )}
+
+      {subTitle && <p className={styles.subcaption}>{subTitle}</p>}
+
       <CarouselProvider
         naturalSlideWidth={180}
         naturalSlideHeight={230}
@@ -50,8 +43,7 @@ export function CarouselSlider({ slides, title, subTitle = "" }) {
       >
         {slidesIndex > firstRowIndex && (
           <ButtonBack
-            className={styles.carouselControl}
-            style={{ left: -12 }}
+            className={`${styles.carouselControl} ${styles.back}`}
             onClick={() => setSlidesIndex((prev) => prev - 1)}
           >
             <RxCaretLeft className={styles.arrowIcon} />
@@ -68,8 +60,7 @@ export function CarouselSlider({ slides, title, subTitle = "" }) {
         </Slider>
         {slidesIndex < lastRowIndex && (
           <ButtonNext
-            className={styles.carouselControl}
-            style={{ right: -12 }}
+            className={`${styles.carouselControl} ${styles.next}`}
             onClick={() => setSlidesIndex((prev) => prev + 1)}
           >
             <RxCaretRight className={styles.arrowIcon} />

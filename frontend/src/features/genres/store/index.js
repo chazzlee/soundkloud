@@ -15,7 +15,7 @@ const fetchGenresFailed = (error) => ({
   payload: error,
 });
 
-export const fetchAllGenres = () => async (dispatch) => {
+export const fetchAllGenresAsync = () => async (dispatch) => {
   dispatch(fetchGenresInitiate());
   try {
     const response = await GenresApi.fetchAll();

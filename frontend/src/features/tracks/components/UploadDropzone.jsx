@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import slug from "slug";
-import { fetchAllGenres, selectGenres } from "../../genres/store";
+import { fetchAllGenresAsync, selectGenres } from "../../genres/store";
 import {
   selectCurrentTrack,
   selectTracksLoading,
@@ -137,7 +137,7 @@ export function UploadDropzone() {
   };
 
   useEffect(() => {
-    dispatch(fetchAllGenres());
+    dispatch(fetchAllGenresAsync());
   }, [dispatch]);
 
   useEffect(() => {

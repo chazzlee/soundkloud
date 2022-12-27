@@ -1,10 +1,9 @@
-import { Image } from "pure-react-carousel";
-import { useRef } from "react";
-import { useState } from "react";
-import { IoMdPlay } from "react-icons/io";
+import styles from "./PlayCard.module.css";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { IoMdPlay } from "react-icons/io";
+import { Image } from "pure-react-carousel";
 import { startNowPlaying } from "../../tracks/store";
-import styles from "./DiscoverPage.module.css";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -46,55 +45,42 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
   const cover = useRef(sampleCovers[getRandomInteger(sampleCovers.length - 1)]);
   const dispatch = useDispatch();
 
+  const handlePlay = (event) => {
+    event.preventDefault();
+
+    dispatch(
+      startNowPlaying(
+        item.upload ??
+          "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Rise+Of+The+Predator.mp3"
+      )
+    );
+  };
+
   return (
     <>
       <div
-        style={{ position: "relative", width: "100%" }}
+        className={styles.container}
         onMouseEnter={() => setShowPlay(true)}
         onMouseLeave={() => setShowPlay(false)}
       >
         <Image
           src={item.cover || cover.current}
-          style={{
-            objectFit: "cover",
-            width: "174px",
-            height: "174px",
-            filter: showPlay ? "brightness(90%)" : "none",
-            transition: "filter ease-in 60ms",
-          }}
+          className={styles.coverImage}
+          style={{ filter: showPlay ? "brightness(90%)" : "none" }}
         />
         {showPlay ? (
           <div className={styles.playOverlay}>
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                dispatch(
-                  startNowPlaying(
-                    item.upload ??
-                      "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Rise+Of+The+Predator.mp3"
-                  )
-                );
-              }}
+              onClick={handlePlay}
               title="Play"
               className={styles.circularPlayBtn}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
             >
-              <IoMdPlay
-                style={{
-                  fontSize: "28px",
-                  marginLeft: "3.5px",
-                  color: "white",
-                }}
-              />
+              <IoMdPlay className={styles.playIcon} />
             </button>
           </div>
         ) : null}
       </div>
-      <div style={{ marginTop: "6px" }}>
+      <div className={styles.titleContainer}>
         <p className={styles.title}>
           {item.artist} - {item.title}
         </p>

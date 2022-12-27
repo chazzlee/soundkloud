@@ -1,0 +1,106 @@
+.innerContainer {
+  height: 100%;
+  padding: 0 30px 80px 30px;
+  background-color: white;
+  display: grid;
+  grid-template-columns: 2.6fr 1fr;
+}
+
+.columnMain {
+  border-right: 1px solid var(--bg-light);
+  padding-right: 30px;
+}
+
+.discoverTitle {
+  margin-top: 48px;
+  font-weight: 500;
+  width: 100%;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.subcaption {
+  margin: 0;
+  color: #999;
+  font-size: 12px;
+  font-family: Interstate, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans",
+    Garuda, Verdana, Tahoma, sans-serif;
+}
+
+/* ASIDE */
+.columnAside {
+  position: fixed;
+  top: 46px;
+  padding: 30px;
+  width: 360px;
+}
+
+.asideHeading {
+  font-size: 13px;
+  color: #999;
+  font-weight: 400;
+  line-height: 24px;
+  width: 100%;
+  border-bottom: 1px solid #f2f2f2;
+  margin-bottom: 8px;
+}
+
+.avatarRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #333;
+  font-weight: 400;
+}
+
+.artistAvatar {
+  height: 50px;
+  width: 50px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: #333;
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+  margin-bottom: 4px;
+}
+
+.artistCardHorizontal {
+  display: flex;
+  font-size: 13px;
+  align-items: center;
+}
+
+.cardContent {
+  padding-left: 8px;
+  /* width: 100%; */
+}
+
+.artistName {
+  padding-bottom: 2px;
+}
+
+.cardFooter {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.insights {
+  display: flex;
+  font-size: 11px;
+  color: #999;
+}
+
+.followBtn {
+  font-size: 11px;
+}

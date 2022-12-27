@@ -11,8 +11,8 @@ import { restoreSession } from "./features/auth/store";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ModalProvider } from "./context/Modal";
 import { LandingPage } from "./features/landing/components/LandingPage";
-import { DiscoverPage } from "./features/discover/components/DiscoverPage";
-// import { LogoutPage } from "./features/auth/components/LogoutPage";
+import { DiscoverPage } from "./features/discover/pages/DiscoverPage";
+import { LogoutPage } from "./features/auth/components/LogoutPage";
 import { TrackShowPage } from "./features/tracks/components/TrackShowPage";
 import { UploadNewTrackPage } from "./features/tracks/components/UploadNewTrackPage";
 import { UserProfilePage } from "./features/profiles/components/UserProfilePage";
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: "/:user/:trackSlug", element: <TrackShowPage /> },
       { path: "/upload", element: <UploadNewTrackPage /> },
       { path: "/:slug", element: <UserProfilePage /> },
-      // { path: "/logout", element: <LogoutPage /> },
+      { path: "/logout", element: <LogoutPage /> },
     ],
   },
 ]);
