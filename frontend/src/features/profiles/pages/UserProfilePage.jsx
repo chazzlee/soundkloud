@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
+import { fetchPlaylistsAsync, selectPlaylists } from "../../playlists/store";
 import styles from "./UserProfilePage.module.css";
-import { TrackCard } from "./TrackCard";
+import { TrackCard } from "../components/TrackCard";
 import { useEffect, useState } from "react";
 import {
   fetchAllTracksByUserAsync,
@@ -13,9 +14,11 @@ export function UserProfilePage() {
   const dispatch = useDispatch();
   const uploadedTracks = useSelector(selectUserTracks);
   const [activeTab, setActiveTab] = useState("all");
+  const playlists = useSelector(selectPlaylists);
 
   useEffect(() => {
     dispatch(fetchAllTracksByUserAsync(currentUser.id));
+    dispatch(fetchPlaylistsAsync());
   }, [dispatch, currentUser.id]);
 
   if (!currentUser) {
@@ -60,18 +63,51 @@ export function UserProfilePage() {
             >
               Tracks
             </li>
-            {/* <li>Playlists</li>  */}
+            <li
+              className={`${activeTab === "playlists" ? styles.active : ""}`}
+              onClick={() => setActiveTab("playlists")}
+            >
+              Playlists
+            </li>
           </div>
         </div>
         <div className={styles.container}>
-          <div>
-            <h3 className={styles.uploadedTitle}>Uploaded Tracks</h3>
-            <div className={styles.trackCards}>
-              {uploadedTracks?.map((track) => (
-                <TrackCard key={track.id} track={track} />
-              ))}
+          {activeTab === "all" && (
+            <div>
+              <h3 className={styles.uploadedTitle}>Uploaded Tracks</h3>
+              <div className={styles.trackCards}>
+                {uploadedTracks?.map((track) => (
+                  <TrackCard key={track.id} track={track} />
+                ))}
+              </div>
+              <h3 className={styles.uploadedTitle}>Playlists</h3>
+              <div className={styles.trackCards}>
+                {playlists?.map((playlist) => (
+                  <div key={playlist.id}>playlist</div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+          {activeTab === "tracks" && (
+            <div>
+              <h3 className={styles.uploadedTitle}>Uploaded Tracks</h3>
+              <div className={styles.trackCards}>
+                {uploadedTracks?.map((track) => (
+                  <TrackCard key={track.id} track={track} />
+                ))}
+              </div>
+            </div>
+          )}
+          {activeTab === "playlists" && (
+            <div>
+              <h3 className={styles.uploadedTitle}>Playlists</h3>
+              <div className={styles.trackCards}>
+                {playlists?.map((playlist) => (
+                  <div key={playlist.id}>{playlist.title}</div>
+                ))}
+              </div>
+            </div>
+          )}
           <aside>
             <div></div>
           </aside>

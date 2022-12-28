@@ -15,7 +15,7 @@ import { DiscoverPage } from "./features/discover/pages/DiscoverPage";
 import { LogoutPage } from "./features/auth/components/LogoutPage";
 import { TrackShowPage } from "./features/tracks/pages/TrackShowPage";
 import { UploadNewTrackPage } from "./features/tracks/components/UploadNewTrackPage";
-import { UserProfilePage } from "./features/profiles/components/UserProfilePage";
+import { UserProfilePage } from "./features/profiles/pages/UserProfilePage";
 
 const store = configureStore();
 

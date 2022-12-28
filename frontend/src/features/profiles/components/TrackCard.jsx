@@ -2,7 +2,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 import WaveSurfer from "wavesurfer.js";
-import styles from "./UserProfilePage.module.css";
+import styles from "../pages/UserProfilePage.module.css";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { BiLockAlt } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -34,10 +34,7 @@ export function TrackCard({ track }) {
         responsive: true,
         height: 55,
       });
-      wavesurfer.current.load(
-        "https://cors-anywhere.herokuapp.com/" +
-          "https://soundkloud-seeds.s3.amazonaws.com/tracks/05+-+No+Will+to+Live.mp3"
-      );
+      // wavesurfer.current.load("");
     }
   }, [track]);
 
