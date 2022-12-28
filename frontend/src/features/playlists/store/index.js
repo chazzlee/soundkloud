@@ -2,12 +2,19 @@ import produce from "immer";
 import { PlaylistsApi } from "../../../api/playlists";
 
 const PLAYLISTS_RECEIVED = "playlists/PLAYLISTS_RECEIVED";
+const PLAYLIST_RECEIVED = "playlists/PLAYLIST_RECEIVED";
+const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
+
 const playlistsReceived = (playlists) => ({
   type: PLAYLISTS_RECEIVED,
   payload: playlists,
 });
 
-const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
+const playlistReceived = (playlist) => ({
+  type: PLAYLIST_RECEIVED,
+  payload: playlist,
+});
+
 const trackAddedToPlaylist = ({ playlist, track }) => ({
   type: TRACK_ADDED_TO_PLAYLIST,
   payload: { playlist, track },
@@ -37,6 +44,16 @@ export const addToPlaylistAsync = (playlistId, track) => async (dispatch) => {
   }
 };
 
+export const createNewPlaylistAsync = (playlist) => async (dispatch) => {
+  try {
+    const response = await PlaylistsApi.createNewPlaylist(playlist);
+    const data = await response.json();
+    dispatch(playlistReceived(data));
+  } catch (err) {
+    console.error("createNewPlaylistsAsync", err);
+  }
+};
+
 const initialState = {
   loaded: false,
   loading: false,
@@ -53,6 +70,11 @@ export const playlistsReducer = produce((state = initialState, action) => {
       state.entities = action.payload;
       break;
     }
+    case PLAYLIST_RECEIVED: {
+      state.errors = null;
+      state.entities[action.payload.id] = action.payload;
+      break;
+    }
     case TRACK_ADDED_TO_PLAYLIST: {
       // TODO:
       break;
@@ -61,3 +83,6 @@ export const playlistsReducer = produce((state = initialState, action) => {
       return state;
   }
 });
+
+export const selectPlaylists = (state) =>
+  Object.values(state.playlists?.entities ?? {});

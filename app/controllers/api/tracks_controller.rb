@@ -26,6 +26,7 @@ class Api::TracksController < ApplicationController
     track.privacy = params[:privacy]
     track.genre_id = params[:genre_id]
 
+    # TODO:
     permalink = if Rails.env == 'development'
                   "http://localhost:3000/#{current_user.slug}/#{params[:permalink]}"
                 else

@@ -1,0 +1,49 @@
+.actionsRow {
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.actions > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  padding: 3px 10px 1px;
+}
+
+.actions > button > div {
+  margin-right: 6px;
+}
+
+.asideContainer {
+  border-left: 1px solid #f2f2f2;
+  height: 100%;
+}
+
+.insights {
+  display: flex;
+  align-items: flex-end;
+  color: #999;
+  height: 100%;
+  font-size: 12px;
+}
+
+.insights > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

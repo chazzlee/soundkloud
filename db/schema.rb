@@ -73,6 +73,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_27_211049) do
 
   create_table "playlists", force: :cascade do |t|
     t.string "title", null: false
+    t.integer "plays", default: 0, null: false
     t.string "privacy", default: "public", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false

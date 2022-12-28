@@ -1,0 +1,193 @@
+.modal {
+  width: 550px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 25px;
+}
+
+.playlistHeader {
+  padding-top: 16px;
+  border-bottom: 1px solid rgb(235, 235, 235);
+  display: flex;
+  gap: 24px;
+}
+
+.playlistHeading {
+  font-size: 24px;
+  font-weight: 400;
+  width: fit-content;
+  line-height: 1.9;
+  border-bottom: 2px solid transparent;
+  color: #333;
+  cursor: pointer;
+}
+
+.active {
+  border-color: var(--primary-orange);
+  color: var(--primary-orange);
+}
+
+.container {
+  padding-top: 25px;
+}
+
+.searchForPlaylists {
+  width: 100%;
+  font-size: 13px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  line-height: 20px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.searchForPlaylists:focus {
+  outline: 0;
+  border-color: #999;
+}
+
+.playlists {
+}
+
+.playlistRow {
+  display: flex;
+  align-items: center;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.playlistCover {
+  height: 50px;
+  width: 50px;
+  margin-right: 8px;
+}
+
+.playlistRow > img {
+  margin-right: 12px;
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.playlistRowTitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.playlistRowCount {
+  font-size: 12px;
+  color: rgb(94, 94, 94);
+  display: flex;
+  align-items: center;
+}
+
+.count {
+  margin-left: 4px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.addBtn {
+  background: none;
+  padding: 2px 11px 2px 10px;
+  color: #333;
+  font-size: 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  height: 26px;
+  margin-left: 6px;
+}
+
+.label {
+  color: #444;
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  margin-bottom: 8px;
+}
+
+.saveForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 16px;
+}
+
+.saveBtn {
+  background-color: var(--primary-orange);
+  color: #fff;
+  padding: 2px 11px 2px 10px;
+  height: 26px;
+  border-radius: 3px;
+}
+
+.tracks {
+  border: 1px solid #f2f2f2;
+}
+
+.track {
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary-orange);
+  border-bottom: 1px solid #f2f2f2;
+  height: 33px;
+}
+
+.track:last-child {
+  border-bottom: none;
+}
+
+.innerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.trackInfo {
+  display: block;
+  margin-left: 6px;
+}
+
+.removeTrackBtn {
+  font-size: 18px;
+  color: #333;
+  background-color: transparent;
+}
+
+.savedContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 32px;
+}
+
+.coverContainer {
+  height: 50px;
+  width: 50px;
+  border: 1px solid rgb(168, 168, 168);
+}
+
+.goBtn {
+  background: white;
+  font-size: 14px;
+  color: #333;
+  padding: 2px 11px 2px 10px;
+  height: 26px;
+  border: 1px solid #b1b1b1;
+  border-radius: 3px;
+}

@@ -8,6 +8,8 @@ class Playlist < ApplicationRecord
            through: :playlist_tracks,
            source: :track
 
+  has_one_attached :cover
+
   def add_track!(track)
     tracks << track
     save!

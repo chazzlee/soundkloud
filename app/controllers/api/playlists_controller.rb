@@ -5,14 +5,18 @@ class Api::PlaylistsController < ApplicationController
 
   def index
     playlists = current_user.playlists
-    render json: { playlists: }
+    render template: 'api/playlists/index', locals: { playlists: }
   end
 
   def create
     playlist = current_user.playlists.build
+    p params[:tracks]
     playlist.title = params[:title]
+    playlist.privacy = params[:privacy]
+    playlist.track_ids = params[:tracks]
     playlist.save!
-    render json: { playlist: }
+
+    render template: 'api/playlists/show', locals: { playlist: }
   end
 
   def show; end

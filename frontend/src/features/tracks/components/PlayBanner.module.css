@@ -1,0 +1,118 @@
+.bannerPlayerContainer {
+  background: linear-gradient(135deg, rgb(46, 40, 54) 0%, rgb(11, 10, 10) 100%);
+  height: 380px;
+  padding-top: 30px;
+  padding-bottom: 24px;
+  padding-left: 30px;
+  padding-right: 24px;
+  display: grid;
+  grid-template-columns: 2.1fr 0.9fr;
+  column-gap: 24px;
+  position: relative;
+}
+
+.bannerHeader {
+  display: flex;
+  align-items: flex-start;
+}
+
+.circularPlayBtn {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+
+.playIcon {
+  font-size: 30px;
+  color: white;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.pauseIcon {
+  font-size: 30px;
+  color: white;
+  vertical-align: middle;
+}
+
+.coverImage {
+  width: 340px;
+  height: 325px;
+}
+
+.heading {
+  margin-left: 12px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.title {
+  background-color: #000;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 30px;
+  padding: 4px 7px;
+  width: fit-content;
+}
+
+.subTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subTitle {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 3px 7px 2px;
+  line-height: 1.3;
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0.8);
+  margin-top: 4px;
+  width: fit-content;
+}
+
+.subTitle:hover {
+  cursor: pointer;
+  color: rgb(224, 224, 224);
+  transition: color ease-in 120ms;
+}
+
+.privateBadge {
+  background-color: var(--primary-orange);
+  color: #fff;
+  border-radius: 12px;
+  border: 1px solid var(--primary-orange);
+}
+
+.infoRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  min-width: 110px;
+}
+
+.postedAt {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 2px;
+}
+
+.postedAt::first-letter {
+  text-transform: capitalize;
+}
+
+.tag {
+  color: #fff;
+  font-size: 14px;
+  background-color: #999;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 20px;
+  border: 1px solid #999;
+}
