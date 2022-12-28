@@ -10,7 +10,6 @@ class Api::PlaylistsController < ApplicationController
 
   def create
     playlist = current_user.playlists.build
-    p params[:tracks]
     playlist.title = params[:title]
     playlist.privacy = params[:privacy]
     playlist.track_ids = params[:tracks]
@@ -24,8 +23,7 @@ class Api::PlaylistsController < ApplicationController
   def update
     playlist = Playlist.find(params[:id])
     playlist.add_track!(params[:track]) if playlist.user_id == current_user.id
-
-    render json: { playlist: }
+    render template: 'api/playlists/show', locals: { playlist: }
   end
 
   def destroy; end

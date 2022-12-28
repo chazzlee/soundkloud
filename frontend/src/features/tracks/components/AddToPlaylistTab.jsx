@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchPlaylistsAsync, selectPlaylists } from "../../playlists/store";
-import { useDispatch, useSelector } from "react-redux";
 import { PlaylistRow } from "./PlaylistRow";
 import styles from "./PlaylistModal.module.css";
 
-export function AddToPlaylistTab() {
-  const dispatch = useDispatch();
-  const playlists = useSelector(selectPlaylists);
+export function AddToPlaylistTab({ track, playlists }) {
   const [filteredPlaylists, setFilterPlaylists] = useState(playlists);
   const [filter, setFilter] = useState("");
-
-  useEffect(() => {
-    dispatch(fetchPlaylistsAsync());
-  }, [dispatch]);
 
   useEffect(() => {
     if (filter) {
@@ -36,8 +28,8 @@ export function AddToPlaylistTab() {
         onChange={(e) => setFilter(e.target.value)}
       />
       <div className={styles.playlists}>
-        {filteredPlaylists?.map((playlist) => (
-          <PlaylistRow key={playlist.id} playlist={playlist} />
+        {filteredPlaylists.map((playlist) => (
+          <PlaylistRow key={playlist.id} track={track} playlist={playlist} />
         ))}
       </div>
     </>

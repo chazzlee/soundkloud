@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   fetchTrackAsync,
   replyToTrackAsync,
@@ -16,6 +16,7 @@ import { EditTrackModal } from "../../profiles/components/EditTrackModal";
 import { FullSpinner } from "../../../components/FullSpinner";
 import { PlayBanner } from "../components/PlayBanner";
 import { TrackActions } from "../components/TrackActions";
+import { fetchPlaylistsAsync } from "../../playlists/store";
 
 export function TrackShowPage() {
   const dispatch = useDispatch();
@@ -47,6 +48,10 @@ export function TrackShowPage() {
   const handleFollow = () => {
     setFollowing((prev) => !prev);
   };
+
+  useEffect(() => {
+    dispatch(fetchPlaylistsAsync());
+  }, [dispatch]);
 
   if (!track) {
     return <FullSpinner />;

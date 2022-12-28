@@ -15,9 +15,9 @@ const playlistReceived = (playlist) => ({
   payload: playlist,
 });
 
-const trackAddedToPlaylist = ({ playlist, track }) => ({
+const trackAddedToPlaylist = ({ id, track }) => ({
   type: TRACK_ADDED_TO_PLAYLIST,
-  payload: { playlist, track },
+  payload: { id, track },
 });
 
 // TODO: loading and error
@@ -33,12 +33,9 @@ export const fetchPlaylistsAsync = () => async (dispatch) => {
 
 export const addToPlaylistAsync = (playlistId, track) => async (dispatch) => {
   try {
-    const response = await PlaylistsApi.addToPlaylist(playlistId, track);
-    const data = await response.json();
-    // TODO:!
-    dispatch(
-      trackAddedToPlaylist({ playlist: data.playlist, track: data.track })
-    );
+    const response = await PlaylistsApi.addToPlaylist(playlistId, track.id);
+    await response.json();
+    dispatch(trackAddedToPlaylist({ id: playlistId, track }));
   } catch (err) {
     console.error("addToPlaylistAsync", err);
   }
@@ -76,7 +73,7 @@ export const playlistsReducer = produce((state = initialState, action) => {
       break;
     }
     case TRACK_ADDED_TO_PLAYLIST: {
-      // TODO:
+      state.entities[action.payload.id].tracks.push(action.payload.track);
       break;
     }
     default:

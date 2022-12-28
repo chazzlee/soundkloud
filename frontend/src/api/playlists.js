@@ -4,13 +4,13 @@ export const PlaylistsApi = {
   fetchUserPlaylists() {
     return csrfFetch("/api/playlists");
   },
-  addToPlaylist(playlistId, track) {
+  addToPlaylist(playlistId, trackId) {
     return csrfFetch(`/api/playlists/${playlistId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(track),
+      body: JSON.stringify({ track: trackId }),
     });
   },
   createNewPlaylist(playlist) {

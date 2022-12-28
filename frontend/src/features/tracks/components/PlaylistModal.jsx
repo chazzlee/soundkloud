@@ -1,7 +1,11 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../../../context/Modal";
-import { createNewPlaylistAsync } from "../../playlists/store";
+import {
+  createNewPlaylistAsync,
+  fetchPlaylistsAsync,
+  selectPlaylists,
+} from "../../playlists/store";
 import { AddToPlaylistTab } from "./AddToPlaylistTab";
 import styles from "./PlaylistModal.module.css";
 import { TrackRow } from "./TrackRow";
@@ -13,6 +17,7 @@ export function PlaylistModal({ track, onClose }) {
   const [privacy, setPrivacy] = useState("public");
   const [createStep, setCreateStep] = useState("initial");
   const [trackToAdd, setTrackToAdd] = useState(track);
+  const playlists = useSelector(selectPlaylists);
 
   const handleRemove = () => {
     setTrackToAdd(null);
@@ -57,7 +62,7 @@ export function PlaylistModal({ track, onClose }) {
       </div>
       <div className={styles.container}>
         {playlistModalTab === "add" ? (
-          <AddToPlaylistTab />
+          <AddToPlaylistTab track={track} playlists={playlists} />
         ) : createStep === "initial" ? (
           <>
             <label htmlFor="title" className={styles.label}>

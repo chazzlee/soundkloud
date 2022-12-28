@@ -1,8 +1,16 @@
 import { AiFillLock } from "react-icons/ai";
 import { BsSoundwave } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { addToPlaylistAsync } from "../../playlists/store";
 import styles from "./PlaylistModal.module.css";
 
-export function PlaylistRow({ playlist }) {
+export function PlaylistRow({ track, playlist }) {
+  const dispatch = useDispatch();
+
+  const handleAddToPlaylist = () => {
+    dispatch(addToPlaylistAsync(playlist.id, track));
+  };
+
   return (
     <div className={styles.playlistRow}>
       <div
@@ -30,7 +38,9 @@ export function PlaylistRow({ playlist }) {
               }}
             />
           )}
-          <button className={styles.addBtn}>Add to playlist</button>
+          <button className={styles.addBtn} onClick={handleAddToPlaylist}>
+            Add to playlist
+          </button>
         </div>
       </div>
     </div>
