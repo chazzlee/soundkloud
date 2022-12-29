@@ -13,6 +13,14 @@ export const PlaylistsApi = {
       body: JSON.stringify({ track: trackId }),
     });
   },
+  removeFromPlaylist(playlistId, trackId) {
+    return csrfFetch(
+      `/api/playlists/${playlistId}/playlist_tracks/${trackId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  },
   createNewPlaylist(playlist) {
     return csrfFetch("/api/playlists", {
       method: "POST",

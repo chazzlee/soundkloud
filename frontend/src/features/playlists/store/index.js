@@ -4,6 +4,7 @@ import { PlaylistsApi } from "../../../api/playlists";
 const PLAYLISTS_RECEIVED = "playlists/PLAYLISTS_RECEIVED";
 const PLAYLIST_RECEIVED = "playlists/PLAYLIST_RECEIVED";
 const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
+const TRACK_REMOVED_FROM_PLAYLIST = "playlists/TRACK_REMOVED_FROM_PLAYLIST";
 
 const playlistsReceived = (playlists) => ({
   type: PLAYLISTS_RECEIVED,
@@ -18,6 +19,11 @@ const playlistReceived = (playlist) => ({
 const trackAddedToPlaylist = ({ id, track }) => ({
   type: TRACK_ADDED_TO_PLAYLIST,
   payload: { id, track },
+});
+
+const trackRemovedFromPlaylist = ({ id, trackId }) => ({
+  type: TRACK_REMOVED_FROM_PLAYLIST,
+  payload: { id, trackId },
 });
 
 // TODO: loading and error
@@ -40,6 +46,16 @@ export const addToPlaylistAsync = (playlistId, track) => async (dispatch) => {
     console.error("addToPlaylistAsync", err);
   }
 };
+
+export const removeFromPlaylistAsync =
+  (playlistId, trackId) => async (dispatch) => {
+    try {
+      await PlaylistsApi.removeFromPlaylist(playlistId, trackId);
+      dispatch(trackRemovedFromPlaylist({ id: playlistId, trackId }));
+    } catch (err) {
+      console.error("removeFromPlaylistAsync", err);
+    }
+  };
 
 export const createNewPlaylistAsync = (playlist) => async (dispatch) => {
   try {
@@ -76,6 +92,15 @@ export const playlistsReducer = produce((state = initialState, action) => {
       state.entities[action.payload.id].tracks.push(action.payload.track);
       break;
     }
+    case TRACK_REMOVED_FROM_PLAYLIST: {
+      const index = state.entities[action.payload.id].tracks.findIndex(
+        (track) => track.id === action.payload.trackId
+      );
+      if (index > -1) {
+        state.entities[action.payload.id].tracks.splice(index, 1);
+      }
+      break;
+    }
     default:
       return state;
   }
@@ -83,3 +108,8 @@ export const playlistsReducer = produce((state = initialState, action) => {
 
 export const selectPlaylists = (state) =>
   Object.values(state.playlists?.entities ?? {});
+
+export const selectIsTrackInPlaylist = (state, { playlistId, trackId }) =>
+  !!state.playlists?.entities[playlistId].tracks.find(
+    (track) => track.id === trackId
+  );

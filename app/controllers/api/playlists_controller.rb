@@ -22,7 +22,9 @@ class Api::PlaylistsController < ApplicationController
 
   def update
     playlist = Playlist.find(params[:id])
-    playlist.add_track!(params[:track]) if playlist.user_id == current_user.id
+    track = Track.find(params[:track])
+    playlist.add_track!(track) if playlist.user_id == current_user.id
+
     render template: 'api/playlists/show', locals: { playlist: }
   end
 

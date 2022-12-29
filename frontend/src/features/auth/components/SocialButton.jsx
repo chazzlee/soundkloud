@@ -1,12 +1,21 @@
 import styles from "./SocialButton.module.css";
 import "./SocialButton.css";
+import { ButtonSpinner } from "../../../components/ButtonSpinner";
 
-export function SocialButton({ label, iconUrl, className, onClick, ...rest }) {
+export function SocialButton({
+  label,
+  iconUrl,
+  className,
+  onClick,
+  disabled = false,
+  ...rest
+}) {
   return (
     <button
       className={`${styles.socialLoginBtn} ${className}`}
       type="button"
       onClick={onClick}
+      disabled={disabled}
     >
       {className !== "demo" ? (
         <img
@@ -18,7 +27,7 @@ export function SocialButton({ label, iconUrl, className, onClick, ...rest }) {
           {...rest}
         />
       ) : null}
-      <div>{label}</div>
+      {disabled ? <ButtonSpinner /> : <div>{label}</div>}
     </button>
   );
 }

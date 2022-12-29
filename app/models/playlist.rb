@@ -10,8 +10,13 @@ class Playlist < ApplicationRecord
 
   has_one_attached :cover
 
-  def add_track!(track_id)
-    track_ids << track_id
+  def add_track!(track)
+    tracks << track
+    save!
+  end
+
+  def remove_track!(track)
+    tracks.destroy(track)
     save!
   end
 end

@@ -19,7 +19,9 @@ Rails.application.routes.draw do
     resources :replies, only: %i[destroy]
     resources :discover, only: [:index]
     resources :genres, only: [:index]
-    resources :playlists, only: %i[index create show update destroy]
+    resources :playlists, only: %i[index create show update destroy] do
+      resources :playlist_tracks, only: [:destroy]
+    end
   end
 
   get '*path', to: 'static_pages#frontend_index'

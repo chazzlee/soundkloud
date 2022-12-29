@@ -12,3 +12,10 @@
   font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans,
     Garuda, Verdana, Tahoma, sans-serif;
 }
+
+.socialLoginBtn:disabled {
+  background-color: rgb(206, 206, 206);
+  cursor: not-allowed;
+  border-radius: 3px;
+  border-color: rgb(206, 206, 206);
+}

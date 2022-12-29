@@ -1,14 +1,29 @@
 import { AiFillLock } from "react-icons/ai";
 import { BsSoundwave } from "react-icons/bs";
-import { useDispatch } from "react-redux";
-import { addToPlaylistAsync } from "../../playlists/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToPlaylistAsync,
+  removeFromPlaylistAsync,
+  selectIsTrackInPlaylist,
+} from "../../playlists/store";
 import styles from "./PlaylistModal.module.css";
 
 export function PlaylistRow({ track, playlist }) {
   const dispatch = useDispatch();
 
+  const isTrackInPlaylist = useSelector((state) =>
+    selectIsTrackInPlaylist(state, {
+      playlistId: playlist.id,
+      trackId: track.id,
+    })
+  );
+
   const handleAddToPlaylist = () => {
     dispatch(addToPlaylistAsync(playlist.id, track));
+  };
+
+  const handleRemoveFromPlaylist = () => {
+    dispatch(removeFromPlaylistAsync(playlist.id, track.id));
   };
 
   return (
@@ -38,9 +53,22 @@ export function PlaylistRow({ track, playlist }) {
               }}
             />
           )}
-          <button className={styles.addBtn} onClick={handleAddToPlaylist}>
-            Add to playlist
-          </button>
+          {isTrackInPlaylist ? (
+            <button
+              className={styles.addBtn}
+              onClick={handleRemoveFromPlaylist}
+              style={{
+                borderColor: "var(--primary-orange)",
+                color: "var(--primary-orange)",
+              }}
+            >
+              Added
+            </button>
+          ) : (
+            <button className={styles.addBtn} onClick={handleAddToPlaylist}>
+              Add to playlist
+            </button>
+          )}
         </div>
       </div>
     </div>

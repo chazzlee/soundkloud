@@ -2,10 +2,14 @@ import styles from "./SocialButtonGroup.module.css";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../store";
 import { SocialButton } from "./SocialButton";
+import { useState } from "react";
 
 export function SocialButtonGroup({ onSuccess }) {
   const dispatch = useDispatch();
+  const [disabled, setDisabled] = useState(false);
+
   const handleDemoLogin = () => {
+    setDisabled(true);
     dispatch(
       loginUser({
         email: "demo@demo.com",
@@ -14,10 +18,14 @@ export function SocialButtonGroup({ onSuccess }) {
     )
       .then((response) => {
         if (response.ok) {
+          setDisabled(false);
           onSuccess();
         }
       })
-      .catch((err) => console.error("Demo User: Somethign went wrong", err));
+      .catch((err) => {
+        setDisabled(false);
+        console.error("Demo User: Somethign went wrong", err);
+      });
   };
 
   return (
@@ -47,6 +55,7 @@ export function SocialButtonGroup({ onSuccess }) {
         label="Continue with Demo"
         className="demo"
         onClick={handleDemoLogin}
+        disabled={disabled}
       />
     </div>
   );
