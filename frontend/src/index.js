@@ -12,24 +12,32 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ModalProvider } from "./context/Modal";
 import { LandingPage } from "./features/landing/components/LandingPage";
 import { DiscoverPage } from "./features/discover/pages/DiscoverPage";
-import { LogoutPage } from "./features/auth/components/LogoutPage";
+// import { LogoutPage } from "./features/auth/components/LogoutPage";
 import { TrackShowPage } from "./features/tracks/pages/TrackShowPage";
 import { UploadNewTrackPage } from "./features/tracks/components/UploadNewTrackPage";
 import { UserProfilePage } from "./features/profiles/pages/UserProfilePage";
 
 const store = configureStore();
+const Error = () => {
+  return (
+    <div>
+      <h1>Something went wrong...</h1>
+    </div>
+  );
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <Error />,
     children: [
       { index: true, element: <LandingPage /> },
       { path: "/discover", element: <DiscoverPage /> },
       { path: "/:user/:trackSlug", element: <TrackShowPage /> },
       { path: "/upload", element: <UploadNewTrackPage /> },
       { path: "/:slug", element: <UserProfilePage /> },
-      { path: "/logout", element: <LogoutPage /> },
+      // { path: "/logout", element: <LogoutPage /> },
     ],
   },
 ]);

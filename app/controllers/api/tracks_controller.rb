@@ -2,7 +2,7 @@
 
 class Api::TracksController < ApplicationController
   include Rails.application.routes.url_helpers
-  before_action :require_logged_in, only: %i[index destroy]
+  before_action :require_logged_in, only: %i[index create update destroy]
 
   def index
     tracks = current_user.tracks.order(updated_at: :desc).limit(16)
@@ -25,14 +25,7 @@ class Api::TracksController < ApplicationController
     track.caption = params[:caption]
     track.privacy = params[:privacy]
     track.genre_id = params[:genre_id]
-
-    # TODO:
-    permalink = if Rails.env == 'development'
-                  "http://localhost:3000/#{current_user.slug}/#{params[:permalink]}"
-                else
-                  "https://soundkloud-rails.onrender.com/#{current_user.slug}/#{params[:permalink]}"
-                end
-    track.permalink = permalink
+    track.permalink = "/#{current_user.slug}/#{params[:permalink]}"
     track.upload.attach(params[:upload]) if params[:upload]
     track.cover.attach(params[:cover]) if params[:cover]
 
@@ -60,12 +53,7 @@ class Api::TracksController < ApplicationController
       track.caption = params[:caption]
       track.privacy = params[:privacy]
       track.genre_id = params[:genre_id]
-      permalink = if Rails.env == 'development'
-                    "http://localhost:3000/#{current_user.slug}/#{params[:permalink]}"
-                  else
-                    "https://soundkloud-rails.onrender.com/#{current_user.slug}/#{params[:permalink]}"
-                  end
-      track.permalink = permalink
+      track.permalink = "/#{current_user.slug}/#{params[:permalink]}"
       if params[:cover]
         track.cover.purge if track.cover.attached?
         track.cover.attach(params[:cover])

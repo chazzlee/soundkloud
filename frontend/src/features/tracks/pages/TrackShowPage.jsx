@@ -38,12 +38,6 @@ export function TrackShowPage() {
     setReplyBody("");
   };
 
-  const [liked, setLiked] = useState(false);
-  const handleLike = () => {
-    //TODO: simulation
-    setLiked((prev) => !prev);
-  };
-
   const [following, setFollowing] = useState(false);
   const handleFollow = () => {
     setFollowing((prev) => !prev);
@@ -90,8 +84,8 @@ export function TrackShowPage() {
             </div>
 
             <div className={styles.asideContainer}>
-              <div>Related Tracks</div>
-              <div>TRACK!</div>
+              {/* <div>Related Tracks</div>
+              <div>TRACK!</div> */}
             </div>
 
             <TrackActions
@@ -170,9 +164,7 @@ export function TrackShowPage() {
               >
                 <div>
                   <p className={styles.descriptionContent}>
-                    {track.description
-                      ? track.description
-                      : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, repudiandae natus eum impedit nostrum expedita? Rem in asperiores labore excepturi dicta molestiae recusandae, Lorem ipsum dolor sit amet."}
+                    {track.description}
                   </p>
                 </div>
                 <div>
@@ -181,7 +173,7 @@ export function TrackShowPage() {
                 </div>
                 <div>
                   <p className={styles.detailsTitle}>Release date:</p>
-                  <p className={styles.detailsSubTitle}>21 October 2021</p>
+                  <p className={styles.detailsSubTitle}>21 October 2022</p>
                 </div>
               </div>
             </div>

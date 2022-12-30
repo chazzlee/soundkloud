@@ -306,7 +306,7 @@ export function UploadDropzone() {
                       Upload complete.
                     </p>
                     <Link
-                      to={`/${uploadedTrack?.permalink}`}
+                      to={uploadedTrack?.permalink}
                       style={{
                         fontSize: "14px",
                         color: "var(--link-blue)",

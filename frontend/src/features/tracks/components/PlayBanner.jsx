@@ -51,7 +51,7 @@ export function PlayBanner({ track }) {
   };
 
   useEffect(() => {
-    if (track && !wavesurfer.current && waveformRef.current) {
+    if (track?.upload && !wavesurfer.current && waveformRef.current) {
       wavesurfer.current = WaveSurfer.create({
         container: waveformRef.current,
         waveColor: "#eee",
@@ -64,11 +64,15 @@ export function PlayBanner({ track }) {
       });
       wavesurfer.current.load(track.upload);
     }
-  }, [track]);
+  }, [track?.upload]);
 
   useEffect(() => {
     return () => {
       rgb.current = null;
+      if (wavesurfer?.current) {
+        wavesurfer.current.unAll();
+        wavesurfer.current.empty();
+      }
     };
   }, []);
 
