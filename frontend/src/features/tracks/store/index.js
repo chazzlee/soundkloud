@@ -19,13 +19,12 @@ const UPDATE_TRACK_SUCCESS = "tracks/updateTrackSuccess";
 
 const DESTROY_TRACK_SUCCESS = "tracks/destroyTrackSuccess";
 const NOW_PLAYING = "tracks/nowPlaying";
+const STOP_PLAYING = "tracks/stopPlaying";
+const PAUSE_PLAYING = "tracks/pausePlaying";
+const SWITCH_TRACK = "tracks/switchTrack";
+const SWITCH_TO = "tracks/switchTo";
 
 const REPLY_TO_TRACK_SUCCESS = "replies/replyToTrackSuccess";
-
-export const startNowPlaying = (track) => ({
-  type: NOW_PLAYING,
-  payload: track,
-});
 
 const uploadTrackInitiate = () => ({
   type: UPLOAD_TRACK_START,
@@ -72,6 +71,15 @@ const fetchTrackFailed = (error) => ({
   type: FETCH_TRACK_FAILED,
   payload: error,
 });
+
+export const startNowPlaying = (track, from) => ({
+  type: NOW_PLAYING,
+  payload: { track, from },
+});
+export const pausePlaying = () => ({ type: PAUSE_PLAYING });
+export const stopPlaying = () => ({ type: STOP_PLAYING });
+export const switchTrack = (track) => ({ type: SWITCH_TRACK, payload: track });
+export const switchTo = (to) => ({ type: SWITCH_TRACK, payload: to });
 
 export const fetchAllTracksByUserAsync = (userId) => async (dispatch) => {
   dispatch(fetchTracksInitiate());
@@ -136,7 +144,10 @@ const initialState = {
   loaded: false,
   entities: {},
   current: null,
-  nowPlaying: null,
+  nowPlaying: {
+    src: null,
+    status: "init",
+  },
   ids: [],
 };
 
@@ -215,8 +226,28 @@ export const tracksReducer = produce((state = initialState, action) => {
       break;
     }
     case NOW_PLAYING: {
-      state.nowPlaying = action.payload;
+      state.nowPlaying.src = action.payload.track;
+      state.nowPlaying.from = action.payload.from;
+      state.nowPlaying.status = "playing";
       break;
+    }
+    case PAUSE_PLAYING: {
+      state.nowPlaying.status = "paused";
+      break;
+    }
+    case STOP_PLAYING: {
+      state.nowPlaying.status = "stopped";
+      break;
+    }
+    case SWITCH_TRACK: {
+      state.nowPlaying.status = "playing";
+      state.nowPlaying.src = action.payload.track;
+      state.nowPlaying.from = action.payload.from;
+      break;
+    }
+    case SWITCH_TO: {
+      state.nowPlaying.from = action.payload;
+      return;
     }
     default:
       return state;
@@ -232,4 +263,6 @@ export const selectCurrentTrack = (state) => state.tracks.current;
 export const selectUserTracks = (state) =>
   Object.values(state.tracks.entities ?? {});
 
-export const selectNowPlaying = (state) => state.tracks.nowPlaying;
+export const selectNowPlayingSource = (state) => state.tracks.nowPlaying.src;
+export const selectPlayingStatus = (state) => state.tracks.nowPlaying.status;
+export const selectPlayingFrom = (state) => state.tracks.nowPlaying.from;

@@ -1,9 +1,14 @@
 import styles from "./PlayCard.module.css";
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Image } from "pure-react-carousel";
-import { startNowPlaying } from "../../tracks/store";
+import {
+  selectNowPlayingSource,
+  selectPlayingStatus,
+  startNowPlaying,
+  switchTrack,
+} from "../../tracks/store";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -40,20 +45,25 @@ const sampleCovers = [
   "https://soundkloud-seeds.s3.amazonaws.com/dimmuborgir-abah.jpg",
   "https://soundkloud-seeds.s3.amazonaws.com/skydancer.jpg",
 ];
+const sampleDefaultSource1 =
+  "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Demonic+Incarnate.mp3";
+const sampleDefaultSource2 =
+  "https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+Wolf.mp3";
+
 export function PlayCard({ item, subcaption = "Related tracks" }) {
   const [showPlay, setShowPlay] = useState(false);
   const cover = useRef(sampleCovers[getRandomInteger(sampleCovers.length - 1)]);
   const dispatch = useDispatch();
+  const nowPlaying = useSelector(selectNowPlayingSource);
+  const playingStatus = useSelector(selectPlayingStatus);
 
   const handlePlay = (event) => {
     event.preventDefault();
-
-    dispatch(
-      startNowPlaying(
-        item.upload ??
-          "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Rise+Of+The+Predator.mp3"
-      )
-    );
+    if (nowPlaying) {
+      dispatch(switchTrack(item.upload ?? sampleDefaultSource1));
+    } else {
+      dispatch(startNowPlaying(item.upload ?? sampleDefaultSource2));
+    }
   };
 
   return (
