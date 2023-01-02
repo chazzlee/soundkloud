@@ -14,6 +14,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 
 //TODO: figure out react-head
+//TODO: sync playbar on wavesurfer
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();

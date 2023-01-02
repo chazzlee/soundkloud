@@ -36,6 +36,8 @@ const sampleCovers = [
   "https://soundkloud-seeds.s3.amazonaws.com/hate_eternal_king_of_all_kings_2002_retail_cd-front.jpg",
 ];
 
+// TODO: pausebtn
+
 export function PlayBanner({ track }) {
   const sampleCoverImage = useRef(
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]

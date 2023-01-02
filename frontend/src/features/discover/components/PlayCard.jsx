@@ -60,6 +60,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
   const handlePlay = (event) => {
     event.preventDefault();
     if (nowPlaying) {
+      // FIXME:
       dispatch(switchTrack(item.upload ?? sampleDefaultSource1));
     } else {
       dispatch(startNowPlaying(item.upload ?? sampleDefaultSource2));
