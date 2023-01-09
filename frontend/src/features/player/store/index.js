@@ -102,7 +102,7 @@ export const playerReducer = produce((state = initialState, action) => {
 });
 
 export const selectPlayingStatus = (state) => state.player.status;
-
+export const selectNowPlayingSource = (state) => state.player.nowPlaying;
 // export const selectNowPlayingSource = (state) => state.tracks.nowPlaying.src;
 // export const selectPlayingStatus = (state) => state.tracks.nowPlaying.status;
 // export const selectPlayingFrom = (state) => state.tracks.nowPlaying.from;

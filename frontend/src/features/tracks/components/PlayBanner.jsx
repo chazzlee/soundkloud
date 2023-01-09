@@ -71,15 +71,13 @@ export function PlayBanner({ track }) {
       });
 
       if (wavesurfer.current) {
+        wavesurfer.current.setMute(true);
         wavesurfer.current.load(
           track?.upload ??
             "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
         );
         wavesurfer.current.on("ready", () => {
           dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
-        });
-        wavesurfer.current.on("finish", () => {
-          console.log(wavesurfer.current.getCurrentTime());
         });
       }
     }
