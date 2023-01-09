@@ -42,7 +42,6 @@ export function DiscoverPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //TODO: fetch genres in discover
     if (!genresLoaded) {
       dispatch(fetchAllGenresAsync());
     }
@@ -56,15 +55,6 @@ export function DiscoverPage() {
       dispatch(fetchAllTracksByUserAsync(currentUser.id));
     }
   }, [dispatch, currentUser]);
-
-  // TODO:
-  // if (error) {
-  //   return (
-  //     <div>
-  //       <h3>ERROR!</h3>
-  //     </div>
-  //   );
-  // }
 
   if (discoverLoading) {
     return <FullSpinner />;

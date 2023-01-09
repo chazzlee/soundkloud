@@ -1,13 +1,13 @@
+import styles from "./TrackShowPage.module.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { selectCurrentUser } from "../../auth/store";
 import {
   fetchTrackAsync,
   replyToTrackAsync,
   selectCurrentTrack,
 } from "../store";
-import { selectCurrentUser } from "../../auth/store";
-import styles from "./TrackShowPage.module.css";
 import { formatDistanceToNow } from "date-fns";
 import { FaCommentAlt } from "react-icons/fa";
 import { ImUsers, ImUserPlus } from "react-icons/im";
@@ -43,9 +43,9 @@ export function TrackShowPage() {
     setFollowing((prev) => !prev);
   };
 
-  useEffect(() => {
-    dispatch(fetchPlaylistsAsync());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchPlaylistsAsync());
+  // }, [dispatch]);
 
   if (!track) {
     return <FullSpinner />;

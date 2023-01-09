@@ -1,28 +1,24 @@
 import styles from "./PlayBanner.module.css";
-import { formatDistanceToNow } from "date-fns";
-import { useEffect, useRef, useState } from "react";
-import { BiLockAlt } from "react-icons/bi";
-import { IoMdPause, IoMdPlay } from "react-icons/io";
-import { Link } from "react-router-dom";
-import { getRandomInteger } from "../../../utils/getRandomInteger";
-import WaveSurfer from "wavesurfer.js";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { Link } from "react-router-dom";
+import WaveSurfer from "wavesurfer.js";
+import { getRandomRGB } from "../../../utils/getRandomRGB";
+import { getRandomInteger } from "../../../utils/getRandomInteger";
+import { IoMdPause, IoMdPlay } from "react-icons/io";
+import { BiLockAlt } from "react-icons/bi";
 import {
-  pausePlaying,
-  selectNowPlayingSource,
+  LOCATION,
+  pauseTrack,
+  playTrack,
   selectPlayingStatus,
-  startNowPlaying,
-  switchTo,
-} from "../store";
+  setDurationOnLoad,
+  setLastRecordedTime,
+  STATUS,
+} from "../../player/store";
 
 const MAX_LENGTH = 49;
-
-const getRandomRGB = () => {
-  let red = getRandomInteger();
-  let green = getRandomInteger();
-  let blue = getRandomInteger();
-  return `rgb(${red}, ${green}, ${blue})`;
-};
 
 const sampleCovers = [
   "https://soundkloud-seeds.s3.amazonaws.com/Blind+Guardian+-+2010+-+At+The+Edge+Of+Time.jpg",
@@ -38,37 +34,31 @@ const sampleCovers = [
 
 // TODO: pausebtn
 
-export function PlayBanner({ track }) {
-  const sampleCoverImage = useRef(
-    sampleCovers[getRandomInteger(sampleCovers.length - 1)]
-  );
-  const rgb = useRef(getRandomRGB());
-  const headerFontSize = (track, length = MAX_LENGTH) =>
-    track?.artist.length + track?.title.length >= length ? "20px" : "22px";
+const headerFontSize = (track, length = MAX_LENGTH) =>
+  track.artist.length + track.title.length >= length ? "20px" : "22px";
 
+export function PlayBanner({ track }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
+  const rgbBackground = useRef(getRandomRGB());
+  const sampleCoverImage = useRef(
+    sampleCovers[getRandomInteger(sampleCovers.length - 1)]
+  );
   const playingStatus = useSelector(selectPlayingStatus);
-  const playingSource = useSelector(selectNowPlayingSource);
 
-  const handlePlay = () => {
-    dispatch(
-      startNowPlaying(
-        track?.upload ??
-          "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3",
-        "wave"
-      )
-    );
-    // wavesurfer.current?.play();
+  const handlePlay = (source) => {
+    dispatch(playTrack({ source, location: LOCATION.WAVESURFER }));
+    wavesurfer.current?.play();
   };
+
   const handlePause = () => {
-    dispatch(pausePlaying());
-    // wavesurfer.current?.pause();
+    dispatch(pauseTrack());
+    wavesurfer.current?.pause();
   };
 
   useEffect(() => {
-    if (!wavesurfer.current && waveformRef.current) {
+    if (waveformRef.current && !wavesurfer.current) {
       wavesurfer.current = WaveSurfer.create({
         container: waveformRef.current,
         waveColor: "#eee",
@@ -79,50 +69,48 @@ export function PlayBanner({ track }) {
         responsive: true,
         height: 100,
       });
+
       if (wavesurfer.current) {
         wavesurfer.current.load(
           track?.upload ??
             "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
         );
+        wavesurfer.current.on("ready", () => {
+          dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
+        });
+        wavesurfer.current.on("finish", () => {
+          console.log(wavesurfer.current.getCurrentTime());
+        });
       }
     }
-  }, [track?.upload]);
 
-  useEffect(() => {
-    if (playingStatus === "paused") {
-      wavesurfer.current?.pause();
-    } else if (playingStatus === "playing") {
-      wavesurfer.current?.play();
-    }
-  }, [playingStatus]);
-
-  useEffect(() => {
     return () => {
-      rgb.current = null;
-      if (wavesurfer?.current) {
-        wavesurfer.current.unAll();
-        wavesurfer.current.pause();
-        if (playingStatus === "playing") {
-          dispatch(switchTo("playbar"));
-        }
-      }
+      rgbBackground.current = null;
+      dispatch(setLastRecordedTime(wavesurfer.current.getCurrentTime()));
+
+      // TODO: cleanup wavesurfer
     };
-  }, [dispatch, playingStatus]);
+  }, [dispatch, track.upload]);
 
   return (
     <div
       className={styles.bannerPlayerContainer}
       style={{
-        background: `linear-gradient(135deg, ${rgb.current} 0%, rgb(11, 10, 10) 100%)`,
+        background: `linear-gradient(135deg, ${rgbBackground.current} 0%, rgb(11, 10, 10) 100%)`,
       }}
     >
       <div className={styles.bannerHeader}>
         <div>
-          {playingStatus !== "playing" ? (
+          {playingStatus !== STATUS.PLAYING ? (
             <button
               title="Play"
               className={styles.circularPlayBtn}
-              onClick={handlePlay}
+              onClick={() =>
+                handlePlay(
+                  track.upload ??
+                    "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
+                )
+              }
             >
               <IoMdPlay className={styles.playIcon} />
             </button>
@@ -209,3 +197,43 @@ export function PlayBanner({ track }) {
     </div>
   );
 }
+
+// useEffect(() => {
+//   if (playingStatus === "paused") {
+//     wavesurfer.current?.pause();
+//   } else if (playingStatus === "playing") {
+//     wavesurfer.current?.play();
+//   }
+// }, [playingStatus]);
+
+// useEffect(() => {
+//   return () => {
+//     rgb.current = null;
+//     if (wavesurfer?.current) {
+//       wavesurfer.current.unAll();
+//       wavesurfer.current.pause();
+//       if (playingStatus === "playing") {
+//         dispatch(switchTo("playbar"));
+//       }
+//     }
+//   };
+// }, [dispatch, playingStatus]);
+
+// const playingStatus = useSelector(selectPlayingStatus);
+// const playingSource = useSelector(selectNowPlayingSource);
+
+// const handlePlay = () => {
+//   dispatch(
+//     startNowPlaying(
+//       track?.upload ??
+//         "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3",
+//       "wave"
+//     )
+//   );
+//   // wavesurfer.current?.play();
+// };
+
+// const handlePause = () => {
+//   dispatch(pausePlaying());
+//   // wavesurfer.current?.pause();
+// };

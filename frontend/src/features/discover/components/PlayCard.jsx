@@ -3,12 +3,6 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Image } from "pure-react-carousel";
-import {
-  selectNowPlayingSource,
-  selectPlayingStatus,
-  startNowPlaying,
-  switchTrack,
-} from "../../tracks/store";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -54,18 +48,18 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
   const [showPlay, setShowPlay] = useState(false);
   const cover = useRef(sampleCovers[getRandomInteger(sampleCovers.length - 1)]);
   const dispatch = useDispatch();
-  const nowPlaying = useSelector(selectNowPlayingSource);
-  const playingStatus = useSelector(selectPlayingStatus);
+  // const nowPlaying = useSelector(selectNowPlayingSource);
+  // const playingStatus = useSelector(selectPlayingStatus);
 
-  const handlePlay = (event) => {
-    event.preventDefault();
-    if (nowPlaying) {
-      // FIXME:
-      dispatch(switchTrack(item.upload ?? sampleDefaultSource1));
-    } else {
-      dispatch(startNowPlaying(item.upload ?? sampleDefaultSource2));
-    }
-  };
+  // const handlePlay = (event) => {
+  //   event.preventDefault();
+  //   if (nowPlaying) {
+  //     // FIXME:
+  //     dispatch(switchTrack(item.upload ?? sampleDefaultSource1));
+  //   } else {
+  //     dispatch(startNowPlaying(item.upload ?? sampleDefaultSource2));
+  //   }
+  // };
 
   return (
     <>
@@ -82,7 +76,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
         {showPlay ? (
           <div className={styles.playOverlay}>
             <button
-              onClick={handlePlay}
+              // onClick={handlePlay}
               title="Play"
               className={styles.circularPlayBtn}
             >
