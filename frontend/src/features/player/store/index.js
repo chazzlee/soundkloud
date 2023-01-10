@@ -22,6 +22,7 @@ export const STATUS = Object.freeze({
   INIT: "initial",
   PLAYING: "playing",
   PAUSED: "paused",
+  SEEKING: "seeking",
 });
 
 const PLAY_TRACK = "player/PLAY_TRACK";
@@ -30,6 +31,7 @@ const SWITCH_TRACK = "player/SWITCH_TRACK";
 const SET_LAST_RECORDED_TIME = "player/SET_LAST_RECORDED_TIME";
 const SET_DURATION_ON_LOAD = "player/SET_DURATION_ON_LOAD";
 const CHANGE_STATUS = "player/CHANGE_STATUS";
+const SEEK_TRACK = "player/SEEK_TRACK";
 
 export const playTrack = ({ source, location }) => ({
   type: PLAY_TRACK,
@@ -60,6 +62,11 @@ export const changePlayerStatus = (status) => ({
   payload: status,
 });
 
+export const seekTrack = (currentTimeInSeconds) => ({
+  type: SEEK_TRACK,
+  payload: currentTimeInSeconds,
+});
+
 const initialState = {
   status: STATUS.INIT,
   nowPlaying: null,
@@ -83,6 +90,11 @@ export const playerReducer = produce((state = initialState, action) => {
     }
     case PAUSE_TRACK: {
       state.status = STATUS.PAUSED;
+      break;
+    }
+    case SEEK_TRACK: {
+      state.status = STATUS.SEEKING;
+      state.lastRecordedTimeInSeconds = action.payload;
       break;
     }
     case SET_LAST_RECORDED_TIME: {
@@ -114,6 +126,6 @@ export const playerReducer = produce((state = initialState, action) => {
 
 export const selectPlayingStatus = (state) => state.player.status;
 export const selectNowPlayingSource = (state) => state.player.nowPlaying;
-// export const selectNowPlayingSource = (state) => state.tracks.nowPlaying.src;
-// export const selectPlayingStatus = (state) => state.tracks.nowPlaying.status;
-// export const selectPlayingFrom = (state) => state.tracks.nowPlaying.from;
+export const selectLastRecordedTimeInSeconds = (state) =>
+  state.player.lastRecordedTimeInSeconds;
+export const selectTotalDuration = (state) => state.player.duration;

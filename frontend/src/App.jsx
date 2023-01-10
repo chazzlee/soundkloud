@@ -7,8 +7,10 @@ import {
   LOCATION,
   pauseTrack,
   playTrack,
+  seekTrack,
   selectNowPlayingSource,
   selectPlayingStatus,
+  setLastRecordedTime,
   STATUS,
 } from "./features/player/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +29,6 @@ function App() {
   const isPaused = playingStatus === STATUS.PAUSED;
   const isInit = playingStatus === STATUS.INIT;
   const showPlaybar = !isInit;
-  // const playingFrom = useSelector(selectPlayingFrom);
   const playerRef = useRef(null);
 
   useEffect(() => {
@@ -57,6 +58,8 @@ function App() {
             showSkipControls={false}
             showJumpControls={false}
             customAdditionalControls={[]}
+            onSeeking={(e) => dispatch(seekTrack(e.target.currentTime))}
+            onSeeked={() => dispatch(changePlayerStatus(STATUS.PLAYING))}
             onPlay={() =>
               dispatch(
                 playTrack({

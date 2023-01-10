@@ -13,7 +13,9 @@ import {
   LOCATION,
   pauseTrack,
   playTrack,
+  selectLastRecordedTimeInSeconds,
   selectPlayingStatus,
+  selectTotalDuration,
   setDurationOnLoad,
   setLastRecordedTime,
   STATUS,
@@ -49,6 +51,11 @@ export function PlayBanner({ track }) {
   const playingStatus = useSelector(selectPlayingStatus);
   const isPaused = playingStatus === STATUS.PAUSED;
   const isPlaying = playingStatus === STATUS.PLAYING;
+  const isSeeking = playingStatus === STATUS.SEEKING;
+  const lastRecordedTimeInSeconds = useSelector(
+    selectLastRecordedTimeInSeconds
+  );
+  const totalDuration = useSelector(selectTotalDuration);
 
   const handlePlay = () => {
     dispatch(
@@ -76,14 +83,19 @@ export function PlayBanner({ track }) {
         barRadius: 3,
         responsive: true,
         height: 100,
+        interact: false,
       });
 
       if (wavesurfer.current) {
         wavesurfer.current.setMute(true);
+
         wavesurfer.current.load(
           track?.upload ??
             "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
         );
+        wavesurfer.current.on("seek", () => {
+          return;
+        });
         wavesurfer.current.on("ready", () => {
           dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
         });
@@ -103,8 +115,17 @@ export function PlayBanner({ track }) {
       wavesurfer.current.pause();
     } else if (isPlaying) {
       wavesurfer.current.play();
+    } else if (isSeeking) {
+      wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
     }
-  }, [dispatch, isPaused, isPlaying]);
+  }, [
+    dispatch,
+    isPaused,
+    isPlaying,
+    isSeeking,
+    lastRecordedTimeInSeconds,
+    totalDuration,
+  ]);
 
   return (
     <div
