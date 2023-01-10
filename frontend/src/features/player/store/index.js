@@ -29,6 +29,7 @@ const PAUSE_TRACK = "player/PAUSE_TRACK";
 const SWITCH_TRACK = "player/SWITCH_TRACK";
 const SET_LAST_RECORDED_TIME = "player/SET_LAST_RECORDED_TIME";
 const SET_DURATION_ON_LOAD = "player/SET_DURATION_ON_LOAD";
+const CHANGE_STATUS = "player/CHANGE_STATUS";
 
 export const playTrack = ({ source, location }) => ({
   type: PLAY_TRACK,
@@ -54,6 +55,11 @@ export const setDurationOnLoad = (durationInSeconds) => ({
   payload: durationInSeconds,
 });
 
+export const changePlayerStatus = (status) => ({
+  type: CHANGE_STATUS,
+  payload: status,
+});
+
 const initialState = {
   status: STATUS.INIT,
   nowPlaying: null,
@@ -62,6 +68,7 @@ const initialState = {
   lastRecordedTimeInSeconds: 0,
 };
 
+// TODO: check CHANGE_STATUS: TODO:
 export const playerReducer = produce((state = initialState, action) => {
   switch (action.type) {
     case SET_DURATION_ON_LOAD: {
@@ -80,6 +87,10 @@ export const playerReducer = produce((state = initialState, action) => {
     }
     case SET_LAST_RECORDED_TIME: {
       state.lastRecordedTimeInSeconds = action.payload;
+      break;
+    }
+    case CHANGE_STATUS: {
+      state.status = action.payload;
       break;
     }
     // case STOP_PLAYING: {

@@ -9,6 +9,7 @@ import { getRandomInteger } from "../../../utils/getRandomInteger";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { BiLockAlt } from "react-icons/bi";
 import {
+  changePlayerStatus,
   LOCATION,
   pauseTrack,
   playTrack,
@@ -46,15 +47,22 @@ export function PlayBanner({ track }) {
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]
   );
   const playingStatus = useSelector(selectPlayingStatus);
+  const isPaused = playingStatus === STATUS.PAUSED;
+  const isPlaying = playingStatus === STATUS.PLAYING;
 
-  const handlePlay = (source) => {
-    dispatch(playTrack({ source, location: LOCATION.WAVESURFER }));
-    wavesurfer.current?.play();
+  const handlePlay = () => {
+    dispatch(
+      playTrack({
+        source:
+          track.upload ??
+          "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3",
+        location: LOCATION.WAVESURFER,
+      })
+    );
   };
 
   const handlePause = () => {
     dispatch(pauseTrack());
-    wavesurfer.current?.pause();
   };
 
   useEffect(() => {
@@ -90,6 +98,14 @@ export function PlayBanner({ track }) {
     };
   }, [dispatch, track.upload]);
 
+  useEffect(() => {
+    if (isPaused) {
+      wavesurfer.current.pause();
+    } else if (isPlaying) {
+      wavesurfer.current.play();
+    }
+  }, [dispatch, isPaused, isPlaying]);
+
   return (
     <div
       className={styles.bannerPlayerContainer}
@@ -99,7 +115,7 @@ export function PlayBanner({ track }) {
     >
       <div className={styles.bannerHeader}>
         <div>
-          {playingStatus !== STATUS.PLAYING ? (
+          {!isPlaying ? (
             <button
               title="Play"
               className={styles.circularPlayBtn}
@@ -195,43 +211,3 @@ export function PlayBanner({ track }) {
     </div>
   );
 }
-
-// useEffect(() => {
-//   if (playingStatus === "paused") {
-//     wavesurfer.current?.pause();
-//   } else if (playingStatus === "playing") {
-//     wavesurfer.current?.play();
-//   }
-// }, [playingStatus]);
-
-// useEffect(() => {
-//   return () => {
-//     rgb.current = null;
-//     if (wavesurfer?.current) {
-//       wavesurfer.current.unAll();
-//       wavesurfer.current.pause();
-//       if (playingStatus === "playing") {
-//         dispatch(switchTo("playbar"));
-//       }
-//     }
-//   };
-// }, [dispatch, playingStatus]);
-
-// const playingStatus = useSelector(selectPlayingStatus);
-// const playingSource = useSelector(selectNowPlayingSource);
-
-// const handlePlay = () => {
-//   dispatch(
-//     startNowPlaying(
-//       track?.upload ??
-//         "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3",
-//       "wave"
-//     )
-//   );
-//   // wavesurfer.current?.play();
-// };
-
-// const handlePause = () => {
-//   dispatch(pausePlaying());
-//   // wavesurfer.current?.pause();
-// };

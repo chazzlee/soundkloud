@@ -3,6 +3,10 @@ import { Outlet, useLocation } from "react-router-dom";
 import { TopNavigation } from "./components/TopNavigation";
 import AudioPlayer from "react-h5-audio-player";
 import {
+  changePlayerStatus,
+  LOCATION,
+  pauseTrack,
+  playTrack,
   selectNowPlayingSource,
   selectPlayingStatus,
   STATUS,
@@ -26,27 +30,15 @@ function App() {
   // const playingFrom = useSelector(selectPlayingFrom);
   const playerRef = useRef(null);
 
-  // useEffect(() => {
-  //   if (playerRef.current && playingStatus === "paused") {
-  //     playerRef.current?.audio.current.pause();
-  //   }
-  // }, [playingStatus]);
-
   useEffect(() => {
     if (playerRef.current) {
-      switch (playingStatus) {
-        case STATUS.PLAYING: {
-          playerRef.current.audio.current.play();
-          break;
-        }
-        case STATUS.PAUSED: {
-          break;
-        }
-        default:
-          throw new Error("Invalid status");
+      if (isPlaying) {
+        playerRef.current.audio.current.play();
+      } else if (isPaused) {
+        playerRef.current.audio.current.pause();
       }
     }
-  }, [playingStatus]);
+  }, [playingStatus, isPlaying, isPaused]);
 
   return (
     <>
@@ -65,6 +57,15 @@ function App() {
             showSkipControls={false}
             showJumpControls={false}
             customAdditionalControls={[]}
+            onPlay={() =>
+              dispatch(
+                playTrack({
+                  source: nowPlayingSource,
+                  location: LOCATION.PLAYBAR,
+                })
+              )
+            }
+            onPause={() => dispatch(pauseTrack())}
           />
         </FixedBottomAudioContainer>
       ) : null}
