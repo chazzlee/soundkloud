@@ -10,7 +10,6 @@ import {
   seekTrack,
   selectNowPlayingSource,
   selectPlayingStatus,
-  setLastRecordedTime,
   STATUS,
 } from "./features/player/store";
 import { useDispatch, useSelector } from "react-redux";

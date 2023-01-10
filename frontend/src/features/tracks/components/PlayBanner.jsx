@@ -14,6 +14,7 @@ import {
   pauseTrack,
   playTrack,
   selectLastRecordedTimeInSeconds,
+  selectNowPlayingSource,
   selectPlayingStatus,
   selectTotalDuration,
   setDurationOnLoad,
@@ -40,6 +41,13 @@ const sampleCovers = [
 const headerFontSize = (track, length = MAX_LENGTH) =>
   track.artist.length + track.title.length >= length ? "20px" : "22px";
 
+const getSampleUrl = (trackId) => {
+  // if (trackId === 8) {
+  //   return "https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+From+Chaos+To+Eternity.mp3";
+  // }
+  return "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3";
+};
+
 export function PlayBanner({ track }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
@@ -48,6 +56,7 @@ export function PlayBanner({ track }) {
   const sampleCoverImage = useRef(
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]
   );
+  const nowPlayingSource = useSelector(selectNowPlayingSource);
   const playingStatus = useSelector(selectPlayingStatus);
   const isPaused = playingStatus === STATUS.PAUSED;
   const isPlaying = playingStatus === STATUS.PLAYING;
@@ -60,9 +69,7 @@ export function PlayBanner({ track }) {
   const handlePlay = () => {
     dispatch(
       playTrack({
-        source:
-          track.upload ??
-          "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3",
+        source: track.upload ?? getSampleUrl(track.id),
         location: LOCATION.WAVESURFER,
       })
     );
@@ -89,10 +96,7 @@ export function PlayBanner({ track }) {
       if (wavesurfer.current) {
         wavesurfer.current.setMute(true);
 
-        wavesurfer.current.load(
-          track?.upload ??
-            "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
-        );
+        wavesurfer.current.load(track?.upload ?? getSampleUrl(track.id));
         wavesurfer.current.on("seek", () => {
           return;
         });
@@ -105,10 +109,9 @@ export function PlayBanner({ track }) {
     return () => {
       rgbBackground.current = null;
       dispatch(setLastRecordedTime(wavesurfer.current.getCurrentTime()));
-
       // TODO: cleanup wavesurfer
     };
-  }, [dispatch, track.upload]);
+  }, [dispatch, track.upload, track.id]);
 
   useEffect(() => {
     if (isPaused) {
