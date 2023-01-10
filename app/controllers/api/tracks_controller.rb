@@ -54,6 +54,8 @@ class Api::TracksController < ApplicationController
       track.privacy = params[:privacy]
       track.genre_id = params[:genre_id]
       track.permalink = "/#{current_user.slug}/#{params[:permalink]}"
+      track.slug = params[:permalink]
+
       if params[:cover]
         track.cover.purge if track.cover.attached?
         track.cover.attach(params[:cover])

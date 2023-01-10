@@ -118,7 +118,7 @@ export function UploadDropzone() {
     formData.set("description", formValues.description.trim());
     formData.set("caption", formValues.caption.trim());
     formData.set("privacy", formValues.privacy.trim());
-    formData.set("genre_id", parseInt(formValues.genre_id || '1', 10));
+    formData.set("genre_id", parseInt(formValues.genre_id || "1", 10));
     formData.set("upload", file, file.name);
     formData.set("tags", JSON.stringify(tagsDisplay));
 
@@ -143,8 +143,6 @@ export function UploadDropzone() {
   useEffect(() => {
     setPermalink(slug(title));
   }, [title]);
-
-  console.log(genres);
 
   if (success) {
     return (

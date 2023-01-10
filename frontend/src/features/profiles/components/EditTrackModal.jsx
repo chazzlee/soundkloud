@@ -25,17 +25,16 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
   const [tagInput, setTagInput] = useState("");
   const [tagsDisplay, setTagsDisplay] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-  // const [errors, setErrors] = useState({ title: "", artist: "" });
+  const [errors, setErrors] = useState([]);
 
   const [formValues, setFormValues] = useState({
     playlist: false,
     artist: track.artist || "",
-    genre_id: trackGenre.id || "",
+    genre_id: trackGenre?.id || "",
     description: track.artist || "",
     caption: track.caption || "",
     privacy: track.privacy || "public",
   });
-
   const handleInputChange = (e) => {
     setFormValues((prev) => {
       if (e.target.type === "checkbox") {
@@ -74,14 +73,6 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formValues.artist || !title) {
-      // setErrors({
-      //   title: "Title is required",
-      //   artist: "Artist is required",
-      // });
-      return;
-    }
-
     setSubmitted(true);
     const formData = new FormData();
     formData.set("id", track.id);

@@ -65,12 +65,12 @@ export function TopNavigation() {
                     Home
                   </NavLink>
                 </li>
-                <li className={styles.navBtn}>
+                <li className={styles.navBtn} style={{ visibility: "hidden" }}>
                   <NavLink to={"/feed"} className={styles.navLink}>
                     Feed
                   </NavLink>
                 </li>
-                <li className={styles.navBtn}>
+                <li className={styles.navBtn} style={{ visibility: "hidden" }}>
                   <NavLink to={"/library"} className={styles.navLink}>
                     Library
                   </NavLink>
@@ -188,16 +188,16 @@ export function TopNavigation() {
                   </li>
                 )}
                 <div className={`${styles.right} ${styles.iconGroup}`}>
-                  <div className={styles.iconContainer}>
-                    <button className={styles.iconBtn}>
+                  {/* <div className={styles.iconContainer}>
+                    <button style={{ visibility: "hidden", padding: "8px 0" }}>
                       <BsFillBellFill />
                     </button>
                   </div>
                   <div className={styles.iconContainer}>
-                    <button className={styles.iconBtn}>
+                    <button style={{ visibility: "hidden", padding: "8px 0" }}>
                       <IoMdMail />
                     </button>
-                  </div>
+                  </div> */}
                   <div
                     style={{ position: "relative" }}
                     ref={settingsDropdownRef}
