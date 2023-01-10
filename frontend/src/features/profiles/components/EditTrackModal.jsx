@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import slug from "slug";
 import { Modal } from "../../../context/Modal";
 import { selectCurrentUser } from "../../auth/store";
-import { fetchAllGenresAsync, selectGenres } from "../../genres/store";
+import {
+  fetchAllGenresAsync,
+  selectGenres,
+  selectGenresLoaded,
+} from "../../genres/store";
 import { CoverImagePreview } from "../../tracks/components/CoverImagePreview";
 import { updateTrackAsync } from "../../tracks/store";
 import styles from "./EditTrackModal.module.css";
@@ -11,7 +15,10 @@ import styles from "./EditTrackModal.module.css";
 export function EditTrackModal({ track, onClose, onSuccess }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  const genresLoaded = useSelector(selectGenresLoaded);
   const genres = useSelector(selectGenres);
+  const trackGenre = genres.find((genre) => genre.label === track.genre);
+
   const [coverImage, setCoverImage] = useState(track.cover ?? null);
   const [title, setTitle] = useState(track.title || "");
   const [permalink, setPermalink] = useState(track.permalink || "");
@@ -23,7 +30,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
   const [formValues, setFormValues] = useState({
     playlist: false,
     artist: track.artist || "",
-    genre_id: track.genre || "",
+    genre_id: trackGenre.id || "",
     description: track.artist || "",
     caption: track.caption || "",
     privacy: track.privacy || "public",
@@ -95,8 +102,10 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
   };
 
   useEffect(() => {
-    dispatch(fetchAllGenresAsync());
-  }, [dispatch]);
+    if (!genresLoaded) {
+      dispatch(fetchAllGenresAsync());
+    }
+  }, [dispatch, genresLoaded]);
 
   useEffect(() => {
     setPermalink(slug(title));

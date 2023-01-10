@@ -196,6 +196,7 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.loading = false;
       state.error = null;
       state.entities[action.payload.id] = action.payload;
+      state.current = action.payload;
       break;
     }
     case REPLY_TO_TRACK_SUCCESS: {
