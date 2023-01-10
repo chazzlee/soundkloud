@@ -43,9 +43,9 @@ export function TrackShowPage() {
     setFollowing((prev) => !prev);
   };
 
-  // useEffect(() => {
-  //   dispatch(fetchPlaylistsAsync());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchPlaylistsAsync());
+  }, [dispatch]);
 
   if (!track) {
     return <FullSpinner />;

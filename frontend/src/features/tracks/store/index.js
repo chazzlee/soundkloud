@@ -104,8 +104,12 @@ export const updateTrackAsync = (updatedTrack) => async (dispatch) => {
     const response = await TracksApi.updateOne(updatedTrack);
     const data = await response.json();
     dispatch(updateTrackSuccess(data));
+    return response;
   } catch (error) {
-    console.error(error);
+    const response = await error.json();
+    if (response.statusCode >= 400) {
+      throw response;
+    }
   }
 };
 

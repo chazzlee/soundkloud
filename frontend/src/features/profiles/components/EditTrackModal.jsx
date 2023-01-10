@@ -25,7 +25,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
   const [tagInput, setTagInput] = useState("");
   const [tagsDisplay, setTagsDisplay] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState(null);
 
   const [formValues, setFormValues] = useState({
     playlist: false,
@@ -52,6 +52,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
     setTagInput("");
     setTagsDisplay([]);
     setSubmitted(false);
+    setErrors(null);
     setFormValues({
       playlist: false,
       artist: "",
@@ -74,6 +75,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
+    setErrors(null);
     const formData = new FormData();
     formData.set("id", track.id);
     formData.set("uploader", track.uploader.id);
@@ -83,9 +85,15 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
     formData.set("description", formValues.description.trim());
     formData.set("caption", formValues.caption.trim());
     formData.set("privacy", formValues.privacy.trim());
-    formData.set("genre_id", parseInt(formValues.genre_id, 10));
+    formData.set("genre_id", parseInt(formValues.genre_id || "1", 10));
     formData.set("tags", JSON.stringify(tagsDisplay));
     coverImage && formData.set("cover", coverImage, coverImage.name);
+
+    if (!formData.get("title") || !formData.get("artist")) {
+      setErrors("Invalid form values");
+      setSubmitted(false);
+      return;
+    }
 
     dispatch(updateTrackAsync(formData));
     resetForm();
@@ -115,6 +123,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
           <header className={styles.formHeader}>
             <p className={styles.headerTab}>Basic info</p>
           </header>
+
           <div className={styles.form}>
             <div className={styles.column1}>
               <CoverImagePreview
@@ -123,6 +132,11 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
               />
             </div>
             <div className={styles.column2}>
+              {errors && (
+                <p style={{ color: "var(--error-red)", fontSize: 14 }}>
+                  {errors}
+                </p>
+              )}
               <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className={styles.formControl}>
                   <label className={styles.label} htmlFor="title">
