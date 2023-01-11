@@ -4,7 +4,7 @@ import styles from "./DiscoverPage.module.css";
 import { CarouselSlider } from "../components/CarouselSlider";
 import { selectCurrentUser } from "../../auth/store";
 import {
-  fetchDiscoverAsync,
+  fetchDiscoverPageAsync,
   selectDiscoverLoaded,
   selectDiscoverListByType,
   selectDiscoverLoading,
@@ -12,9 +12,12 @@ import {
 } from "../store";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
 import { GrRefresh } from "react-icons/gr";
-import { fetchAllTracksByUserAsync } from "../../tracks/store";
+import {
+  fetchAllTracksByUserAsync,
+  selectUserTracks,
+} from "../../tracks/store";
 import { sampleArtistsToFollow } from "../data";
-import { fetchAllGenresAsync, selectGenresLoaded } from "../../genres/store";
+import { selectGenresLoaded } from "../../genres/store";
 import { FullSpinner } from "../../../components/FullSpinner";
 
 const shuffle = (array) => {
@@ -24,37 +27,22 @@ const artistsToFollow = shuffle(sampleArtistsToFollow).slice(0, 8);
 const newTracks = shuffle(sampleArtistsToFollow).slice(0, 4);
 
 export function DiscoverPage() {
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const discoverLoading = useSelector(selectDiscoverLoading);
-  const discoverLoaded = useSelector(selectDiscoverLoaded);
   const discoverGroupedByGenres = useSelector(selectDiscoverGroupedByGenres);
-  const genresLoaded = useSelector(selectGenresLoaded);
+
   const mostPlayed = useSelector((state) =>
     selectDiscoverListByType(state, "mostPlayed")
   );
   const recentlyPlayed = useSelector((state) =>
     selectDiscoverListByType(state, "recentlyPlayed")
   );
-  const userTracks = useSelector((state) =>
-    Object.values(state.tracks.entities)
-  );
-
-  const dispatch = useDispatch();
+  const userTracks = useSelector(selectUserTracks);
 
   useEffect(() => {
-    if (!genresLoaded) {
-      dispatch(fetchAllGenresAsync());
-    }
-    if (!discoverLoaded) {
-      dispatch(fetchDiscoverAsync());
-    }
-  }, [dispatch, genresLoaded, discoverLoaded]);
-
-  useEffect(() => {
-    if (currentUser) {
-      dispatch(fetchAllTracksByUserAsync(currentUser.id));
-    }
-  }, [dispatch, currentUser]);
+    dispatch(fetchDiscoverPageAsync());
+  }, [dispatch]);
 
   if (discoverLoading) {
     return <FullSpinner />;

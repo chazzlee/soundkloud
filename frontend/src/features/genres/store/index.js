@@ -1,29 +1,26 @@
 import produce from "immer";
 import { GenresApi } from "../../../api/genres";
 
-const FETCH_GENRES_START = "genres/fetchGenresInitiate";
-const FETCH_GENRES_SUCCESS = "genres/fetchGenresSuccess";
-const FETCH_GENRES_FAILED = "genres/fetchGenresFailed";
+const FETCH_GENRES_START = "genres/start";
+const FETCH_GENRES_SUCCESS = "genres/success";
+const FETCH_GENRES_FAILED = "genres/fail";
 
-const fetchGenresInitiate = () => ({ type: FETCH_GENRES_START });
-const fetchGenresSuccess = (genres) => ({
+export const requestStarted = () => ({ type: FETCH_GENRES_START });
+export const requestSuccess = (genres) => ({
   type: FETCH_GENRES_SUCCESS,
   payload: genres,
 });
-const fetchGenresFailed = (error) => ({
+const requestFailed = (error) => ({
   type: FETCH_GENRES_FAILED,
   payload: error,
 });
 
-export const fetchAllGenresAsync = () => async (dispatch) => {
-  dispatch(fetchGenresInitiate());
-  try {
-    const response = await GenresApi.fetchAll();
-    const data = await response.json();
-    dispatch(fetchGenresSuccess(data));
-  } catch (error) {
-    dispatch(fetchGenresFailed(error));
-  }
+export const fetchGenresAsync = () => async (dispatch) => {
+  dispatch(requestStarted());
+  GenresApi.fetchAll().then(
+    async (response) => dispatch(requestSuccess(await response.json())),
+    (error) => dispatch(requestFailed(error.error))
+  );
 };
 
 const initialState = {
@@ -36,22 +33,25 @@ const initialState = {
 export const genresReducer = produce((state = initialState, action) => {
   switch (action.type) {
     case FETCH_GENRES_START: {
-      state.error = null;
       state.loading = true;
+      state.loaded = false;
+      state.error = null;
       break;
     }
     case FETCH_GENRES_SUCCESS: {
-      state.error = null;
       state.loading = false;
       state.loaded = true;
       state.entities = action.payload;
       state.ids = Object.keys(action.payload);
+      state.error = null;
       break;
     }
     case FETCH_GENRES_FAILED: {
       state.error = action.payload;
       state.loading = false;
       state.loaded = false;
+      state.entities = {};
+      state.ids = [];
       break;
     }
     default:

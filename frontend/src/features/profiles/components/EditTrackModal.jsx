@@ -4,7 +4,7 @@ import slug from "slug";
 import { Modal } from "../../../context/Modal";
 import { selectCurrentUser } from "../../auth/store";
 import {
-  fetchAllGenresAsync,
+  fetchGenresAsync,
   selectGenres,
   selectGenresLoaded,
 } from "../../genres/store";
@@ -102,7 +102,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
 
   useEffect(() => {
     if (!genresLoaded) {
-      dispatch(fetchAllGenresAsync());
+      dispatch(fetchGenresAsync());
     }
   }, [dispatch, genresLoaded]);
 

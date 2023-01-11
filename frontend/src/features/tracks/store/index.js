@@ -2,9 +2,9 @@ import produce from "immer";
 import { RepliesApi } from "../../../api/replies";
 import { TracksApi } from "../../../api/tracks";
 
-const FETCH_TRACKS_START = "tracks/fetchTracksInitiate";
-const FETCH_TRACKS_SUCCESS = "tracks/fetchTracksSuccess";
-const FETCH_TRACKS_FAILED = "tracks/fetchTracksFailed";
+const FETCH_TRACKS_START = "tracks/tracksStart";
+const FETCH_TRACKS_SUCCESS = "tracks/tracksSuccess";
+const FETCH_TRACKS_FAILED = "tracks/tracksFail";
 
 const FETCH_TRACK_START = "tracks/fetchTrackInitiate";
 const FETCH_TRACK_SUCCESS = "tracks/fetchTrackSuccess";
@@ -22,6 +22,16 @@ const DESTROY_TRACK_SUCCESS = "tracks/destroyTrackSuccess";
 const REPLY_TO_TRACK_SUCCESS = "replies/replyToTrackSuccess";
 const DESTROY_REPLY = "replies/destroyReply";
 const UPDATE_REPLY = "replies/updateReply";
+
+const fetchTracksStarted = () => ({ type: FETCH_TRACKS_START });
+const fetchTracksSuccess = (tracks) => ({
+  type: FETCH_TRACKS_SUCCESS,
+  payload: tracks,
+});
+const fetchTracksFailed = (error) => ({
+  type: FETCH_TRACKS_FAILED,
+  payload: error,
+});
 
 const removeReply = (replyId) => ({
   type: DESTROY_REPLY,
@@ -58,16 +68,6 @@ const replyToTrackSuccess = (reply) => ({
   payload: reply,
 });
 
-const fetchTracksInitiate = () => ({ type: FETCH_TRACKS_START });
-const fetchTracksSuccess = (tracks) => ({
-  type: FETCH_TRACKS_SUCCESS,
-  payload: tracks,
-});
-const fetchTracksFailed = (error) => ({
-  type: FETCH_TRACKS_FAILED,
-  payload: error,
-});
-
 const fetchTrackInitiate = () => ({ type: FETCH_TRACK_START });
 const fetchTrackSuccess = (track) => ({
   type: FETCH_TRACK_SUCCESS,
@@ -79,14 +79,11 @@ const fetchTrackFailed = (error) => ({
 });
 
 export const fetchAllTracksByUserAsync = (userId) => async (dispatch) => {
-  dispatch(fetchTracksInitiate());
-  try {
-    const response = await TracksApi.fetchAllByUser(userId);
-    const data = await response.json();
-    dispatch(fetchTracksSuccess(data));
-  } catch (error) {
-    dispatch(fetchTracksFailed(error));
-  }
+  dispatch(fetchTracksStarted());
+  TracksApi.fetchAllByUser(userId).then(
+    async (response) => dispatch(fetchTracksSuccess(await response.json())),
+    (error) => dispatch(fetchTracksFailed(error.error))
+  );
 };
 
 export const fetchTrackAsync = (profileId, trackId) => async (dispatch) => {
@@ -168,6 +165,7 @@ export const tracksReducer = produce((state = initialState, action) => {
     case FETCH_TRACKS_START: {
       state.error = null;
       state.loading = true;
+      state.loaded = false;
       break;
     }
     case FETCH_TRACKS_SUCCESS: {
