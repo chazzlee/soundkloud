@@ -29,7 +29,7 @@ const removeReply = (replyId) => ({
 });
 const updateReply = (updatedReply) => ({
   type: UPDATE_REPLY,
-  payload: updateReply,
+  payload: updatedReply,
 });
 
 const uploadTrackInitiate = () => ({
@@ -124,6 +124,13 @@ export const updateTrackAsync = (updatedTrack) => async (dispatch) => {
   }
 };
 
+export const destroyTrackAsync = (trackId) => async (dispatch) => {
+  try {
+    await TracksApi.destroyOne(trackId);
+    dispatch(destroyTrackSuccess(trackId));
+  } catch (error) {}
+};
+
 export const replyToTrackAsync = (trackId, reply) => async (dispatch) => {
   try {
     const response = await RepliesApi.replyToTrack(trackId, reply);
@@ -132,17 +139,18 @@ export const replyToTrackAsync = (trackId, reply) => async (dispatch) => {
   } catch (error) {}
 };
 
+export const updateReplyAsync = (updatedReply) => async (dispatch) => {
+  try {
+    const response = await RepliesApi.update(updatedReply);
+    const data = await response.json();
+    dispatch(updateReply(data));
+  } catch (error) {}
+};
+
 export const destroyReplyAsync = (replyId) => async (dispatch) => {
   try {
     dispatch(removeReply(replyId));
     await RepliesApi.destroy(replyId);
-  } catch (error) {}
-};
-
-export const destroyTrackAsync = (trackId) => async (dispatch) => {
-  try {
-    await TracksApi.destroyOne(trackId);
-    dispatch(destroyTrackSuccess(trackId));
   } catch (error) {}
 };
 
@@ -228,6 +236,14 @@ export const tracksReducer = produce((state = initialState, action) => {
     case DESTROY_TRACK_SUCCESS: {
       delete state.entities[action.payload];
       state.current = null;
+      break;
+    }
+    case UPDATE_REPLY: {
+      state.current.replies = state.current.replies.map((reply) =>
+        reply.id === action.payload.id
+          ? { ...reply, ...action.payload, trackId: action.payload.track }
+          : reply
+      );
       break;
     }
     case DESTROY_REPLY: {

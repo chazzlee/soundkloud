@@ -18,6 +18,7 @@ import { FullSpinner } from "../../../components/FullSpinner";
 import { PlayBanner } from "../components/PlayBanner";
 import { TrackActions } from "../components/TrackActions";
 import { fetchPlaylistsAsync } from "../../playlists/store";
+import { ReplyCard } from "../components/ReplyCard";
 
 export function TrackShowPage() {
   const dispatch = useDispatch();
@@ -43,6 +44,9 @@ export function TrackShowPage() {
   const handleFollow = () => {
     setFollowing((prev) => !prev);
   };
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [body, setBody] = useState("");
 
   useEffect(() => {
     dispatch(fetchPlaylistsAsync());
@@ -195,71 +199,7 @@ export function TrackShowPage() {
                 </div>
                 <div className={styles.commentList}>
                   {track?.replies.map((reply) => (
-                    <div key={reply.id} className={styles.commentCard}>
-                      <div style={{ marginRight: "10px" }}>
-                        <img
-                          src={
-                            reply.user.photo ??
-                            "https://soundkloud-seeds.s3.amazonaws.com/default-profile.jpg"
-                          }
-                          alt="Profile Avatar"
-                          height="40px"
-                          width="40px"
-                          style={{ objectFit: "cover", borderRadius: "50%" }}
-                        />
-                      </div>
-                      <div style={{ width: "100%" }}>
-                        <div className={styles.commenter}>
-                          <p>
-                            {reply.user.displayName} <span>at </span>
-                            <span>
-                              {new Date(reply.createdAt).toLocaleTimeString(
-                                "en-US",
-                                { timeStyle: "short" }
-                              )}
-                            </span>
-                          </p>
-                          <p>
-                            {formatDistanceToNow(new Date(reply.createdAt), {
-                              addSuffix: true,
-                            })}
-                            {reply.user.id === currentUser.id && (
-                              <div style={{ display: "inline-block" }}>
-                                <span
-                                  style={{
-                                    fontSize: 12,
-                                    border: "1px solid #e5e5e5",
-                                    padding: "3px 10px",
-                                    cursor: "pointer",
-                                    color: "#333",
-                                    marginLeft: 8,
-                                    marginRight: 4,
-                                  }}
-                                  onClick={() => {}}
-                                >
-                                  Edit
-                                </span>
-                                <span
-                                  style={{
-                                    fontSize: 12,
-                                    border: "1px solid #e5e5e5",
-                                    padding: "3px 10px",
-                                    cursor: "pointer",
-                                    color: "red",
-                                  }}
-                                  onClick={() =>
-                                    dispatch(destroyReplyAsync(reply.id))
-                                  }
-                                >
-                                  Delete
-                                </span>
-                              </div>
-                            )}
-                          </p>
-                        </div>
-                        <p className={styles.commentContent}>{reply.body}</p>
-                      </div>
-                    </div>
+                    <ReplyCard key={reply.id} reply={reply} />
                   ))}
                 </div>
               </div>

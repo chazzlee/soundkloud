@@ -13,6 +13,15 @@ export const RepliesApi = {
       body: JSON.stringify({ reply }),
     });
   },
+  update(reply) {
+    return csrfFetch(`/api/replies/${reply.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reply),
+    });
+  },
   destroy(replyId) {
     return csrfFetch(`/api/replies/${replyId}`, { method: "DELETE" });
   },
