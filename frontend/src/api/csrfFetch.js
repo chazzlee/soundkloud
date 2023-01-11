@@ -5,8 +5,10 @@
  * @returns {Promise<Response>}
  */
 export async function csrfFetch(url, options = {}) {
-  options.method ||= "GET";
-  options.headers ||= {
+  options.method = options.method || "GET";
+
+  options.headers = {
+    ...options.headers,
     Accept: "application/json",
   };
 
@@ -16,7 +18,7 @@ export async function csrfFetch(url, options = {}) {
 
   const response = await fetch(url, options);
   if (response.status >= 400) {
-    throw response;
+    throw await response.json();
   }
 
   return response;

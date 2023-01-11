@@ -24,6 +24,12 @@ async function restoreCSRF() {
   return response;
 }
 
+function storeCSRFToken(response) {
+  const csrfToken = response.headers.get("X-CSRF-Token");
+  if (csrfToken) {
+    sessionStorage.setItem("X-CSRF-Token", csrfToken);
+  }
+}
 export const restoreSession = () => async (dispatch) => {
   const response = await restoreCSRF();
   const data = await response.json();
@@ -35,13 +41,6 @@ export const restoreSession = () => async (dispatch) => {
   }
   return response;
 };
-
-function storeCSRFToken(response) {
-  const csrfToken = response.headers.get("X-CSRF-Token");
-  if (csrfToken) {
-    sessionStorage.setItem("X-CSRF-Token", csrfToken);
-  }
-}
 
 function storeCurrentUser(user) {
   if (user) {

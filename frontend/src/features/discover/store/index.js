@@ -2,27 +2,30 @@ import produce from "immer";
 import { createSelector } from "reselect";
 import { TracksApi } from "../../../api/tracks";
 
-const INITIATE_DISCOVER_REQUEST = "discover/requestInitiated";
-const FETCH_DISCOVER_DATA_SUCCESS = "discover/discoverDataReceived";
+const FETCH_DISCOVER_START = "discover/start";
+const FETCH_DISCOVER_SUCCESS = "discover/success";
+const FETCH_DISCOVER_FAIL = "discover/fail";
 
-const requestInitiated = () => ({
-  type: INITIATE_DISCOVER_REQUEST,
+const requestStarted = () => ({
+  type: FETCH_DISCOVER_START,
 });
 
-const discoverDataReceived = (data) => ({
-  type: FETCH_DISCOVER_DATA_SUCCESS,
+const requestSuccess = (data) => ({
+  type: FETCH_DISCOVER_SUCCESS,
   payload: data,
 });
 
+const requestFailed = (error) => ({
+  type: FETCH_DISCOVER_FAIL,
+  payload: error,
+});
+
 export const fetchDiscoverAsync = () => async (dispatch) => {
-  dispatch(requestInitiated());
-  try {
-    const response = await TracksApi.fetchDiscover();
-    const data = await response.json();
-    dispatch(discoverDataReceived(data));
-  } catch (ex) {
-    console.error("fetchDiscoverAsync", ex);
-  }
+  dispatch(requestStarted());
+  TracksApi.fetchDiscover().then(
+    async (response) => dispatch(requestSuccess(await response.json())),
+    (error) => dispatch(requestFailed(error.error))
+  );
 };
 
 const initialState = {
@@ -34,18 +37,26 @@ const initialState = {
 };
 export const discoverReducer = produce((state = initialState, action) => {
   switch (action.type) {
-    case INITIATE_DISCOVER_REQUEST: {
-      state.error = null;
+    case FETCH_DISCOVER_START: {
       state.loading = true;
       state.loaded = false;
+      state.error = null;
       break;
     }
-    case FETCH_DISCOVER_DATA_SUCCESS: {
-      state.error = null;
+    case FETCH_DISCOVER_SUCCESS: {
       state.loaded = true;
       state.loading = false;
       state.entities = action.payload;
       state.ids = Object.keys(action.payload);
+      state.error = null;
+      break;
+    }
+    case FETCH_DISCOVER_FAIL: {
+      state.error = action.payload;
+      state.loaded = false;
+      state.loading = false;
+      state.entities = {};
+      state.ids = [];
       break;
     }
     default:
@@ -67,11 +78,9 @@ export const selectDiscoverGroupedByGenres = createSelector(
   (genres, tracks) =>
     genres
       .filter((genre) => !["none", "custom"].includes(genre.name))
-      .map((genre) => {
-        return {
-          genreName: genre.name,
-          genreLabel: genre.label,
-          tracks: Object.values(tracks[genre.name] ?? {}),
-        };
-      })
+      .map((genre) => ({
+        genreName: genre.name,
+        genreLabel: genre.label,
+        tracks: Object.values(tracks[genre.name] ?? {}),
+      }))
 );

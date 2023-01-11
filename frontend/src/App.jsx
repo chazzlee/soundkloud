@@ -28,6 +28,7 @@ function App() {
   const isPlaying = playingStatus === STATUS.PLAYING;
   const isPaused = playingStatus === STATUS.PAUSED;
   const isInit = playingStatus === STATUS.INIT;
+  const isLoaded = playingStatus === STATUS.LOADED;
   const showPlaybar = !isInit;
   const playerRef = useRef(null);
 

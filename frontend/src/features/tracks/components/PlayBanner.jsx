@@ -105,7 +105,11 @@ export function PlayBanner({ track }) {
           dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
         });
         wavesurfer.current.on("seek", () => {
-          dispatch(seekTrack(wavesurfer.current.getCurrentTime()));
+          dispatch(
+            seekTrack(
+              wavesurfer.current.getCurrentTime() || lastRecordedTimeInSeconds
+            )
+          );
         });
       }
     }
@@ -120,7 +124,14 @@ export function PlayBanner({ track }) {
   useEffect(() => {
     if (isPaused) {
       wavesurfer.current.pause();
-    } else if (isPlaying) {
+    } else if (
+      isPlaying &&
+      "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3" ===
+        nowPlayingSource
+    ) {
+      if (lastRecordedTimeInSeconds > 0) {
+        wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
+      }
       wavesurfer.current.play();
     } else if (isSeeking) {
       wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
@@ -132,6 +143,7 @@ export function PlayBanner({ track }) {
     isSeeking,
     lastRecordedTimeInSeconds,
     totalDuration,
+    nowPlayingSource,
   ]);
 
   return (
