@@ -93,3 +93,9 @@ export const sampleArtistsToFollow = [
       "https://i.discogs.com/EfzfSw2vJ3FBiDR-yrxjD71HW9EDDzx2j5171Vi4geI/rs:fit/g:sm/q:90/h:595/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQyNDM2/NzktMTQyNTQ3NDU2/OC00NDA1LmpwZWc.jpeg",
   },
 ];
+
+const shuffle = (array) => {
+  return array.sort(() => Math.random() - 0.5);
+};
+export const artistsToFollow = shuffle(sampleArtistsToFollow).slice(0, 8);
+export const newTracks = shuffle(sampleArtistsToFollow).slice(0, 4);

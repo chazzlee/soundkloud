@@ -1,30 +1,19 @@
+import styles from "./DiscoverPage.module.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./DiscoverPage.module.css";
-import { CarouselSlider } from "../components/CarouselSlider";
 import { selectCurrentUser } from "../../auth/store";
 import {
   fetchDiscoverPageAsync,
-  selectDiscoverLoaded,
   selectDiscoverListByType,
   selectDiscoverLoading,
   selectDiscoverGroupedByGenres,
 } from "../store";
+import { selectUserTracks } from "../../tracks/store";
+import { artistsToFollow, newTracks } from "../data";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
 import { GrRefresh } from "react-icons/gr";
-import {
-  fetchAllTracksByUserAsync,
-  selectUserTracks,
-} from "../../tracks/store";
-import { sampleArtistsToFollow } from "../data";
-import { selectGenresLoaded } from "../../genres/store";
+import { CarouselSlider } from "../components/CarouselSlider";
 import { FullSpinner } from "../../../components/FullSpinner";
-
-const shuffle = (array) => {
-  return array.sort(() => Math.random() - 0.5);
-};
-const artistsToFollow = shuffle(sampleArtistsToFollow).slice(0, 8);
-const newTracks = shuffle(sampleArtistsToFollow).slice(0, 4);
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
