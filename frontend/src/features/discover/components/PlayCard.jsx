@@ -3,10 +3,10 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Image } from "pure-react-carousel";
-import {
-  selectNowPlayingSource,
-  selectPlayingStatus,
-} from "../../player/store";
+// import {
+//   selectNowPlayingSource,
+//   selectPlayingStatus,
+// } from "../../player/store";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -52,8 +52,8 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
   const [showPlay, setShowPlay] = useState(false);
   const cover = useRef(sampleCovers[getRandomInteger(sampleCovers.length - 1)]);
   const dispatch = useDispatch();
-  const nowPlayingSource = useSelector(selectNowPlayingSource);
-  const playingStatus = useSelector(selectPlayingStatus);
+  // const nowPlayingSource = useSelector(selectNowPlayingSource);
+  // const playingStatus = useSelector(selectPlayingStatus);
 
   const handlePlay = (event) => {
     event.preventDefault();

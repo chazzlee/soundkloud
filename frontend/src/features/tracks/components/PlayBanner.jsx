@@ -3,25 +3,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
-import WaveSurfer from "wavesurfer.js";
+// import WaveSurfer from "wavesurfer.js";
 import { getRandomRGB } from "../../../utils/getRandomRGB";
 import { getRandomInteger } from "../../../utils/getRandomInteger";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { BiLockAlt } from "react-icons/bi";
+// import {
+//   changePlayerStatus,
+//   LOCATION,
+//   loadTrack,
+//   pauseTrack,
+//   playTrack,
+//   seekTrack,
+//   selectLastRecordedTimeInSeconds,
+//   selectNowPlayingSource,
+//   selectPlayingStatus,
+//   selectTotalDuration,
+//   setDurationOnLoad,
+//   setLastRecordedTime,
+//   STATUS,
+// } from "../../player/store";
+import { Wavesurfer } from "./Wavesurfer";
+import { AudioPlayer } from "../../player/components/AudioPlayer";
 import {
-  changePlayerStatus,
-  LOCATION,
-  loadTrack,
-  pauseTrack,
-  playTrack,
-  seekTrack,
-  selectLastRecordedTimeInSeconds,
-  selectNowPlayingSource,
-  selectPlayingStatus,
-  selectTotalDuration,
-  setDurationOnLoad,
-  setLastRecordedTime,
-  STATUS,
+  changeCurrentStatus,
+  currentTrackLoaded,
+  nextTrackLoaded,
+  PLAYER_STATUS,
+  removeCurrent,
+  trackLoaded,
 } from "../../player/store";
 
 const MAX_LENGTH = 49;
@@ -43,107 +53,139 @@ const sampleCovers = [
 const headerFontSize = (track, length = MAX_LENGTH) =>
   track.artist.length + track.title.length >= length ? "20px" : "22px";
 
-const getSampleUrl = (trackId) => {
-  // if (trackId === 8) {
-  //   return "https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+From+Chaos+To+Eternity.mp3";
-  // }
-  return "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3";
-};
-
 export function PlayBanner({ track }) {
   const dispatch = useDispatch();
-  const waveformRef = useRef(null);
-  const wavesurfer = useRef(null);
+  // const waveformRef = useRef(null);
+  // const wavesurfer = useRef(null);
   const rgbBackground = useRef(getRandomRGB());
   const sampleCoverImage = useRef(
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]
   );
-  const nowPlayingSource = useSelector(selectNowPlayingSource);
-  const playingStatus = useSelector(selectPlayingStatus);
-  const isPaused = playingStatus === STATUS.PAUSED;
-  const isPlaying = playingStatus === STATUS.PLAYING;
-  const isSeeking = playingStatus === STATUS.SEEKING;
-  const lastRecordedTimeInSeconds = useSelector(
-    selectLastRecordedTimeInSeconds
+
+  // const nowPlayingSource = useSelector(selectNowPlayingSource);
+  // const playingStatus = useSelector(selectPlayingStatus);
+  // const isPaused = playingStatus === STATUS.PAUSED;
+  // const isPlaying = playingStatus === STATUS.PLAYING;
+  // const isSeeking = playingStatus === STATUS.SEEKING;
+  // const lastRecordedTimeInSeconds = useSelector(
+  //   selectLastRecordedTimeInSeconds
+  // );
+  // const totalDuration = useSelector(selectTotalDuration);
+
+  // const handlePlay = () => {
+  //   dispatch(
+  //     playTrack({
+  //       source: track.upload ?? getSampleUrl(track.id),
+  //       location: LOCATION.WAVESURFER,
+  //     })
+  //   );
+  // };
+
+  // const handlePause = () => {
+  //   dispatch(pauseTrack());
+  // };
+
+  // useEffect(() => {
+  //   // console.clear();
+  //   if (waveformRef.current && !wavesurfer.current) {
+  //     wavesurfer.current = WaveSurfer.create({
+  //       container: waveformRef.current,
+  //       waveColor: "#eee",
+  //       progressColor: "#f50",
+  //       cursorColor: "transparent",
+  //       barWidth: 3,
+  //       barRadius: 3,
+  //       responsive: true,
+  //       height: 100,
+  //       interact: false,
+  //     });
+
+  // if (wavesurfer.current) {
+  //   wavesurfer.current.setMute(true);
+
+  //   wavesurfer.current.load(track?.upload ?? getSampleUrl(track.id));
+  //   wavesurfer.current.on("ready", () => {
+  //     dispatch(loadTrack(track?.upload ?? getSampleUrl(track.id)));
+  //     dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
+  //   });
+  //   wavesurfer.current.on("seek", () => {
+  //     dispatch(
+  //       seekTrack(
+  //         wavesurfer.current.getCurrentTime() || lastRecordedTimeInSeconds
+  //       )
+  //     );
+  //   });
+  // }
+  // }
+
+  // return () => {
+  //   rgbBackground.current = null;
+  // dispatch(setLastRecordedTime(wavesurfer.current.getCurrentTime()));
+  // TODO: cleanup wavesurfer
+  //   };
+  // }, [dispatch, track.upload, track.id]);
+
+  // useEffect(() => {
+  //   if (isPaused) {
+  //     wavesurfer.current.pause();
+  //   } else if (
+  //     isPlaying &&
+  //     "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3" ===
+  //       nowPlayingSource
+  //   ) {
+  //     if (lastRecordedTimeInSeconds > 0) {
+  //       wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
+  //     }
+  //     wavesurfer.current.play();
+  //   } else if (isSeeking) {
+  //     wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
+  //   }
+  // }, [
+  //   dispatch,
+  //   isPaused,
+  //   isPlaying,
+  //   isSeeking,
+  //   lastRecordedTimeInSeconds,
+  //   totalDuration,
+  //   nowPlayingSource,
+  // ]);
+
+  const currentLoadedTrack = useSelector((state) => state.player.current);
+
+  const currentPlayerStatus = useSelector(
+    (state) => state.player.current.status
   );
-  const totalDuration = useSelector(selectTotalDuration);
-
-  const handlePlay = () => {
-    dispatch(
-      playTrack({
-        source: track.upload ?? getSampleUrl(track.id),
-        location: LOCATION.WAVESURFER,
-      })
-    );
-  };
-
-  const handlePause = () => {
-    dispatch(pauseTrack());
-  };
 
   useEffect(() => {
-    // console.clear();
-    if (waveformRef.current && !wavesurfer.current) {
-      wavesurfer.current = WaveSurfer.create({
-        container: waveformRef.current,
-        waveColor: "#eee",
-        progressColor: "#f50",
-        cursorColor: "transparent",
-        barWidth: 3,
-        barRadius: 3,
-        responsive: true,
-        height: 100,
-        interact: false,
-      });
-
-      if (wavesurfer.current) {
-        wavesurfer.current.setMute(true);
-
-        wavesurfer.current.load(track?.upload ?? getSampleUrl(track.id));
-        wavesurfer.current.on("ready", () => {
-          dispatch(loadTrack(track?.upload ?? getSampleUrl(track.id)));
-          dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
-        });
-        wavesurfer.current.on("seek", () => {
-          dispatch(
-            seekTrack(
-              wavesurfer.current.getCurrentTime() || lastRecordedTimeInSeconds
-            )
-          );
-        });
-      }
+    if (currentPlayerStatus === PLAYER_STATUS.IDLE) {
+      dispatch(
+        currentTrackLoaded({
+          id: track.id,
+          url: track.upload,
+          totalDuration: 0,
+        })
+      );
     }
+  }, [dispatch, currentPlayerStatus, track.id, track.upload]);
 
-    return () => {
-      rgbBackground.current = null;
-      dispatch(setLastRecordedTime(wavesurfer.current.getCurrentTime()));
-      // TODO: cleanup wavesurfer
-    };
-  }, [dispatch, track.upload, track.id]);
-
+  console.log("curr", currentLoadedTrack?.sourceId);
+  console.log("track", track.id);
   useEffect(() => {
-    if (isPaused) {
-      wavesurfer.current.pause();
-    } else if (
-      isPlaying &&
-      "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3" ===
-        nowPlayingSource
+    if (
+      currentPlayerStatus === PLAYER_STATUS.PLAYING &&
+      track.id !== currentLoadedTrack?.sourceId
     ) {
-      if (lastRecordedTimeInSeconds > 0) {
-        wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
-      }
-      wavesurfer.current.play();
-    } else if (isSeeking) {
-      wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
+      dispatch(
+        nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
+      );
     }
+    return () => {};
   }, [
     dispatch,
-    isPaused,
-    isPlaying,
-    isSeeking,
-    lastRecordedTimeInSeconds,
-    totalDuration,
-    nowPlayingSource,
+    track.id,
+    track.upload,
+    currentPlayerStatus,
+    currentLoadedTrack?.sourceId,
   ]);
 
   return (
@@ -155,15 +197,16 @@ export function PlayBanner({ track }) {
     >
       <div className={styles.bannerHeader}>
         <div>
-          {!isPlaying ? (
+          {true ? (
             <button
               title="Play"
               className={styles.circularPlayBtn}
-              onClick={() =>
-                handlePlay(
-                  track.upload ??
-                    "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
-                )
+              onClick={
+                () => dispatch(changeCurrentStatus("playing"))
+                // handlePlay(
+                //   track.upload ??
+                //     "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
+                // )
               }
             >
               <IoMdPlay className={styles.playIcon} />
@@ -172,7 +215,8 @@ export function PlayBanner({ track }) {
             <button
               title="Pause"
               className={styles.circularPlayBtn}
-              onClick={handlePause}
+              onClick={() => console.log("wavesurfer pause")}
+              // onClick={handlePause}
             >
               <IoMdPause className={styles.pauseIcon} />
             </button>
@@ -223,7 +267,9 @@ export function PlayBanner({ track }) {
           </div>
         </div>
 
-        <div
+        <AudioPlayer Player={Wavesurfer} />
+
+        {/* <div
           style={{
             color: "white",
             position: "absolute",
@@ -236,7 +282,7 @@ export function PlayBanner({ track }) {
           }}
         >
           <div id="waveform" ref={waveformRef} />
-        </div>
+        </div> */}
       </div>
 
       <div className={styles.coverImage}>

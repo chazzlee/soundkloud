@@ -48,9 +48,9 @@ export function TrackShowPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [body, setBody] = useState("");
 
-  useEffect(() => {
-    dispatch(fetchPlaylistsAsync());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchPlaylistsAsync());
+  // }, [dispatch]);
 
   if (!track) {
     return <FullSpinner />;
