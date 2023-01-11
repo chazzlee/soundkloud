@@ -20,11 +20,13 @@ export const LOCATION = Object.freeze({
 
 export const STATUS = Object.freeze({
   INIT: "initial",
+  LOADED: "loaded",
   PLAYING: "playing",
   PAUSED: "paused",
   SEEKING: "seeking",
 });
 
+const LOAD_TRACK = "player/LOAD_TRACK";
 const PLAY_TRACK = "player/PLAY_TRACK";
 const PAUSE_TRACK = "player/PAUSE_TRACK";
 const SWITCH_TRACK = "player/SWITCH_TRACK";
@@ -32,6 +34,11 @@ const SET_LAST_RECORDED_TIME = "player/SET_LAST_RECORDED_TIME";
 const SET_DURATION_ON_LOAD = "player/SET_DURATION_ON_LOAD";
 const CHANGE_STATUS = "player/CHANGE_STATUS";
 const SEEK_TRACK = "player/SEEK_TRACK";
+
+export const loadTrack = (source) => ({
+  type: LOAD_TRACK,
+  payload: source,
+});
 
 export const playTrack = ({ source, location }) => ({
   type: PLAY_TRACK,
@@ -78,6 +85,11 @@ const initialState = {
 // TODO: check CHANGE_STATUS: TODO:
 export const playerReducer = produce((state = initialState, action) => {
   switch (action.type) {
+    case LOAD_TRACK: {
+      state.nowPlaying = action.payload;
+      state.status = STATUS.LOADED;
+      break;
+    }
     case SET_DURATION_ON_LOAD: {
       state.duration = action.payload;
       break;

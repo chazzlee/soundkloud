@@ -13,4 +13,7 @@ export const RepliesApi = {
       body: JSON.stringify({ reply }),
     });
   },
+  destroy(replyId) {
+    return csrfFetch(`/api/replies/${replyId}`, { method: "DELETE" });
+  },
 };

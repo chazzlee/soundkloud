@@ -8,6 +8,7 @@ import {
   pauseTrack,
   playTrack,
   seekTrack,
+  selectLastRecordedTimeInSeconds,
   selectNowPlayingSource,
   selectPlayingStatus,
   STATUS,

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     resources :tracks, only: %i[create destroy] do
       resources :replies, only: %i[index create]
     end
-    resources :replies, only: %i[destroy]
+    resources :replies, only: %i[update destroy]
     resources :discover, only: [:index]
     resources :genres, only: [:index]
     resources :playlists, only: %i[index create show update destroy] do

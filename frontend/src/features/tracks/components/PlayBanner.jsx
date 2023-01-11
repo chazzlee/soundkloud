@@ -11,8 +11,10 @@ import { BiLockAlt } from "react-icons/bi";
 import {
   changePlayerStatus,
   LOCATION,
+  loadTrack,
   pauseTrack,
   playTrack,
+  seekTrack,
   selectLastRecordedTimeInSeconds,
   selectNowPlayingSource,
   selectPlayingStatus,
@@ -80,6 +82,7 @@ export function PlayBanner({ track }) {
   };
 
   useEffect(() => {
+    // console.clear();
     if (waveformRef.current && !wavesurfer.current) {
       wavesurfer.current = WaveSurfer.create({
         container: waveformRef.current,
@@ -97,11 +100,12 @@ export function PlayBanner({ track }) {
         wavesurfer.current.setMute(true);
 
         wavesurfer.current.load(track?.upload ?? getSampleUrl(track.id));
-        wavesurfer.current.on("seek", () => {
-          return;
-        });
         wavesurfer.current.on("ready", () => {
+          dispatch(loadTrack(track?.upload ?? getSampleUrl(track.id)));
           dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
+        });
+        wavesurfer.current.on("seek", () => {
+          dispatch(seekTrack(wavesurfer.current.getCurrentTime()));
         });
       }
     }

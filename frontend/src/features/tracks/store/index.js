@@ -20,6 +20,17 @@ const UPDATE_TRACK_SUCCESS = "tracks/updateTrackSuccess";
 const DESTROY_TRACK_SUCCESS = "tracks/destroyTrackSuccess";
 
 const REPLY_TO_TRACK_SUCCESS = "replies/replyToTrackSuccess";
+const DESTROY_REPLY = "replies/destroyReply";
+const UPDATE_REPLY = "replies/updateReply";
+
+const removeReply = (replyId) => ({
+  type: DESTROY_REPLY,
+  payload: replyId,
+});
+const updateReply = (updatedReply) => ({
+  type: UPDATE_REPLY,
+  payload: updateReply,
+});
 
 const uploadTrackInitiate = () => ({
   type: UPLOAD_TRACK_START,
@@ -121,6 +132,13 @@ export const replyToTrackAsync = (trackId, reply) => async (dispatch) => {
   } catch (error) {}
 };
 
+export const destroyReplyAsync = (replyId) => async (dispatch) => {
+  try {
+    dispatch(removeReply(replyId));
+    await RepliesApi.destroy(replyId);
+  } catch (error) {}
+};
+
 export const destroyTrackAsync = (trackId) => async (dispatch) => {
   try {
     await TracksApi.destroyOne(trackId);
@@ -212,7 +230,12 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.current = null;
       break;
     }
-
+    case DESTROY_REPLY: {
+      state.current.replies = state.current.replies.filter(
+        (reply) => reply.id !== action.payload
+      );
+      break;
+    }
     default:
       return state;
   }

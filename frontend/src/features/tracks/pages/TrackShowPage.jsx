@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectCurrentUser } from "../../auth/store";
 import {
+  destroyReplyAsync,
   fetchTrackAsync,
   replyToTrackAsync,
   selectCurrentTrack,
@@ -222,6 +223,38 @@ export function TrackShowPage() {
                             {formatDistanceToNow(new Date(reply.createdAt), {
                               addSuffix: true,
                             })}
+                            {reply.user.id === currentUser.id && (
+                              <div style={{ display: "inline-block" }}>
+                                <span
+                                  style={{
+                                    fontSize: 12,
+                                    border: "1px solid #e5e5e5",
+                                    padding: "3px 10px",
+                                    cursor: "pointer",
+                                    color: "#333",
+                                    marginLeft: 8,
+                                    marginRight: 4,
+                                  }}
+                                  onClick={() => {}}
+                                >
+                                  Edit
+                                </span>
+                                <span
+                                  style={{
+                                    fontSize: 12,
+                                    border: "1px solid #e5e5e5",
+                                    padding: "3px 10px",
+                                    cursor: "pointer",
+                                    color: "red",
+                                  }}
+                                  onClick={() =>
+                                    dispatch(destroyReplyAsync(reply.id))
+                                  }
+                                >
+                                  Delete
+                                </span>
+                              </div>
+                            )}
                           </p>
                         </div>
                         <p className={styles.commentContent}>{reply.body}</p>

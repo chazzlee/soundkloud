@@ -23,7 +23,26 @@ class Api::RepliesController < ApplicationController
     end
   end
 
-  def destroy; end
+  def update
+    reply = Reply.find(params[:id])
+    if reply.user_id == current_user.id
+      reply.body = params[:body]
+      reply.save!
+      render template: 'api/replies/show', locals: { reply: }
+    else
+      render json: { message: 'Cannot perform this action.' }, status: :forbidden
+    end
+  end
+
+  def destroy
+    reply = Reply.find(params[:id])
+    if reply.user_id == current_user.id
+      reply.destroy!
+      head :no_content
+    else
+      render json: { message: 'Cannot perform this action.' }, status: :forbidden
+    end
+  end
 
   private
 
