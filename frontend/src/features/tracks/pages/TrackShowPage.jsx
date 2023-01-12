@@ -4,13 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectCurrentUser } from "../../auth/store";
 import {
-  destroyReplyAsync,
   fetchTrackAsync,
   removeCurrentTrack,
   replyToTrackAsync,
   selectCurrentTrack,
 } from "../store";
-import { formatDistanceToNow } from "date-fns";
 import { FaCommentAlt } from "react-icons/fa";
 import { ImUsers, ImUserPlus } from "react-icons/im";
 import { BsSoundwave } from "react-icons/bs";
@@ -46,9 +44,7 @@ export function TrackShowPage() {
     setFollowing((prev) => !prev);
   };
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [body, setBody] = useState("");
-
+  // TODO:
   // useEffect(() => {
   //   dispatch(fetchPlaylistsAsync());
   // }, [dispatch]);

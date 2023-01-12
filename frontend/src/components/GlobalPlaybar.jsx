@@ -1,6 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer from "react-h5-audio-player";
+import {
+  PLAYER_STATUS,
+  selectCurrentPlayerSource,
+  selectCurrentPlayerStatus,
+} from "../features/player/store";
 // import {
 //   changePlayerStatus,
 //   LOCATION,
@@ -12,9 +17,7 @@ import H5AudioPlayer from "react-h5-audio-player";
 //   STATUS,
 // } from "../features/player/store";
 
-export function GlobalPlaybar({ status, track }) {
-  // console.log("global", track);
-
+export function GlobalPlaybar() {
   const playerRef = useRef(null);
 
   return (
@@ -24,7 +27,7 @@ export function GlobalPlaybar({ status, track }) {
         borderRight: "none",
       }}
       ref={playerRef}
-      src={track.url}
+      src={""}
       layout="horizontal-reverse"
       showSkipControls={false}
       showJumpControls={false}
@@ -71,3 +74,13 @@ export function GlobalPlaybar({ status, track }) {
 //     }
 //   }
 // }, [playingStatus, isPlaying, isPaused]);
+
+// useEffect(() => {
+//   if (playerRef.current) {
+//     if (currentPlayerStatus === PLAYER_STATUS.PLAYING) {
+//       playerRef.current.audio.current.play();
+//     } else if (currentPlayerStatus === PLAYER_STATUS.PAUSED) {
+//       playerRef.current.audio.current.pause();
+//     }
+//   }
+// }, [currentPlayerStatus]);

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { PLAYER_STATUS, trackLoaded } from "../store";
 
-export function AudioPlayer({ Player }) {
+export function XXAudioPlayer({ Player }) {
   const dispatch = useDispatch();
   const playerStatus = useSelector((state) => state.player.status);
   const loadedTrack = useSelector((state) => {

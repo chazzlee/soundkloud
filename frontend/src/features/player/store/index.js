@@ -150,15 +150,16 @@ const TRACK_PAUSED = "player/trackPaused";
 const TRACK_SEEKING = "player/trackSeeking";
 const UPDATE_TOTAL_DURATION = "player/totalDurationUpdated";
 const CHANGE_CURRENT_STATUS = "player/currentStatusChanged";
+const RECORD_CURRENT_TIME = "player/currentTimeRecorded";
 
 export const currentTrackLoaded = (track) => ({
   type: CURRENT_TRACK_LOADED,
   payload: track,
 });
 
-export const nextTrackLoaded = (track) => ({
+export const nextTrackLoaded = (source) => ({
   type: NEXT_TRACK_LOADED,
-  payload: track,
+  payload: source,
 });
 
 export const removeCurrent = () => ({
@@ -187,6 +188,11 @@ export const updateTotalDuration = (duration) => ({
   payload: duration,
 });
 
+export const recordCurrentTime = (timeInSeconds) => ({
+  type: RECORD_CURRENT_TIME,
+  payload: timeInSeconds,
+});
+
 export const PLAYER_STATUS = Object.freeze({
   IDLE: "idle",
   LOADED: "loaded",
@@ -196,14 +202,14 @@ export const PLAYER_STATUS = Object.freeze({
 });
 
 const initialState = {
-  current: {
+  wave: {
     status: PLAYER_STATUS.IDLE,
     sourceId: null,
     sourceUrl: null,
     totalDuration: 0,
     currentTimeInSeconds: 0,
   },
-  next: {
+  global: {
     status: PLAYER_STATUS.IDLE,
     sourceId: null,
     sourceUrl: null,
@@ -214,39 +220,71 @@ const initialState = {
 
 export const playerReducer = produce((state = initialState, action) => {
   switch (action.type) {
-    case CURRENT_TRACK_LOADED: {
-      state.current.sourceId = action.payload.id;
-      state.current.sourceUrl = action.payload.url;
-      state.current.status = PLAYER_STATUS.LOADED;
-      break;
-    }
-    case NEXT_TRACK_LOADED: {
-      state.next.sourceId = action.payload.id;
-      state.next.sourceUrl = action.payload.url;
-      state.next.status = PLAYER_STATUS.LOADED;
-      break;
-    }
-    case REMOVE_CURRENT: {
-      state.current.sourceId = null;
-      state.current.sourceUrl = null;
-      state.current.totalDuration = 0;
-      state.current.currentTimeInSeconds = 0;
-      state.current.status = PLAYER_STATUS.IDLE;
-      break;
-    }
-    case TRACK_PLAYING: {
-      // state.status = PLAYER_STATUS.PLAYING;
-      break;
-    }
-    case UPDATE_TOTAL_DURATION: {
-      state.current.totalDuration = action.payload;
-      break;
-    }
-    case CHANGE_CURRENT_STATUS: {
-      state.current.status = action.payload;
-      break;
-    }
     default:
       return state;
   }
 });
+
+// const initialState = {
+//   current: {
+//     status: PLAYER_STATUS.IDLE,
+//     sourceId: null,
+//     sourceUrl: null,
+//     totalDuration: 0,
+//     currentTimeInSeconds: 0,
+//   },
+//   next: {
+//     status: PLAYER_STATUS.IDLE,
+//     sourceId: null,
+//     sourceUrl: null,
+//     totalDuration: 0,
+//     currentTimeInSeconds: 0,
+//   },
+// };
+
+// export const playerReducer = produce((state = initialState, action) => {
+//   switch (action.type) {
+//     case CURRENT_TRACK_LOADED: {
+//       state.current.sourceId = action.payload.id;
+//       state.current.sourceUrl = action.payload.url;
+//       state.current.totalDuration = action.payload.duration;
+//       state.current.status = PLAYER_STATUS.LOADED;
+//       break;
+//     }
+//     case NEXT_TRACK_LOADED: {
+//       state.next.sourceId = action.payload.id;
+//       state.next.sourceUrl = action.payload.url;
+//       state.next.status = PLAYER_STATUS.LOADED;
+//       break;
+//     }
+//     case REMOVE_CURRENT: {
+//       state.current.sourceId = null;
+//       state.current.sourceUrl = null;
+//       state.current.totalDuration = 0;
+//       state.current.currentTimeInSeconds = 0;
+//       state.current.status = PLAYER_STATUS.IDLE;
+//       break;
+//     }
+//     case TRACK_PLAYING: {
+//       // state.status = PLAYER_STATUS.PLAYING;
+//       break;
+//     }
+//     case UPDATE_TOTAL_DURATION: {
+//       state.current.totalDuration = action.payload;
+//       break;
+//     }
+//     case RECORD_CURRENT_TIME: {
+//       state.current.currentTimeInSeconds = action.payload;
+//       break;
+//     }
+//     case CHANGE_CURRENT_STATUS: {
+//       state.current.status = action.payload;
+//       break;
+//     }
+//     default:
+//       return state;
+//   }
+// });
+
+export const selectCurrentPlayerSource = (state) => state.player.current;
+export const selectCurrentPlayerStatus = (state) => state.player.current.status;

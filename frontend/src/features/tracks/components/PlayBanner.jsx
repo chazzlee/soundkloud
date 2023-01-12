@@ -1,37 +1,17 @@
 import styles from "./PlayBanner.module.css";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
-// import WaveSurfer from "wavesurfer.js";
-import { getRandomRGB } from "../../../utils/getRandomRGB";
-import { getRandomInteger } from "../../../utils/getRandomInteger";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { BiLockAlt } from "react-icons/bi";
-// import {
-//   changePlayerStatus,
-//   LOCATION,
-//   loadTrack,
-//   pauseTrack,
-//   playTrack,
-//   seekTrack,
-//   selectLastRecordedTimeInSeconds,
-//   selectNowPlayingSource,
-//   selectPlayingStatus,
-//   selectTotalDuration,
-//   setDurationOnLoad,
-//   setLastRecordedTime,
-//   STATUS,
-// } from "../../player/store";
 import { Wavesurfer } from "./Wavesurfer";
-import { AudioPlayer } from "../../player/components/AudioPlayer";
+import { getRandomRGB } from "../../../utils/getRandomRGB";
+import { getRandomInteger } from "../../../utils/getRandomInteger";
 import {
   changeCurrentStatus,
-  currentTrackLoaded,
-  nextTrackLoaded,
   PLAYER_STATUS,
-  removeCurrent,
-  trackLoaded,
+  selectCurrentPlayerStatus,
 } from "../../player/store";
 
 const MAX_LENGTH = 49;
@@ -55,33 +35,12 @@ const headerFontSize = (track, length = MAX_LENGTH) =>
 
 export function PlayBanner({ track }) {
   const dispatch = useDispatch();
-  // const waveformRef = useRef(null);
-  // const wavesurfer = useRef(null);
   const rgbBackground = useRef(getRandomRGB());
   const sampleCoverImage = useRef(
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]
   );
 
-  const currentLoadedTrackId = useSelector(
-    (state) => state.player.current.sourceId
-  );
-
-  const currentPlayerStatus = useSelector(
-    (state) => state.player.current.status
-  );
-
-  // useEffect(() => {
-  //   dispatch(
-  //     currentTrackLoaded({
-  //       id: track.id,
-  //       url: track.upload,
-  //       totalDuration: 0,
-  //     })
-  //   );
-  // }, [dispatch, track.id, track.upload]);
-
-  console.log("track", track.id);
-  console.log("curr", currentLoadedTrackId);
+  const currentPlayerStatus = useSelector(selectCurrentPlayerStatus);
 
   return (
     <div
@@ -92,16 +51,12 @@ export function PlayBanner({ track }) {
     >
       <div className={styles.bannerHeader}>
         <div>
-          {true ? (
+          {currentPlayerStatus !== PLAYER_STATUS.PLAYING ? (
             <button
               title="Play"
               className={styles.circularPlayBtn}
-              onClick={
-                () => dispatch(changeCurrentStatus("playing"))
-                // handlePlay(
-                //   track.upload ??
-                //     "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3"
-                // )
+              onClick={() =>
+                dispatch(changeCurrentStatus(PLAYER_STATUS.PLAYING))
               }
             >
               <IoMdPlay className={styles.playIcon} />
@@ -110,8 +65,9 @@ export function PlayBanner({ track }) {
             <button
               title="Pause"
               className={styles.circularPlayBtn}
-              onClick={() => console.log("wavesurfer pause")}
-              // onClick={handlePause}
+              onClick={() =>
+                dispatch(changeCurrentStatus(PLAYER_STATUS.PAUSED))
+              }
             >
               <IoMdPause className={styles.pauseIcon} />
             </button>
@@ -162,7 +118,20 @@ export function PlayBanner({ track }) {
           </div>
         </div>
 
-        <AudioPlayer Player={Wavesurfer} />
+        <div
+          style={{
+            color: "white",
+            position: "absolute",
+            bottom: 24,
+            maxWidth: "813px",
+            width: "100%",
+            height: "100px",
+            backgroundColor: "transparent",
+            zIndex: 1,
+          }}
+        >
+          <Wavesurfer track={track} />
+        </div>
       </div>
 
       <div className={styles.coverImage}>
