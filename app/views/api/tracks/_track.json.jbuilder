@@ -4,7 +4,15 @@ json.set! track.id do
   json.extract! track, :id, :title, :artist, :privacy, :tags, :created_at
   json.permalink URI.parse(track.permalink).path
   json.cover track.cover.url
-  json.upload track.upload.url
+  # json.upload track.upload.url
+  if track.id == 8
+    json.upload 'https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+Wolf.mp3'
+  elsif track.id == 9
+    json.upload 'https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+To+Breathe+in+a+Casket.mp3'
+  else
+    json.upload track.upload.url
+  end
+
   json.genre track.genre_id
   json.uploader do
     json.id track.user.id

@@ -10,8 +10,18 @@ json.uploader do
   json.display_name track.user.profile.display_name
   json.photo track.user.profile.photo.url
 end
-json.upload track.upload.url
+
+# TODO: demo
+if track.id == 8
+  json.upload 'https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+Wolf.mp3'
+elsif track.id == 9 
+  json.upload 'https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+To+Breathe+in+a+Casket.mp3'
+else
+  json.upload track.upload.url
+end
+
 json.cover track.cover.url
+
 json.replies track.replies.order(created_at: :desc) do |reply|
   json.id reply.id
   json.created_at reply.created_at
