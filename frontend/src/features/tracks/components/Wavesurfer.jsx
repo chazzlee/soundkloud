@@ -29,9 +29,9 @@ export function Wavesurfer({ status, track }) {
     }
   }, [track?.url]);
 
+  // TODO: amzn s3 dev bucket urls not working
   useEffect(() => {
     if (track?.url && wavesurfer.current) {
-      // TODO: amzn s3 dev bucket urls not working
       wavesurfer.current.setMute(true);
       wavesurfer.current.load(
         "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Rise+Of+The+Predator.mp3"

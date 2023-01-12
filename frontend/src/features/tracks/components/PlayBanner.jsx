@@ -62,94 +62,6 @@ export function PlayBanner({ track }) {
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]
   );
 
-  // const nowPlayingSource = useSelector(selectNowPlayingSource);
-  // const playingStatus = useSelector(selectPlayingStatus);
-  // const isPaused = playingStatus === STATUS.PAUSED;
-  // const isPlaying = playingStatus === STATUS.PLAYING;
-  // const isSeeking = playingStatus === STATUS.SEEKING;
-  // const lastRecordedTimeInSeconds = useSelector(
-  //   selectLastRecordedTimeInSeconds
-  // );
-  // const totalDuration = useSelector(selectTotalDuration);
-
-  // const handlePlay = () => {
-  //   dispatch(
-  //     playTrack({
-  //       source: track.upload ?? getSampleUrl(track.id),
-  //       location: LOCATION.WAVESURFER,
-  //     })
-  //   );
-  // };
-
-  // const handlePause = () => {
-  //   dispatch(pauseTrack());
-  // };
-
-  // useEffect(() => {
-  //   // console.clear();
-  //   if (waveformRef.current && !wavesurfer.current) {
-  //     wavesurfer.current = WaveSurfer.create({
-  //       container: waveformRef.current,
-  //       waveColor: "#eee",
-  //       progressColor: "#f50",
-  //       cursorColor: "transparent",
-  //       barWidth: 3,
-  //       barRadius: 3,
-  //       responsive: true,
-  //       height: 100,
-  //       interact: false,
-  //     });
-
-  // if (wavesurfer.current) {
-  //   wavesurfer.current.setMute(true);
-
-  //   wavesurfer.current.load(track?.upload ?? getSampleUrl(track.id));
-  //   wavesurfer.current.on("ready", () => {
-  //     dispatch(loadTrack(track?.upload ?? getSampleUrl(track.id)));
-  //     dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
-  //   });
-  //   wavesurfer.current.on("seek", () => {
-  //     dispatch(
-  //       seekTrack(
-  //         wavesurfer.current.getCurrentTime() || lastRecordedTimeInSeconds
-  //       )
-  //     );
-  //   });
-  // }
-  // }
-
-  // return () => {
-  //   rgbBackground.current = null;
-  // dispatch(setLastRecordedTime(wavesurfer.current.getCurrentTime()));
-  // TODO: cleanup wavesurfer
-  //   };
-  // }, [dispatch, track.upload, track.id]);
-
-  // useEffect(() => {
-  //   if (isPaused) {
-  //     wavesurfer.current.pause();
-  //   } else if (
-  //     isPlaying &&
-  //     "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3" ===
-  //       nowPlayingSource
-  //   ) {
-  //     if (lastRecordedTimeInSeconds > 0) {
-  //       wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
-  //     }
-  //     wavesurfer.current.play();
-  //   } else if (isSeeking) {
-  //     wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
-  //   }
-  // }, [
-  //   dispatch,
-  //   isPaused,
-  //   isPlaying,
-  //   isSeeking,
-  //   lastRecordedTimeInSeconds,
-  //   totalDuration,
-  //   nowPlayingSource,
-  // ]);
-
   const currentLoadedTrackId = useSelector(
     (state) => state.player.current.sourceId
   );
@@ -170,47 +82,6 @@ export function PlayBanner({ track }) {
 
   console.log("track", track.id);
   console.log("curr", currentLoadedTrackId);
-
-  // useEffect(() => {
-  //   if (
-  //     currentPlayerStatus === PLAYER_STATUS.PLAYING &&
-  //     track.id === currentLoadedTrackId
-  //   ) {
-  //     dispatch(
-  //       nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
-  //     );
-  //   } else {
-  //     dispatch(
-  //       currentTrackLoaded({
-  //         id: track.id,
-  //         url: track.upload,
-  //         totalDuration: 0,
-  //       })
-  //     );
-  //   }
-  // }, [
-  //   dispatch,
-  //   currentPlayerStatus,
-  //   currentLoadedTrackId,
-  //   track.id,
-  //   track.upload,
-  // ]);
-  // // useEffect(() => {
-  //   if (
-  //     currentPlayerStatus === PLAYER_STATUS.LOADED &&
-  //     track.id !== currentLoadedTrack?.sourceId
-  //   ) {
-  //     dispatch(
-  //       nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
-  //     );
-  //   }
-  // }, [
-  //   dispatch,
-  //   track.id,
-  //   track.upload,
-  //   currentPlayerStatus,
-  //   currentLoadedTrack?.sourceId,
-  // ]);
 
   return (
     <div
@@ -292,21 +163,6 @@ export function PlayBanner({ track }) {
         </div>
 
         <AudioPlayer Player={Wavesurfer} />
-
-        {/* <div
-          style={{
-            color: "white",
-            position: "absolute",
-            bottom: 24,
-            maxWidth: "813px",
-            width: "100%",
-            height: "100px",
-            backgroundColor: "transparent",
-            zIndex: 1,
-          }}
-        >
-          <div id="waveform" ref={waveformRef} />
-        </div> */}
       </div>
 
       <div className={styles.coverImage}>
@@ -321,3 +177,145 @@ export function PlayBanner({ track }) {
     </div>
   );
 }
+
+// useEffect(() => {
+//   if (
+//     currentPlayerStatus === PLAYER_STATUS.PLAYING &&
+//     track.id === currentLoadedTrackId
+//   ) {
+//     dispatch(
+//       nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
+//     );
+//   } else {
+//     dispatch(
+//       currentTrackLoaded({
+//         id: track.id,
+//         url: track.upload,
+//         totalDuration: 0,
+//       })
+//     );
+//   }
+// }, [
+//   dispatch,
+//   currentPlayerStatus,
+//   currentLoadedTrackId,
+//   track.id,
+//   track.upload,
+// ]);
+// // useEffect(() => {
+//   if (
+//     currentPlayerStatus === PLAYER_STATUS.LOADED &&
+//     track.id !== currentLoadedTrack?.sourceId
+//   ) {
+//     dispatch(
+//       nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
+//     );
+//   }
+// }, [
+//   dispatch,
+//   track.id,
+//   track.upload,
+//   currentPlayerStatus,
+//   currentLoadedTrack?.sourceId,
+// ]);
+// const nowPlayingSource = useSelector(selectNowPlayingSource);
+// const playingStatus = useSelector(selectPlayingStatus);
+// const isPaused = playingStatus === STATUS.PAUSED;
+// const isPlaying = playingStatus === STATUS.PLAYING;
+// const isSeeking = playingStatus === STATUS.SEEKING;
+// const lastRecordedTimeInSeconds = useSelector(
+//   selectLastRecordedTimeInSeconds
+// );
+// const totalDuration = useSelector(selectTotalDuration);
+
+// const handlePlay = () => {
+//   dispatch(
+//     playTrack({
+//       source: track.upload ?? getSampleUrl(track.id),
+//       location: LOCATION.WAVESURFER,
+//     })
+//   );
+// };
+
+// const handlePause = () => {
+//   dispatch(pauseTrack());
+// };
+
+// useEffect(() => {
+//   // console.clear();
+//   if (waveformRef.current && !wavesurfer.current) {
+//     wavesurfer.current = WaveSurfer.create({
+//       container: waveformRef.current,
+//       waveColor: "#eee",
+//       progressColor: "#f50",
+//       cursorColor: "transparent",
+//       barWidth: 3,
+//       barRadius: 3,
+//       responsive: true,
+//       height: 100,
+//       interact: false,
+//     });
+
+// if (wavesurfer.current) {
+//   wavesurfer.current.setMute(true);
+
+//   wavesurfer.current.load(track?.upload ?? getSampleUrl(track.id));
+//   wavesurfer.current.on("ready", () => {
+//     dispatch(loadTrack(track?.upload ?? getSampleUrl(track.id)));
+//     dispatch(setDurationOnLoad(wavesurfer.current.getDuration()));
+//   });
+//   wavesurfer.current.on("seek", () => {
+//     dispatch(
+//       seekTrack(
+//         wavesurfer.current.getCurrentTime() || lastRecordedTimeInSeconds
+//       )
+//     );
+//   });
+// }
+// }
+
+// return () => {
+//   rgbBackground.current = null;
+// dispatch(setLastRecordedTime(wavesurfer.current.getCurrentTime()));
+// TODO: cleanup wavesurfer
+//   };
+// }, [dispatch, track.upload, track.id]);
+
+// useEffect(() => {
+//   if (isPaused) {
+//     wavesurfer.current.pause();
+//   } else if (
+//     isPlaying &&
+//     "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3" ===
+//       nowPlayingSource
+//   ) {
+//     if (lastRecordedTimeInSeconds > 0) {
+//       wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
+//     }
+//     wavesurfer.current.play();
+//   } else if (isSeeking) {
+//     wavesurfer.current.seekTo(lastRecordedTimeInSeconds / totalDuration);
+//   }
+// }, [
+//   dispatch,
+//   isPaused,
+//   isPlaying,
+//   isSeeking,
+//   lastRecordedTimeInSeconds,
+//   totalDuration,
+//   nowPlayingSource,
+// ]);
+// <div
+//        style={{
+//          color: "white",
+//        position: "absolute",
+//      bottom: 24,
+//    maxWidth: "813px",
+//  width: "100%",
+// height: "100px",
+// backgroundColor: "transparent",
+// zIndex: 1,
+// }}
+//>
+// <div id="waveform" ref={waveformRef} />
+//</div>

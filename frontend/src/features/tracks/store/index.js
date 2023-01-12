@@ -18,6 +18,7 @@ const UPDATE_TRACK_START = "tracks/updateTrackInitiate";
 const UPDATE_TRACK_SUCCESS = "tracks/updateTrackSuccess";
 
 const DESTROY_TRACK_SUCCESS = "tracks/destroyTrackSuccess";
+const REMOVE_CURRENT_TRACK = "tracks/currentTrackRemoved";
 
 const REPLY_TO_TRACK_SUCCESS = "replies/replyToTrackSuccess";
 const DESTROY_REPLY = "replies/destroyReply";
@@ -76,6 +77,10 @@ const fetchTrackSuccess = (track) => ({
 const fetchTrackFailed = (error) => ({
   type: FETCH_TRACK_FAILED,
   payload: error,
+});
+
+export const removeCurrentTrack = () => ({
+  type: REMOVE_CURRENT_TRACK,
 });
 
 export const fetchAllTracksByUserAsync = (userId) => async (dispatch) => {
@@ -225,6 +230,10 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.error = null;
       state.entities[action.payload.id] = action.payload;
       state.current = action.payload;
+      break;
+    }
+    case REMOVE_CURRENT_TRACK: {
+      state.current = null;
       break;
     }
     case REPLY_TO_TRACK_SUCCESS: {
