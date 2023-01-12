@@ -223,6 +223,7 @@ const LOAD_GLOBAL_TRACK = "player/globalTrackLoaded";
 const CHANGE_WAVE_STATUS = "player/waveStatusChanged";
 const CHANGE_GLOBAL_STATUS = "player/globalStatusChanged";
 const CLEAR_WAVE_TRACK = "player/waveTrackCleared";
+const RECORD_GLOBAL_TIME = "player/globalTimeRecorded";
 
 export const waveTrackLoaded = ({ id, url, duration }) => ({
   type: LOAD_WAVE_TRACK,
@@ -245,6 +246,11 @@ export const globalStatusChanged = (status) => ({
 });
 
 export const waveTrackCleared = () => ({ type: CLEAR_WAVE_TRACK });
+
+export const globalTimeUpdated = (timeInSeconds) => ({
+  type: RECORD_GLOBAL_TIME,
+  payload: timeInSeconds,
+});
 
 export const playerReducer = produce((state = initialState, action) => {
   switch (action.type) {
@@ -278,6 +284,10 @@ export const playerReducer = produce((state = initialState, action) => {
       state.wave.currentTimeInSeconds = 0;
       break;
     }
+    case RECORD_GLOBAL_TIME: {
+      state.global.currentTimeInSeconds = action.payload;
+      break;
+    }
     default:
       return state;
   }
@@ -289,22 +299,6 @@ export const selectGlobalSource = (state) => state.player.global;
 export const selectWaveSource = (state) => state.player.wave;
 export const selectWaveSourceId = (state) => state.player.wave.sourceId;
 export const selectGlobalSourceId = (state) => state.player.global.sourceId;
-// const initialState = {
-//   current: {
-//     status: PLAYER_STATUS.IDLE,
-//     sourceId: null,
-//     sourceUrl: null,
-//     totalDuration: 0,
-//     currentTimeInSeconds: 0,
-//   },
-//   next: {
-//     status: PLAYER_STATUS.IDLE,
-//     sourceId: null,
-//     sourceUrl: null,
-//     totalDuration: 0,
-//     currentTimeInSeconds: 0,
-//   },
-// };
 
 // export const playerReducer = produce((state = initialState, action) => {
 //   switch (action.type) {

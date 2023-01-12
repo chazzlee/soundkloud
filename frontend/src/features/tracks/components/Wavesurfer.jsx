@@ -2,18 +2,10 @@ import { useEffect, useRef } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import WaveSurfer from "wavesurfer.js";
 import {
-  changeCurrentStatus,
-  currentTrackLoaded,
-  globalTrackLoaded,
   PLAYER_STATUS,
-  recordCurrentTime,
-  removeCurrent,
-  selectCurrentPlayerSource,
-  selectCurrentPlayerStatus,
-  selectGlobalStatus,
-  selectWaveStatus,
-  updateTotalDuration,
-  waveTrackCleared,
+  selectGlobalSource,
+  selectWaveSource,
+  waveStatusChanged,
   waveTrackLoaded,
 } from "../../player/store";
 
@@ -32,8 +24,8 @@ export function Wavesurfer({ track }) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
-  const waveStatus = useSelector(selectWaveStatus);
-  const globalStatus = useSelector(selectGlobalStatus);
+  const waveSource = useSelector(selectWaveSource);
+  const globalSource = useSelector(selectGlobalSource, shallowEqual);
 
   useEffect(() => {
     if (waveformRef.current && !wavesurfer.current) {
@@ -60,12 +52,38 @@ export function Wavesurfer({ track }) {
   }, [dispatch, track?.id, track?.upload]);
 
   useEffect(() => {
-    if (waveStatus === PLAYER_STATUS.PLAYING) {
+    if (
+      waveSource.sourceId === globalSource.sourceId &&
+      globalSource.status === PLAYER_STATUS.PLAYING
+    ) {
+      wavesurfer.current.seekTo(
+        globalSource.currentTimeInSeconds / globalSource.totalDuration
+      );
+      dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
+    }
+  }, [
+    dispatch,
+    globalSource.currentTimeInSeconds,
+    globalSource.totalDuration,
+    globalSource.sourceId,
+    globalSource.status,
+    waveSource.sourceId,
+  ]);
+
+  useEffect(() => {
+    if (waveSource.status === PLAYER_STATUS.PLAYING) {
       wavesurfer.current.play();
     } else {
       wavesurfer.current.pause();
     }
-  }, [waveStatus]);
+  }, [
+    waveSource.status,
+    waveSource.sourceId,
+    globalSource.status,
+    globalSource.sourceId,
+    globalSource.currentTimeInSeconds,
+    globalSource.totalDuration,
+  ]);
 
   return <div id="waveform" ref={waveformRef} />;
 }
