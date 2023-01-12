@@ -1,6 +1,6 @@
 import styles from "./PlayBanner.module.css";
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
@@ -9,9 +9,13 @@ import { Wavesurfer } from "./Wavesurfer";
 import { getRandomRGB } from "../../../utils/getRandomRGB";
 import { getRandomInteger } from "../../../utils/getRandomInteger";
 import {
-  changeCurrentStatus,
+  globalStatusChanged,
+  globalTrackLoaded,
   PLAYER_STATUS,
-  selectCurrentPlayerStatus,
+  selectGlobalSource,
+  selectWaveSource,
+  selectWaveStatus,
+  waveStatusChanged,
 } from "../../player/store";
 
 const MAX_LENGTH = 49;
@@ -40,7 +44,9 @@ export function PlayBanner({ track }) {
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]
   );
 
-  const currentPlayerStatus = useSelector(selectCurrentPlayerStatus);
+  const waveStatus = useSelector(selectWaveStatus);
+  const waveSource = useSelector(selectWaveSource, shallowEqual);
+  const globalSource = useSelector(selectGlobalSource, shallowEqual);
 
   return (
     <div
@@ -51,13 +57,23 @@ export function PlayBanner({ track }) {
     >
       <div className={styles.bannerHeader}>
         <div>
-          {currentPlayerStatus !== PLAYER_STATUS.PLAYING ? (
+          {waveStatus !== PLAYER_STATUS.PLAYING ? (
             <button
               title="Play"
               className={styles.circularPlayBtn}
-              onClick={() =>
-                dispatch(changeCurrentStatus(PLAYER_STATUS.PLAYING))
-              }
+              onClick={() => {
+                if (waveSource.sourceId !== globalSource.sourceId) {
+                  dispatch(
+                    globalTrackLoaded({
+                      id: waveSource.sourceId,
+                      url: waveSource.sourceUrl,
+                      duration: waveSource.totalDuration,
+                    })
+                  );
+                }
+                dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
+                dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
+              }}
             >
               <IoMdPlay className={styles.playIcon} />
             </button>
@@ -65,9 +81,10 @@ export function PlayBanner({ track }) {
             <button
               title="Pause"
               className={styles.circularPlayBtn}
-              onClick={() =>
-                dispatch(changeCurrentStatus(PLAYER_STATUS.PAUSED))
-              }
+              onClick={() => {
+                dispatch(waveStatusChanged(PLAYER_STATUS.PAUSED));
+                dispatch(globalStatusChanged(PLAYER_STATUS.PAUSED));
+              }}
             >
               <IoMdPause className={styles.pauseIcon} />
             </button>

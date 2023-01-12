@@ -142,56 +142,56 @@ import produce from "immer";
 //   state.player.lastRecordedTimeInSeconds;
 // export const selectTotalDuration = (state) => state.player.duration;
 
-const CURRENT_TRACK_LOADED = "player/currentTrackLoaded";
-const NEXT_TRACK_LOADED = "player/nextTrackLoaded";
-const REMOVE_CURRENT = "player/removeCurrent";
-const TRACK_PLAYING = "player/trackPlaying";
-const TRACK_PAUSED = "player/trackPaused";
-const TRACK_SEEKING = "player/trackSeeking";
-const UPDATE_TOTAL_DURATION = "player/totalDurationUpdated";
-const CHANGE_CURRENT_STATUS = "player/currentStatusChanged";
-const RECORD_CURRENT_TIME = "player/currentTimeRecorded";
+// const CURRENT_TRACK_LOADED = "player/currentTrackLoaded";
+// const NEXT_TRACK_LOADED = "player/nextTrackLoaded";
+// const REMOVE_CURRENT = "player/removeCurrent";
+// const TRACK_PLAYING = "player/trackPlaying";
+// const TRACK_PAUSED = "player/trackPaused";
+// const TRACK_SEEKING = "player/trackSeeking";
+// const UPDATE_TOTAL_DURATION = "player/totalDurationUpdated";
+// const CHANGE_CURRENT_STATUS = "player/currentStatusChanged";
+// const RECORD_CURRENT_TIME = "player/currentTimeRecorded";
 
-export const currentTrackLoaded = (track) => ({
-  type: CURRENT_TRACK_LOADED,
-  payload: track,
-});
+// export const currentTrackLoaded = (track) => ({
+//   type: CURRENT_TRACK_LOADED,
+//   payload: track,
+// });
 
-export const nextTrackLoaded = (source) => ({
-  type: NEXT_TRACK_LOADED,
-  payload: source,
-});
+// export const nextTrackLoaded = (source) => ({
+//   type: NEXT_TRACK_LOADED,
+//   payload: source,
+// });
 
-export const removeCurrent = () => ({
-  type: REMOVE_CURRENT,
-});
+// export const removeCurrent = () => ({
+//   type: REMOVE_CURRENT,
+// });
 
-const trackPlaying = () => ({
-  type: TRACK_PLAYING,
-});
+// const trackPlaying = () => ({
+//   type: TRACK_PLAYING,
+// });
 
-const trackPaused = () => ({
-  type: TRACK_PAUSED,
-});
+// const trackPaused = () => ({
+//   type: TRACK_PAUSED,
+// });
 
-const trackSeeking = () => ({
-  type: TRACK_SEEKING,
-});
+// const trackSeeking = () => ({
+//   type: TRACK_SEEKING,
+// });
 
-export const changeCurrentStatus = (status) => ({
-  type: CHANGE_CURRENT_STATUS,
-  payload: status,
-});
+// export const changeCurrentStatus = (status) => ({
+//   type: CHANGE_CURRENT_STATUS,
+//   payload: status,
+// });
 
-export const updateTotalDuration = (duration) => ({
-  type: UPDATE_TOTAL_DURATION,
-  payload: duration,
-});
+// export const updateTotalDuration = (duration) => ({
+//   type: UPDATE_TOTAL_DURATION,
+//   payload: duration,
+// });
 
-export const recordCurrentTime = (timeInSeconds) => ({
-  type: RECORD_CURRENT_TIME,
-  payload: timeInSeconds,
-});
+// export const recordCurrentTime = (timeInSeconds) => ({
+//   type: RECORD_CURRENT_TIME,
+//   payload: timeInSeconds,
+// });
 
 export const PLAYER_STATUS = Object.freeze({
   IDLE: "idle",
@@ -218,13 +218,77 @@ const initialState = {
   },
 };
 
+const LOAD_WAVE_TRACK = "player/waveTrackLoaded";
+const LOAD_GLOBAL_TRACK = "player/globalTrackLoaded";
+const CHANGE_WAVE_STATUS = "player/waveStatusChanged";
+const CHANGE_GLOBAL_STATUS = "player/globalStatusChanged";
+const CLEAR_WAVE_TRACK = "player/waveTrackCleared";
+
+export const waveTrackLoaded = ({ id, url, duration }) => ({
+  type: LOAD_WAVE_TRACK,
+  payload: { id, url, duration },
+});
+
+export const globalTrackLoaded = ({ id, url, duration }) => ({
+  type: LOAD_GLOBAL_TRACK,
+  payload: { id, url, duration },
+});
+
+export const waveStatusChanged = (status) => ({
+  type: CHANGE_WAVE_STATUS,
+  payload: status,
+});
+
+export const globalStatusChanged = (status) => ({
+  type: CHANGE_GLOBAL_STATUS,
+  payload: status,
+});
+
+export const waveTrackCleared = () => ({ type: CLEAR_WAVE_TRACK });
+
 export const playerReducer = produce((state = initialState, action) => {
   switch (action.type) {
+    case LOAD_WAVE_TRACK: {
+      state.wave.status = PLAYER_STATUS.LOADED;
+      state.wave.sourceId = action.payload.id;
+      state.wave.sourceUrl = action.payload.url;
+      state.wave.totalDuration = action.payload.duration;
+      break;
+    }
+    case LOAD_GLOBAL_TRACK: {
+      state.global.status = PLAYER_STATUS.LOADED;
+      state.global.sourceId = action.payload.id;
+      state.global.sourceUrl = action.payload.url;
+      state.global.totalDuration = action.payload.duration;
+      break;
+    }
+    case CHANGE_WAVE_STATUS: {
+      state.wave.status = action.payload;
+      break;
+    }
+    case CHANGE_GLOBAL_STATUS: {
+      state.global.status = action.payload;
+      break;
+    }
+    case CLEAR_WAVE_TRACK: {
+      state.wave.status = PLAYER_STATUS.IDLE;
+      state.wave.sourceId = null;
+      state.wave.sourceUrl = null;
+      state.wave.totalDuration = 0;
+      state.wave.currentTimeInSeconds = 0;
+      break;
+    }
     default:
       return state;
   }
 });
 
+export const selectWaveStatus = (state) => state.player.wave.status;
+export const selectGlobalStatus = (state) => state.player.global.status;
+export const selectGlobalSource = (state) => state.player.global;
+export const selectWaveSource = (state) => state.player.wave;
+export const selectWaveSourceId = (state) => state.player.wave.sourceId;
+export const selectGlobalSourceId = (state) => state.player.global.sourceId;
 // const initialState = {
 //   current: {
 //     status: PLAYER_STATUS.IDLE,

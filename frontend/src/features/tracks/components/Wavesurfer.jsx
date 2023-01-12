@@ -4,12 +4,17 @@ import WaveSurfer from "wavesurfer.js";
 import {
   changeCurrentStatus,
   currentTrackLoaded,
+  globalTrackLoaded,
   PLAYER_STATUS,
   recordCurrentTime,
   removeCurrent,
   selectCurrentPlayerSource,
   selectCurrentPlayerStatus,
+  selectGlobalStatus,
+  selectWaveStatus,
   updateTotalDuration,
+  waveTrackCleared,
+  waveTrackLoaded,
 } from "../../player/store";
 
 const waveOptions = {
@@ -27,41 +32,43 @@ export function Wavesurfer({ track }) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
+  const waveStatus = useSelector(selectWaveStatus);
+  const globalStatus = useSelector(selectGlobalStatus);
+
+  useEffect(() => {
+    if (waveformRef.current && !wavesurfer.current) {
+      wavesurfer.current = WaveSurfer.create({
+        ...waveOptions,
+        container: waveformRef.current,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (wavesurfer.current) {
+      wavesurfer.current.setMute(true);
+      wavesurfer.current.load(track?.upload);
+      wavesurfer.current.on("ready", () => {
+        const source = {
+          id: track?.id,
+          url: track?.upload,
+          duration: wavesurfer.current.getDuration(),
+        };
+        dispatch(waveTrackLoaded(source));
+      });
+    }
+  }, [dispatch, track?.id, track?.upload]);
+
+  useEffect(() => {
+    if (waveStatus === PLAYER_STATUS.PLAYING) {
+      wavesurfer.current.play();
+    } else {
+      wavesurfer.current.pause();
+    }
+  }, [waveStatus]);
+
   return <div id="waveform" ref={waveformRef} />;
 }
-
-// const currentTotalDuration = useSelector(
-//   (state) => state.player.current.totalDuration
-// );
-
-// // TODO: amzn s3 dev bucket urls not working
-// useEffect(() => {
-//   if (track?.url && wavesurfer.current) {
-//     wavesurfer.current.setMute(true);
-//     wavesurfer.current.load(
-//       "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Rise+Of+The+Predator.mp3"
-//     );
-
-//     wavesurfer.current.on("ready", () => {
-//       dispatch(updateTotalDuration(wavesurfer.current.getDuration()));
-//     });
-//   }
-// }, [dispatch, track?.url]);
-// const currentSource = useSelector(selectCurrentPlayerSource, shallowEqual);
-// const currentPlayerStatus = useSelector(selectCurrentPlayerStatus);
-
-// useEffect(() => {
-//   if (waveformRef.current && !wavesurfer.current) {
-//     wavesurfer.current = WaveSurfer.create({
-//       ...waveOptions,
-//       container: waveformRef.current,
-//     });
-//   }
-
-//   return () => {
-//     dispatch(removeCurrent());
-//   };
-// }, [dispatch]);
 
 // useEffect(() => {
 //   if (wavesurfer.current) {

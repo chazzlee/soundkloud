@@ -14,6 +14,7 @@ import { ImSoundcloud, ImUsers } from "react-icons/im";
 import { GrRefresh } from "react-icons/gr";
 import { CarouselSlider } from "../components/CarouselSlider";
 import { FullSpinner } from "../../../components/FullSpinner";
+import { waveTrackCleared } from "../../player/store";
 
 export function DiscoverPage() {
   const dispatch = useDispatch();
@@ -31,6 +32,10 @@ export function DiscoverPage() {
 
   useEffect(() => {
     dispatch(fetchDiscoverPageAsync());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(waveTrackCleared());
   }, [dispatch]);
 
   if (discoverLoading) {
