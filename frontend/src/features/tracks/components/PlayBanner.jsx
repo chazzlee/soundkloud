@@ -150,43 +150,67 @@ export function PlayBanner({ track }) {
   //   nowPlayingSource,
   // ]);
 
-  const currentLoadedTrack = useSelector((state) => state.player.current);
+  const currentLoadedTrackId = useSelector(
+    (state) => state.player.current.sourceId
+  );
 
   const currentPlayerStatus = useSelector(
     (state) => state.player.current.status
   );
 
-  useEffect(() => {
-    if (currentPlayerStatus === PLAYER_STATUS.IDLE) {
-      dispatch(
-        currentTrackLoaded({
-          id: track.id,
-          url: track.upload,
-          totalDuration: 0,
-        })
-      );
-    }
-  }, [dispatch, currentPlayerStatus, track.id, track.upload]);
+  // useEffect(() => {
+  //   dispatch(
+  //     currentTrackLoaded({
+  //       id: track.id,
+  //       url: track.upload,
+  //       totalDuration: 0,
+  //     })
+  //   );
+  // }, [dispatch, track.id, track.upload]);
 
-  console.log("curr", currentLoadedTrack?.sourceId);
   console.log("track", track.id);
-  useEffect(() => {
-    if (
-      currentPlayerStatus === PLAYER_STATUS.PLAYING &&
-      track.id !== currentLoadedTrack?.sourceId
-    ) {
-      dispatch(
-        nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
-      );
-    }
-    return () => {};
-  }, [
-    dispatch,
-    track.id,
-    track.upload,
-    currentPlayerStatus,
-    currentLoadedTrack?.sourceId,
-  ]);
+  console.log("curr", currentLoadedTrackId);
+
+  // useEffect(() => {
+  //   if (
+  //     currentPlayerStatus === PLAYER_STATUS.PLAYING &&
+  //     track.id === currentLoadedTrackId
+  //   ) {
+  //     dispatch(
+  //       nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
+  //     );
+  //   } else {
+  //     dispatch(
+  //       currentTrackLoaded({
+  //         id: track.id,
+  //         url: track.upload,
+  //         totalDuration: 0,
+  //       })
+  //     );
+  //   }
+  // }, [
+  //   dispatch,
+  //   currentPlayerStatus,
+  //   currentLoadedTrackId,
+  //   track.id,
+  //   track.upload,
+  // ]);
+  // // useEffect(() => {
+  //   if (
+  //     currentPlayerStatus === PLAYER_STATUS.LOADED &&
+  //     track.id !== currentLoadedTrack?.sourceId
+  //   ) {
+  //     dispatch(
+  //       nextTrackLoaded({ id: track.id, url: track.upload, totalDuration: 0 })
+  //     );
+  //   }
+  // }, [
+  //   dispatch,
+  //   track.id,
+  //   track.upload,
+  //   currentPlayerStatus,
+  //   currentLoadedTrack?.sourceId,
+  // ]);
 
   return (
     <div
