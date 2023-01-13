@@ -10,7 +10,7 @@ import { fetchAllTracksByUserAsync } from "../../tracks/store";
 
 export const fetchDiscoverAsync = () => async (dispatch) => {
   dispatch(requestStarted());
-  TracksApi.fetchAll().then(
+  TracksApi.fetchDiscover().then(
     async (response) => dispatch(requestSuccess(await response.json())),
     (error) => dispatch(requestFailed(error.error))
   );

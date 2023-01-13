@@ -12,9 +12,9 @@ json.uploader do
 end
 
 # TODO: demo
-if track.id == 8
+if track.id == 5
   json.upload 'https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+Wolf.mp3'
-elsif track.id == 9 
+elsif track.id == 6
   json.upload 'https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+To+Breathe+in+a+Casket.mp3'
 else
   json.upload track.upload.url

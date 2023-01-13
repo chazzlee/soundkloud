@@ -25,7 +25,7 @@ export function EditProfileModal({ onClose, currentUser }) {
     }
     setProfileData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value.trim(),
+      [e.target.name]: e.target.value,
     }));
   };
 

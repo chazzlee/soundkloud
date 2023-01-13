@@ -1,6 +1,7 @@
 import produce from "immer";
 import { RepliesApi } from "../../../api/replies";
 import { TracksApi } from "../../../api/tracks";
+import { UPDATE_PROFILE } from "../../profiles/store";
 
 const FETCH_TRACKS_START = "tracks/tracksStart";
 const FETCH_TRACKS_SUCCESS = "tracks/tracksSuccess";
@@ -257,6 +258,30 @@ export const tracksReducer = produce((state = initialState, action) => {
       state.current.replies = state.current.replies.filter(
         (reply) => reply.id !== action.payload
       );
+      break;
+    }
+    case UPDATE_PROFILE: {
+      state.loaded = false;
+
+      const updatedTracks = Object.values(state.entities)
+        .map((track) =>
+          track.uploader.id === action.payload.id
+            ? {
+                ...track,
+                uploader: {
+                  id: action.payload.id,
+                  displayName: action.payload.displayName,
+                  slug: action.payload.slug,
+                },
+              }
+            : track
+        )
+        .reduce((curr, prev) => {
+          curr[prev.id] = prev;
+          return curr;
+        }, {});
+
+      state.entities = updatedTracks;
       break;
     }
     default:
