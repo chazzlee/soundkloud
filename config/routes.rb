@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     end
 
     # TODO: move to users/...
-    resources :profiles, only: [:show] do
+    resources :profiles, only: [:update] do
       get '/tracks/:id', to: 'tracks#show'
     end
 

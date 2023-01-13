@@ -19,6 +19,7 @@ const waveOptions = {
   height: 100,
   interact: false,
 };
+// TODO: cleanup, fix wavesurfer progress after track change
 export function Wavesurfer({ track }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
@@ -59,7 +60,9 @@ export function Wavesurfer({ track }) {
       wavesurfer.current.seekTo(
         globalSource.currentTimeInSeconds / globalSource.totalDuration
       );
-      dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
+      if (waveSource.status !== PLAYER_STATUS.PLAYING) {
+        dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
+      }
     }
   }, [
     dispatch,
@@ -68,6 +71,7 @@ export function Wavesurfer({ track }) {
     globalSource.sourceId,
     globalSource.status,
     waveSource.sourceId,
+    waveSource.status,
   ]);
 
   useEffect(() => {

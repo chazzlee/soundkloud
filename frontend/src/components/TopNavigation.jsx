@@ -44,6 +44,7 @@ export function TopNavigation() {
     dispatch(logoutUser()).then((response) => {
       if (response.ok) {
         navigate("/");
+        window.location = "/";
       }
     });
   };
