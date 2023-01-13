@@ -199,3 +199,21 @@
   border-radius: 3px;
   transition: border-color ease-in 120ms;
 }
+
+.updateBtn {
+  background-color: hsla(0, 0%, 100%, 0.774);
+  border-color: rgba(0, 0, 0, 0.1);
+  background-clip: padding-box;
+  height: 26px;
+  padding: 2px 16px;
+  border-radius: 3px;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
+  transition: background-color ease-in 120ms;
+}
+
+.updateBtn:hover {
+  background-color: hsla(0, 0%, 100%, 0.952);
+}

@@ -9,47 +9,20 @@ import {
   selectHasTracksLoaded,
   selectUserTracks,
 } from "../../tracks/store";
-import { Modal } from "../../../context/Modal";
 import slug from "slug";
 import { csrfFetch } from "../../../api/csrfFetch";
+import { EditProfileModal } from "../components/EditProfileModal";
 
 export function UserProfilePage() {
-  const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
+
+  const currentUser = useSelector(selectCurrentUser);
   const tracksLoaded = useSelector(selectHasTracksLoaded);
   const uploadedTracks = useSelector(selectUserTracks);
-  const [activeTab, setActiveTab] = useState("all");
   const playlists = useSelector(selectPlaylists);
+
+  const [activeTab, setActiveTab] = useState("all");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-
-  const [profileData, setProfileData] = useState({
-    displayName: currentUser?.displayName,
-    age: currentUser?.age,
-    gender: currentUser?.gender,
-    location: currentUser?.location || "",
-  });
-
-  const handleChange = (e) => {
-    setProfileData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleProfileUpdate = async (e) => {
-    e.preventDefault();
-    const updatedProfile = {
-      ...currentUser,
-      ...profileData,
-      age: parseInt(profileData.age, 10),
-      slug: slug(profileData.displayName),
-    };
-
-    // TODO: move into redux-thunk
-    const response = await csrfFetch(`/api/profiles/${currentUser.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedProfile),
-    });
-    console.log(await response.json());
-  };
 
   useEffect(() => {
     if (!tracksLoaded) {
@@ -83,15 +56,15 @@ export function UserProfilePage() {
                 <h1 className={styles.displayName}>
                   {currentUser.displayName}
                 </h1>
-                {/* <button>Upload header image</button> */}
+                <button
+                  onClick={() => setIsProfileModalOpen(true)}
+                  className={styles.updateBtn}
+                >
+                  Update profile
+                </button>
               </div>
               <h2 className={styles.subtitle}>Chazz Lee</h2>
               <h2 className={styles.subtitle}>United States</h2>
-            </div>
-            <div>
-              <button onClick={() => setIsProfileModalOpen(true)}>
-                Update Profile
-              </button>
             </div>
           </div>
           <div className={styles.tabsBar}>
@@ -174,65 +147,11 @@ export function UserProfilePage() {
         </main>
       </div>
       {isProfileModalOpen && (
-        <Modal onClose={() => setIsProfileModalOpen(false)}>
-          <div>
-            <form onSubmit={handleProfileUpdate}>
-              <div>
-                <input
-                  type="text"
-                  name="displayName"
-                  value={profileData.displayName}
-                  onChange={handleChange}
-                  placeholder="Display name"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  name="age"
-                  value={profileData.age}
-                  onChange={handleChange}
-                  placeholder="Age"
-                />
-              </div>
-              <div>
-                <select
-                  name="gender"
-                  id="gender"
-                  value={profileData.gender}
-                  onChange={handleChange}
-                >
-                  <option value="">Select gender</option>
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
-                  <option value="custom">Custom</option>
-                  <option value="none">Prefer not to say</option>
-                </select>
-              </div>
-              <div>
-                <div>
-                  <input
-                    type="text"
-                    name="location"
-                    value={profileData.location}
-                    onChange={handleChange}
-                    placeholder="Location"
-                  />
-                </div>
-              </div>
-              <div>
-                <button type="submit">Save</button>
-              </div>
-            </form>
-          </div>
-        </Modal>
+        <EditProfileModal
+          currentUser={currentUser}
+          onClose={() => setIsProfileModalOpen(false)}
+        />
       )}
     </>
   );
 }
-
-// email: currentUser.email,
-// displayName: currentUser.displayName,
-// age: currentUser.age,
-// gender: currentUser.gender,
-// location: currentUser.location || "",
