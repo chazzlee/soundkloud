@@ -119,6 +119,7 @@ export function EditProfileModal({ onClose, currentUser }) {
               type="file"
               name="photo"
               id="photo"
+              accept="image/*"
               onChange={handleChange}
             />
           </div>

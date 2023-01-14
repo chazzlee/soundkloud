@@ -75,6 +75,7 @@ export function UploadDropzone() {
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     onDrop,
     multiple: true,
+    accept: { "audio/*": [] },
   });
 
   const uploadedTrack = useSelector(selectCurrentTrack);

@@ -25,7 +25,7 @@ class Api::TracksController < ApplicationController
     track.caption = params[:caption]
     track.privacy = params[:privacy]
     track.genre_id = params[:genre_id]
-    track.permalink = "/#{current_user.slug}/#{params[:permalink]}"
+    track.permalink = "#{request.protocol}#{request.domain}/#{current_user.slug}/#{params[:permalink]}"
     track.upload.attach(params[:upload]) if params[:upload]
     track.cover.attach(params[:cover]) if params[:cover]
 
@@ -53,7 +53,7 @@ class Api::TracksController < ApplicationController
       track.caption = params[:caption]
       track.privacy = params[:privacy]
       track.genre_id = params[:genre_id]
-      track.permalink = "/#{current_user.slug}/#{params[:permalink]}"
+      track.permalink = "#{request.protocol}#{request.domain}/#{current_user.slug}/#{params[:permalink]}"
       track.slug = params[:permalink]
 
       if params[:cover]

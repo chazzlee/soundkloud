@@ -36,6 +36,7 @@ export function CoverImagePreview({ image, onChange }) {
             id="cover"
             name="cover"
             style={{ display: "none" }}
+            accept="image/*"
             onChange={onChange}
           />
           <BsCameraFill />

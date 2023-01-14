@@ -116,7 +116,7 @@ Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other
   track = Track.new(
     title:,
     artist: Faker::Music::RockBand.name,
-    permalink: "http://localhost:5000/#{demo_profile.slug}/#{title.parameterize}",
+    permalink: "#{Rails.env.development? ? 'http://localhost:5000' : 'https://soundkloud-rails.onrender.com'}/#{demo_profile.slug}/#{title.parameterize}",
     description: Faker::Quote.matz,
     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
     privacy: %w[public private].sample
