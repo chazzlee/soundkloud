@@ -47,12 +47,17 @@ export function EditProfileModal({ onClose, currentUser }) {
 
   return (
     <Modal onClose={onClose}>
-      <div>
-        <h2>Update profile details</h2>
-        <form onSubmit={handleProfileUpdate}>
-          <div>
-            <label htmlFor="displayName">Display name</label>
+      <div style={{ padding: 12 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 500, marginTop: 12 }}>
+          Update profile details
+        </h2>
+        <form onSubmit={handleProfileUpdate} style={{ padding: "16px 0" }}>
+          <div className={styles.formControl}>
+            <label htmlFor="displayName" className={styles.label}>
+              Display name
+            </label>
             <input
+              className={styles.formInput}
               type="text"
               name="displayName"
               id="displayName"
@@ -61,9 +66,12 @@ export function EditProfileModal({ onClose, currentUser }) {
               placeholder="Display name"
             />
           </div>
-          <div>
-            <label htmlFor="age">Age</label>
+          <div className={styles.formControl}>
+            <label htmlFor="age" className={styles.label}>
+              Age
+            </label>
             <input
+              className={styles.formInput}
               type="text"
               name="age"
               id="age"
@@ -72,8 +80,13 @@ export function EditProfileModal({ onClose, currentUser }) {
               placeholder="Age"
             />
           </div>
-          <div>
+          <div className={styles.formControl}>
+            <label htmlFor="gender" className={styles.label}>
+              Gender
+            </label>
             <select
+              className={styles.formSelect}
+              style={{ fontSize: 13 }}
               name="gender"
               id="gender"
               value={profileData.gender}
@@ -86,9 +99,12 @@ export function EditProfileModal({ onClose, currentUser }) {
               <option value="none">Prefer not to say</option>
             </select>
           </div>
-          <div>
-            <label htmlFor="location">Location</label>
+          <div className={styles.formControl}>
+            <label htmlFor="location" className={styles.label}>
+              Location
+            </label>
             <input
+              className={styles.formInput}
               type="text"
               name="location"
               id="location"
@@ -97,16 +113,27 @@ export function EditProfileModal({ onClose, currentUser }) {
               placeholder="Location"
             />
           </div>
-          <div>
+          <div style={{ marginBottom: 12 }}>
             <input
+              style={{ fontSize: 13 }}
               type="file"
               name="photo"
               id="photo"
               onChange={handleChange}
             />
           </div>
-          <div>
-            <button type="submit">Save</button>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
+            <button
+              type="button"
+              onClick={onClose}
+              className={styles.btn}
+              style={{ background: "#999", borderColor: "#999" }}
+            >
+              Cancel
+            </button>
+            <button type="submit" className={styles.btn}>
+              Save
+            </button>
           </div>
         </form>
       </div>
