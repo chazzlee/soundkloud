@@ -141,7 +141,7 @@ export function DiscoverPage() {
                 />
                 Artists you should follow
               </div>
-              <div>
+              <div style={{ visibility: "hidden" }}>
                 <GrRefresh
                   style={{
                     marginRight: "4px",

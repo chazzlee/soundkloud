@@ -63,8 +63,10 @@ export function UserProfilePage() {
                   Update profile
                 </button>
               </div>
-              <h2 className={styles.subtitle}>Chazz Lee</h2>
-              <h2 className={styles.subtitle}>United States</h2>
+              <h2 className={styles.subtitle}>{currentUser.email}</h2>
+              <h2 className={styles.subtitle}>
+                {currentUser.location || "United States"}
+              </h2>
             </div>
           </div>
           <div className={styles.tabsBar}>

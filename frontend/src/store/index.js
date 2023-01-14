@@ -7,6 +7,7 @@ import { genresReducer } from "../features/genres/store";
 import { discoverReducer } from "../features/discover/store";
 import { playlistsReducer } from "../features/playlists/store";
 import { playerReducer } from "../features/player/store";
+import { profilesReducer } from "../features/profiles/store";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   genres: genresReducer,
   playlists: playlistsReducer,
   player: playerReducer,
+  profiles: profilesReducer,
 });
 
 export const configureStore = (preloadedState = {}) => {

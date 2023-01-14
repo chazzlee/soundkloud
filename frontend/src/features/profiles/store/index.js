@@ -1,3 +1,4 @@
+import produce from "immer";
 import { ProfilesApi } from "../../../api/profiles";
 
 export const UPDATE_PROFILE = "profiles/profileUpdated";
@@ -13,12 +14,22 @@ export const profileUpdateFailed = (error) => ({
   payload: error,
 });
 
-export const updateProfileAsync = (profile) => async (dispatch) => {
-  ProfilesApi.update(profile).then(
-    async (response) => {
-      const data = await response.json();
-      dispatch(profileUpdated(data.user));
-    },
-    (error) => dispatch(profileUpdateFailed(error.error))
-  );
+const initialState = {
+  errors: [],
 };
+export const profilesReducer = produce((state = initialState, action) => {
+  switch (action.type) {
+    case UPDATE_PROFILE: {
+      state.errors = [];
+      break;
+    }
+    case UPDATE_PROFILE_FAILED: {
+      state.errors = action.payload;
+      break;
+    }
+    default:
+      return state;
+  }
+});
+
+export const selectProfileErrors = (state) => state.profiles.errors;

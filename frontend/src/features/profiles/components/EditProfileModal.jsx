@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ProfilesApi } from "../../../api/profiles";
 import { Modal } from "../../../context/Modal";
-import { updateProfileAsync } from "../store";
+import {
+  profileUpdated,
+  profileUpdateFailed,
+  selectProfileErrors,
+} from "../store";
 import styles from "./EditTrackModal.module.css";
 
 // TODO: validation
@@ -16,6 +21,8 @@ export function EditProfileModal({ onClose, currentUser }) {
     photo: null,
   });
 
+  const profileErrors = useSelector(selectProfileErrors);
+
   const handleChange = (e) => {
     if (e.target.type === "file") {
       setProfileData((prev) => ({
@@ -29,9 +36,8 @@ export function EditProfileModal({ onClose, currentUser }) {
     }));
   };
 
-  const handleProfileUpdate = async (e) => {
+  const handleProfileUpdate = (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     const updatedProfile = {
       ...currentUser,
@@ -42,7 +48,15 @@ export function EditProfileModal({ onClose, currentUser }) {
       formData.set(key, updatedProfile[key]);
     }
 
-    dispatch(updateProfileAsync(formData));
+    ProfilesApi.update(formData)
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(profileUpdated(data.user));
+          onClose();
+        }
+      })
+      .catch((error) => dispatch(profileUpdateFailed(error)));
   };
 
   return (
@@ -122,6 +136,17 @@ export function EditProfileModal({ onClose, currentUser }) {
               accept="image/*"
               onChange={handleChange}
             />
+          </div>
+          <div
+            style={{
+              fontSize: 12,
+              color: "var(--error-red)",
+              textAlign: "center",
+            }}
+          >
+            {profileErrors.map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
             <button
