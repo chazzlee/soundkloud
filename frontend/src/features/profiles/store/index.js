@@ -1,5 +1,4 @@
 import produce from "immer";
-import { ProfilesApi } from "../../../api/profiles";
 
 export const UPDATE_PROFILE = "profiles/profileUpdated";
 export const UPDATE_PROFILE_FAILED = "profiles/updateProfileFailed";

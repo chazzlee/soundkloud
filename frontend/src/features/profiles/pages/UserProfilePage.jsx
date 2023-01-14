@@ -9,8 +9,6 @@ import {
   selectHasTracksLoaded,
   selectUserTracks,
 } from "../../tracks/store";
-import slug from "slug";
-import { csrfFetch } from "../../../api/csrfFetch";
 import { EditProfileModal } from "../components/EditProfileModal";
 
 export function UserProfilePage() {

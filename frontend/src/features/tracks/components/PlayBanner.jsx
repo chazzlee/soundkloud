@@ -1,5 +1,5 @@
 import styles from "./PlayBanner.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
@@ -18,6 +18,8 @@ import {
   selectWaveStatus,
   waveStatusChanged,
 } from "../../player/store";
+import { Spinner } from "../../../components/Spinner";
+import { useCallback } from "react";
 
 const MAX_LENGTH = 49;
 
@@ -47,6 +49,9 @@ export function PlayBanner({ track }) {
   const waveSource = useSelector(selectWaveSource, shallowEqual);
   const globalSource = useSelector(selectGlobalSource, shallowEqual);
 
+  const [loading, setLoading] = useState(true);
+  const handleLoading = useCallback((state) => setLoading(state), []);
+
   return (
     <div
       className={styles.bannerPlayerContainer}
@@ -56,7 +61,9 @@ export function PlayBanner({ track }) {
     >
       <div className={styles.bannerHeader}>
         <div>
-          {waveStatus !== PLAYER_STATUS.PLAYING ? (
+          {loading ? (
+            <Spinner />
+          ) : waveStatus !== PLAYER_STATUS.PLAYING ? (
             <button
               title="Play"
               className={styles.circularPlayBtn}
@@ -147,7 +154,7 @@ export function PlayBanner({ track }) {
             zIndex: 1,
           }}
         >
-          <Wavesurfer track={track} />
+          <Wavesurfer track={track} onLoading={handleLoading} />
         </div>
       </div>
 

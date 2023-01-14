@@ -118,3 +118,5 @@ export const selectWaveSourceId = (state) => state.player.wave.sourceId;
 export const selectGlobalSourceId = (state) => state.player.global.sourceId;
 export const selectCurrentPlayerSource = (state) => state.player.current;
 export const selectCurrentPlayerStatus = (state) => state.player.current.status;
+export const selectGlobalProgress = (state) =>
+  state.player.global.currentTimeInSeconds / state.player.global.totalDuration;

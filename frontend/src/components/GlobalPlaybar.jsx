@@ -12,16 +12,6 @@ import {
   selectWaveStatus,
   waveStatusChanged,
 } from "../features/player/store";
-// import {
-//   changePlayerStatus,
-//   LOCATION,
-//   pauseTrack,
-//   playTrack,
-//   seekTrack,
-//   selectNowPlayingSource,
-//   selectPlayingStatus,
-//   STATUS,
-// } from "../features/player/store";
 
 export function GlobalPlaybar() {
   const dispatch = useDispatch();
@@ -94,46 +84,3 @@ export function GlobalPlaybar() {
     />
   );
 }
-
-// <H5AudioPlayer
-//   ref={playerRef}
-//   style={{
-//     backgroundColor: "#f2f2f2",
-//     borderRight: "none",
-//   }}
-//   src={nowPlayingSource}
-//   layout="horizontal-reverse"
-//   showSkipControls={false}
-//   showJumpControls={false}
-//   customAdditionalControls={[]}
-//   onSeeking={(e) => dispatch(seekTrack(e.target.currentTime))}
-//   onSeeked={() => dispatch(changePlayerStatus(STATUS.PLAYING))}
-//   onPlay={() =>
-//     dispatch(
-//       playTrack({
-//         source: nowPlayingSource,
-//         location: LOCATION.PLAYBAR,
-//       })
-//     )
-//   }
-//   onPause={() => dispatch(pauseTrack())}
-// />
-// useEffect(() => {
-//   if (playerRef.current) {
-//     if (isPlaying) {
-//       playerRef.current.audio.current.play();
-//     } else if (isPaused) {
-//       playerRef.current.audio.current.pause();
-//     }
-//   }
-// }, [playingStatus, isPlaying, isPaused]);
-
-// useEffect(() => {
-//   if (playerRef.current) {
-//     if (currentPlayerStatus === PLAYER_STATUS.PLAYING) {
-//       playerRef.current.audio.current.play();
-//     } else if (currentPlayerStatus === PLAYER_STATUS.PAUSED) {
-//       playerRef.current.audio.current.pause();
-//     }
-//   }
-// }, [currentPlayerStatus]);

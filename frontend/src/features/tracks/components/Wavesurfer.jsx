@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import WaveSurfer from "wavesurfer.js";
 import {
   PLAYER_STATUS,
+  selectGlobalProgress,
   selectGlobalSource,
   selectWaveSource,
   waveStatusChanged,
@@ -20,13 +21,14 @@ const waveOptions = {
   interact: false,
 };
 // TODO: cleanup, fix wavesurfer progress after track change
-export function Wavesurfer({ track }) {
+export function Wavesurfer({ track, onLoading }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
   const waveSource = useSelector(selectWaveSource);
   const globalSource = useSelector(selectGlobalSource, shallowEqual);
+  const globalProgress = useSelector(selectGlobalProgress);
 
   useEffect(() => {
     if (waveformRef.current && !wavesurfer.current) {
@@ -42,6 +44,7 @@ export function Wavesurfer({ track }) {
       wavesurfer.current.setMute(true);
       wavesurfer.current.load(track?.upload);
       wavesurfer.current.on("ready", () => {
+        onLoading(false);
         const source = {
           id: track?.id,
           url: track?.upload,
@@ -50,26 +53,23 @@ export function Wavesurfer({ track }) {
         dispatch(waveTrackLoaded(source));
       });
     }
-  }, [dispatch, track?.id, track?.upload]);
+  }, [dispatch, track?.id, track?.upload, onLoading]);
 
   useEffect(() => {
     if (
       waveSource.sourceId === globalSource.sourceId &&
       globalSource.status === PLAYER_STATUS.PLAYING
     ) {
-      wavesurfer.current.seekTo(
-        globalSource.currentTimeInSeconds / globalSource.totalDuration
-      );
+      wavesurfer.current.seekTo(globalProgress);
       if (waveSource.status !== PLAYER_STATUS.PLAYING) {
         dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
       }
     }
   }, [
     dispatch,
-    globalSource.currentTimeInSeconds,
-    globalSource.totalDuration,
     globalSource.sourceId,
     globalSource.status,
+    globalProgress,
     waveSource.sourceId,
     waveSource.status,
   ]);

@@ -9,7 +9,6 @@ import {
 } from "../store";
 import styles from "./EditTrackModal.module.css";
 
-// TODO: validation
 export function EditProfileModal({ onClose, currentUser }) {
   const dispatch = useDispatch();
 
