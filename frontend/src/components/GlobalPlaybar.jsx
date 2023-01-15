@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer from "react-h5-audio-player";
 import {
+  globalDurationUpdated,
   globalStatusChanged,
   globalTimeUpdated,
   globalTrackLoaded,
@@ -34,6 +35,11 @@ export function GlobalPlaybar() {
         })
       );
     }
+    // else if (
+    //   waveStatus === PLAYER_STATUS.IDLE &&
+    //   globalStatus === PLAYER_STATUS.LOADED
+    // ) {
+    // }
   }, [
     dispatch,
     globalStatus,
@@ -69,6 +75,7 @@ export function GlobalPlaybar() {
       autoPlayAfterSrcChange={globalStatus === PLAYER_STATUS.PLAYING}
       onSeeking={(e) => console.log(e.target.currentTime)}
       onListen={(e) => dispatch(globalTimeUpdated(e.target.currentTime))}
+      onLoadedData={(e) => dispatch(globalDurationUpdated(e.target.duration))}
       onPlay={() => {
         if (globalSource.sourceId === waveSource.sourceId) {
           dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));

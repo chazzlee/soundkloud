@@ -3,10 +3,12 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Image } from "pure-react-carousel";
-// import {
-//   selectNowPlayingSource,
-//   selectPlayingStatus,
-// } from "../../player/store";
+import {
+  waveTrackCleared,
+  globalTrackLoaded,
+  globalStatusChanged,
+  PLAYER_STATUS,
+} from "../../player/store";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -43,27 +45,17 @@ const sampleCovers = [
   "https://soundkloud-seeds.s3.amazonaws.com/dimmuborgir-abah.jpg",
   "https://soundkloud-seeds.s3.amazonaws.com/skydancer.jpg",
 ];
-const sampleDefaultSource1 =
-  "https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Demonic+Incarnate.mp3";
-const sampleDefaultSource2 =
-  "https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+Wolf.mp3";
 
 export function PlayCard({ item, subcaption = "Related tracks" }) {
   const [showPlay, setShowPlay] = useState(false);
   const cover = useRef(sampleCovers[getRandomInteger(sampleCovers.length - 1)]);
   const dispatch = useDispatch();
-  // const nowPlayingSource = useSelector(selectNowPlayingSource);
-  // const playingStatus = useSelector(selectPlayingStatus);
 
   const handlePlay = (event) => {
     event.preventDefault();
-    console.log("playing...");
-    // if (nowPlaying) {
-    //   // FIXME:
-    //   dispatch(switchTrack(item.upload ?? sampleDefaultSource1));
-    // } else {
-    //   dispatch(startNowPlaying(item.upload ?? sampleDefaultSource2));
-    // }
+    dispatch(waveTrackCleared());
+    dispatch(globalTrackLoaded({ id: item.id, url: item.upload, duration: 0 }));
+    dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
   };
 
   return (

@@ -32,6 +32,7 @@ const CHANGE_GLOBAL_STATUS = "player/globalStatusChanged";
 const CLEAR_WAVE_TRACK = "player/waveTrackCleared";
 const CLEAR_GLOBAL_TRACK = "player/globalTrackCleared";
 const RECORD_GLOBAL_TIME = "player/globalTimeRecorded";
+const UPDATE_GLOBAL_DURATION = "player/globalDurationUpdated";
 
 export const waveTrackLoaded = ({ id, url, duration }) => ({
   type: LOAD_WAVE_TRACK,
@@ -59,6 +60,11 @@ export const globalTrackCleared = () => ({ type: CLEAR_GLOBAL_TRACK });
 export const globalTimeUpdated = (timeInSeconds) => ({
   type: RECORD_GLOBAL_TIME,
   payload: timeInSeconds,
+});
+
+export const globalDurationUpdated = (durationInSeconds) => ({
+  type: UPDATE_GLOBAL_DURATION,
+  payload: durationInSeconds,
 });
 
 export const playerReducer = produce((state = initialState, action) => {
@@ -103,6 +109,10 @@ export const playerReducer = produce((state = initialState, action) => {
     }
     case RECORD_GLOBAL_TIME: {
       state.global.currentTimeInSeconds = action.payload;
+      break;
+    }
+    case UPDATE_GLOBAL_DURATION: {
+      state.global.totalDuration = action.payload;
       break;
     }
     default:
