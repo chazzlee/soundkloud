@@ -1,42 +1,33 @@
-import { formatDistanceToNow } from "date-fns";
-import { useEffect, useRef, useState } from "react";
-import { IoMdPause, IoMdPlay } from "react-icons/io";
-import WaveSurfer from "wavesurfer.js";
 import styles from "../pages/UserProfilePage.module.css";
+import { useEffect, useRef, useState } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
+import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { BiLockAlt } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { EditTrackModal } from "./EditTrackModal";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Wavesurfer } from "../../tracks/components/Wavesurfer";
 import { destroyTrackAsync } from "../../tracks/store";
+import {
+  globalStatusChanged,
+  globalTrackLoaded,
+  PLAYER_STATUS,
+  selectWaveSource,
+  waveStatusChanged,
+} from "../../player/store";
 
+// TODO:
 export function TrackCard({ track }) {
   const dispatch = useDispatch();
-  const waveformRef = useRef(null);
-  const wavesurfer = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const waveSource = useSelector(selectWaveSource, shallowEqual);
 
   const handleRemove = (trackId) => {
     dispatch(destroyTrackAsync(trackId));
   };
-
-  useEffect(() => {
-    if (!wavesurfer.current && waveformRef.current) {
-      wavesurfer.current = WaveSurfer.create({
-        container: waveformRef.current,
-        waveColor: "#333",
-        progressColor: "#f50",
-        cursorColor: "transparent",
-        barWidth: 2,
-        barRadius: 3,
-        responsive: true,
-        height: 55,
-      });
-      // wavesurfer.current.load("");
-    }
-  }, [track]);
 
   return (
     <>
@@ -48,20 +39,27 @@ export function TrackCard({ track }) {
                 "https://i1.sndcdn.com/avatars-000007873027-acd5vm-t200x200.jpg"
               }
               alt="Profile"
-              height={160}
+              height={"100%"}
               width={160}
             />
           </div>
         </Link>
         <div className={styles.innerTrackContainer}>
           <div className={styles.trackCardTop}>
-            {!isPlaying ? (
+            {waveSource.status !== PLAYER_STATUS.PLAYING ? (
               <button
                 title="Play"
                 className={styles.playBtn}
                 onClick={() => {
-                  wavesurfer.current?.play();
-                  setIsPlaying(true);
+                  dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
+                  dispatch(
+                    globalTrackLoaded({
+                      id: waveSource.sourceId,
+                      url: waveSource.sourceUrl,
+                      duration: waveSource.totalDuration,
+                    })
+                  );
+                  dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
                 }}
               >
                 <IoMdPlay />
@@ -70,10 +68,7 @@ export function TrackCard({ track }) {
               <button
                 title="Pause"
                 className={styles.pauseBtn}
-                onClick={() => {
-                  wavesurfer.current?.pause();
-                  setIsPlaying(false);
-                }}
+                onClick={() => {}}
               >
                 <IoMdPause />
               </button>
@@ -106,7 +101,9 @@ export function TrackCard({ track }) {
               </div>
             </div>
           </div>
-          <div id="waveform" ref={waveformRef} />
+          <div>
+            <Wavesurfer track={track} onLoading={setLoading} waveHeight={28} />
+          </div>
           <div>
             <button
               className={styles.smBtn}

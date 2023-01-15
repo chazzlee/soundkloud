@@ -98,7 +98,7 @@
 }
 
 .trackCard {
-  height: 160px;
+  height: 100%;
   margin-bottom: 45px;
   display: grid;
   grid-template-columns: 1fr 4fr;
