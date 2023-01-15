@@ -28,4 +28,7 @@ export const TracksApi = {
   destroyOne(trackId) {
     return csrfFetch(`/api/tracks/${trackId}`, { method: "DELETE" });
   },
+  search(query) {
+    return csrfFetch(`/api/searches?query=${query}`);
+  },
 };

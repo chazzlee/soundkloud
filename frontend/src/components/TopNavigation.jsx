@@ -5,13 +5,13 @@ import { logoutUser, selectCurrentUser } from "../features/auth/store";
 import { AuthModal } from "../features/auth/components/AuthModal";
 import styles from "./TopNavigation.module.css";
 
-import { BsFillBellFill } from "react-icons/bs";
-import { IoMdMail } from "react-icons/io";
+// import { BsFillBellFill } from "react-icons/bs";
+// import { IoMdMail } from "react-icons/io";
 import { FiMoreHorizontal } from "react-icons/fi";
-import { IoSearch } from "react-icons/io5";
 import { BiCaretDown } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoPersonSharp } from "react-icons/io5";
+import { SearchBar } from "./SearchBar";
 import useOnClickOutside from "use-onclickoutside";
 
 export function TopNavigation() {
@@ -81,26 +81,7 @@ export function TopNavigation() {
           </div>
 
           <div className={styles.navGroupMiddle}>
-            <input
-              id="search"
-              type="text"
-              name="search"
-              className={styles.searchBar}
-              placeholder="Search"
-              autoComplete="off"
-            />
-            <span
-              style={{
-                position: "absolute",
-                fontSize: "20px",
-                top: 2,
-                right: 6,
-                color: "darkgray",
-                cursor: "pointer",
-              }}
-            >
-              <IoSearch />
-            </span>
+            <SearchBar />
           </div>
 
           <div className={styles.navGroupRight}>
