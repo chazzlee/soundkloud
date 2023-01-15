@@ -296,4 +296,6 @@ export const selectHasTracksLoaded = (state) => state.tracks.loaded;
 
 export const selectCurrentTrack = (state) => state.tracks.current;
 export const selectUserTracks = (state) =>
-  Object.values(state.tracks.entities ?? {});
+  Object.values(state.tracks.entities ?? {}).sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );

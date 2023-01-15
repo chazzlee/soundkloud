@@ -18,7 +18,7 @@ import {
   selectWaveStatus,
   waveStatusChanged,
 } from "../../player/store";
-import { Spinner } from "../../../components/Spinner";
+import { ButtonSpinner } from "../../../components/ButtonSpinner";
 import { useCallback } from "react";
 
 const MAX_LENGTH = 49;
@@ -62,7 +62,9 @@ export function PlayBanner({ track }) {
       <div className={styles.bannerHeader}>
         <div>
           {loading ? (
-            <Spinner />
+            <div style={{ paddingRight: 18 }}>
+              <ButtonSpinner />
+            </div>
           ) : waveStatus !== PLAYER_STATUS.PLAYING ? (
             <button
               title="Play"
