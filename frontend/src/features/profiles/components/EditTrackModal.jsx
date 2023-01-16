@@ -128,6 +128,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
             <div className={styles.column1}>
               <CoverImagePreview
                 image={coverImage}
+                edit={true}
                 onChange={(e) => setCoverImage(e.target.files[0])}
               />
             </div>

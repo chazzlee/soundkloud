@@ -36,10 +36,12 @@ export function TrackCard({ track }) {
           <div style={{ height: "100%", width: "100%" }}>
             <img
               src={
+                track.cover ??
                 "https://i1.sndcdn.com/avatars-000007873027-acd5vm-t200x200.jpg"
               }
               alt="Profile"
-              height={"100%"}
+              style={{ objectFit: "cover" }}
+              height={165}
               width={160}
             />
           </div>

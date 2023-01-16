@@ -4,6 +4,7 @@ import { IoSearch } from "react-icons/io5";
 import { TracksApi } from "../api/tracks";
 import styles from "./TopNavigation.module.css";
 
+// TODO: debounce search
 function parseLink(link) {
   const [_proto, _empty, _domain, user, title] = link.split("/");
   return `/${user}/${title}`;
@@ -13,7 +14,6 @@ export function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
-  console.log(results);
 
   useEffect(() => {
     if (searchQuery) {

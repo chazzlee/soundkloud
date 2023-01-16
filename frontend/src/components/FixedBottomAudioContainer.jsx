@@ -5,7 +5,7 @@ export function FixedBottomAudioContainer({ children }) {
         position: "fixed",
         bottom: 0,
         width: "100%",
-        zIndex: 2,
+        zIndex: 12,
         padding: 0,
         border: "1px solid #cecece",
       }}

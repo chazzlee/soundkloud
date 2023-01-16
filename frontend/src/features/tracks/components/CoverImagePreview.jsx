@@ -1,7 +1,7 @@
 import { BsCameraFill } from "react-icons/bs";
 import styles from "./UploadDropzone.module.css";
 
-export function CoverImagePreview({ image, onChange }) {
+export function CoverImagePreview({ image, onChange, edit = false }) {
   return (
     <div
       style={{
@@ -14,7 +14,7 @@ export function CoverImagePreview({ image, onChange }) {
     >
       {image && (
         <img
-          src={URL.createObjectURL(image)}
+          src={edit ? image : URL.createObjectURL(image)}
           alt=""
           height="100%"
           width="100%"
