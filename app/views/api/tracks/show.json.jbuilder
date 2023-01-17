@@ -24,7 +24,7 @@ json.upload track.upload.url
 # json.upload random_tracks.sample
 json.cover track.cover.url
 
-json.replies track.replies.order(created_at: :desc) do |reply|
+json.replies replies.order(created_at: :desc) do |reply|
   json.id reply.id
   json.created_at reply.created_at
   json.track_id reply.track_id

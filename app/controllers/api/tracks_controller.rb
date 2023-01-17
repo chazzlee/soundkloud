@@ -12,9 +12,10 @@ class Api::TracksController < ApplicationController
   def show
     profile = Profile.friendly.find(params[:profile_id])
     user = profile.user
-    track = user.tracks.preload(:replies).friendly.find(params[:id])
+    track = user.tracks.friendly.find(params[:id])
+    replies = track.replies.includes(:user)
 
-    render template: 'api/tracks/show', locals: { track: }
+    render template: 'api/tracks/show', locals: { track:, replies: }
   end
 
   def create
