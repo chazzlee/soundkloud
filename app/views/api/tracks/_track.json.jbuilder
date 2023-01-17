@@ -13,8 +13,8 @@ json.set! track.id do
   json.extract! track, :id, :title, :artist, :privacy, :tags, :created_at
   json.permalink URI.parse(track.permalink).path
   json.cover track.cover.url
-  # json.upload track.upload.url
-  json.upload random_tracks.sample
+  json.upload track.upload.url
+  # json.upload random_tracks.sample
 
   json.genre track.genre_id
   json.uploader do

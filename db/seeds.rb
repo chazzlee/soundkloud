@@ -110,8 +110,9 @@ Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other
 # )
 # track.save!
 # end
+# https://soundkloud-seeds.s3.amazonaws.com/tracks/02.+The+Answer+Lies+Within.mp3
 
-20.times do |_n|
+20.times do |n|
   title = Faker::Music::RockBand.song
   track = Track.new(
     title:,
@@ -121,39 +122,39 @@ Profile.create!(age: 34, gender: 'female', display_name: 'Jane Doe', user: other
     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
     privacy: %w[public private].sample
   )
-  # track.upload.attach(
-  #   io: URI.open('https://filesamples.com/samples/audio/mp3/sample1.mp3'),
-  #   filename: "upload_#{n + 1}.mp3"
-  # )
-  # track.cover.attach(
-  #   io: URI.open(
-  #     'https://www.metal-archives.com/images/4/4/1/2/441258.jpg'
-  #   ),
-  #   filename: "cover_#{n + 1}.jpg"
-  # )
+  track.upload.attach(
+    io: URI.open('https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Demonic+Incarnate.mp3'),
+    filename: "upload_#{n + 1}.mp3"
+  )
+  track.cover.attach(
+    io: URI.open(
+      'https://www.metal-archives.com/images/4/4/1/2/441258.jpg'
+    ),
+    filename: "cover_#{n + 1}.jpg"
+  )
   track.user = demo_user
   track.genre = genres.sample
   track.save!
 end
 
-# 10.times do
-#   demo_user.play_track(Track.all.sample)
-#   other_user.play_track(Track.all.sample)
-# end
+10.times do
+  demo_user.play_track(Track.all.sample)
+  other_user.play_track(Track.all.sample)
+end
 
-# 4.times do
-#   Track.all.each do |track|
-#     User.all.each do |user|
-#       user.play_track(track)
-#     end
-#   end
-# end
+4.times do
+  Track.all.each do |track|
+    User.all.each do |user|
+      user.play_track(track)
+    end
+  end
+end
 
-# 100.times do
-#   reply = Reply.new(body: Faker::Quote.matz)
-#   reply.user = User.all.sample
-#   reply.track = Track.all.sample
-#   reply.save!
-# end
+100.times do
+  reply = Reply.new(body: Faker::Quote.matz)
+  reply.user = User.all.sample
+  reply.track = Track.all.sample
+  reply.save!
+end
 
 puts 'Finished'

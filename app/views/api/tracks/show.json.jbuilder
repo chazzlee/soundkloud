@@ -20,8 +20,8 @@ json.uploader do
   json.photo track.user.profile.photo.url
 end
 
-# json.upload track.upload.url
-json.upload random_tracks.sample
+json.upload track.upload.url
+# json.upload random_tracks.sample
 json.cover track.cover.url
 
 json.replies track.replies.order(created_at: :desc) do |reply|
