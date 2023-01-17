@@ -13,10 +13,10 @@ class Api::ProfilesController < ApplicationController
     profile.slug = params[:display_name].parameterize || profile.slug
 
     # TODO:
-    # if params[:photo]
-    #   profile.photo.purge if profile.photo.attached?
-    #   profile.photo.attach(params[:photo])
-    # end
+    if params[:photo]
+      # profile.photo.purge if profile.photo.attached?
+      profile.photo.attach(params[:photo])
+    end
     if profile.save
       user.tracks.map do |track|
         original_permalink = URI.parse(track.permalink)

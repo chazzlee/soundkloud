@@ -41,11 +41,12 @@ export function UserProfilePage() {
             <div className={styles.avatar}>
               <img
                 src={
+                  currentUser.photo ??
                   "https://i1.sndcdn.com/avatars-000007873027-acd5vm-t200x200.jpg"
                 }
                 height="100%"
                 width="100%"
-                style={{ borderRadius: "50%" }}
+                style={{ borderRadius: "50%", objectFit: "cover" }}
                 alt={currentUser.displayName}
               />
             </div>

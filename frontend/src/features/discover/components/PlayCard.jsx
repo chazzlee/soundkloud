@@ -70,7 +70,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
           className={styles.coverImage}
           style={{ filter: showPlay ? "brightness(90%)" : "none" }}
         />
-        {showPlay ? (
+        {false ? (
           <div className={styles.playOverlay}>
             <button
               onClick={handlePlay}

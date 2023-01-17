@@ -38,7 +38,7 @@ class Api::TracksController < ApplicationController
           tag.save!
         end
       end
-      render template: 'api/tracks/show', locals: { track: }, status: :created
+      render template: 'api/tracks/show', locals: { track:, replies: nil }, status: :created
     else
       render json: { errors: track.errors.full_messages }, status: :unprocessable_entity
     end

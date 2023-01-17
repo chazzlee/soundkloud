@@ -195,13 +195,13 @@ export function TrackShowPage() {
                 }}
               >
                 <div className={styles.commentFeedHeader}>
-                  <FaCommentAlt /> {track?.replies.length}{" "}
-                  {track?.replies.length > 1 || track?.replies.length === 0
+                  <FaCommentAlt /> {track?.replies?.length}{" "}
+                  {track?.replies?.length > 1 || track?.replies?.length === 0
                     ? "comments"
                     : "comment"}
                 </div>
                 <div className={styles.commentList}>
-                  {track?.replies.map((reply) => (
+                  {track?.replies?.map((reply) => (
                     <ReplyCard key={reply.id} reply={reply} />
                   ))}
                 </div>

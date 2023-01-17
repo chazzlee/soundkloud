@@ -17,22 +17,21 @@ export function EditProfileModal({ onClose, currentUser }) {
     age: currentUser?.age,
     gender: currentUser?.gender,
     location: currentUser?.location || "",
-    photo: null,
   });
+
+  const [photo, setPhoto] = useState(null);
 
   const profileErrors = useSelector(selectProfileErrors);
 
   const handleChange = (e) => {
     if (e.target.type === "file") {
+      setPhoto(e.target.files[0]);
+    } else {
       setProfileData((prev) => ({
         ...prev,
-        [e.target.name]: e.target.files[0],
+        [e.target.name]: e.target.value,
       }));
     }
-    setProfileData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
   };
 
   const handleProfileUpdate = (e) => {
@@ -45,6 +44,10 @@ export function EditProfileModal({ onClose, currentUser }) {
 
     for (let key of Object.keys(updatedProfile)) {
       formData.set(key, updatedProfile[key]);
+    }
+
+    if (photo) {
+      formData.set("photo", photo, photo.name);
     }
 
     ProfilesApi.update(formData)

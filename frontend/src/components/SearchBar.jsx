@@ -6,6 +6,7 @@ import styles from "./TopNavigation.module.css";
 
 // TODO: debounce search
 function parseLink(link) {
+  // eslint-disable-next-line no-unused-vars
   const [_proto, _empty, _domain, user, title] = link.split("/");
   return `/${user}/${title}`;
 }

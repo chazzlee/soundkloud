@@ -1,5 +1,5 @@
 import styles from "../pages/UserProfilePage.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
@@ -52,6 +52,7 @@ export function TrackCard({ track }) {
               <button
                 title="Play"
                 className={styles.playBtn}
+                style={{ display: "none" }}
                 onClick={() => {
                   dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
                   dispatch(
@@ -70,6 +71,7 @@ export function TrackCard({ track }) {
               <button
                 title="Pause"
                 className={styles.pauseBtn}
+                style={{ display: "none" }}
                 onClick={() => {}}
               >
                 <IoMdPause />
@@ -104,7 +106,7 @@ export function TrackCard({ track }) {
             </div>
           </div>
           <div>
-            <Wavesurfer track={track} onLoading={setLoading} waveHeight={28} />
+            {/* <Wavesurfer track={track} onLoading={setLoading} waveHeight={28} /> */}
           </div>
           <div>
             <button
