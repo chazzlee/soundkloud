@@ -35,11 +35,6 @@ export function GlobalPlaybar() {
         })
       );
     }
-    // else if (
-    //   waveStatus === PLAYER_STATUS.IDLE &&
-    //   globalStatus === PLAYER_STATUS.LOADED
-    // ) {
-    // }
   }, [
     dispatch,
     globalStatus,
