@@ -1,47 +1,94 @@
-import { useEffect, useMemo, useRef } from "react";
+import { forwardRef, useEffect, useMemo, useRef } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import WaveSurfer from "wavesurfer.js";
 import {
   PLAYER_STATUS,
-  selectGlobalProgress,
-  selectGlobalSource,
-  selectWaveSource,
+  selectPlayerProgress,
+  selectPlayerStatus,
+  trackFinished,
+  trackLoaded,
+  trackPlaying,
+  trackResumed,
+  trackSeeking,
   waveStatusChanged,
   waveTrackLoaded,
 } from "../../player/store";
 
-export function Wavesurfer({ track }) {
+const PLAYER = "wave";
+export const Wavesurfer = forwardRef(({ track }, ref) => {
+  const dispatch = useDispatch();
   const waveformRef = useRef(null);
-  const wavesurfer = useRef(null);
+  const globalStatus = useSelector((state) =>
+    selectPlayerStatus(state, "global")
+  );
+
+  const globalProgress = useSelector((state) =>
+    selectPlayerProgress(state, "global")
+  );
+
+  console.log(globalStatus);
+  useEffect(() => {
+    console.log("creating wavesurfer..", ref.current);
+    const waveOptions = {
+      waveColor: "#eee",
+      progressColor: "#f50",
+      cursorColor: "transparent",
+      barWidth: 3,
+      barRadius: 3,
+      responsive: true,
+      normalize: true,
+      height: 100, //TODO:
+      container: waveformRef.current,
+    };
+    ref.current = WaveSurfer.create(waveOptions);
+    ref.current.setMute(true);
+    ref.current.load(track.upload);
+    ref.current.on("ready", () => {
+      dispatch(
+        trackLoaded({
+          player: PLAYER,
+          url: track.upload,
+          duration: ref.current.getDuration(),
+        })
+      );
+    });
+    ref.current.on("seek", (e) => {
+      dispatch(trackSeeking({ player: PLAYER, progress: e }));
+      dispatch(trackResumed({ player: PLAYER }));
+      ref.current.play();
+    });
+    ref.current.on("finish", () => {
+      console.log("finished");
+      dispatch(trackFinished({ player: PLAYER }));
+    });
+    return () => {
+      console.log("TODO: cleanup wavesurfer", ref.current);
+      ref.current.cancelAjax();
+      ref.current.destroy();
+    };
+  }, [dispatch, ref, track.upload]);
 
   useEffect(() => {
-    if (!wavesurfer.current) {
-      console.log("creating wavesurfer..");
-      const waveOptions = {
-        waveColor: "#eee",
-        progressColor: "#f50",
-        cursorColor: "transparent",
-        barWidth: 3,
-        barRadius: 3,
-        responsive: true,
-        normalize: true,
-        height: 100, //TODO:
-        container: waveformRef.current,
-      };
-      wavesurfer.current = WaveSurfer.create(waveOptions).load(track.upload);
+    switch (globalStatus) {
+      case PLAYER_STATUS.PLAYING: {
+        ref.current.play();
+        break;
+      }
+      case PLAYER_STATUS.PAUSED: {
+        ref.current.pause();
+        break;
+      }
+      case PLAYER_STATUS.SEEKING: {
+        ref.current.seekTo(globalProgress);
+        break;
+      }
+      default:
+        return;
     }
-
-    return () => {
-      console.log("TODO: cleanup wavesurfer");
-    };
-  }, [track.upload]);
-
-  // useEffect(() => {
-  //   console.log(waveformRef.current);
-  // }, []);
+  }, [globalStatus, globalProgress, ref]);
 
   return <div id="waveform" ref={waveformRef} />;
-}
+});
 
 // TODO: cleanup, fix wavesurfer progress after track change
 // export function Wavesurfer({ track, onLoading, waveHeight = 100 }) {

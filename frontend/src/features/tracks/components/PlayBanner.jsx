@@ -15,8 +15,10 @@ import {
   PLAYER_STATUS,
   selectGlobalSource,
   selectWaveSource,
-  selectWaveStatus,
+  selectPlayerStatus,
   waveStatusChanged,
+  trackPlaying,
+  trackPaused,
 } from "../../player/store";
 import { ButtonSpinner } from "../../../components/ButtonSpinner";
 import { useCallback } from "react";
@@ -38,6 +40,7 @@ const sampleCovers = [
 const headerFontSize = (track, length = MAX_LENGTH) =>
   track.artist.length + track.title.length >= length ? "20px" : "22px";
 
+const PLAYER = "wave";
 export function PlayBanner({ track }) {
   const dispatch = useDispatch();
   const rgbBackground = useRef(getRandomRGB());
@@ -45,33 +48,17 @@ export function PlayBanner({ track }) {
     sampleCovers[getRandomInteger(sampleCovers.length - 1)]
   );
 
-  const waveStatus = useSelector(selectWaveStatus);
-  const waveSource = useSelector(selectWaveSource, shallowEqual);
-  const globalSource = useSelector(selectGlobalSource, shallowEqual);
-
-  const [loading, setLoading] = useState(true);
-  const handleLoading = useCallback((state) => setLoading(state), []);
+  const waveStatus = useSelector((state) => selectPlayerStatus(state, PLAYER));
+  const wavesurfer = useRef(null);
 
   const handlePlay = () => {
-    console.log("playing from wavesurfer");
-    // if (waveSource.sourceId !== globalSource.sourceId) {
-    //   dispatch(globalTrackCleared());
-    //   dispatch(
-    //     globalTrackLoaded({
-    //       id: waveSource.sourceId,
-    //       url: waveSource.sourceUrl,
-    //       duration: waveSource.totalDuration,
-    //     })
-    //   );
-    // }
-    // dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
-    // dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
+    dispatch(trackPlaying({ player: PLAYER }));
+    wavesurfer.current?.play();
   };
 
   const handlePause = () => {
-    console.log("pause from wavesurfer");
-    // dispatch(waveStatusChanged(PLAYER_STATUS.PAUSED));
-    // dispatch(globalStatusChanged(PLAYER_STATUS.PAUSED));
+    dispatch(trackPaused({ player: PLAYER }));
+    wavesurfer.current?.pause();
   };
 
   return (
@@ -83,7 +70,7 @@ export function PlayBanner({ track }) {
     >
       <div className={styles.bannerHeader}>
         <div>
-          {loading ? (
+          {waveStatus === PLAYER_STATUS.IDLE ? (
             <div style={{ paddingRight: 18 }}>
               <ButtonSpinner />
             </div>
@@ -152,7 +139,7 @@ export function PlayBanner({ track }) {
 
         <div className={styles.wavesurferContainer}>
           {/* <Wavesurfer track={track} onLoading={handleLoading} /> */}
-          <Wavesurfer track={track} />
+          <Wavesurfer track={track} ref={wavesurfer} />
         </div>
       </div>
 

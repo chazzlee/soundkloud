@@ -6,24 +6,108 @@ export const PLAYER_STATUS = Object.freeze({
   PLAYING: "playing",
   PAUSED: "paused",
   SEEKING: "seeking",
+  FINISHED: "finished",
+});
+
+// ----------------------------
+const LOAD_TRACK = "player/trackLoaded";
+const PLAY_TRACK = "player/trackPlaying";
+const PAUSE_TRACK = "player/trackPaused";
+const FINISH_TRACK = "player/trackFinished";
+const SEEKING_TRACK = "player/trackSeeking";
+const RESUME_TRACK = "player/trackResumed";
+
+export const trackLoaded = (sourceInfo) => ({
+  type: LOAD_TRACK,
+  payload: sourceInfo,
+});
+
+export const trackPlaying = (sourceInfo) => ({
+  type: PLAY_TRACK,
+  payload: sourceInfo,
+});
+
+export const trackPaused = (sourceInfo) => ({
+  type: PAUSE_TRACK,
+  payload: sourceInfo,
+});
+
+export const trackFinished = (sourceInfo) => ({
+  type: FINISH_TRACK,
+  payload: sourceInfo,
+});
+
+export const trackSeeking = (sourceInfo) => ({
+  type: SEEKING_TRACK,
+  payload: sourceInfo,
+});
+
+export const trackResumed = (sourceInfo) => ({
+  type: RESUME_TRACK,
+  payload: sourceInfo,
 });
 
 const initialState = {
   wave: {
     status: PLAYER_STATUS.IDLE,
-    sourceId: null,
-    sourceUrl: null,
-    totalDuration: 0,
-    currentTimeInSeconds: 0,
+    sourceUrl: "",
+    duration: 0,
+    progress: 0,
   },
   global: {
     status: PLAYER_STATUS.IDLE,
-    sourceId: null,
-    sourceUrl: null,
-    totalDuration: 0,
-    currentTimeInSeconds: 0,
+    sourceUrl: "",
+    duration: 0,
+    progress: 0,
   },
 };
+
+export const playerReducer = produce((state = initialState, action) => {
+  switch (action.type) {
+    case LOAD_TRACK: {
+      state[action.payload.player].status = PLAYER_STATUS.LOADED;
+      state[action.payload.player].sourceUrl = action.payload.url;
+      state[action.payload.player].duration = action.payload.duration;
+      state[action.payload.player].progress = 0;
+      break;
+    }
+    case PLAY_TRACK: {
+      state[action.payload.player].status = PLAYER_STATUS.PLAYING;
+      state.global.status = PLAYER_STATUS.PLAYING;
+      break;
+    }
+    case PAUSE_TRACK: {
+      state[action.payload.player].status = PLAYER_STATUS.PAUSED;
+      state.global.status = PLAYER_STATUS.PAUSED;
+      break;
+    }
+    case FINISH_TRACK: {
+      state[action.payload.player].status = PLAYER_STATUS.FINISHED;
+      break;
+    }
+    case SEEKING_TRACK: {
+      state[action.payload.player].status = PLAYER_STATUS.SEEKING;
+      state[action.payload.player].progress = action.payload.progress;
+      state.global.status = PLAYER_STATUS.SEEKING;
+      state.global.progress = action.payload.progress;
+      break;
+    }
+    case RESUME_TRACK: {
+      state[action.payload.player].status = PLAYER_STATUS.PLAYING;
+      state.global.status = PLAYER_STATUS.PLAYING;
+      break;
+    }
+    default:
+      return state;
+  }
+});
+
+export const selectPlayerStatus = (state, player) =>
+  state.player[player].status;
+export const selectPlayerProgress = (state, player) =>
+  state.player[player].progress;
+
+// ----------------------------
 
 const LOAD_WAVE_TRACK = "player/waveTrackLoaded";
 const LOAD_GLOBAL_TRACK = "player/globalTrackLoaded";
@@ -67,7 +151,24 @@ export const globalDurationUpdated = (durationInSeconds) => ({
   payload: durationInSeconds,
 });
 
-export const playerReducer = produce((state = initialState, action) => {
+const initialState2 = {
+  wave: {
+    status: PLAYER_STATUS.IDLE,
+    sourceId: null,
+    sourceUrl: null,
+    totalDuration: 0,
+    currentTimeInSeconds: 0,
+  },
+  global: {
+    status: PLAYER_STATUS.IDLE,
+    sourceId: null,
+    sourceUrl: null,
+    totalDuration: 0,
+    currentTimeInSeconds: 0,
+  },
+};
+
+export const playerReducer2 = produce((state = initialState2, action) => {
   switch (action.type) {
     case LOAD_WAVE_TRACK: {
       state.wave.status = PLAYER_STATUS.LOADED;
@@ -120,7 +221,7 @@ export const playerReducer = produce((state = initialState, action) => {
   }
 });
 
-export const selectWaveStatus = (state) => state.player.wave.status;
+// export const selectWaveStatus = (state) => state.player.wave.status;
 export const selectGlobalStatus = (state) => state.player.global.status;
 export const selectGlobalSource = (state) => state.player.global;
 export const selectWaveSource = (state) => state.player.wave;

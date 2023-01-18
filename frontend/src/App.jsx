@@ -3,8 +3,9 @@ import { Outlet, useLocation } from "react-router-dom";
 import { TopNavigation } from "./components/TopNavigation";
 import { FixedBottomAudioContainer } from "./components/FixedBottomAudioContainer";
 import { GlobalPlaybar } from "./components/GlobalPlaybar";
-import { useSelector } from "react-redux";
-import { PLAYER_STATUS, selectGlobalStatus } from "./features/player/store";
+// import { GlobalPlaybar } from "./components/GlobalPlaybar";
+// import { useSelector } from "react-redux";
+// import { PLAYER_STATUS, selectGlobalStatus } from "./features/player/store";
 
 //TODO: figure out react-head
 //TODO: sync playbar on wavesurfer
@@ -20,6 +21,7 @@ function App() {
 
       <FixedBottomAudioContainer>
         {/* {globalStatus !== PLAYER_STATUS.IDLE && <GlobalPlaybar />} */}
+        <GlobalPlaybar />
       </FixedBottomAudioContainer>
     </>
   );
