@@ -52,6 +52,28 @@ export function PlayBanner({ track }) {
   const [loading, setLoading] = useState(true);
   const handleLoading = useCallback((state) => setLoading(state), []);
 
+  const handlePlay = () => {
+    console.log("playing from wavesurfer");
+    // if (waveSource.sourceId !== globalSource.sourceId) {
+    //   dispatch(globalTrackCleared());
+    //   dispatch(
+    //     globalTrackLoaded({
+    //       id: waveSource.sourceId,
+    //       url: waveSource.sourceUrl,
+    //       duration: waveSource.totalDuration,
+    //     })
+    //   );
+    // }
+    // dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
+    // dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
+  };
+
+  const handlePause = () => {
+    console.log("pause from wavesurfer");
+    // dispatch(waveStatusChanged(PLAYER_STATUS.PAUSED));
+    // dispatch(globalStatusChanged(PLAYER_STATUS.PAUSED));
+  };
+
   return (
     <div
       className={styles.bannerPlayerContainer}
@@ -69,20 +91,7 @@ export function PlayBanner({ track }) {
             <button
               title="Play"
               className={styles.circularPlayBtn}
-              onClick={() => {
-                if (waveSource.sourceId !== globalSource.sourceId) {
-                  dispatch(globalTrackCleared());
-                  dispatch(
-                    globalTrackLoaded({
-                      id: waveSource.sourceId,
-                      url: waveSource.sourceUrl,
-                      duration: waveSource.totalDuration,
-                    })
-                  );
-                }
-                dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
-                dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
-              }}
+              onClick={handlePlay}
             >
               <IoMdPlay className={styles.playIcon} />
             </button>
@@ -90,10 +99,7 @@ export function PlayBanner({ track }) {
             <button
               title="Pause"
               className={styles.circularPlayBtn}
-              onClick={() => {
-                dispatch(waveStatusChanged(PLAYER_STATUS.PAUSED));
-                dispatch(globalStatusChanged(PLAYER_STATUS.PAUSED));
-              }}
+              onClick={handlePause}
             >
               <IoMdPause className={styles.pauseIcon} />
             </button>
@@ -144,19 +150,9 @@ export function PlayBanner({ track }) {
           </div>
         </div>
 
-        <div
-          style={{
-            color: "white",
-            position: "absolute",
-            bottom: 24,
-            maxWidth: "813px",
-            width: "100%",
-            height: "100px",
-            backgroundColor: "transparent",
-            zIndex: 1,
-          }}
-        >
-          <Wavesurfer track={track} onLoading={handleLoading} />
+        <div className={styles.wavesurferContainer}>
+          {/* <Wavesurfer track={track} onLoading={handleLoading} /> */}
+          <Wavesurfer track={track} />
         </div>
       </div>
 

@@ -28,6 +28,10 @@ export function TrackShowPage() {
 
   useEffect(() => {
     dispatch(fetchTrackAsync(user, trackSlug));
+
+    return () => {
+      dispatch(removeCurrentTrack());
+    };
   }, [dispatch, user, trackSlug]);
 
   const [replyBody, setReplyBody] = useState("");
@@ -48,12 +52,6 @@ export function TrackShowPage() {
   // useEffect(() => {
   //   dispatch(fetchPlaylistsAsync());
   // }, [dispatch]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(removeCurrentTrack());
-    };
-  }, [dispatch]);
 
   if (!track) {
     return <FullSpinner />;

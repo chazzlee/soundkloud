@@ -11,7 +11,7 @@ import { PLAYER_STATUS, selectGlobalStatus } from "./features/player/store";
 function App() {
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
-  const globalStatus = useSelector(selectGlobalStatus);
+  // const globalStatus = useSelector(selectGlobalStatus);
 
   return (
     <>
@@ -19,7 +19,7 @@ function App() {
       <Outlet />
 
       <FixedBottomAudioContainer>
-        {globalStatus !== PLAYER_STATUS.IDLE && <GlobalPlaybar />}
+        {/* {globalStatus !== PLAYER_STATUS.IDLE && <GlobalPlaybar />} */}
       </FixedBottomAudioContainer>
     </>
   );
