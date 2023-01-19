@@ -1,6 +1,7 @@
 .large {
   width: 860px;
-  position: absolute;
+  height: 100%;
+  overflow: scroll;
 }
 
 .modalForm {
