@@ -5,14 +5,13 @@ import {
   PLAYER_STATUS,
   selectPlayerProgress,
   selectPlayerSource,
+  selectPlayerSourceId,
   selectPlayerStatus,
   trackFinished,
   trackLoaded,
   trackPlaying,
   trackResumed,
   trackSeeking,
-  waveStatusChanged,
-  waveTrackLoaded,
 } from "../../player/store";
 
 const PLAYER = "wave";
@@ -22,6 +21,7 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
   const globalStatus = useSelector((state) =>
     selectPlayerStatus(state, "global")
   );
+  const waveStatus = useSelector((state) => selectPlayerStatus(state, PLAYER));
 
   const globalProgress = useSelector((state) =>
     selectPlayerProgress(state, "global")
@@ -30,6 +30,13 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
   const waveSource = useSelector((state) => selectPlayerSource(state, PLAYER));
   const globalSource = useSelector((state) =>
     selectPlayerSource(state, "global")
+  );
+
+  const waveSourceId = useSelector((state) =>
+    selectPlayerSourceId(state, PLAYER)
+  );
+  const globalSourceId = useSelector((state) =>
+    selectPlayerSourceId(state, "global")
   );
 
   useEffect(() => {
@@ -52,6 +59,7 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
       dispatch(
         trackLoaded({
           player: PLAYER,
+          id: track.id,
           url: track.upload,
           duration: ref.current.getDuration(),
         })
@@ -69,7 +77,7 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
       ref.current.cancelAjax();
       ref.current.destroy();
     };
-  }, [dispatch, ref, track.upload]);
+  }, [dispatch, ref, track.id, track.upload]);
 
   useEffect(() => {
     switch (globalStatus) {
@@ -89,6 +97,23 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
         return;
     }
   }, [globalStatus, globalProgress, ref]);
+
+  useEffect(() => {
+    if (
+      waveStatus === PLAYER_STATUS.LOADED &&
+      globalStatus === PLAYER_STATUS.PLAYING &&
+      waveSourceId === globalSourceId
+    ) {
+      ref.current.seekTo(globalProgress);
+    }
+  }, [
+    waveStatus,
+    globalStatus,
+    waveSourceId,
+    globalSourceId,
+    globalProgress,
+    ref,
+  ]);
 
   return <div id="waveform" ref={waveformRef} />;
 });

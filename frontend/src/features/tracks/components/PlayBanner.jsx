@@ -1,6 +1,6 @@
 import styles from "./PlayBanner.module.css";
-import { useRef, useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
@@ -9,14 +9,8 @@ import { Wavesurfer } from "./Wavesurfer";
 import { getRandomRGB } from "../../../utils/getRandomRGB";
 import { getRandomInteger } from "../../../utils/getRandomInteger";
 import {
-  globalStatusChanged,
-  globalTrackCleared,
-  globalTrackLoaded,
   PLAYER_STATUS,
-  selectGlobalSource,
-  selectWaveSource,
   selectPlayerStatus,
-  waveStatusChanged,
   trackPlaying,
   trackPaused,
 } from "../../player/store";
@@ -137,7 +131,6 @@ export function PlayBanner({ track }) {
         </div>
 
         <div className={styles.wavesurferContainer}>
-          {/* <Wavesurfer track={track} onLoading={handleLoading} /> */}
           <Wavesurfer track={track} ref={wavesurfer} />
         </div>
       </div>

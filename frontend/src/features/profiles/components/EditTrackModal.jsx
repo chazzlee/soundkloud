@@ -31,7 +31,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
     playlist: false,
     artist: track.artist || "",
     genre_id: trackGenre?.id || "",
-    description: track.artist || "",
+    description: track.description || "",
     caption: track.caption || "",
     privacy: track.privacy || "public",
   });
@@ -149,6 +149,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
                     id="title"
                     name="title"
                     placeholder="Name your track"
+                    required
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     autoFocus
@@ -165,6 +166,7 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
                     id="artist"
                     name="artist"
                     placeholder="Name the artist"
+                    required
                     value={formValues.artist}
                     onChange={handleInputChange}
                   />

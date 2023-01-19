@@ -8,22 +8,15 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { BiLockAlt } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { EditTrackModal } from "./EditTrackModal";
-import { Wavesurfer } from "../../tracks/components/Wavesurfer";
+// import { Wavesurfer } from "../../tracks/components/Wavesurfer";
 import { destroyTrackAsync } from "../../tracks/store";
-import {
-  globalStatusChanged,
-  globalTrackLoaded,
-  PLAYER_STATUS,
-  selectWaveSource,
-  waveStatusChanged,
-} from "../../player/store";
+import { PLAYER_STATUS } from "../../player/store";
 
 // TODO:
 export function TrackCard({ track }) {
   const dispatch = useDispatch();
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const waveSource = useSelector(selectWaveSource, shallowEqual);
+  // const [loading, setLoading] = useState(true);
 
   const handleRemove = (trackId) => {
     dispatch(destroyTrackAsync(trackId));
@@ -48,7 +41,15 @@ export function TrackCard({ track }) {
         </Link>
         <div className={styles.innerTrackContainer}>
           <div className={styles.trackCardTop}>
-            {waveSource.status !== PLAYER_STATUS.PLAYING ? (
+            <button
+              title="Play"
+              className={styles.playBtn}
+              style={{ display: "none" }}
+              onClick={() => {}}
+            >
+              <IoMdPlay />
+            </button>
+            {/* {waveSource.status !== PLAYER_STATUS.PLAYING ? (
               <button
                 title="Play"
                 className={styles.playBtn}
@@ -76,7 +77,7 @@ export function TrackCard({ track }) {
               >
                 <IoMdPause />
               </button>
-            )}
+            )} */}
             <div className={styles.trackCardInfo}>
               <div className={styles.trackHeaderLeft}>
                 <h4>{track.uploader.displayName}</h4>

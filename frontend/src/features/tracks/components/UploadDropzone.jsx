@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import slug from "slug";
-import { fetchGenresAsync, selectGenres } from "../../genres/store";
+import {
+  fetchGenresAsync,
+  selectGenres,
+  selectGenresLoaded,
+} from "../../genres/store";
 import {
   selectCurrentTrack,
   selectTracksLoading,
@@ -37,6 +41,7 @@ export function UploadDropzone() {
 
   const genres = useSelector(selectGenres);
   const trackLoading = useSelector(selectTracksLoading);
+  const genresLoaded = useSelector(selectGenresLoaded);
 
   const [formValues, setFormValues] = useState(initialValues);
   const [title, setTitle] = useState("");
@@ -48,7 +53,6 @@ export function UploadDropzone() {
 
   const [tagInput, setTagInput] = useState("");
   const [tagsDisplay, setTagsDisplay] = useState([]);
-
   const [showCopyHelper, setShowCopyHelper] = useState(false);
 
   let timeoutRef = useRef();
@@ -138,8 +142,10 @@ export function UploadDropzone() {
   };
 
   useEffect(() => {
-    dispatch(fetchGenresAsync());
-  }, [dispatch]);
+    if (!genresLoaded) {
+      dispatch(fetchGenresAsync());
+    }
+  }, [genresLoaded, dispatch]);
 
   useEffect(() => {
     setPermalink(slug(title));
@@ -351,44 +357,46 @@ export function UploadDropzone() {
                     Share your new track
                   </h4>
                 </div>
-                <div style={{ position: "relative" }}>
-                  <input
-                    type="text"
-                    ref={shareLinkRef}
-                    defaultValue={uploadedTrack?.permalink}
-                    disabled
-                    style={{
-                      color: showCopyHelper ? "#333" : "#999",
-                      display: "block",
-                      width: "230px",
-                      fontSize: "12px",
-                      padding: "2px",
-                      borderRadius: "4px",
-                      border: showCopyHelper
-                        ? "2px solid var(--link-blue)"
-                        : "2px solid #999",
-                    }}
-                  />
-                  <button
-                    style={{
-                      position: "absolute",
-                      top: 4,
-                      right: 2,
-                      color: "#999",
-                      background: "transparent",
-                      zIndex: 2,
-                    }}
-                    onClick={() => {
-                      if (shareLinkRef.current) {
-                        const link = shareLinkRef.current;
-                        navigator.clipboard.writeText(link.value);
-                        setShowCopyHelper(true);
-                      }
-                    }}
-                  >
-                    <MdContentCopy />
-                  </button>
-                </div>
+                {uploadedTrack?.permalink && (
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type="text"
+                      ref={shareLinkRef}
+                      defaultValue={`${window.location.host}${uploadedTrack?.permalink}`}
+                      disabled
+                      style={{
+                        color: showCopyHelper ? "#333" : "#999",
+                        display: "block",
+                        width: "230px",
+                        fontSize: "12px",
+                        padding: "2px",
+                        borderRadius: "4px",
+                        border: showCopyHelper
+                          ? "2px solid var(--link-blue)"
+                          : "2px solid #999",
+                      }}
+                    />
+                    <button
+                      style={{
+                        position: "absolute",
+                        top: 4,
+                        right: 2,
+                        color: "#999",
+                        background: "transparent",
+                        zIndex: 2,
+                      }}
+                      onClick={() => {
+                        if (shareLinkRef.current) {
+                          const link = shareLinkRef.current;
+                          navigator.clipboard.writeText(link.value);
+                          setShowCopyHelper(true);
+                        }
+                      }}
+                    >
+                      <MdContentCopy />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -453,6 +461,7 @@ export function UploadDropzone() {
                       type="text"
                       id="title"
                       name="title"
+                      required
                       placeholder="Name your track"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
@@ -470,6 +479,7 @@ export function UploadDropzone() {
                       id="artist"
                       name="artist"
                       placeholder="Name the artist"
+                      required
                       value={formValues.artist}
                       onChange={handleInputChange}
                     />

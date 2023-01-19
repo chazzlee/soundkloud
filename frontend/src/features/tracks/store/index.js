@@ -119,12 +119,7 @@ export const updateTrackAsync = (updatedTrack) => async (dispatch) => {
     const data = await response.json();
     dispatch(updateTrackSuccess(data));
     return response;
-  } catch (error) {
-    const response = await error.json();
-    if (response.statusCode >= 400) {
-      throw response;
-    }
-  }
+  } catch (error) {}
 };
 
 export const destroyTrackAsync = (trackId) => async (dispatch) => {

@@ -2,7 +2,6 @@ import { BsCameraFill } from "react-icons/bs";
 import styles from "./UploadDropzone.module.css";
 
 export function CoverImagePreview({ image, onChange, edit = false }) {
-  console.log(image);
   return (
     <div
       style={{

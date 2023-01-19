@@ -77,15 +77,15 @@ export function GlobalPlaybar() {
       src={globalSource}
       autoPlay={false}
       autoPlayAfterSrcChange={false}
-      onLoadedData={() => {
-        dispatch(
-          trackLoaded({
-            player: PLAYER,
-            url: playerRef.current.audio.current.currentSrc,
-            duration: playerRef.current.audio.current.duration,
-          })
-        );
-      }}
+      // onLoadedData={() => {
+      //   dispatch(
+      //     trackLoaded({
+      //       player: PLAYER,
+      //       url: playerRef.current.audio.current.currentSrc,
+      //       duration: playerRef.current.audio.current.duration,
+      //     })
+      //   );
+      // }}
       onPlay={() => dispatch(trackPlaying({ player: "wave" }))}
       onPause={() => dispatch(trackPaused({ player: "wave" }))}
       onSeeking={(e) =>
@@ -101,35 +101,4 @@ export function GlobalPlaybar() {
       onSeeked={() => dispatch(trackResumed({ player: "wave" }))}
     />
   );
-  // return (
-  //   <H5AudioPlayer
-  //     style={{
-  //       backgroundColor: "#f2f2f2",
-  //       borderRight: "none",
-  //     }}
-  //     ref={playerRef}
-  //     src={globalSource?.sourceUrl}
-  //     layout="horizontal-reverse"
-  //     showSkipControls={false}
-  //     showJumpControls={false}
-  //     customAdditionalControls={[]}
-  //     autoPlay={false}
-  //     autoPlayAfterSrcChange={globalStatus === PLAYER_STATUS.PLAYING}
-  //     onSeeking={(e) => console.log(e.target.currentTime)}
-  //     onListen={(e) => dispatch(globalTimeUpdated(e.target.currentTime))}
-  //     onLoadedData={(e) => dispatch(globalDurationUpdated(e.target.duration))}
-  //     onPlay={() => {
-  //       if (globalSource.sourceId === waveSource.sourceId) {
-  //         dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
-  //       }
-  //       dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
-  //     }}
-  //     onPause={() => {
-  //       if (globalSource.sourceId === waveSource.sourceId) {
-  //         dispatch(waveStatusChanged(PLAYER_STATUS.PAUSED));
-  //       }
-  //       dispatch(globalStatusChanged(PLAYER_STATUS.PAUSED));
-  //     }}
-  //   />
-  // );
 }

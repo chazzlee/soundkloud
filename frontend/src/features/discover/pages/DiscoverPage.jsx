@@ -11,7 +11,6 @@ import {
 import { selectUserTracks } from "../../tracks/store";
 import { CarouselSlider } from "../components/CarouselSlider";
 import { FullSpinner } from "../../../components/FullSpinner";
-import { waveTrackCleared } from "../../player/store";
 import { DiscoverAside } from "../components/DiscoverAside";
 
 export function DiscoverPage() {
@@ -31,10 +30,6 @@ export function DiscoverPage() {
   useEffect(() => {
     dispatch(fetchDiscoverPageAsync());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(waveTrackCleared());
-  // }, [dispatch]);
 
   if (discoverLoading) {
     return <FullSpinner />;

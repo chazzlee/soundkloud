@@ -1,14 +1,9 @@
 import styles from "./PlayCard.module.css";
 import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Image } from "pure-react-carousel";
-import {
-  waveTrackCleared,
-  globalTrackLoaded,
-  globalStatusChanged,
-  PLAYER_STATUS,
-} from "../../player/store";
+import { PLAYER_STATUS } from "../../player/store";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -53,9 +48,6 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
 
   const handlePlay = (event) => {
     event.preventDefault();
-    dispatch(waveTrackCleared());
-    dispatch(globalTrackLoaded({ id: item.id, url: item.upload, duration: 0 }));
-    dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
   };
 
   return (

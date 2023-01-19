@@ -7,7 +7,6 @@ class Track < ApplicationRecord
   belongs_to :user
   belongs_to :genre
 
-  # FIXME:
   has_many :recent_plays, dependent: :destroy
 
   has_many :popular_plays, dependent: :destroy
@@ -18,9 +17,8 @@ class Track < ApplicationRecord
   has_many :tags, as: :taggable, dependent: :destroy
   has_many :replies, dependent: :destroy
 
-  validates :title, presence: true
+  validates :title, presence: true, uniqueness: { scope: :artist }
   validates :artist, presence: true
   validates :permalink, presence: true, allow_nil: true
   validates :privacy, inclusion: %w[public private]
-  validates :title, presence: true
 end
