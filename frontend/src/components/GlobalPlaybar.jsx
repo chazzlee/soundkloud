@@ -46,7 +46,7 @@ export function GlobalPlaybar() {
   const globalStatus = useSelector((state) =>
     selectPlayerStatus(state, PLAYER)
   );
-  const waveSource = useSelector((state) => state.player.wave.sourceUrl);
+  const globalSource = useSelector((state) => state.player.global.sourceUrl);
   const waveProgress = useSelector((state) => state.player.wave);
   const playerRef = useRef(null);
 
@@ -64,7 +64,7 @@ export function GlobalPlaybar() {
         return;
     }
   }, [dispatch, waveProgress, waveStatus]);
-
+  console.log("gobal", globalStatus);
   return (
     <H5AudioPlayer
       ref={playerRef}
@@ -73,19 +73,23 @@ export function GlobalPlaybar() {
       layout="horizontal-reverse"
       showSkipControls={false}
       showJumpControls={false}
-      src={waveSource}
+      src={globalSource}
       autoPlay={false}
       autoPlayAfterSrcChange={false}
-      onLoadedData={(e) => {
-        if (globalStatus !== PLAYER_STATUS.PLAYING) {
-          dispatch(
-            trackLoaded({
-              player: PLAYER,
-              url: e.target.currentSrc,
-              duration: e.target.duration,
-            })
-          );
+      onLoadedData={() => {
+        if (
+          globalStatus === PLAYER_STATUS.PLAYING &&
+          waveStatus === PLAYER_STATUS.LOADED
+        ) {
+          return;
         }
+        dispatch(
+          trackLoaded({
+            player: PLAYER,
+            url: playerRef.current.audio.current.currentSrc,
+            duration: playerRef.current.audio.current.duration,
+          })
+        );
       }}
       onPlay={() => dispatch(trackPlaying({ player: "wave" }))}
       onPause={() => dispatch(trackPaused({ player: "wave" }))}
@@ -93,7 +97,9 @@ export function GlobalPlaybar() {
         dispatch(
           trackSeeking({
             player: "wave",
-            progress: e.target.currentTime / e.target.duration,
+            progress:
+              playerRef.current.audio.current.currentTime /
+              playerRef.current.audio.current.duration,
           })
         )
       }
