@@ -1,15 +1,16 @@
+import styles from "./UserProfilePage.module.css";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
 import { fetchPlaylistsAsync, selectPlaylists } from "../../playlists/store";
-import styles from "./UserProfilePage.module.css";
 import { TrackCard } from "../components/TrackCard";
-import { useEffect, useState } from "react";
 import {
   fetchAllTracksByUserAsync,
   selectHasTracksLoaded,
   selectUserTracks,
 } from "../../tracks/store";
 import { EditProfileModal } from "../components/EditProfileModal";
+import { PlaylistList } from "../../playlists/components/PlaylistList";
 
 export function UserProfilePage() {
   const dispatch = useDispatch();
@@ -125,21 +126,7 @@ export function UserProfilePage() {
               </div>
             )}
             {activeTab === "playlists" && (
-              <div>
-                <h3 className={styles.uploadedTitle}>Playlists</h3>
-                <div className={styles.trackCards}>
-                  {playlists?.map((playlist) => (
-                    <div key={playlist.id}>
-                      <h3>{playlist.title}</h3>
-                      <ul>
-                        {playlist.tracks.map((track) => (
-                          <li key={track.id}>{track.title}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <PlaylistList playlists={playlists} />
             )}
             <aside>
               <div></div>
