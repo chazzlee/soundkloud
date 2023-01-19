@@ -4,6 +4,7 @@ import H5AudioPlayer from "react-h5-audio-player";
 import {
   globalTimeUpdated,
   PLAYER_STATUS,
+  progressUpdated,
   selectPlayerStatus,
   trackLoaded,
   trackPaused,
@@ -99,6 +100,15 @@ export function GlobalPlaybar() {
         )
       }
       onSeeked={() => dispatch(trackResumed({ player: "wave" }))}
+      onListen={
+        (e) => {}
+        // dispatch(
+        //   trackSeeking({
+        //     player: PLAYER,
+        //     progress: e.target.currentTime,
+        //   })
+        // )
+      }
     />
   );
 }

@@ -84,8 +84,8 @@ export const playerReducer = produce((state = initialState, action) => {
         state.global.sourceUrl = state.wave.sourceUrl;
         state.global.duration = state.wave.duration;
         state.global.progress = state.wave.progress;
-        state.global.status = PLAYER_STATUS.PLAYING;
       }
+      state.global.status = PLAYER_STATUS.PLAYING;
       break;
     }
     case PAUSE_TRACK: {
