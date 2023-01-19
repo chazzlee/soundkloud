@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer from "react-h5-audio-player";
 import {
+  globalTimeUpdated,
   PLAYER_STATUS,
   selectPlayerStatus,
   trackLoaded,
@@ -64,7 +65,7 @@ export function GlobalPlaybar() {
         return;
     }
   }, [dispatch, waveProgress, waveStatus]);
-  console.log("gobal", globalStatus);
+
   return (
     <H5AudioPlayer
       ref={playerRef}
@@ -77,12 +78,6 @@ export function GlobalPlaybar() {
       autoPlay={false}
       autoPlayAfterSrcChange={false}
       onLoadedData={() => {
-        if (
-          globalStatus === PLAYER_STATUS.PLAYING &&
-          waveStatus === PLAYER_STATUS.LOADED
-        ) {
-          return;
-        }
         dispatch(
           trackLoaded({
             player: PLAYER,

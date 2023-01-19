@@ -114,6 +114,8 @@ export const selectPlayerStatus = (state, player) =>
   state.player[player].status;
 export const selectPlayerProgress = (state, player) =>
   state.player[player].progress;
+export const selectPlayerSource = (state, player) =>
+  state.player[player].sourceUrl;
 
 // ----------------------------
 
@@ -149,10 +151,10 @@ export const globalStatusChanged = (status) => ({
 export const waveTrackCleared = () => ({ type: CLEAR_WAVE_TRACK });
 export const globalTrackCleared = () => ({ type: CLEAR_GLOBAL_TRACK });
 
-export const globalTimeUpdated = (timeInSeconds) => ({
-  type: RECORD_GLOBAL_TIME,
-  payload: timeInSeconds,
-});
+// export const globalTimeUpdated = (timeInSeconds) => ({
+//   type: RECORD_GLOBAL_TIME,
+//   payload: timeInSeconds,
+// });
 
 export const globalDurationUpdated = (durationInSeconds) => ({
   type: UPDATE_GLOBAL_DURATION,

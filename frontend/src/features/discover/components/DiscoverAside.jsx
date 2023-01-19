@@ -97,7 +97,7 @@ export function DiscoverAside() {
             Github
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/chazz-lee-016908260/"
             style={{
               padding: "6px 14px",
               background: "#0073b1",
