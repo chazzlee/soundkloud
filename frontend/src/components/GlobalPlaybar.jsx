@@ -41,19 +41,13 @@ export function GlobalPlaybar() {
   //   waveSource?.totalDuration,
   // ]);
 
-  // useEffect(() => {
-  //   if (playerRef.current) {
-  //     if (globalStatus === PLAYER_STATUS.PLAYING) {
-  //       playerRef.current.audio.current.play();
-  //     } else if (globalStatus === PLAYER_STATUS.PAUSED) {
-  //       playerRef.current.audio.current.pause();
-  //     }
-  //   }
-  // }, [globalStatus]);
-
   const dispatch = useDispatch();
   const waveStatus = useSelector((state) => selectPlayerStatus(state, "wave"));
+  const globalStatus = useSelector((state) =>
+    selectPlayerStatus(state, PLAYER)
+  );
   const waveSource = useSelector((state) => state.player.wave.sourceUrl);
+  const waveProgress = useSelector((state) => state.player.wave);
   const playerRef = useRef(null);
 
   useEffect(() => {
@@ -69,7 +63,7 @@ export function GlobalPlaybar() {
       default:
         return;
     }
-  }, [dispatch, waveStatus]);
+  }, [dispatch, waveProgress, waveStatus]);
 
   return (
     <H5AudioPlayer
@@ -83,13 +77,15 @@ export function GlobalPlaybar() {
       autoPlay={false}
       autoPlayAfterSrcChange={false}
       onLoadedData={(e) => {
-        dispatch(
-          trackLoaded({
-            player: PLAYER,
-            url: e.target.currentSrc,
-            duration: e.target.duration,
-          })
-        );
+        if (globalStatus !== PLAYER_STATUS.PLAYING) {
+          dispatch(
+            trackLoaded({
+              player: PLAYER,
+              url: e.target.currentSrc,
+              duration: e.target.duration,
+            })
+          );
+        }
       }}
       onPlay={() => dispatch(trackPlaying({ player: "wave" }))}
       onPause={() => dispatch(trackPaused({ player: "wave" }))}

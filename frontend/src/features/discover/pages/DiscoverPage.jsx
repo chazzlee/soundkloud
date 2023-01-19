@@ -32,9 +32,9 @@ export function DiscoverPage() {
     dispatch(fetchDiscoverPageAsync());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(waveTrackCleared());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(waveTrackCleared());
+  // }, [dispatch]);
 
   if (discoverLoading) {
     return <FullSpinner />;

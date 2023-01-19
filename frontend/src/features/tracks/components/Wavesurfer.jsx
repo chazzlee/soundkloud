@@ -38,6 +38,7 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
       responsive: true,
       normalize: true,
       height: 100, //TODO:
+      interact: false,
       container: waveformRef.current,
     };
     ref.current = WaveSurfer.create(waveOptions);
@@ -53,6 +54,7 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
       );
     });
     ref.current.on("seek", (e) => {
+      console.log("fromwave -> SEEKING");
       dispatch(trackSeeking({ player: PLAYER, progress: e }));
       dispatch(trackResumed({ player: PLAYER }));
       ref.current.play();

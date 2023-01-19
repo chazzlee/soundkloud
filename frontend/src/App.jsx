@@ -3,7 +3,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import { TopNavigation } from "./components/TopNavigation";
 import { FixedBottomAudioContainer } from "./components/FixedBottomAudioContainer";
 import { GlobalPlaybar } from "./components/GlobalPlaybar";
-// import { GlobalPlaybar } from "./components/GlobalPlaybar";
 // import { useSelector } from "react-redux";
 // import { PLAYER_STATUS, selectGlobalStatus } from "./features/player/store";
 
@@ -20,7 +19,6 @@ function App() {
       <Outlet />
 
       <FixedBottomAudioContainer>
-        {/* {globalStatus !== PLAYER_STATUS.IDLE && <GlobalPlaybar />} */}
         <GlobalPlaybar />
       </FixedBottomAudioContainer>
     </>
