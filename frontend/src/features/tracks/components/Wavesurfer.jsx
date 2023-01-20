@@ -9,34 +9,40 @@ import {
   selectPlayerStatus,
   trackFinished,
   trackLoaded,
+  trackPaused,
   trackPlaying,
   trackResumed,
   trackSeeking,
 } from "../../player/store";
 
-const PLAYER = "wave";
+const WAVE_PLAYER = "wave";
+const GLOBAL_PLAYER = "global";
 export const Wavesurfer = forwardRef(({ track }, ref) => {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const globalStatus = useSelector((state) =>
-    selectPlayerStatus(state, "global")
+    selectPlayerStatus(state, GLOBAL_PLAYER)
   );
-  const waveStatus = useSelector((state) => selectPlayerStatus(state, PLAYER));
+  const waveStatus = useSelector((state) =>
+    selectPlayerStatus(state, WAVE_PLAYER)
+  );
 
   const globalProgress = useSelector((state) =>
-    selectPlayerProgress(state, "global")
+    selectPlayerProgress(state, GLOBAL_PLAYER)
   );
 
-  const waveSource = useSelector((state) => selectPlayerSource(state, PLAYER));
+  const waveSource = useSelector((state) =>
+    selectPlayerSource(state, WAVE_PLAYER)
+  );
   const globalSource = useSelector((state) =>
-    selectPlayerSource(state, "global")
+    selectPlayerSource(state, GLOBAL_PLAYER)
   );
 
   const waveSourceId = useSelector((state) =>
-    selectPlayerSourceId(state, PLAYER)
+    selectPlayerSourceId(state, WAVE_PLAYER)
   );
   const globalSourceId = useSelector((state) =>
-    selectPlayerSourceId(state, "global")
+    selectPlayerSourceId(state, GLOBAL_PLAYER)
   );
 
   useEffect(() => {
@@ -55,24 +61,24 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
     ref.current = WaveSurfer.create(waveOptions);
     ref.current.setMute(true);
     ref.current.load(track.upload);
+
     ref.current.on("ready", () => {
       dispatch(
         trackLoaded({
-          player: PLAYER,
           id: track.id,
           url: track.upload,
           duration: ref.current.getDuration(),
         })
       );
     });
-    ref.current.on("seek", (e) => {
-      dispatch(trackSeeking({ player: PLAYER, progress: e }));
-      dispatch(trackResumed({ player: PLAYER }));
-      ref.current.play();
+    ref.current.on("play", () => {
+      dispatch(trackPlaying({}));
     });
-    ref.current.on("finish", () => {
-      dispatch(trackFinished({ player: PLAYER }));
+
+    ref.current.on("pause", () => {
+      dispatch(trackPaused({}));
     });
+
     return () => {
       ref.current.cancelAjax();
       ref.current.destroy();
@@ -80,43 +86,123 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
   }, [dispatch, ref, track.id, track.upload]);
 
   useEffect(() => {
-    switch (globalStatus) {
-      case PLAYER_STATUS.PLAYING: {
-        ref.current.play();
-        break;
-      }
-      case PLAYER_STATUS.PAUSED: {
-        ref.current.pause();
-        break;
-      }
-      case PLAYER_STATUS.SEEKING: {
-        ref.current.seekTo(globalProgress);
-        break;
-      }
-      default:
-        return;
+    if (globalStatus === PLAYER_STATUS.PLAYING) {
+      ref.current.play();
+    } else if (globalStatus === PLAYER_STATUS.PAUSED) {
+      ref.current.pause();
     }
-  }, [globalStatus, globalProgress, ref]);
-
-  useEffect(() => {
-    if (
-      waveStatus === PLAYER_STATUS.LOADED &&
-      globalStatus === PLAYER_STATUS.PLAYING &&
-      waveSourceId === globalSourceId
-    ) {
-      ref.current.seekTo(globalProgress);
-    }
-  }, [
-    waveStatus,
-    globalStatus,
-    waveSourceId,
-    globalSourceId,
-    globalProgress,
-    ref,
-  ]);
+  }, [globalStatus, ref]);
+  console.log(globalStatus);
 
   return <div id="waveform" ref={waveformRef} />;
 });
+// export const Wavesurfer = forwardRef(({ track }, ref) => {
+//   const dispatch = useDispatch();
+//   const waveformRef = useRef(null);
+//   const globalStatus = useSelector((state) =>
+//     selectPlayerStatus(state, GLOBAL_PLAYER)
+//   );
+//   const waveStatus = useSelector((state) =>
+//     selectPlayerStatus(state, WAVE_PLAYER)
+//   );
+
+//   const globalProgress = useSelector((state) =>
+//     selectPlayerProgress(state, GLOBAL_PLAYER)
+//   );
+
+//   const waveSource = useSelector((state) =>
+//     selectPlayerSource(state, WAVE_PLAYER)
+//   );
+//   const globalSource = useSelector((state) =>
+//     selectPlayerSource(state, GLOBAL_PLAYER)
+//   );
+
+//   const waveSourceId = useSelector((state) =>
+//     selectPlayerSourceId(state, WAVE_PLAYER)
+//   );
+//   const globalSourceId = useSelector((state) =>
+//     selectPlayerSourceId(state, GLOBAL_PLAYER)
+//   );
+
+//   useEffect(() => {
+//     const waveOptions = {
+//       waveColor: "#eee",
+//       progressColor: "#f50",
+//       cursorColor: "transparent",
+//       barWidth: 3,
+//       barRadius: 3,
+//       responsive: true,
+//       normalize: true,
+//       height: 100, //TODO:
+//       interact: false,
+//       container: waveformRef.current,
+//     };
+//     ref.current = WaveSurfer.create(waveOptions);
+//     ref.current.setMute(true);
+//     ref.current.load(track.upload);
+//     ref.current.on("ready", () => {
+//       dispatch(
+//         trackLoaded({
+//           player: WAVE_PLAYER,
+//           id: track.id,
+//           url: track.upload,
+//           duration: ref.current.getDuration(),
+//         })
+//       );
+//     });
+//     ref.current.on("seek", (e) => {
+//       dispatch(trackSeeking({ player: WAVE_PLAYER, progress: e }));
+//       dispatch(trackResumed({ player: WAVE_PLAYER }));
+//       ref.current.play();
+//     });
+//     ref.current.on("finish", () => {
+//       dispatch(trackFinished({ player: WAVE_PLAYER }));
+//     });
+//     return () => {
+//       ref.current.cancelAjax();
+//       ref.current.destroy();
+//     };
+//   }, [dispatch, ref, track.id, track.upload]);
+
+//   useEffect(() => {
+//     switch (globalStatus) {
+//       case PLAYER_STATUS.PLAYING: {
+//         ref.current.play();
+//         break;
+//       }
+//       case PLAYER_STATUS.PAUSED: {
+//         ref.current.pause();
+//         break;
+//       }
+//       case PLAYER_STATUS.SEEKING: {
+//         ref.current.seekTo(globalProgress);
+//         break;
+//       }
+//       default:
+//         return;
+//     }
+//   }, [globalStatus, globalProgress, ref]);
+
+//   useEffect(() => {
+//     if (
+//       waveStatus === PLAYER_STATUS.LOADED &&
+//       globalStatus === PLAYER_STATUS.PLAYING &&
+//       waveSourceId === globalSourceId
+//     ) {
+//       ref.current.seekTo(globalProgress);
+//     }
+//   }, [
+//     waveStatus,
+//     globalStatus,
+//     waveSourceId,
+//     globalSourceId,
+//     globalProgress,
+//     ref,
+//   ]);
+
+//   return <div id="waveform" ref={waveformRef} />;
+// });
+// ------------------------------------------------------------------------------//
 
 // TODO: cleanup, fix wavesurfer progress after track change
 // export function Wavesurfer({ track, onLoading, waveHeight = 100 }) {

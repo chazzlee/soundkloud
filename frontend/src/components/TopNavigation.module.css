@@ -14,9 +14,8 @@
   width: 100%;
   height: 46px;
   position: fixed;
-  z-index: 4;
+  z-index: 14;
   top: 0;
-  /* padding: 0 2%; */
 }
 
 .header li {

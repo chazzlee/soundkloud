@@ -8,6 +8,7 @@ export function FixedBottomAudioContainer({ children }) {
         zIndex: 12,
         padding: 0,
         border: "1px solid #cecece",
+        // visibility: "hidden"
       }}
     >
       {children}
