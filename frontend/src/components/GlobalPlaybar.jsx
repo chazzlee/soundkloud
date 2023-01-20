@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import H5AudioPlayer from "react-h5-audio-player";
+import H5AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import {
   globalTimeUpdated,
   PLAYER_STATUS,
@@ -71,6 +71,26 @@ export function GlobalPlaybar() {
     <H5AudioPlayer
       className="global-playbar"
       ref={playerRef}
+      customControlsSection={[RHAP_UI.MAIN_CONTROLS]}
+      showDownloadProgress={false}
+      customProgressBarSection={[
+        RHAP_UI.CURRENT_TIME,
+        RHAP_UI.PROGRESS_BAR,
+        RHAP_UI.DURATION,
+        RHAP_UI.VOLUME,
+        <div className="currently-playing">
+          <div className="cover-image">
+            <img
+              src="https://soundkloud-dev.s3.amazonaws.com/oaleqnb65pgce6qzab6ztc6llrtp?response-content-disposition=inline%3B%20filename%3D%22dark-souls-3-artwork-pic.jpg%22%3B%20filename%2A%3DUTF-8%27%27dark-souls-3-artwork-pic.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIATE7BVEO4SERJEV4V%2F20230120%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230120T164818Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=890132a2e56e01de002df5bde7a4763296e7f5e576626078d63b674b0f40a908"
+              alt=""
+            />
+          </div>
+          <div className="track-details">
+            <p className="artist">artist</p>
+            <p className="title">title</p>
+          </div>
+        </div>,
+      ]}
       customAdditionalControls={[]}
       layout="horizontal-reverse"
       showSkipControls={false}
