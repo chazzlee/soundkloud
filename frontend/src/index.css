@@ -92,3 +92,11 @@ button {
 .active {
   background-color: var(--navBorderColor);
 }
+
+.global-playbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #f2f2f2;
+  height: 48px;
+}

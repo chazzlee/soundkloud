@@ -55,11 +55,11 @@ export function GlobalPlaybar() {
   useEffect(() => {
     switch (waveStatus) {
       case PLAYER_STATUS.PLAYING: {
-        playerRef.current.audio.current.play();
+        playerRef.current?.audio.current.play();
         break;
       }
       case PLAYER_STATUS.PAUSED: {
-        playerRef.current.audio.current.pause();
+        playerRef.current?.audio.current.pause();
         break;
       }
       default:
@@ -69,8 +69,8 @@ export function GlobalPlaybar() {
 
   return (
     <H5AudioPlayer
+      className="global-playbar"
       ref={playerRef}
-      style={{ backgroundColor: "#f2f2f2", borderRight: "none" }}
       customAdditionalControls={[]}
       layout="horizontal-reverse"
       showSkipControls={false}
