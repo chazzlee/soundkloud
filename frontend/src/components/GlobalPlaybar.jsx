@@ -12,6 +12,7 @@ import {
   WAVE_PLAYER,
 } from "../features/player/store";
 import { useCallback } from "react";
+import { Link } from "react-router-dom";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -100,14 +101,16 @@ function CurrentlyPlaying() {
   const track = useSelector(selectCurrentlyPlaying);
 
   return (
-    <div className="currently-playing">
-      <div className="cover-image">
-        <img src={track?.cover} alt={track?.title} />
+    <Link to={track?.permalink}>
+      <div className="currently-playing">
+        <div className="cover-image">
+          <img src={track?.cover} alt={track?.title} />
+        </div>
+        <div className="track-details">
+          <p className="artist">{track?.artist}</p>
+          <p className="title">{track?.title}</p>
+        </div>
       </div>
-      <div className="track-details">
-        <p className="artist">{track?.artist}</p>
-        <p className="title">{track?.title}</p>
-      </div>
-    </div>
+    </Link>
   );
 }
