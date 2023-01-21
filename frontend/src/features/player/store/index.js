@@ -112,6 +112,7 @@ export const playerReducer = produce((state = initialState, action) => {
         state.global.sourceId = state.wave.sourceId;
         state.global.sourceUrl = state.wave.sourceUrl;
         state.global.duration = state.wave.duration;
+        state.global.progress = 0;
       }
       state.wave.status = PLAYER_STATUS.PLAYING;
       state.global.status = PLAYER_STATUS.PLAYING;
