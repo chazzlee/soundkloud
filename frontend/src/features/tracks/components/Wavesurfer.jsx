@@ -1,45 +1,27 @@
-import { forwardRef, useEffect, useMemo, useRef } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { forwardRef, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import WaveSurfer from "wavesurfer.js";
 import {
   PLAYER_STATUS,
+  WAVE_PLAYER,
+  GLOBAL_PLAYER,
   selectPlayerProgress,
-  selectPlayerSource,
   selectPlayerSourceId,
   selectPlayerStatus,
-  trackFinished,
   trackLoaded,
-  trackPaused,
-  trackPlaying,
-  trackResumed,
-  trackSeeking,
 } from "../../player/store";
 
-const WAVE_PLAYER = "wave";
-const GLOBAL_PLAYER = "global";
 export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
-  const globalStatus = useSelector((state) =>
-    selectPlayerStatus(state, GLOBAL_PLAYER)
-  );
+
   const globalProgress = useSelector((state) =>
     selectPlayerProgress(state, GLOBAL_PLAYER)
   );
-  // const waveProgress = useSelector((state) =>
-  //   selectPlayerProgress(state, WAVE_PLAYER)
-  // );
 
-  // const globalProgress = useSelector((state) =>
-  //   selectPlayerProgress(state, GLOBAL_PLAYER)
-  // );
-
-  // const waveSource = useSelector((state) =>
-  //   selectPlayerSource(state, WAVE_PLAYER)
-  // );
-  // const globalSource = useSelector((state) =>
-  //   selectPlayerSource(state, GLOBAL_PLAYER)
-  // );
+  const globalStatus = useSelector((state) =>
+    selectPlayerStatus(state, GLOBAL_PLAYER)
+  );
 
   const waveSourceId = useSelector((state) =>
     selectPlayerSourceId(state, WAVE_PLAYER)
@@ -76,10 +58,6 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
       );
     });
 
-    ref.current.on("play", () => {
-      dispatch(trackPlaying());
-    });
-
     ref.current.on("finish", () => {
       console.log("FINISHED");
     });
@@ -99,7 +77,6 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
         break;
       }
       case PLAYER_STATUS.PAUSED: {
-        dispatch(trackPaused());
         ref.current.pause();
         break;
       }
@@ -109,7 +86,7 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   }, [globalStatus, ref, dispatch]);
 
   useEffect(() => {
-    if (globalSourceId !== null && globalSourceId === waveSourceId) {
+    if (globalSourceId === waveSourceId) {
       ref.current.seekTo(globalProgress);
     }
   }, [globalProgress, globalSourceId, waveSourceId, ref]);

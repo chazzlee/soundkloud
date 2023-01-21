@@ -1,4 +1,8 @@
 import produce from "immer";
+import { createSelector } from "reselect";
+
+export const WAVE_PLAYER = "wave";
+export const GLOBAL_PLAYER = "global";
 
 export const PLAYER_STATUS = Object.freeze({
   IDLE: "idle",
@@ -6,23 +10,6 @@ export const PLAYER_STATUS = Object.freeze({
   PLAYING: "playing",
   PAUSED: "paused",
   SEEKED: "seeked",
-  FINISHED: "finished",
-});
-
-const UPDATE_STATUS = "player/statusUpdated"; //remove?
-const RESUME_TRACK = "player/trackResumed";
-const FINISH_TRACK = "player/trackFinished";
-export const statusUpdated = ({ status }) => ({
-  type: UPDATE_STATUS,
-  payload: { status },
-});
-export const trackResumed = (sourceInfo) => ({
-  type: RESUME_TRACK,
-  payload: sourceInfo,
-});
-export const trackFinished = (sourceInfo) => ({
-  type: FINISH_TRACK,
-  payload: sourceInfo,
 });
 
 const LOAD_TRACK = "player/trackLoaded";
@@ -36,14 +23,12 @@ export const trackLoaded = (sourceInfo) => ({
   payload: sourceInfo,
 });
 
-export const trackPlaying = (sourceInfo) => ({
+export const trackPlaying = () => ({
   type: PLAY_TRACK,
-  payload: sourceInfo,
 });
 
-export const trackPaused = (sourceInfo) => ({
+export const trackPaused = () => ({
   type: PAUSE_TRACK,
-  payload: sourceInfo,
 });
 
 export const trackSeeked = (currentTime) => ({
@@ -73,15 +58,8 @@ const initialState = {
   },
 };
 
-const GLOBAL_PLAYER = "global";
-const WAVE_PLAYER = "wave";
 export const playerReducer = produce((state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_STATUS: {
-      state.global.status = action.payload.status;
-      state.wave.status = action.payload.status;
-      break;
-    }
     case LOAD_TRACK: {
       state.wave.sourceId = action.payload.id;
       state.wave.sourceUrl = action.payload.url;
@@ -131,67 +109,10 @@ export const playerReducer = produce((state = initialState, action) => {
       state.global.progress = action.payload;
       break;
     }
-
-    case FINISH_TRACK: {
-      state.wave.status = PLAYER_STATUS.FINISHED;
-      break;
-    }
-    case RESUME_TRACK: {
-      break;
-    }
     default:
       return state;
   }
 });
-// export const playerReducer = produce((state = initialState, action) => {
-//   switch (action.type) {
-//     case LOAD_TRACK: {
-//       state[action.payload.player].status = PLAYER_STATUS.LOADED;
-//       state[action.payload.player].sourceId = action.payload.id;
-//       state[action.payload.player].sourceUrl = action.payload.url;
-//       state[action.payload.player].duration = action.payload.duration;
-//       state[action.payload.player].progress = 0;
-//       if (state.global.status !== PLAYER_STATUS.PLAYING) {
-//         state.global.sourceId = action.payload.id;
-//         state.global.sourceUrl = action.payload.url;
-//       }
-//       break;
-//     }
-//     case PLAY_TRACK: {
-//       state[action.payload.player].status = PLAYER_STATUS.PLAYING;
-//       if (state.global.sourceId !== state.wave.sourceId) {
-//         state.global.sourceUrl = state.wave.sourceUrl;
-//         state.global.duration = state.wave.duration;
-//         state.global.progress = state.wave.progress;
-//       }
-//       state.global.status = PLAYER_STATUS.PLAYING;
-//       break;
-//     }
-//     case PAUSE_TRACK: {
-//       state[action.payload.player].status = PLAYER_STATUS.PAUSED;
-//       state.global.status = PLAYER_STATUS.PAUSED;
-//       break;
-//     }
-//     case FINISH_TRACK: {
-//       state[action.payload.player].status = PLAYER_STATUS.FINISHED;
-//       break;
-//     }
-//     case SEEKING_TRACK: {
-//       state[action.payload.player].status = PLAYER_STATUS.SEEKING;
-//       state[action.payload.player].progress = action.payload.progress;
-//       state.global.status = PLAYER_STATUS.SEEKING;
-//       state.global.progress = action.payload.progress;
-//       break;
-//     }
-//     case RESUME_TRACK: {
-//       state[action.payload.player].status = PLAYER_STATUS.PLAYING;
-//       state.global.status = PLAYER_STATUS.PLAYING;
-//       break;
-//     }
-//     default:
-//       return state;
-//   }
-// });
 
 export const selectPlayerStatus = (state, player) =>
   state.player[player].status;
@@ -201,3 +122,17 @@ export const selectPlayerSource = (state, player) =>
   state.player[player].sourceUrl;
 export const selectPlayerSourceId = (state, player) =>
   state.player[player].sourceId;
+
+export const selectCurrentlyPlaying = createSelector(
+  [(state) => state.tracks, (state) => state.player.global.sourceId],
+  (tracks, sourceId) => {
+    if (
+      Object.keys(tracks.entities).length === 0 &&
+      tracks.current?.id === sourceId
+    ) {
+      return tracks.current;
+    }
+
+    return tracks.entities[sourceId] ?? null;
+  }
+);

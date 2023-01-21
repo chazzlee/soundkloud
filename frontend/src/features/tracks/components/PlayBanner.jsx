@@ -1,5 +1,5 @@
 import styles from "./PlayBanner.module.css";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
@@ -9,19 +9,16 @@ import { Wavesurfer } from "./Wavesurfer";
 import { getRandomRGB } from "../../../utils/getRandomRGB";
 import {
   PLAYER_STATUS,
+  WAVE_PLAYER,
   selectPlayerStatus,
   trackPlaying,
   trackPaused,
 } from "../../player/store";
 import { ButtonSpinner } from "../../../components/ButtonSpinner";
-import { useCallback } from "react";
 
 const MAX_LENGTH = 49;
 const headerFontSize = (track, length = MAX_LENGTH) =>
   track.artist.length + track.title.length >= length ? "20px" : "22px";
-
-const WAVE_PLAYER = "wave";
-const GLOBAL_PLAYER = "global";
 
 export function PlayBanner({ track }) {
   const dispatch = useDispatch();
@@ -34,12 +31,14 @@ export function PlayBanner({ track }) {
   const wavesurfer = useRef(null);
 
   const handlePlay = useCallback(() => {
-    wavesurfer.current?.play();
-  }, []);
+    wavesurfer.current.play();
+    dispatch(trackPlaying());
+  }, [dispatch]);
 
   const handlePause = useCallback(() => {
-    wavesurfer.current?.pause();
-  }, []);
+    wavesurfer.current.pause();
+    dispatch(trackPaused());
+  }, [dispatch]);
 
   const handleLoaded = useCallback((loaded) => {
     setLoaded(loaded);
@@ -110,7 +109,7 @@ function BannerHeader({ track }) {
   );
 }
 
-function ControlButton({ loaded, status, onPlay, onPause }) {
+const ControlButton = ({ loaded, status, onPlay, onPause }) => {
   // TODO: fix spinner
   if (!loaded) {
     return (
@@ -128,7 +127,7 @@ function ControlButton({ loaded, status, onPlay, onPause }) {
       {status === PLAYER_STATUS.PLAYING && <PauseButton onPause={onPause} />}
     </div>
   );
-}
+};
 
 function PlayButton({ onPlay }) {
   return (
