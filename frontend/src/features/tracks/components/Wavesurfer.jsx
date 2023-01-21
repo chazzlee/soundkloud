@@ -23,16 +23,12 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   const globalStatus = useSelector((state) =>
     selectPlayerStatus(state, GLOBAL_PLAYER)
   );
-
-  // const waveProgress = useSelector((state) =>
-  //   selectPlayerProgress(state, WAVE_PLAYER)
-  // );
   const globalProgress = useSelector((state) =>
     selectPlayerProgress(state, GLOBAL_PLAYER)
   );
-  const waveStatus = useSelector((state) =>
-    selectPlayerStatus(state, WAVE_PLAYER)
-  );
+  // const waveProgress = useSelector((state) =>
+  //   selectPlayerProgress(state, WAVE_PLAYER)
+  // );
 
   // const globalProgress = useSelector((state) =>
   //   selectPlayerProgress(state, GLOBAL_PLAYER)
@@ -84,8 +80,8 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
       dispatch(trackPlaying());
     });
 
-    ref.current.on("pause", () => {
-      dispatch(trackPaused());
+    ref.current.on("finish", () => {
+      console.log("FINISHED");
     });
 
     return () => {
@@ -103,13 +99,14 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
         break;
       }
       case PLAYER_STATUS.PAUSED: {
+        dispatch(trackPaused());
         ref.current.pause();
         break;
       }
       default:
         return;
     }
-  }, [globalStatus, ref]);
+  }, [globalStatus, ref, dispatch]);
 
   useEffect(() => {
     if (globalSourceId !== null && globalSourceId === waveSourceId) {

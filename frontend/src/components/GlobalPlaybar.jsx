@@ -66,7 +66,7 @@ export function GlobalPlaybar() {
       default:
         return;
     }
-  }, [dispatch, waveProgress, waveStatus]);
+  }, [dispatch, waveStatus]);
 
   return (
     <H5AudioPlayer
@@ -102,40 +102,11 @@ export function GlobalPlaybar() {
       onPlay={handlePlay}
       onPause={handlePause}
       onLoadedMetaData={(data) => {}}
-      onSeeked={(e) => handleSeek(e.target.currentTime)} // onSeeking={(e) =>
+      onSeeked={(e) => handleSeek(e.target.currentTime)}
       onListen={(e) =>
         handleUpdateProgress(e.target.currentTime, e.target.duration)
       }
-      // onListen={(e) => handleUpdateProgress(e)}
-      //   dispatch(
-      //     trackSeeking({
-      //       player: "wave",
-      //       progress:
-      //         playerRef.current.audio.current.currentTime /
-      //         playerRef.current.audio.current.duration,
-      //     })
-      //   )
-      // }
-      // onSeeked={() => dispatch(trackResumed({ player: "wave" }))}
-      // onPlay={() => dispatch(trackPlaying({ player: "wave" }))}
-      // onPause={() => dispatch(trackPaused({ player: "wave" }))}
-      // onListen={
-      // dispatch(
-      //   trackSeeking({
-      //     player: PLAYER,
-      //     progress: e.target.currentTime,
-      //   })
-      // )
-      // }
-      // onLoadedData={() => {
-      //   dispatch(
-      //     trackLoaded({
-      //       player: PLAYER,
-      //       url: playerRef.current.audio.current.currentSrc,
-      //       duration: playerRef.current.audio.current.duration,
-      //     })
-      //   );
-      // }}
+      onEnded={() => console.log("GLOBAL FINISH")}
     />
   );
 }
