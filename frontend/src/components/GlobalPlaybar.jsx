@@ -3,17 +3,22 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import {
   PLAYER_STATUS,
+  progressUpdating,
   selectPlayerStatus,
   statusUpdated,
   trackLoaded,
   trackPaused,
   trackPlaying,
   trackResumed,
-  trackSeeking,
+  trackSeeked,
 } from "../features/player/store";
 import { useCallback } from "react";
 
 const GLOBAL_PLAYER = "global";
+function calculateProgress(current, total) {
+  return current / total ?? 0;
+}
+
 export function GlobalPlaybar() {
   const dispatch = useDispatch();
   const waveStatus = useSelector((state) => selectPlayerStatus(state, "wave"));
@@ -25,12 +30,28 @@ export function GlobalPlaybar() {
   const playerRef = useRef(null);
 
   const handlePlay = useCallback(() => {
-    dispatch(statusUpdated({ status: PLAYER_STATUS.PLAYING }));
+    dispatch(trackPlaying());
   }, [dispatch]);
 
   const handlePause = useCallback(() => {
-    dispatch(statusUpdated({ status: PLAYER_STATUS.PAUSED }));
+    dispatch(trackPaused());
   }, [dispatch]);
+
+  const handleSeek = useCallback(
+    (currentTime) => {
+      dispatch(trackSeeked(currentTime));
+    },
+    [dispatch]
+  );
+
+  const handleUpdateProgress = useCallback(
+    (currentTime, duration) => {
+      if (Number.isNaN(currentTime) || Number.isNaN(duration)) return;
+
+      dispatch(progressUpdating(calculateProgress(currentTime, duration)));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     switch (waveStatus) {
@@ -80,8 +101,12 @@ export function GlobalPlaybar() {
       autoPlayAfterSrcChange={false}
       onPlay={handlePlay}
       onPause={handlePause}
-      onLoadedMetaData={(data) => console.log(data.target.duration)}
-      // onSeeking={(e) =>
+      onLoadedMetaData={(data) => {}}
+      onSeeked={(e) => handleSeek(e.target.currentTime)} // onSeeking={(e) =>
+      onListen={(e) =>
+        handleUpdateProgress(e.target.currentTime, e.target.duration)
+      }
+      // onListen={(e) => handleUpdateProgress(e)}
       //   dispatch(
       //     trackSeeking({
       //       player: "wave",

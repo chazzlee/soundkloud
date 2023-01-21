@@ -17,26 +17,33 @@ import {
 
 const WAVE_PLAYER = "wave";
 const GLOBAL_PLAYER = "global";
-export const Wavesurfer = forwardRef(({ track }, ref) => {
+export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const globalStatus = useSelector((state) =>
     selectPlayerStatus(state, GLOBAL_PLAYER)
   );
+
+  // const waveProgress = useSelector((state) =>
+  //   selectPlayerProgress(state, WAVE_PLAYER)
+  // );
+  const globalProgress = useSelector((state) =>
+    selectPlayerProgress(state, GLOBAL_PLAYER)
+  );
   const waveStatus = useSelector((state) =>
     selectPlayerStatus(state, WAVE_PLAYER)
   );
 
-  const globalProgress = useSelector((state) =>
-    selectPlayerProgress(state, GLOBAL_PLAYER)
-  );
+  // const globalProgress = useSelector((state) =>
+  //   selectPlayerProgress(state, GLOBAL_PLAYER)
+  // );
 
-  const waveSource = useSelector((state) =>
-    selectPlayerSource(state, WAVE_PLAYER)
-  );
-  const globalSource = useSelector((state) =>
-    selectPlayerSource(state, GLOBAL_PLAYER)
-  );
+  // const waveSource = useSelector((state) =>
+  //   selectPlayerSource(state, WAVE_PLAYER)
+  // );
+  // const globalSource = useSelector((state) =>
+  //   selectPlayerSource(state, GLOBAL_PLAYER)
+  // );
 
   const waveSourceId = useSelector((state) =>
     selectPlayerSourceId(state, WAVE_PLAYER)
@@ -63,6 +70,7 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
     ref.current.load(track.upload);
 
     ref.current.on("ready", () => {
+      onLoaded(true);
       dispatch(
         trackLoaded({
           id: track.id,
@@ -71,28 +79,43 @@ export const Wavesurfer = forwardRef(({ track }, ref) => {
         })
       );
     });
+
     ref.current.on("play", () => {
-      dispatch(trackPlaying({}));
+      dispatch(trackPlaying());
     });
 
     ref.current.on("pause", () => {
-      dispatch(trackPaused({}));
+      dispatch(trackPaused());
     });
 
     return () => {
+      console.log("destroying");
       ref.current.cancelAjax();
       ref.current.destroy();
+      ref.current = null;
     };
-  }, [dispatch, ref, track.id, track.upload]);
+  }, [dispatch, ref, track.id, track.upload, onLoaded]);
 
   useEffect(() => {
-    if (globalStatus === PLAYER_STATUS.PLAYING) {
-      ref.current.play();
-    } else if (globalStatus === PLAYER_STATUS.PAUSED) {
-      ref.current.pause();
+    switch (globalStatus) {
+      case PLAYER_STATUS.PLAYING: {
+        ref.current.play();
+        break;
+      }
+      case PLAYER_STATUS.PAUSED: {
+        ref.current.pause();
+        break;
+      }
+      default:
+        return;
     }
   }, [globalStatus, ref]);
-  console.log(globalStatus);
+
+  useEffect(() => {
+    if (globalSourceId !== null && globalSourceId === waveSourceId) {
+      ref.current.seekTo(globalProgress);
+    }
+  }, [globalProgress, globalSourceId, waveSourceId, ref]);
 
   return <div id="waveform" ref={waveformRef} />;
 });

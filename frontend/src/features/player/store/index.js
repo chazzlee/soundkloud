@@ -5,22 +5,31 @@ export const PLAYER_STATUS = Object.freeze({
   LOADED: "loaded",
   PLAYING: "playing",
   PAUSED: "paused",
-  SEEKING: "seeking",
+  SEEKED: "seeked",
   FINISHED: "finished",
 });
 
-const UPDATE_STATUS = "player/statusUpdated";
-const LOAD_TRACK = "player/trackLoaded";
-const PLAY_TRACK = "player/trackPlaying";
-const PAUSE_TRACK = "player/trackPaused";
-const FINISH_TRACK = "player/trackFinished";
-const SEEKING_TRACK = "player/trackSeeking";
+const UPDATE_STATUS = "player/statusUpdated"; //remove?
 const RESUME_TRACK = "player/trackResumed";
-
+const FINISH_TRACK = "player/trackFinished";
 export const statusUpdated = ({ status }) => ({
   type: UPDATE_STATUS,
   payload: { status },
 });
+export const trackResumed = (sourceInfo) => ({
+  type: RESUME_TRACK,
+  payload: sourceInfo,
+});
+export const trackFinished = (sourceInfo) => ({
+  type: FINISH_TRACK,
+  payload: sourceInfo,
+});
+
+const LOAD_TRACK = "player/trackLoaded";
+const PLAY_TRACK = "player/trackPlaying";
+const PAUSE_TRACK = "player/trackPaused";
+const SEEK_TRACK = "player/trackSeeked";
+const UPDATE_PROGRESS = "player/progressUpdating";
 
 export const trackLoaded = (sourceInfo) => ({
   type: LOAD_TRACK,
@@ -37,19 +46,14 @@ export const trackPaused = (sourceInfo) => ({
   payload: sourceInfo,
 });
 
-export const trackFinished = (sourceInfo) => ({
-  type: FINISH_TRACK,
-  payload: sourceInfo,
+export const trackSeeked = (currentTime) => ({
+  type: SEEK_TRACK,
+  payload: currentTime,
 });
 
-export const trackSeeking = (sourceInfo) => ({
-  type: SEEKING_TRACK,
-  payload: sourceInfo,
-});
-
-export const trackResumed = (sourceInfo) => ({
-  type: RESUME_TRACK,
-  payload: sourceInfo,
+export const progressUpdating = (progress) => ({
+  type: UPDATE_PROGRESS,
+  payload: progress,
 });
 
 const initialState = {
@@ -79,27 +83,38 @@ export const playerReducer = produce((state = initialState, action) => {
       break;
     }
     case LOAD_TRACK: {
-      state.wave.status = PLAYER_STATUS.LOADED;
       state.wave.sourceId = action.payload.id;
       state.wave.sourceUrl = action.payload.url;
       state.wave.duration = action.payload.duration;
 
-      if (state.global.status !== PLAYER_STATUS.PLAYING) {
+      if (
+        state.global.status !== PLAYER_STATUS.PLAYING &&
+        state.global.status !== PLAYER_STATUS.PAUSED
+      ) {
         state.global.status = PLAYER_STATUS.LOADED;
         state.global.sourceId = action.payload.id;
         state.global.sourceUrl = action.payload.url;
         state.global.duration = action.payload.duration;
       }
+
+      if (
+        state.global.status === PLAYER_STATUS.PLAYING &&
+        state.global.sourceId === action.payload.id
+      ) {
+        state.wave.status = PLAYER_STATUS.PLAYING;
+      } else {
+        state.wave.status = PLAYER_STATUS.LOADED;
+      }
       break;
     }
     case PLAY_TRACK: {
-      state.wave.status = PLAYER_STATUS.PLAYING;
       if (state.wave.sourceId !== state.global.sourceId) {
         state.global.sourceId = state.wave.sourceId;
         state.global.sourceUrl = state.wave.sourceUrl;
         state.global.duration = state.wave.duration;
-        state.global.status = PLAYER_STATUS.PLAYING;
       }
+      state.wave.status = PLAYER_STATUS.PLAYING;
+      state.global.status = PLAYER_STATUS.PLAYING;
       break;
     }
     case PAUSE_TRACK: {
@@ -107,20 +122,20 @@ export const playerReducer = produce((state = initialState, action) => {
       state.global.status = PLAYER_STATUS.PAUSED;
       break;
     }
+    case SEEK_TRACK: {
+      state.global.progress = action.payload / state.global.duration;
+      break;
+    }
+    case UPDATE_PROGRESS: {
+      state.global.progress = action.payload;
+      break;
+    }
+
     case FINISH_TRACK: {
       state.wave.status = PLAYER_STATUS.FINISHED;
       break;
     }
-    case SEEKING_TRACK: {
-      state[action.payload.player].status = PLAYER_STATUS.SEEKING;
-      state[action.payload.player].progress = action.payload.progress;
-      state.global.status = PLAYER_STATUS.SEEKING;
-      state.global.progress = action.payload.progress;
-      break;
-    }
     case RESUME_TRACK: {
-      state[action.payload.player].status = PLAYER_STATUS.PLAYING;
-      state.global.status = PLAYER_STATUS.PLAYING;
       break;
     }
     default:

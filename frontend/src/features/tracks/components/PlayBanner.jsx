@@ -1,5 +1,5 @@
 import styles from "./PlayBanner.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
@@ -26,6 +26,7 @@ const GLOBAL_PLAYER = "global";
 export function PlayBanner({ track }) {
   const dispatch = useDispatch();
   const rgbBackground = useRef(getRandomRGB());
+  const [loaded, setLoaded] = useState(false);
 
   const waveStatus = useSelector((state) =>
     selectPlayerStatus(state, WAVE_PLAYER)
@@ -40,6 +41,10 @@ export function PlayBanner({ track }) {
     wavesurfer.current?.pause();
   }, []);
 
+  const handleLoaded = useCallback((loaded) => {
+    setLoaded(loaded);
+  }, []);
+
   return (
     <div
       className={styles.bannerPlayerContainer}
@@ -52,11 +57,12 @@ export function PlayBanner({ track }) {
           onPlay={handlePlay}
           onPause={handlePause}
           status={waveStatus}
+          loaded={loaded}
         />
         <BannerHeader track={track} />
 
         <div className={styles.wavesurferContainer}>
-          <Wavesurfer track={track} ref={wavesurfer} />
+          <Wavesurfer track={track} ref={wavesurfer} onLoaded={handleLoaded} />
         </div>
       </div>
 
@@ -104,19 +110,22 @@ function BannerHeader({ track }) {
   );
 }
 
-function ControlButton({ status, onPlay, onPause }) {
+function ControlButton({ loaded, status, onPlay, onPause }) {
   // TODO: fix spinner
+  if (!loaded) {
+    return (
+      <div style={{ paddingRight: 18 }}>
+        <ButtonSpinner />
+      </div>
+    );
+  }
+
   return (
     <div className="control-button">
-      {status === PLAYER_STATUS.IDLE ? (
-        <div style={{ paddingRight: 18 }}>
-          <ButtonSpinner />
-        </div>
-      ) : status !== PLAYER_STATUS.PLAYING ? (
+      {(status === PLAYER_STATUS.PAUSED || status === PLAYER_STATUS.LOADED) && (
         <PlayButton onPlay={onPlay} />
-      ) : (
-        <PauseButton onPause={onPause} />
       )}
+      {status === PLAYER_STATUS.PLAYING && <PauseButton onPause={onPause} />}
     </div>
   );
 }
