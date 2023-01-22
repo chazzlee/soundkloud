@@ -16,6 +16,7 @@ import {
 } from "../features/player/store";
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
+import { IoMdPlay, IoMdPause } from "react-icons/io";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -116,12 +117,37 @@ export function GlobalPlaybar() {
         <CurrentlyPlaying />,
       ]}
       customAdditionalControls={[]}
+      customIcons={{
+        play: (
+          <IoMdPlay
+            size={"50%"}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
+        ),
+        pause: (
+          <IoMdPause
+            size={"50%"}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
+        ),
+      }}
       layout="horizontal-reverse"
       showSkipControls={false}
       showJumpControls={false}
       src={globalSource}
       autoPlay={false}
-      autoPlayAfterSrcChange={globalSourceId === waveSourceId}
+      autoPlayAfterSrcChange={
+        globalSourceId === waveSourceId &&
+        globalStatus === PLAYER_STATUS.PLAYING
+      }
       onPlay={handlePlay}
       onPause={handlePause}
       onLoadedMetaData={(e) => handleUpdateDurationOnLoad(e.target.duration)}

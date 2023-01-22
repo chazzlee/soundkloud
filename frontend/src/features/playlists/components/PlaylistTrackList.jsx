@@ -11,6 +11,7 @@ export function PlaylistTrackList({ playlist }) {
           }}
         >
           {track.artist} - {track.title}
+          <button>Play</button>
         </li>
       ))}
     </ul>

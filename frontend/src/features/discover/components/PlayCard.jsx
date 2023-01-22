@@ -70,6 +70,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
     PLAYER_STATUS.LOADED,
     PLAYER_STATUS.PAUSED,
   ].includes(globalStatus);
+
   const isNotSame = globalSourceId !== item.id;
 
   const handlePlay = (event) => {

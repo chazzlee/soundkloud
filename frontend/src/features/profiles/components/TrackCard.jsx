@@ -8,16 +8,21 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { BiLockAlt } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { EditTrackModal } from "./EditTrackModal";
-// import { Wavesurfer } from "../../tracks/components/Wavesurfer";
+import { Wavesurfer } from "../../tracks/components/Wavesurfer";
 import { destroyTrackAsync } from "../../tracks/store";
 import { PLAYER_STATUS } from "../../player/store";
+import { useCallback } from "react";
+import { useRef } from "react";
 
 // TODO:
 export function TrackCard({ track }) {
   const dispatch = useDispatch();
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  // const [loading, setLoading] = useState(true);
+  const wavesurfer = useRef(null);
 
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const handleLoaded = useCallback((state) => setLoading(state), []);
   const handleRemove = (trackId) => {
     dispatch(destroyTrackAsync(trackId));
   };
@@ -107,7 +112,12 @@ export function TrackCard({ track }) {
             </div>
           </div>
           <div>
-            {/* <Wavesurfer track={track} onLoading={setLoading} waveHeight={28} /> */}
+            <Wavesurfer
+              track={track}
+              onLoaded={handleLoaded}
+              ref={wavesurfer}
+              waveHeight={28}
+            />
           </div>
           <div>
             <button
