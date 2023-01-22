@@ -63,7 +63,6 @@ export function EditProfileModal({ onClose, currentUser }) {
       .catch((error) => dispatch(profileUpdateFailed(error)));
   };
 
-  console.log(profileErrors);
   return (
     <Modal onClose={onClose}>
       <div style={{ padding: 12 }}>
