@@ -90,6 +90,7 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   useEffect(() => {
     if (globalSourceId === waveSourceId) {
       ref.current.seekTo(globalProgress);
+      ref.current.play();
     }
   }, [globalProgress, globalSourceId, waveSourceId, ref]);
 
