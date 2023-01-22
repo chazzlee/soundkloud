@@ -1,9 +1,17 @@
 import styles from "./PlayCard.module.css";
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { IoMdPlay } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { Image } from "pure-react-carousel";
-import { PLAYER_STATUS, trackLoaded, trackPlaying } from "../../player/store";
+import {
+  GLOBAL_PLAYER,
+  PLAYER_STATUS,
+  selectPlayerSourceId,
+  selectPlayerStatus,
+  trackLoaded,
+  trackPaused,
+  trackPlaying,
+} from "../../player/store";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -42,37 +50,74 @@ const sampleCovers = [
 ];
 
 // TODO: PLAY from playcard
+// FIXME: styles ---pause button ICON
 export function PlayCard({ item, subcaption = "Related tracks" }) {
-  const [showPlay, setShowPlay] = useState(false);
+  const [showControl, setShowControl] = useState(false);
   const cover = useRef(sampleCovers[getRandomInteger(sampleCovers.length - 1)]);
   const dispatch = useDispatch();
+  const globalSourceId = useSelector((state) =>
+    selectPlayerSourceId(state, GLOBAL_PLAYER)
+  );
+  const globalStatus = useSelector((state) =>
+    selectPlayerStatus(state, GLOBAL_PLAYER)
+  );
+
+  const isPlaying =
+    globalStatus === PLAYER_STATUS.PLAYING && item.id === globalSourceId;
+
+  const isNotPlaying = [
+    PLAYER_STATUS.IDLE,
+    PLAYER_STATUS.LOADED,
+    PLAYER_STATUS.PAUSED,
+  ].includes(globalStatus);
+  const isNotSame = globalSourceId !== item.id;
 
   const handlePlay = (event) => {
     event.preventDefault();
-    dispatch(trackLoaded({ id: item.id, url: item.upload, duration: null }));
+    if (item.id === globalSourceId) {
+      dispatch(trackPlaying());
+    } else {
+      dispatch(trackLoaded({ id: item.id, url: item.upload, duration: null }));
+    }
+  };
+
+  const handlePause = (event) => {
+    event.preventDefault();
+    dispatch(trackPaused());
   };
 
   return (
     <>
       <div
         className={styles.container}
-        onMouseEnter={() => setShowPlay(true)}
-        onMouseLeave={() => setShowPlay(false)}
+        onMouseEnter={() => setShowControl(true)}
+        onMouseLeave={() => setShowControl(false)}
       >
         <Image
           src={item.cover || cover.current}
           className={styles.coverImage}
-          style={{ filter: showPlay ? "brightness(90%)" : "none" }}
+          style={{ filter: showControl ? "brightness(90%)" : "none" }}
         />
-        {showPlay ? (
+        {showControl ? (
           <div className={styles.playOverlay}>
-            <button
-              onClick={handlePlay}
-              title="Play"
-              className={styles.circularPlayBtn}
-            >
-              <IoMdPlay className={styles.playIcon} />
-            </button>
+            {(isNotPlaying || isNotSame) && (
+              <button
+                onClick={handlePlay}
+                title="Play"
+                className={styles.circularPlayBtn}
+              >
+                <IoMdPlay className={styles.playIcon} />
+              </button>
+            )}
+            {isPlaying && (
+              <button
+                onClick={handlePause}
+                title="Pause"
+                className={styles.circularPlayBtn}
+              >
+                <IoMdPause className={styles.playIcon} />
+              </button>
+            )}
           </div>
         ) : null}
       </div>

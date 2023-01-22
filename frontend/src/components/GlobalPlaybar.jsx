@@ -114,7 +114,7 @@ export function GlobalPlaybar() {
       showJumpControls={false}
       src={globalSource}
       autoPlay={false}
-      autoPlayAfterSrcChange={false}
+      autoPlayAfterSrcChange={true}
       onPlay={handlePlay}
       onPause={handlePause}
       onLoadedMetaData={(e) => handleUpdateDurationOnLoad(e.target.duration)}

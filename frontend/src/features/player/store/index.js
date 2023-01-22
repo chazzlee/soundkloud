@@ -92,6 +92,8 @@ export const playerReducer = produce((state = initialState, action) => {
 
       if (action.payload.duration === null) {
         state.global.status = PLAYER_STATUS.PLAYING;
+        state.global.sourceId = action.payload.id;
+        state.global.sourceUrl = action.payload.url;
       }
 
       break;
