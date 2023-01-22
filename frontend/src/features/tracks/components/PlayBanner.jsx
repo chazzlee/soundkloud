@@ -114,7 +114,6 @@ function BannerHeader({ track }) {
 }
 
 const ControlButton = ({ loaded, status, onPlay, onPause }) => {
-  // TODO: fix spinner
   if (!loaded) {
     return (
       <div style={{ paddingRight: 18 }}>

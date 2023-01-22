@@ -11,7 +11,6 @@ import { GlobalPlaybar } from "./components/GlobalPlaybar";
 function App() {
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
-  // const globalStatus = useSelector(selectGlobalStatus);
 
   return (
     <>

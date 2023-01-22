@@ -10,7 +10,7 @@ import {
   selectUserTracks,
 } from "../../tracks/store";
 import { EditProfileModal } from "../components/EditProfileModal";
-import { PlaylistList } from "../../playlists/components/PlaylistList";
+// import { PlaylistList } from "../../playlists/components/PlaylistList";
 
 export function UserProfilePage() {
   const dispatch = useDispatch();
@@ -41,10 +41,7 @@ export function UserProfilePage() {
           <div className={styles.bannerPlayerContainer}>
             <div className={styles.avatar}>
               <img
-                src={
-                  currentUser.photo ??
-                  "https://i1.sndcdn.com/avatars-000007873027-acd5vm-t200x200.jpg"
-                }
+                src={currentUser.photo}
                 height="100%"
                 width="100%"
                 style={{ borderRadius: "50%", objectFit: "cover" }}
@@ -83,12 +80,13 @@ export function UserProfilePage() {
               >
                 Tracks
               </li>
-              <li
+              {/* <li
                 className={`${activeTab === "playlists" ? styles.active : ""}`}
                 onClick={() => setActiveTab("playlists")}
+                style={{ visibility: "hidden" }}
               >
                 Playlists
-              </li>
+              </li> */}
             </div>
           </div>
           <div className={styles.container}>
@@ -100,7 +98,7 @@ export function UserProfilePage() {
                     <TrackCard key={track.id} track={track} />
                   ))}
                 </div>
-                <h3 className={styles.uploadedTitle}>Playlists</h3>
+                {/* <h3 className={styles.uploadedTitle}>Playlists</h3>
                 <div className={styles.trackCards}>
                   {playlists?.map((playlist) => (
                     <div key={playlist.id}>
@@ -112,7 +110,7 @@ export function UserProfilePage() {
                       </ul>
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             )}
             {activeTab === "tracks" && (
@@ -125,9 +123,9 @@ export function UserProfilePage() {
                 </div>
               </div>
             )}
-            {activeTab === "playlists" && (
+            {/* {activeTab === "playlists" && (
               <PlaylistList playlists={playlists} />
-            )}
+            )} */}
             <aside>
               <div></div>
             </aside>

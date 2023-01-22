@@ -1,6 +1,9 @@
 export function PlaylistTrackList({ playlist }) {
+  const handleStartPlaylist = () => {};
+
   return (
     <ul>
+      <button onClick={handleStartPlaylist}>Play playlist</button>
       {playlist.tracks.map((track) => (
         <li
           key={track.id}

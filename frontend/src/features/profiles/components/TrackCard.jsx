@@ -8,24 +8,68 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { BiLockAlt } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { EditTrackModal } from "./EditTrackModal";
-import { Wavesurfer } from "../../tracks/components/Wavesurfer";
+import WaveSurfer from "wavesurfer.js";
+// import { Wavesurfer } from "../../tracks/components/Wavesurfer";
 import { destroyTrackAsync } from "../../tracks/store";
 import { PLAYER_STATUS } from "../../player/store";
 import { useCallback } from "react";
 import { useRef } from "react";
+import { useEffect } from "react";
+import { TrackCardSpinner } from "./TrackCardSpinner";
 
 // TODO:
+// FIXME:fix spinner position
 export function TrackCard({ track }) {
   const dispatch = useDispatch();
+  const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const handleLoaded = useCallback((state) => setLoading(state), []);
+  const handleLoaded = useCallback((state) => setLoaded(state), []);
   const handleRemove = (trackId) => {
     dispatch(destroyTrackAsync(trackId));
   };
+
+  const handlePlay = useCallback(() => {
+    wavesurfer.current.play();
+    setIsPlaying(true);
+  }, []);
+
+  const handlePause = useCallback(() => {
+    wavesurfer.current.pause();
+    setIsPlaying(false);
+  }, []);
+
+  useEffect(() => {
+    const waveOptions = {
+      waveColor: "#eee",
+      progressColor: "#f50",
+      cursorColor: "transparent",
+      barWidth: 1,
+      barRadius: 2,
+      responsive: true,
+      normalize: true,
+      height: 60,
+      interact: false,
+      container: waveformRef.current,
+    };
+    wavesurfer.current = WaveSurfer.create(waveOptions);
+    wavesurfer.current.load(track.upload);
+
+    wavesurfer.current.on("ready", () => {
+      handleLoaded(true);
+    });
+
+    return () => {
+      console.log("destroying");
+      wavesurfer.current.cancelAjax();
+      wavesurfer.current.destroy();
+      wavesurfer.current = null;
+    };
+  }, [track.upload, handleLoaded]);
 
   return (
     <>
@@ -33,56 +77,23 @@ export function TrackCard({ track }) {
         <Link to={`${track.permalink}`}>
           <div style={{ height: "100%", width: "100%" }}>
             <img
-              src={
-                track.cover ??
-                "https://i1.sndcdn.com/avatars-000007873027-acd5vm-t200x200.jpg"
-              }
+              src={track.cover}
               alt="Profile"
               style={{ objectFit: "cover" }}
-              height={165}
+              height={160}
               width={160}
             />
           </div>
         </Link>
         <div className={styles.innerTrackContainer}>
           <div className={styles.trackCardTop}>
-            <button
-              title="Play"
-              className={styles.playBtn}
-              style={{ display: "none" }}
-              onClick={() => {}}
-            >
-              <IoMdPlay />
-            </button>
-            {/* {waveSource.status !== PLAYER_STATUS.PLAYING ? (
-              <button
-                title="Play"
-                className={styles.playBtn}
-                style={{ display: "none" }}
-                onClick={() => {
-                  dispatch(waveStatusChanged(PLAYER_STATUS.PLAYING));
-                  dispatch(
-                    globalTrackLoaded({
-                      id: waveSource.sourceId,
-                      url: waveSource.sourceUrl,
-                      duration: waveSource.totalDuration,
-                    })
-                  );
-                  dispatch(globalStatusChanged(PLAYER_STATUS.PLAYING));
-                }}
-              >
-                <IoMdPlay />
-              </button>
-            ) : (
-              <button
-                title="Pause"
-                className={styles.pauseBtn}
-                style={{ display: "none" }}
-                onClick={() => {}}
-              >
-                <IoMdPause />
-              </button>
-            )} */}
+            <ControlButton
+              loaded={loaded}
+              isPlaying={isPlaying}
+              onPlay={handlePlay}
+              onPause={handlePause}
+            />
+
             <div className={styles.trackCardInfo}>
               <div className={styles.trackHeaderLeft}>
                 <h4>{track.uploader.displayName}</h4>
@@ -111,14 +122,11 @@ export function TrackCard({ track }) {
               </div>
             </div>
           </div>
-          <div>
-            <Wavesurfer
-              track={track}
-              onLoaded={handleLoaded}
-              ref={wavesurfer}
-              waveHeight={28}
-            />
+          {/* Waveform */}
+          <div className="wavesurfer-container">
+            <div id="waveform" ref={waveformRef} />
           </div>
+
           <div>
             <button
               className={styles.smBtn}
@@ -160,5 +168,42 @@ export function TrackCard({ track }) {
         />
       ) : null}
     </>
+  );
+}
+
+function ControlButton({ loaded, isPlaying, onPlay, onPause }) {
+  if (!loaded) {
+    // TODO: color...
+    return (
+      <div style={{ marginRight: 8 }}>
+        <TrackCardSpinner />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {!isPlaying ? (
+        <PlayButton onPlay={onPlay} />
+      ) : (
+        <PauseButton onPause={onPause} />
+      )}
+    </div>
+  );
+}
+
+function PlayButton({ onPlay }) {
+  return (
+    <button title="Play" className={styles.playBtn} onClick={onPlay}>
+      <IoMdPlay />
+    </button>
+  );
+}
+
+function PauseButton({ onPause }) {
+  return (
+    <button title="Pause" className={styles.pauseBtn} onClick={onPause}>
+      <IoMdPause />
+    </button>
   );
 }

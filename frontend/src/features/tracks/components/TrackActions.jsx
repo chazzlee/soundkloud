@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { BiRepost } from "react-icons/bi";
+// import { BiRepost } from "react-icons/bi";
 import { FaPlay } from "react-icons/fa";
 import { IoLinkOutline, IoTrashBinOutline } from "react-icons/io5";
 import { RiPlayListAddFill, RiShareForwardBoxLine } from "react-icons/ri";
 import { SlPencil } from "react-icons/sl";
-import { TfiMoreAlt } from "react-icons/tfi";
+// import { TfiMoreAlt } from "react-icons/tfi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "../../../context/Modal";
+// import { Modal } from "../../../context/Modal";
 import { selectCurrentUser } from "../../auth/store";
 import { destroyTrackAsync } from "../store";
 import { PlaylistModal } from "./PlaylistModal";
@@ -58,7 +58,10 @@ export function TrackActions({ track, onEditModalOpen }) {
                 </div>
                 <div>Remove</div>
               </button>
-              <button onClick={() => setShowAddToPlaylist(true)}>
+              <button
+                onClick={() => setShowAddToPlaylist(true)}
+                style={{ visibility: "hidden" }}
+              >
                 <div>
                   <RiPlayListAddFill style={{ verticalAlign: "top" }} />
                 </div>
@@ -76,7 +79,10 @@ export function TrackActions({ track, onEditModalOpen }) {
                 </div>
                 <div>Like</div>
               </button>
-              <button onClick={() => setShowAddToPlaylist(true)}>
+              <button
+                onClick={() => setShowAddToPlaylist(true)}
+                style={{ visibility: "hidden" }}
+              >
                 <div>
                   <RiPlayListAddFill style={{ verticalAlign: "top" }} />
                 </div>

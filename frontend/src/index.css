@@ -114,6 +114,10 @@ button {
   color: #333;
 }
 
+.rhap_progress-container {
+  flex-grow: 0.8;
+}
+
 .rhap_progress-bar {
   height: 1px;
   background-color: rgb(190, 190, 190);
@@ -152,6 +156,7 @@ button {
   display: flex;
   align-items: center;
   margin-left: 20px;
+  min-width: 180px;
 }
 
 .rhap_volume-container {
