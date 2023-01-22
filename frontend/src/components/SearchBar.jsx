@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { TracksApi } from "../api/tracks";
+import useOnClickOutside from "use-onclickoutside";
 import styles from "./TopNavigation.module.css";
+import { useRef } from "react";
 
 // TODO: debounce search
 function parseLink(link) {
@@ -15,6 +17,9 @@ export function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
+  const searchRef = useRef(null);
+
+  useOnClickOutside(searchRef, () => setSearchQuery(""));
 
   useEffect(() => {
     if (searchQuery) {
@@ -52,7 +57,7 @@ export function SearchBar() {
         <IoSearch />
       </span>
       {searchQuery.length > 0 && (
-        <div className={styles.searchContainer}>
+        <div className={styles.searchContainer} ref={searchRef}>
           <li className={styles.searchItem}>Search for "{searchQuery}"</li>
           {results.length > 0 ? (
             results.map((result) => (
