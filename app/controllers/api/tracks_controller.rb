@@ -58,7 +58,7 @@ class Api::TracksController < ApplicationController
       track.slug = params[:permalink]
 
       if params[:cover]
-        track.cover.purge if track.cover.attached?
+        # track.cover.purge if track.cover.attached?
         track.cover.attach(params[:cover])
       end
 

@@ -88,11 +88,14 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   }, [globalStatus, ref, dispatch]);
 
   useEffect(() => {
-    if (globalSourceId === waveSourceId) {
+    if (
+      globalSourceId === waveSourceId &&
+      globalStatus === PLAYER_STATUS.PLAYING
+    ) {
       ref.current.seekTo(globalProgress);
       ref.current.play();
     }
-  }, [globalProgress, globalSourceId, waveSourceId, ref]);
+  }, [globalProgress, globalSourceId, waveSourceId, globalStatus, ref]);
 
   return <div id="waveform" ref={waveformRef} />;
 });

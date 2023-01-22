@@ -37,6 +37,13 @@ export function GlobalPlaybar() {
     selectPlayerSource(state, GLOBAL_PLAYER)
   );
 
+  const globalSourceId = useSelector((state) =>
+    selectPlayerSource(state, GLOBAL_PLAYER)
+  );
+  const waveSourceId = useSelector((state) =>
+    selectPlayerSource(state, WAVE_PLAYER)
+  );
+
   const handlePlay = useCallback(() => {
     dispatch(trackPlaying());
   }, [dispatch]);
@@ -114,7 +121,7 @@ export function GlobalPlaybar() {
       showJumpControls={false}
       src={globalSource}
       autoPlay={false}
-      autoPlayAfterSrcChange={true}
+      autoPlayAfterSrcChange={globalSourceId === waveSourceId}
       onPlay={handlePlay}
       onPause={handlePause}
       onLoadedMetaData={(e) => handleUpdateDurationOnLoad(e.target.duration)}

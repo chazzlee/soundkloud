@@ -87,7 +87,10 @@ export function EditTrackModal({ track, onClose, onSuccess }) {
     formData.set("privacy", formValues.privacy.trim());
     formData.set("genre_id", parseInt(formValues.genre_id || "1", 10));
     formData.set("tags", JSON.stringify(tagsDisplay));
-    coverImage && formData.set("cover", coverImage, coverImage.name);
+
+    if (coverImage && coverImage instanceof Blob) {
+      formData.set("cover", coverImage, coverImage.name);
+    }
 
     if (!formData.get("title") || !formData.get("artist")) {
       setErrors("Invalid form values");
