@@ -43,10 +43,12 @@ export function EditProfileModal({ onClose, currentUser }) {
     };
 
     for (let key of Object.keys(updatedProfile)) {
-      formData.set(key, updatedProfile[key]);
+      if (key !== "photo") {
+        formData.set(key, updatedProfile[key]);
+      }
     }
 
-    if (photo) {
+    if (photo && photo instanceof Blob) {
       formData.set("photo", photo, photo.name);
     }
 
@@ -61,6 +63,7 @@ export function EditProfileModal({ onClose, currentUser }) {
       .catch((error) => dispatch(profileUpdateFailed(error)));
   };
 
+  console.log(profileErrors);
   return (
     <Modal onClose={onClose}>
       <div style={{ padding: 12 }}>
@@ -147,7 +150,7 @@ export function EditProfileModal({ onClose, currentUser }) {
               textAlign: "center",
             }}
           >
-            {profileErrors.map((error, index) => (
+            {profileErrors?.map((error, index) => (
               <p key={index}>{error}</p>
             ))}
           </div>
