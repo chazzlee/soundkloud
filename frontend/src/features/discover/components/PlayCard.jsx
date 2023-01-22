@@ -115,7 +115,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
                 title="Pause"
                 className={styles.circularPlayBtn}
               >
-                <IoMdPause className={styles.playIcon} />
+                <IoMdPause className={styles.pauseIcon} />
               </button>
             )}
           </div>
