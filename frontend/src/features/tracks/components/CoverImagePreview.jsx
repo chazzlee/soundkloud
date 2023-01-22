@@ -19,7 +19,7 @@ export function CoverImagePreview({ image, onChange, edit = false }) {
               ? image
               : URL.createObjectURL(image)
           }
-          alt=""
+          alt="track cover"
           height="100%"
           width="100%"
           style={{ objectFit: "cover" }}

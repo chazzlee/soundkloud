@@ -132,6 +132,22 @@ export function EditProfileModal({ onClose, currentUser }) {
               placeholder="Location"
             />
           </div>
+
+          <div>
+            <img
+              src={
+                photo instanceof Blob
+                  ? URL.createObjectURL(photo)
+                  : currentUser.photo
+              }
+              alt=""
+              width={140}
+              height={140}
+              style={{ objectFit: "cover" }}
+              onLoad={() => photo instanceof Blob && URL.revokeObjectURL(photo)}
+            />
+          </div>
+
           <div style={{ marginBottom: 12 }}>
             <input
               style={{ fontSize: 13 }}
