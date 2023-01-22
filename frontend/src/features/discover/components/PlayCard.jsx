@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { IoMdPlay } from "react-icons/io";
 import { Image } from "pure-react-carousel";
-import { PLAYER_STATUS } from "../../player/store";
+import { PLAYER_STATUS, trackLoaded, trackPlaying } from "../../player/store";
 
 const getRandomInteger = (max = 255) => {
   return Math.floor(Math.random() * (max + 1));
@@ -41,6 +41,7 @@ const sampleCovers = [
   "https://soundkloud-seeds.s3.amazonaws.com/skydancer.jpg",
 ];
 
+// TODO: PLAY from playcard
 export function PlayCard({ item, subcaption = "Related tracks" }) {
   const [showPlay, setShowPlay] = useState(false);
   const cover = useRef(sampleCovers[getRandomInteger(sampleCovers.length - 1)]);
@@ -48,6 +49,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
 
   const handlePlay = (event) => {
     event.preventDefault();
+    dispatch(trackLoaded({ id: item.id, url: item.upload, duration: null }));
   };
 
   return (
@@ -62,7 +64,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
           className={styles.coverImage}
           style={{ filter: showPlay ? "brightness(90%)" : "none" }}
         />
-        {false ? (
+        {showPlay ? (
           <div className={styles.playOverlay}>
             <button
               onClick={handlePlay}

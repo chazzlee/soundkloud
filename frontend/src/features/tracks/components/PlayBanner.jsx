@@ -81,7 +81,11 @@ function BannerHeader({ track }) {
           {track.artist} - {track.title}
         </h1>
         <div className={styles.subTitleContainer}>
-          <h2 className={styles.subTitle}>{track.uploader.displayName}</h2>
+          <h2>
+            <Link to={`/${track.uploader.slug}`} className={styles.subTitle}>
+              {track.uploader.displayName}
+            </Link>
+          </h2>
           {track.private && (
             <p className={`${styles.subTitle} ${styles.privateBadge}`}>
               <span>

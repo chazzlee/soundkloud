@@ -2,14 +2,17 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import {
+  GLOBAL_PLAYER,
+  WAVE_PLAYER,
   PLAYER_STATUS,
-  progressUpdating,
   selectCurrentlyPlaying,
   selectPlayerStatus,
   trackPaused,
   trackPlaying,
   trackSeeked,
-  WAVE_PLAYER,
+  progressUpdating,
+  selectPlayerSource,
+  updateDuration,
 } from "../features/player/store";
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
@@ -20,11 +23,19 @@ function calculateProgress(current, total) {
 
 export function GlobalPlaybar() {
   const dispatch = useDispatch();
+  const playerRef = useRef(null);
+
   const waveStatus = useSelector((state) =>
     selectPlayerStatus(state, WAVE_PLAYER)
   );
-  const globalSource = useSelector((state) => state.player.global.sourceUrl);
-  const playerRef = useRef(null);
+
+  const globalStatus = useSelector((state) =>
+    selectPlayerStatus(state, GLOBAL_PLAYER)
+  );
+
+  const globalSource = useSelector((state) =>
+    selectPlayerSource(state, GLOBAL_PLAYER)
+  );
 
   const handlePlay = useCallback(() => {
     dispatch(trackPlaying());
@@ -37,6 +48,15 @@ export function GlobalPlaybar() {
   const handleSeek = useCallback(
     (currentTime) => {
       dispatch(trackSeeked(currentTime));
+    },
+    [dispatch]
+  );
+
+  const handleUpdateDurationOnLoad = useCallback(
+    (duration) => {
+      if (Number.isNaN(duration)) return;
+
+      dispatch(updateDuration(duration));
     },
     [dispatch]
   );
@@ -65,6 +85,16 @@ export function GlobalPlaybar() {
     }
   }, [dispatch, waveStatus]);
 
+  useEffect(() => {
+    if (globalStatus === PLAYER_STATUS.PLAYING) {
+      playerRef.current?.audio.current.play();
+    }
+  }, [globalStatus]);
+
+  if (!globalSource || globalStatus === PLAYER_STATUS.IDLE) {
+    return null;
+  }
+
   return (
     <H5AudioPlayer
       className="global-playbar"
@@ -87,7 +117,7 @@ export function GlobalPlaybar() {
       autoPlayAfterSrcChange={false}
       onPlay={handlePlay}
       onPause={handlePause}
-      onLoadedMetaData={(data) => {}}
+      onLoadedMetaData={(e) => handleUpdateDurationOnLoad(e.target.duration)}
       onSeeked={(e) => handleSeek(e.target.currentTime)}
       onListen={(e) =>
         handleUpdateProgress(e.target.currentTime, e.target.duration)

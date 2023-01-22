@@ -17,6 +17,7 @@ const PLAY_TRACK = "player/trackPlaying";
 const PAUSE_TRACK = "player/trackPaused";
 const SEEK_TRACK = "player/trackSeeked";
 const UPDATE_PROGRESS = "player/progressUpdating";
+const UPDATE_DURATION = "player/durationUpdated";
 
 export const trackLoaded = (sourceInfo) => ({
   type: LOAD_TRACK,
@@ -39,6 +40,11 @@ export const trackSeeked = (currentTime) => ({
 export const progressUpdating = (progress) => ({
   type: UPDATE_PROGRESS,
   payload: progress,
+});
+
+export const updateDuration = (duration) => ({
+  type: UPDATE_DURATION,
+  payload: duration,
 });
 
 const initialState = {
@@ -83,6 +89,11 @@ export const playerReducer = produce((state = initialState, action) => {
       } else {
         state.wave.status = PLAYER_STATUS.LOADED;
       }
+
+      if (action.payload.duration === null) {
+        state.global.status = PLAYER_STATUS.PLAYING;
+      }
+
       break;
     }
     case PLAY_TRACK: {
@@ -107,6 +118,11 @@ export const playerReducer = produce((state = initialState, action) => {
     }
     case UPDATE_PROGRESS: {
       state.global.progress = action.payload;
+      break;
+    }
+    case UPDATE_DURATION: {
+      state.global.duration = action.payload;
+      state.wave.duration = action.payload;
       break;
     }
     default:

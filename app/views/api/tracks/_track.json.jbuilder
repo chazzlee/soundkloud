@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-random_tracks = [
-  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3',
-  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+Der+Stille+Fluss.mp3',
-  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+The+Root+of+All+Evil.mp3',
-  'https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+To+Breathe+in+a+Casket.mp3',
-  'https://soundkloud-seeds.s3.amazonaws.com/tracks/04+Die+Welt+In+Mir.mp3',
-  'https://soundkloud-seeds.s3.amazonaws.com/tracks/05+-+No+Will+to+Live.mp3'
-]
+# random_tracks = [
+#   'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3',
+#   'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+Der+Stille+Fluss.mp3',
+#   'https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+The+Root+of+All+Evil.mp3',
+#   'https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+To+Breathe+in+a+Casket.mp3',
+#   'https://soundkloud-seeds.s3.amazonaws.com/tracks/04+Die+Welt+In+Mir.mp3',
+#   'https://soundkloud-seeds.s3.amazonaws.com/tracks/05+-+No+Will+to+Live.mp3'
+# ]
 
 json.set! track.id do
   json.extract! track, :id, :title, :artist, :privacy, :tags, :created_at

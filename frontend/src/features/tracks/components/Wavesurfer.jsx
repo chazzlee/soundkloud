@@ -31,6 +31,8 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   );
 
   useEffect(() => {
+    // console.clear();
+
     const waveOptions = {
       waveColor: "#eee",
       progressColor: "#f50",

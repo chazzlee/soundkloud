@@ -1,4 +1,5 @@
 import styles from "../../profiles/pages/UserProfilePage.module.css";
+import { PlaylistTrackList } from "./PlaylistTrackList";
 
 export function PlaylistList({ playlists }) {
   return (
@@ -8,11 +9,7 @@ export function PlaylistList({ playlists }) {
         {playlists?.map((playlist) => (
           <div key={playlist.id}>
             <h3>{playlist.title}</h3>
-            <ul>
-              {playlist.tracks.map((track) => (
-                <li key={track.id}>{track.title}</li>
-              ))}
-            </ul>
+            <PlaylistTrackList playlist={playlist} />
           </div>
         ))}
       </div>

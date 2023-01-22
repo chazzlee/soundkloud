@@ -80,6 +80,7 @@ export function EditProfileModal({ onClose, currentUser }) {
               value={profileData.displayName}
               onChange={handleChange}
               placeholder="Display name"
+              autoFocus
             />
           </div>
           <div className={styles.formControl}>
