@@ -9,19 +9,23 @@ const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
 const TRACK_REMOVED_FROM_PLAYLIST = "playlists/TRACK_REMOVED_FROM_PLAYLIST";
 export const START_PLAYLIST = "playlists/playlistStarted";
 export const PLAY_NEXT = "playlists/nextPlaying";
-const PLAY_PREV = "playlists/prevPlaying";
+export const PLAY_PREV = "playlists/prevPlaying";
 export const PLAYLIST_FINISHED = "playlists/playlistFinished";
 
-export const playlistStarted = (playlistId) => ({
+export const playlistStarted = (playlist) => ({
   type: START_PLAYLIST,
-  payload: playlistId,
+  payload: playlist,
 });
 
-export const playNext = () => ({
+export const playNext = (nextTrack) => ({
   type: PLAY_NEXT,
+  payload: nextTrack,
 });
 
-export const playPrev = () => ({ type: PLAY_PREV });
+export const playPrev = (previousTrack) => ({
+  type: PLAY_PREV,
+  payload: previousTrack,
+});
 
 export const playlistFinished = () => ({ type: PLAYLIST_FINISHED });
 
@@ -44,6 +48,22 @@ const trackRemovedFromPlaylist = ({ id, trackId }) => ({
   type: TRACK_REMOVED_FROM_PLAYLIST,
   payload: { id, trackId },
 });
+
+export const playNextTrack = () => (dispatch, getState) => {
+  const state = getState();
+  const activePlaylist = state.playlists.entities[state.playlists.active.id];
+  const nextTrack = activePlaylist.tracks[state.playlists.active.next];
+
+  dispatch(playNext(nextTrack));
+};
+
+export const playPreviousTrack = () => (dispatch, getState) => {
+  const state = getState();
+  const activePlaylist = state.playlists.entities[state.playlists.active.id];
+  const previousTrack = activePlaylist.tracks[state.playlists.active.prev];
+
+  dispatch(playPrev(previousTrack));
+};
 
 // TODO: loading and error
 export const fetchPlaylistsAsync = () => async (dispatch) => {
@@ -129,10 +149,10 @@ export const playlistsReducer = produce((state = initialState, action) => {
     }
 
     case START_PLAYLIST: {
-      state.active.id = action.payload;
+      state.active.id = action.payload.id;
       state.active.current = 0;
-      state.active.next = 1;
-      state.active.trackIds = state.entities[action.payload].tracks.map(
+      state.active.next = action.payload.tracks.length > 1 ? 1 : null;
+      state.active.trackIds = state.entities[action.payload.id].tracks.map(
         (track) => track.id
       );
       break;
@@ -140,12 +160,13 @@ export const playlistsReducer = produce((state = initialState, action) => {
 
     case PLAY_NEXT: {
       if (state.active.current >= 0) {
-        state.active.current = state.active.current + 1;
+        state.active.current = state.active.next;
         state.active.next =
           state.active.current < state.active.trackIds.length - 1
             ? state.active.current + 1
             : null;
-        state.active.prev = state.active.current - 1;
+        state.active.prev =
+          state.active.current >= 1 ? state.active.current - 1 : null;
       }
       break;
     }
@@ -161,6 +182,11 @@ export const playlistsReducer = produce((state = initialState, action) => {
     }
 
     case PLAYLIST_FINISHED: {
+      state.active.id = null;
+      state.active.trackIds = [];
+      state.active.current = null;
+      state.active.next = null;
+      state.active.prev = null;
       break;
     }
 

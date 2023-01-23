@@ -58,10 +58,7 @@ export function TrackActions({ track, onEditModalOpen }) {
                 </div>
                 <div>Remove</div>
               </button>
-              <button
-                onClick={() => setShowAddToPlaylist(true)}
-                style={{ visibility: "hidden" }}
-              >
+              <button onClick={() => setShowAddToPlaylist(true)}>
                 <div>
                   <RiPlayListAddFill style={{ verticalAlign: "top" }} />
                 </div>

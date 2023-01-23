@@ -3,6 +3,7 @@ import { createSelector } from "reselect";
 import {
   PLAYLIST_FINISHED,
   PLAY_NEXT,
+  PLAY_PREV,
   START_PLAYLIST,
 } from "../../playlists/store";
 
@@ -71,7 +72,6 @@ const initialState = {
     sourceUrl: "",
     duration: 0,
     progress: 0,
-    playlist: [],
   },
 };
 
@@ -159,18 +159,33 @@ export const playerReducer = produce((state = initialState, action) => {
       state.wave.progress = 0;
 
       state.global.status = PLAYER_STATUS.PLAYING;
-      state.wave.sourceId = null;
-      state.global.sourceUrl = "";
+      state.global.sourceId = action.payload.tracks[0].id;
+      state.global.sourceUrl = action.payload.tracks[0].upload;
       state.global.duration = 0;
       state.global.progress = 0;
       break;
     }
+
     case PLAY_NEXT: {
       state.global.status = PLAYER_STATUS.PLAYING;
+      state.global.sourceId = action.payload.id;
+      state.global.sourceUrl = action.payload.upload;
+      state.global.duration = 0;
+      state.global.progress = 0;
+      break;
+    }
+    case PLAY_PREV: {
+      state.global.status = PLAYER_STATUS.PLAYING;
+      state.global.sourceId = action.payload.id;
+      state.global.sourceUrl = action.payload.upload;
+      state.global.duration = 0;
+      state.global.progress = 0;
       break;
     }
     case PLAYLIST_FINISHED: {
       state.global.status = PLAYER_STATUS.PAUSED;
+      state.global.duration = 0;
+      state.global.progress = 0;
       break;
     }
     default:

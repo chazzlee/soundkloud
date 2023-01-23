@@ -20,13 +20,12 @@ import { Link } from "react-router-dom";
 import { IoMdPlay, IoMdPause } from "react-icons/io";
 import {
   playlistFinished,
-  playNext,
-  playPrev,
+  playPreviousTrack,
+  playNextTrack,
   selectActivePlaylist,
   selectActivePlaylistTracks,
   selectCurrentPlaylistTrackUrl,
 } from "../features/playlists/store";
-import { useState } from "react";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -41,13 +40,13 @@ export function GlobalPlaybar() {
 
   const handlePlayNext = useCallback(() => {
     if (activePlaylist.next !== null) {
-      dispatch(playNext());
+      dispatch(playNextTrack());
     }
   }, [dispatch, activePlaylist.next]);
 
   const handlePlayPrevious = useCallback(() => {
     if (activePlaylist.prev !== null) {
-      dispatch(playPrev());
+      dispatch(playPreviousTrack());
     }
   }, [dispatch, activePlaylist.prev]);
 
@@ -179,11 +178,7 @@ export function GlobalPlaybar() {
       onPause={handlePause}
       onClickNext={handlePlayNext}
       onClickPrevious={handlePlayPrevious}
-      onLoadedMetaData={(e) => {
-        if (!activePlaylist.id) {
-          handleUpdateDurationOnLoad(e.target.duration);
-        }
-      }}
+      onLoadedMetaData={(e) => handleUpdateDurationOnLoad(e.target.duration)}
       onSeeked={(e) => handleSeek(e.target.currentTime)}
       onListen={(e) => {
         if (!activePlaylist.id) {
@@ -191,10 +186,12 @@ export function GlobalPlaybar() {
         }
       }}
       onEnded={() => {
-        if (activePlaylist.next !== null) {
-          handlePlayNext();
-        } else {
-          handlePlaylistFinished();
+        if (activePlaylist.id) {
+          if (activePlaylist.next !== null) {
+            handlePlayNext();
+          } else {
+            handlePlaylistFinished();
+          }
         }
       }}
     />

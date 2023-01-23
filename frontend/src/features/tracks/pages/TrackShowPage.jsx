@@ -104,10 +104,7 @@ export function TrackShowPage() {
               <div style={{ marginRight: "26px" }}>
                 <div style={{ width: "15%" }}>
                   <img
-                    src={
-                      track.uploader?.photo ??
-                      "https://heavymag.com.au/wp-content/uploads/2022/12/image003-3-e1670485565713.jpg"
-                    }
+                    src={track.uploader?.photo}
                     alt="Profile Avatar"
                     height={120}
                     width={120}

@@ -1,20 +1,27 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { playlistStarted } from "../store";
+import { playlistStarted, removeFromPlaylistAsync } from "../store";
 
 export function PlaylistTrackList({ playlist }) {
   const dispatch = useDispatch();
 
   const handleStartPlaylist = useCallback(
-    (playlistId) => {
-      dispatch(playlistStarted(playlistId));
+    (playlist) => {
+      dispatch(playlistStarted(playlist));
+    },
+    [dispatch]
+  );
+
+  const handleRemoveFromPlaylist = useCallback(
+    (playlistId, trackId) => {
+      dispatch(removeFromPlaylistAsync(playlistId, trackId));
     },
     [dispatch]
   );
 
   return (
     <ul>
-      <button onClick={() => handleStartPlaylist(playlist.id)}>
+      <button onClick={() => handleStartPlaylist(playlist)}>
         Play playlist
       </button>
       {playlist.tracks.map((track) => (
@@ -28,6 +35,13 @@ export function PlaylistTrackList({ playlist }) {
         >
           {track.artist} - {track.title}
           <button>Play</button>
+          <button
+            type="button"
+            onClick={() => handleRemoveFromPlaylist(playlist.id, track.id)}
+            style={{ color: "red" }}
+          >
+            Remove
+          </button>
         </li>
       ))}
     </ul>
