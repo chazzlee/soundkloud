@@ -93,12 +93,6 @@ export function GlobalPlaybar() {
     }
   }, [dispatch, waveStatus]);
 
-  useEffect(() => {
-    if (globalStatus === PLAYER_STATUS.PLAYING) {
-      playerRef.current?.audio.current.play();
-    }
-  }, [globalStatus]);
-
   if (!globalSource || globalStatus === PLAYER_STATUS.IDLE) {
     return null;
   }

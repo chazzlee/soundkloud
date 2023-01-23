@@ -63,8 +63,11 @@ export function TrackCard({ track }) {
       handleLoaded(true);
     });
 
+    wavesurfer.current.on("error", (error) => {
+      console.log("ERROR LOADING", error);
+    });
+
     return () => {
-      console.log("destroying");
       wavesurfer.current.cancelAjax();
       wavesurfer.current.destroy();
       wavesurfer.current = null;

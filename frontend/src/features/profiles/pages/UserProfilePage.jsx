@@ -2,7 +2,6 @@ import styles from "./UserProfilePage.module.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
-import { fetchPlaylistsAsync, selectPlaylists } from "../../playlists/store";
 import { TrackCard } from "../components/TrackCard";
 import {
   fetchAllTracksByUserAsync,
@@ -18,7 +17,6 @@ export function UserProfilePage() {
   const currentUser = useSelector(selectCurrentUser);
   const tracksLoaded = useSelector(selectHasTracksLoaded);
   const uploadedTracks = useSelector(selectUserTracks);
-  const playlists = useSelector(selectPlaylists);
 
   const [activeTab, setActiveTab] = useState("all");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -27,7 +25,6 @@ export function UserProfilePage() {
     if (!tracksLoaded) {
       dispatch(fetchAllTracksByUserAsync(currentUser.id));
     }
-    dispatch(fetchPlaylistsAsync());
   }, [dispatch, tracksLoaded, currentUser.id]);
 
   if (!currentUser) {

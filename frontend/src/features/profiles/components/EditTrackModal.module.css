@@ -2,6 +2,8 @@
   width: 860px;
   height: 100%;
   overflow: scroll;
+  margin-top: 100px;
+  padding-bottom: 82px;
 }
 
 .modalForm {
