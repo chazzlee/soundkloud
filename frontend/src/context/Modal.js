@@ -1,5 +1,6 @@
 import { createContext, useContext, useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useEscape } from "../hooks/useEsacpe";
 import styles from "./Modal.module.css";
 
 const ModalContext = createContext();
@@ -21,19 +22,9 @@ export function ModalProvider({ children }) {
 }
 
 export function Modal({ onClose, children, className = "" }) {
-  useEffect(() => {
-    const closeOnEsc = (e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", closeOnEsc);
-
-    return () => {
-      window.removeEventListener("keydown", closeOnEsc);
-    };
-  }, [onClose]);
+  useEscape(() => {
+    onClose();
+  });
 
   const modalNode = useContext(ModalContext);
 

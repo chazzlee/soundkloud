@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import styles from "./TopNavigation.module.css";
+import { useEffect, useState, useRef } from "react";
+import useOnClickOutside from "use-onclickoutside";
 import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { TracksApi } from "../api/tracks";
-import useOnClickOutside from "use-onclickoutside";
-import styles from "./TopNavigation.module.css";
-import { useRef } from "react";
+import { useEscape } from "../hooks/useEsacpe";
+import { wait } from "../utils/wait";
 
 // TODO: debounce search
 function parseLink(link) {
@@ -23,14 +24,21 @@ export function SearchBar() {
 
   useEffect(() => {
     if (searchQuery) {
-      TracksApi.search(searchQuery).then(async (response) => {
-        if (response.ok) {
-          const data = await response.json();
-          setResults(data.data);
-        }
+      wait(800).then(() => {
+        TracksApi.search(searchQuery).then(async (response) => {
+          if (response.ok) {
+            const data = await response.json();
+            setResults(data.data);
+          }
+        });
       });
     }
   }, [searchQuery]);
+
+  useEscape(() => {
+    setSearchQuery("");
+    setResults([]);
+  });
 
   return (
     <>

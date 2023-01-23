@@ -140,7 +140,7 @@ export function EditProfileModal({ onClose, currentUser }) {
                   ? URL.createObjectURL(photo)
                   : currentUser.photo
               }
-              alt=""
+              alt="profile avatar"
               width={140}
               height={140}
               style={{ objectFit: "cover" }}
