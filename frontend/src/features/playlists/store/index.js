@@ -133,9 +133,31 @@ export const playlistsReducer = produce((state = initialState, action) => {
     }
 
     case PLAY_NEXT: {
-      state.active.current = state.active.current + 1;
-      state.active.next = state.active.next + 1;
-      state.active.prev = 1;
+      if (state.active.current < state.active.trackIds.length - 1) {
+        state.active.current = state.active.current + 1;
+      } else {
+        state.active.current = null;
+      }
+
+      if (
+        state.active.next !== null &&
+        state.active.next < state.active.trackIds.length - 1
+      ) {
+        state.active.next = state.active.current + 1;
+      } else {
+        state.active.next = null;
+      }
+
+      if (
+        state.active.prev !== null &&
+        state.active.prev > state.active.trackIds.length - 1
+      ) {
+        state.active.prev = state.active.current - 1;
+      } else if (state.active.current === 0) {
+        state.active.prev = null;
+      } else {
+        state.active.prev = 0;
+      }
       break;
     }
 
@@ -171,7 +193,7 @@ export const selectActivePlaylistId = (state) =>
 export const selectCurrentPlaylistTrackUrl = createSelector(
   [(state) => state.playlists.entities, (state) => state.playlists.active],
   (playlists, active) =>
-    playlists[active.id]?.tracks.find(
-      (track) => track.id === active.trackIds[active.current]
-    ).upload
+    playlists[active?.id]?.tracks.find(
+      (track) => track.id === active.trackIds[active?.current]
+    )?.upload ?? undefined
 );

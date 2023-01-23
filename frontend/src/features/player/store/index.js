@@ -114,7 +114,10 @@ export const playerReducer = produce((state = initialState, action) => {
       break;
     }
     case PLAY_TRACK: {
-      if (state.wave.sourceId !== state.global.sourceId) {
+      if (
+        state.wave.sourceId &&
+        state.wave.sourceId !== state.global.sourceId
+      ) {
         state.global.sourceId = state.wave.sourceId;
         state.global.sourceUrl = state.wave.sourceUrl;
         state.global.duration = state.wave.duration;

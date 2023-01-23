@@ -97,13 +97,20 @@ export function GlobalPlaybar() {
   useEffect(() => {
     if (
       waveStatus === PLAYER_STATUS.PLAYING ||
-      globalStatus === PLAYER_STATUS.PLAYING
+      (globalStatus === PLAYER_STATUS.PLAYING &&
+        (globalSourceUrl || currentPlaylistTrackUrl))
     ) {
       playerRef.current?.audio.current.play();
     } else if (waveStatus === PLAYER_STATUS.PAUSED) {
       playerRef.current?.audio.current.pause();
     }
-  }, [dispatch, waveStatus, globalStatus]);
+  }, [
+    dispatch,
+    waveStatus,
+    globalStatus,
+    globalSourceUrl,
+    currentPlaylistTrackUrl,
+  ]);
 
   // if (!globalSourceId || globalStatus === PLAYER_STATUS.IDLE) {
   //   return null;
@@ -150,7 +157,10 @@ export function GlobalPlaybar() {
       showJumpControls={false}
       src={currentPlaylistTrackUrl ? currentPlaylistTrackUrl : globalSourceUrl}
       autoPlay={false}
-      autoPlayAfterSrcChange={globalStatus === PLAYER_STATUS.PLAYING}
+      autoPlayAfterSrcChange={
+        globalStatus === PLAYER_STATUS.PLAYING &&
+        (currentPlaylistTrackUrl || globalSourceUrl)
+      }
       onPlay={handlePlay}
       onPause={handlePause}
       onLoadedMetaData={(e) => {
