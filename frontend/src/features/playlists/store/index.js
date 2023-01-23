@@ -10,6 +10,7 @@ const TRACK_REMOVED_FROM_PLAYLIST = "playlists/TRACK_REMOVED_FROM_PLAYLIST";
 export const START_PLAYLIST = "playlists/playlistStarted";
 export const PLAY_NEXT = "playlists/nextPlaying";
 const PLAY_PREV = "playlists/prevPlaying";
+export const PLAYLIST_FINISHED = "playlists/playlistFinished";
 
 export const playlistStarted = (playlistId) => ({
   type: START_PLAYLIST,
@@ -21,6 +22,8 @@ export const playNext = () => ({
 });
 
 export const playPrev = () => ({ type: PLAY_PREV });
+
+export const playlistFinished = () => ({ type: PLAYLIST_FINISHED });
 
 const playlistsReceived = (playlists) => ({
   type: PLAYLISTS_RECEIVED,
@@ -91,21 +94,14 @@ const initialState = {
   active: {
     id: null,
     trackIds: [],
-    current: 0,
-    next: 1,
+    current: null,
+    next: null,
     prev: null,
   },
 };
 
 export const playlistsReducer = produce((state = initialState, action) => {
   switch (action.type) {
-    case START_PLAYLIST: {
-      state.active.id = action.payload;
-      state.active.trackIds = state.entities[action.payload].tracks.map(
-        (track) => track.id
-      );
-      break;
-    }
     case PLAYLISTS_RECEIVED: {
       state.loaded = true;
       state.loading = false;
@@ -132,36 +128,39 @@ export const playlistsReducer = produce((state = initialState, action) => {
       break;
     }
 
+    case START_PLAYLIST: {
+      state.active.id = action.payload;
+      state.active.current = 0;
+      state.active.next = 1;
+      state.active.trackIds = state.entities[action.payload].tracks.map(
+        (track) => track.id
+      );
+      break;
+    }
+
     case PLAY_NEXT: {
-      if (state.active.current < state.active.trackIds.length - 1) {
+      if (state.active.current >= 0) {
         state.active.current = state.active.current + 1;
-      } else {
-        state.active.current = null;
-      }
-
-      if (
-        state.active.next !== null &&
-        state.active.next < state.active.trackIds.length - 1
-      ) {
-        state.active.next = state.active.current + 1;
-      } else {
-        state.active.next = null;
-      }
-
-      if (
-        state.active.prev !== null &&
-        state.active.prev > state.active.trackIds.length - 1
-      ) {
+        state.active.next =
+          state.active.current < state.active.trackIds.length - 1
+            ? state.active.current + 1
+            : null;
         state.active.prev = state.active.current - 1;
-      } else if (state.active.current === 0) {
-        state.active.prev = null;
-      } else {
-        state.active.prev = 0;
       }
       break;
     }
 
     case PLAY_PREV: {
+      if (state.active.current > 0) {
+        state.active.current = state.active.current - 1;
+        state.active.prev =
+          state.active.current > 0 ? state.active.current - 1 : null;
+        state.active.next = state.active.current + 1;
+      }
+      break;
+    }
+
+    case PLAYLIST_FINISHED: {
       break;
     }
 
@@ -187,8 +186,7 @@ export const selectIsTrackInPlaylist = (state, { playlistId, trackId }) =>
     (track) => track.id === trackId
   );
 
-export const selectActivePlaylistId = (state) =>
-  state.playlists.active.trackIds.length ? state.playlists.active.id : null;
+export const selectActivePlaylist = (state) => state.playlists.active;
 
 export const selectCurrentPlaylistTrackUrl = createSelector(
   [(state) => state.playlists.entities, (state) => state.playlists.active],

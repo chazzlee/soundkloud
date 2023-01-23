@@ -1,6 +1,10 @@
 import produce from "immer";
 import { createSelector } from "reselect";
-import { PLAY_NEXT, START_PLAYLIST } from "../../playlists/store";
+import {
+  PLAYLIST_FINISHED,
+  PLAY_NEXT,
+  START_PLAYLIST,
+} from "../../playlists/store";
 
 export const WAVE_PLAYER = "wave";
 export const GLOBAL_PLAYER = "global";
@@ -145,6 +149,8 @@ export const playerReducer = produce((state = initialState, action) => {
       state.wave.duration = action.payload;
       break;
     }
+
+    // PLAYLIST
     case START_PLAYLIST: {
       state.wave.status = PLAYER_STATUS.IDLE;
       state.wave.sourceId = null;
@@ -161,6 +167,10 @@ export const playerReducer = produce((state = initialState, action) => {
     }
     case PLAY_NEXT: {
       state.global.status = PLAYER_STATUS.PLAYING;
+      break;
+    }
+    case PLAYLIST_FINISHED: {
+      state.global.status = PLAYER_STATUS.PAUSED;
       break;
     }
     default:

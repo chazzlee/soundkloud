@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import {
   GLOBAL_PLAYER,
@@ -19,8 +19,10 @@ import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IoMdPlay, IoMdPause } from "react-icons/io";
 import {
+  playlistFinished,
   playNext,
-  selectActivePlaylistId,
+  playPrev,
+  selectActivePlaylist,
   selectActivePlaylistTracks,
   selectCurrentPlaylistTrackUrl,
 } from "../features/playlists/store";
@@ -34,11 +36,23 @@ export function GlobalPlaybar() {
   const dispatch = useDispatch();
   const playerRef = useRef(null);
 
-  const activePlaylistId = useSelector(selectActivePlaylistId);
+  const activePlaylist = useSelector(selectActivePlaylist, shallowEqual);
   const currentPlaylistTrackUrl = useSelector(selectCurrentPlaylistTrackUrl);
 
   const handlePlayNext = useCallback(() => {
-    dispatch(playNext());
+    if (activePlaylist.next !== null) {
+      dispatch(playNext());
+    }
+  }, [dispatch, activePlaylist.next]);
+
+  const handlePlayPrevious = useCallback(() => {
+    if (activePlaylist.prev !== null) {
+      dispatch(playPrev());
+    }
+  }, [dispatch, activePlaylist.prev]);
+
+  const handlePlaylistFinished = useCallback(() => {
+    dispatch(playlistFinished());
   }, [dispatch]);
 
   const waveStatus = useSelector((state) =>
@@ -153,7 +167,7 @@ export function GlobalPlaybar() {
         ),
       }}
       layout="horizontal-reverse"
-      showSkipControls={false}
+      showSkipControls={!!activePlaylist.id}
       showJumpControls={false}
       src={currentPlaylistTrackUrl ? currentPlaylistTrackUrl : globalSourceUrl}
       autoPlay={false}
@@ -163,20 +177,24 @@ export function GlobalPlaybar() {
       }
       onPlay={handlePlay}
       onPause={handlePause}
+      onClickNext={handlePlayNext}
+      onClickPrevious={handlePlayPrevious}
       onLoadedMetaData={(e) => {
-        if (!activePlaylistId) {
+        if (!activePlaylist.id) {
           handleUpdateDurationOnLoad(e.target.duration);
         }
       }}
       onSeeked={(e) => handleSeek(e.target.currentTime)}
       onListen={(e) => {
-        if (!activePlaylistId) {
+        if (!activePlaylist.id) {
           handleUpdateProgress(e.target.currentTime, e.target.duration);
         }
       }}
       onEnded={() => {
-        if (activePlaylistId) {
+        if (activePlaylist.next !== null) {
           handlePlayNext();
+        } else {
+          handlePlaylistFinished();
         }
       }}
     />
