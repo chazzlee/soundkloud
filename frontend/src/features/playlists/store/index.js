@@ -1,10 +1,26 @@
 import produce from "immer";
+import { createSelector } from "reselect";
 import { PlaylistsApi } from "../../../api/playlists";
+import { LOAD_TRACK } from "../../player/store";
 
 const PLAYLISTS_RECEIVED = "playlists/PLAYLISTS_RECEIVED";
 const PLAYLIST_RECEIVED = "playlists/PLAYLIST_RECEIVED";
 const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
 const TRACK_REMOVED_FROM_PLAYLIST = "playlists/TRACK_REMOVED_FROM_PLAYLIST";
+export const START_PLAYLIST = "playlists/playlistStarted";
+export const PLAY_NEXT = "playlists/nextPlaying";
+const PLAY_PREV = "playlists/prevPlaying";
+
+export const playlistStarted = (playlistId) => ({
+  type: START_PLAYLIST,
+  payload: playlistId,
+});
+
+export const playNext = () => ({
+  type: PLAY_NEXT,
+});
+
+export const playPrev = () => ({ type: PLAY_PREV });
 
 const playlistsReceived = (playlists) => ({
   type: PLAYLISTS_RECEIVED,
@@ -72,10 +88,24 @@ const initialState = {
   loading: false,
   errors: null,
   entities: {},
-  current: {},
+  active: {
+    id: null,
+    trackIds: [],
+    current: 0,
+    next: 1,
+    prev: null,
+  },
 };
+
 export const playlistsReducer = produce((state = initialState, action) => {
   switch (action.type) {
+    case START_PLAYLIST: {
+      state.active.id = action.payload;
+      state.active.trackIds = state.entities[action.payload].tracks.map(
+        (track) => track.id
+      );
+      break;
+    }
     case PLAYLISTS_RECEIVED: {
       state.loaded = true;
       state.loading = false;
@@ -101,11 +131,32 @@ export const playlistsReducer = produce((state = initialState, action) => {
       }
       break;
     }
+
+    case PLAY_NEXT: {
+      state.active.current = state.active.current + 1;
+      state.active.next = state.active.next + 1;
+      state.active.prev = 1;
+      break;
+    }
+
+    case PLAY_PREV: {
+      break;
+    }
+
+    case LOAD_TRACK: {
+      state.active.id = null;
+      state.active.trackIds = [];
+      state.active.current = 0;
+      state.active.next = 1;
+      state.active.prev = null;
+      break;
+    }
     default:
       return state;
   }
 });
 
+export const selectPlaylistsLoaded = (state) => state.playlists.loaded;
 export const selectPlaylists = (state) =>
   Object.values(state.playlists?.entities ?? {});
 
@@ -113,3 +164,14 @@ export const selectIsTrackInPlaylist = (state, { playlistId, trackId }) =>
   !!state.playlists?.entities[playlistId].tracks.find(
     (track) => track.id === trackId
   );
+
+export const selectActivePlaylistId = (state) =>
+  state.playlists.active.trackIds.length ? state.playlists.active.id : null;
+
+export const selectCurrentPlaylistTrackUrl = createSelector(
+  [(state) => state.playlists.entities, (state) => state.playlists.active],
+  (playlists, active) =>
+    playlists[active.id]?.tracks.find(
+      (track) => track.id === active.trackIds[active.current]
+    ).upload
+);

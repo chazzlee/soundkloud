@@ -9,7 +9,12 @@ import {
   selectUserTracks,
 } from "../../tracks/store";
 import { EditProfileModal } from "../components/EditProfileModal";
-// import { PlaylistList } from "../../playlists/components/PlaylistList";
+import { PlaylistList } from "../../playlists/components/PlaylistList";
+import {
+  fetchPlaylistsAsync,
+  selectPlaylists,
+  selectPlaylistsLoaded,
+} from "../../playlists/store";
 
 export function UserProfilePage() {
   const dispatch = useDispatch();
@@ -17,6 +22,8 @@ export function UserProfilePage() {
   const currentUser = useSelector(selectCurrentUser);
   const tracksLoaded = useSelector(selectHasTracksLoaded);
   const uploadedTracks = useSelector(selectUserTracks);
+  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
+  const playlists = useSelector(selectPlaylists);
 
   const [activeTab, setActiveTab] = useState("all");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -25,7 +32,10 @@ export function UserProfilePage() {
     if (!tracksLoaded) {
       dispatch(fetchAllTracksByUserAsync(currentUser.id));
     }
-  }, [dispatch, tracksLoaded, currentUser.id]);
+    if (!playlistsLoaded) {
+      dispatch(fetchPlaylistsAsync());
+    }
+  }, [dispatch, tracksLoaded, playlistsLoaded, currentUser.id]);
 
   if (!currentUser) {
     return <h1>FORBIDDEN TODO:</h1>;
@@ -77,13 +87,12 @@ export function UserProfilePage() {
               >
                 Tracks
               </li>
-              {/* <li
+              <li
                 className={`${activeTab === "playlists" ? styles.active : ""}`}
                 onClick={() => setActiveTab("playlists")}
-                style={{ visibility: "hidden" }}
               >
                 Playlists
-              </li> */}
+              </li>
             </div>
           </div>
           <div className={styles.container}>
@@ -95,7 +104,7 @@ export function UserProfilePage() {
                     <TrackCard key={track.id} track={track} />
                   ))}
                 </div>
-                {/* <h3 className={styles.uploadedTitle}>Playlists</h3>
+                <h3 className={styles.uploadedTitle}>Playlists</h3>
                 <div className={styles.trackCards}>
                   {playlists?.map((playlist) => (
                     <div key={playlist.id}>
@@ -107,7 +116,7 @@ export function UserProfilePage() {
                       </ul>
                     </div>
                   ))}
-                </div> */}
+                </div>
               </div>
             )}
             {activeTab === "tracks" && (
@@ -120,9 +129,9 @@ export function UserProfilePage() {
                 </div>
               </div>
             )}
-            {/* {activeTab === "playlists" && (
+            {activeTab === "playlists" && (
               <PlaylistList playlists={playlists} />
-            )} */}
+            )}
             <aside>
               <div></div>
             </aside>

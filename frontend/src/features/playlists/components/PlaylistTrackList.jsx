@@ -1,9 +1,22 @@
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { playlistStarted } from "../store";
+
 export function PlaylistTrackList({ playlist }) {
-  const handleStartPlaylist = () => {};
+  const dispatch = useDispatch();
+
+  const handleStartPlaylist = useCallback(
+    (playlistId) => {
+      dispatch(playlistStarted(playlistId));
+    },
+    [dispatch]
+  );
 
   return (
     <ul>
-      <button onClick={handleStartPlaylist}>Play playlist</button>
+      <button onClick={() => handleStartPlaylist(playlist.id)}>
+        Play playlist
+      </button>
       {playlist.tracks.map((track) => (
         <li
           key={track.id}

@@ -13,10 +13,18 @@ import {
   progressUpdating,
   selectPlayerSource,
   updateDuration,
+  selectPlayerSourceId,
 } from "../features/player/store";
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IoMdPlay, IoMdPause } from "react-icons/io";
+import {
+  playNext,
+  selectActivePlaylistId,
+  selectActivePlaylistTracks,
+  selectCurrentPlaylistTrackUrl,
+} from "../features/playlists/store";
+import { useState } from "react";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -26,6 +34,13 @@ export function GlobalPlaybar() {
   const dispatch = useDispatch();
   const playerRef = useRef(null);
 
+  const activePlaylistId = useSelector(selectActivePlaylistId);
+  const currentPlaylistTrackUrl = useSelector(selectCurrentPlaylistTrackUrl);
+
+  const handlePlayNext = useCallback(() => {
+    dispatch(playNext());
+  }, [dispatch]);
+
   const waveStatus = useSelector((state) =>
     selectPlayerStatus(state, WAVE_PLAYER)
   );
@@ -34,15 +49,16 @@ export function GlobalPlaybar() {
     selectPlayerStatus(state, GLOBAL_PLAYER)
   );
 
-  const globalSource = useSelector((state) =>
+  const globalSourceUrl = useSelector((state) =>
     selectPlayerSource(state, GLOBAL_PLAYER)
   );
 
   const globalSourceId = useSelector((state) =>
-    selectPlayerSource(state, GLOBAL_PLAYER)
+    selectPlayerSourceId(state, GLOBAL_PLAYER)
   );
+
   const waveSourceId = useSelector((state) =>
-    selectPlayerSource(state, WAVE_PLAYER)
+    selectPlayerSourceId(state, WAVE_PLAYER)
   );
 
   const handlePlay = useCallback(() => {
@@ -89,9 +105,9 @@ export function GlobalPlaybar() {
     }
   }, [dispatch, waveStatus, globalStatus]);
 
-  if (!globalSource || globalStatus === PLAYER_STATUS.IDLE) {
-    return null;
-  }
+  // if (!globalSourceId || globalStatus === PLAYER_STATUS.IDLE) {
+  //   return null;
+  // }
 
   return (
     <H5AudioPlayer
@@ -132,20 +148,27 @@ export function GlobalPlaybar() {
       layout="horizontal-reverse"
       showSkipControls={false}
       showJumpControls={false}
-      src={globalSource}
+      src={currentPlaylistTrackUrl ? currentPlaylistTrackUrl : globalSourceUrl}
       autoPlay={false}
-      autoPlayAfterSrcChange={
-        globalSourceId === waveSourceId &&
-        globalStatus === PLAYER_STATUS.PLAYING
-      }
+      autoPlayAfterSrcChange={globalStatus === PLAYER_STATUS.PLAYING}
       onPlay={handlePlay}
       onPause={handlePause}
-      onLoadedMetaData={(e) => handleUpdateDurationOnLoad(e.target.duration)}
+      onLoadedMetaData={(e) => {
+        if (!activePlaylistId) {
+          handleUpdateDurationOnLoad(e.target.duration);
+        }
+      }}
       onSeeked={(e) => handleSeek(e.target.currentTime)}
-      onListen={(e) =>
-        handleUpdateProgress(e.target.currentTime, e.target.duration)
-      }
-      onEnded={() => console.log("GLOBAL FINISH")}
+      onListen={(e) => {
+        if (!activePlaylistId) {
+          handleUpdateProgress(e.target.currentTime, e.target.duration);
+        }
+      }}
+      onEnded={() => {
+        if (activePlaylistId) {
+          handlePlayNext();
+        }
+      }}
     />
   );
 }
