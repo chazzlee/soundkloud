@@ -53,7 +53,7 @@ export function TrackCard({ track }) {
       responsive: true,
       normalize: true,
       height: 60,
-      interact: false,
+      interact: true,
       container: waveformRef.current,
     };
     wavesurfer.current = WaveSurfer.create(waveOptions);
@@ -105,7 +105,14 @@ export function TrackCard({ track }) {
                 </p>
               </div>
               <div className={styles.trackHeaderRight}>
-                <p style={{ marginBottom: "3px", minWidth: "100px" }}>
+                <p
+                  style={{
+                    marginBottom: "3px",
+                    minWidth: "100px",
+                    display: "inline-flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
                   {formatDistanceToNow(new Date(track.createdAt), {
                     addSuffix: true,
                   })}

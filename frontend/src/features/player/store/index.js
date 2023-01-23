@@ -12,12 +12,17 @@ export const PLAYER_STATUS = Object.freeze({
   SEEKED: "seeked",
 });
 
+const CLEAR_TRACK = "player/trackCleared";
 const LOAD_TRACK = "player/trackLoaded";
 const PLAY_TRACK = "player/trackPlaying";
 const PAUSE_TRACK = "player/trackPaused";
 const SEEK_TRACK = "player/trackSeeked";
 const UPDATE_PROGRESS = "player/progressUpdating";
 const UPDATE_DURATION = "player/durationUpdated";
+
+export const trackCleared = () => ({
+  type: CLEAR_TRACK,
+});
 
 export const trackLoaded = (sourceInfo) => ({
   type: LOAD_TRACK,
@@ -66,10 +71,27 @@ const initialState = {
 
 export const playerReducer = produce((state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_TRACK: {
+      state.wave.status = PLAYER_STATUS.IDLE;
+      state.wave.sourceId = null;
+      state.wave.sourceUrl = "";
+      state.wave.duration = 0;
+      state.wave.progress = 0;
+      break;
+    }
     case LOAD_TRACK: {
       state.wave.sourceId = action.payload.id;
       state.wave.sourceUrl = action.payload.url;
       state.wave.duration = action.payload.duration;
+
+      if (
+        state.global.status === PLAYER_STATUS.PLAYING &&
+        state.global.sourceId === action.payload.id
+      ) {
+        state.wave.status = PLAYER_STATUS.PLAYING;
+      } else {
+        state.wave.status = PLAYER_STATUS.LOADED;
+      }
 
       if (
         state.global.status !== PLAYER_STATUS.PLAYING &&
@@ -79,15 +101,6 @@ export const playerReducer = produce((state = initialState, action) => {
         state.global.sourceId = action.payload.id;
         state.global.sourceUrl = action.payload.url;
         state.global.duration = action.payload.duration;
-      }
-
-      if (
-        state.global.status === PLAYER_STATUS.PLAYING &&
-        state.global.sourceId === action.payload.id
-      ) {
-        state.wave.status = PLAYER_STATUS.PLAYING;
-      } else {
-        state.wave.status = PLAYER_STATUS.LOADED;
       }
 
       if (action.payload.duration === null) {

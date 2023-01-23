@@ -9,6 +9,7 @@ import {
   selectPlayerSourceId,
   selectPlayerStatus,
   trackLoaded,
+  trackCleared,
 } from "../../player/store";
 
 export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
@@ -19,8 +20,8 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
     selectPlayerProgress(state, GLOBAL_PLAYER)
   );
 
-  const globalStatus = useSelector((state) =>
-    selectPlayerStatus(state, GLOBAL_PLAYER)
+  const waveStatus = useSelector((state) =>
+    selectPlayerStatus(state, WAVE_PLAYER)
   );
 
   const waveSourceId = useSelector((state) =>
@@ -29,6 +30,8 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   const globalSourceId = useSelector((state) =>
     selectPlayerSourceId(state, GLOBAL_PLAYER)
   );
+
+  const isSameAsGlobalTrack = waveSourceId === globalSourceId;
 
   useEffect(() => {
     // console.clear();
@@ -49,6 +52,7 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
     ref.current.load(track.upload);
 
     ref.current.on("ready", () => {
+      onLoaded(true);
       dispatch(
         trackLoaded({
           id: track.id,
@@ -56,35 +60,37 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
           duration: ref.current.getDuration(),
         })
       );
-      onLoaded(true);
     });
 
     ref.current.on("finish", () => {
-      console.log("FINISHED");
+      console.log("WAVE FINISHED");
+      ref.current.seekTo(1);
     });
 
     return () => {
       console.log("destroying");
       ref.current.cancelAjax();
+      ref.current.unAll();
       ref.current.destroy();
       ref.current = null;
+      dispatch(trackCleared());
     };
   }, [dispatch, ref, track.id, track.upload, onLoaded]);
 
   useEffect(() => {
-    if (globalSourceId === waveSourceId) {
+    if (isSameAsGlobalTrack) {
       ref.current.seekTo(globalProgress);
-      ref.current.play();
     }
-  }, [globalProgress, globalSourceId, waveSourceId, ref]);
+  }, [isSameAsGlobalTrack, ref, globalProgress]);
 
   useEffect(() => {
-    if (globalStatus === PLAYER_STATUS.PLAYING) {
+    // Trigered from global playbar
+    if (waveStatus === PLAYER_STATUS.PLAYING) {
       ref.current.play();
-    } else {
+    } else if (waveStatus === PLAYER_STATUS.PAUSED) {
       ref.current.pause();
     }
-  }, [globalStatus, ref, dispatch]);
+  }, [ref, waveStatus]);
 
   return <div id="waveform" ref={waveformRef} />;
 });
