@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import {
@@ -25,7 +25,9 @@ import {
   selectActivePlaylist,
   selectActivePlaylistTracks,
   selectCurrentPlaylistTrackUrl,
+  selectPlaylistById,
 } from "../features/playlists/store";
+import { MdOutlinePlaylistPlay } from "react-icons/md";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -140,7 +142,7 @@ export function GlobalPlaybar() {
         RHAP_UI.PROGRESS_BAR,
         RHAP_UI.DURATION,
         RHAP_UI.VOLUME,
-        <CurrentlyPlaying />,
+        <CurrentlyPlaying playlistId={activePlaylist.id} />,
       ]}
       customAdditionalControls={[]}
       customIcons={{
@@ -198,20 +200,66 @@ export function GlobalPlaybar() {
   );
 }
 
-function CurrentlyPlaying() {
-  const track = useSelector(selectCurrentlyPlaying);
+function CurrentlyPlaying({ playlistId }) {
+  const activePlaylist = useSelector(
+    (state) => selectPlaylistById(state, playlistId),
+    shallowEqual
+  );
+
+  const currentTrack = useSelector(selectCurrentlyPlaying);
+  const [nextUpOpen, setNextUpOpen] = useState(false);
 
   return (
-    <Link to={track?.permalink}>
-      <div className="currently-playing">
-        <div className="cover-image">
-          <img src={track?.cover} alt={track?.title} />
+    <div style={{ position: "relative" }}>
+      <Link to={currentTrack?.permalink}>
+        <div className="currently-playing">
+          <div className="cover-image">
+            <img src={currentTrack?.cover} alt={currentTrack?.title} />
+          </div>
+          <div className="track-details">
+            <p className="artist">{currentTrack?.artist}</p>
+            <p className="title">{currentTrack?.title}</p>
+          </div>
+          <button
+            style={{ marginLeft: 30 }}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setNextUpOpen((prev) => !prev);
+            }}
+          >
+            <MdOutlinePlaylistPlay />
+          </button>
         </div>
-        <div className="track-details">
-          <p className="artist">{track?.artist}</p>
-          <p className="title">{track?.title}</p>
+      </Link>
+      {nextUpOpen ? (
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 12,
+            background: "white",
+            bottom: "40px",
+            left: 0,
+            border: "1px solid black",
+            height: 600,
+            width: 400,
+          }}
+        >
+          <h3>Next up</h3>
+          <ul>
+            {activePlaylist.tracks.map((track) => (
+              <li
+                key={track.id}
+                style={{
+                  fontWeight: currentTrack.id === track.id ? "bold" : "normal",
+                }}
+              >
+                {track.artist} - {track.title}
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </Link>
+      ) : null}
+    </div>
   );
 }

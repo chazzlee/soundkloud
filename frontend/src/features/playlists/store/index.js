@@ -212,6 +212,9 @@ export const selectIsTrackInPlaylist = (state, { playlistId, trackId }) =>
     (track) => track.id === trackId
   );
 
+export const selectPlaylistById = (state, playlistId) =>
+  state.playlists.entities[playlistId];
+
 export const selectActivePlaylist = (state) => state.playlists.active;
 
 export const selectCurrentPlaylistTrackUrl = createSelector(
