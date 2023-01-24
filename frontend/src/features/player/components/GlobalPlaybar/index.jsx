@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import "./GlobalPlaybar.css";
+import { useCallback, useEffect, useRef } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import H5AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import {
   GLOBAL_PLAYER,
   WAVE_PLAYER,
   PLAYER_STATUS,
-  selectCurrentlyPlaying,
   selectPlayerStatus,
   trackPaused,
   trackPlaying,
@@ -13,24 +13,18 @@ import {
   progressUpdating,
   selectPlayerSource,
   updateDuration,
-  selectPlayerSourceId,
-} from "../features/player/store";
-import { useCallback } from "react";
-import { Link } from "react-router-dom";
-import { IoMdPlay, IoMdPause } from "react-icons/io";
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import { BiRepeat } from "react-icons/bi";
+} from "../../store";
 import {
   playlistFinished,
   playPreviousTrack,
   playNextTrack,
   selectActivePlaylist,
-  selectActivePlaylistTracks,
   selectCurrentPlaylistTrackUrl,
-  selectPlaylistById,
-} from "../features/playlists/store";
-import { MdOutlinePlaylistPlay } from "react-icons/md";
-import useOnClickOutside from "use-onclickoutside";
+} from "../../../playlists/store";
+import { IoMdPlay, IoMdPause } from "react-icons/io";
+import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import { BiRepeat } from "react-icons/bi";
+import { NowPlaying } from "./NowPlaying";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -70,14 +64,6 @@ export function GlobalPlaybar() {
   const globalSourceUrl = useSelector((state) =>
     selectPlayerSource(state, GLOBAL_PLAYER)
   );
-
-  // const globalSourceId = useSelector((state) =>
-  //   selectPlayerSourceId(state, GLOBAL_PLAYER)
-  // );
-
-  // const waveSourceId = useSelector((state) =>
-  //   selectPlayerSourceId(state, WAVE_PLAYER)
-  // );
 
   const handlePlay = useCallback(() => {
     dispatch(trackPlaying());
@@ -151,7 +137,7 @@ export function GlobalPlaybar() {
         RHAP_UI.PROGRESS_BAR,
         RHAP_UI.DURATION,
         RHAP_UI.VOLUME,
-        <CurrentlyPlaying playlistId={activePlaylist.id} />,
+        <NowPlaying playlistId={activePlaylist.id} />,
       ]}
       customAdditionalControls={[]}
       customIcons={{
@@ -194,79 +180,3 @@ export function GlobalPlaybar() {
 }
 
 // TODO:
-function CurrentlyPlaying({ playlistId }) {
-  const activePlaylist = useSelector(
-    (state) => selectPlaylistById(state, playlistId),
-    shallowEqual
-  );
-
-  const currentTrack = useSelector(selectCurrentlyPlaying);
-  const [nextUpOpen, setNextUpOpen] = useState(false);
-
-  const handleToggle = useCallback(() => setNextUpOpen((prev) => !prev), []);
-  const handleClose = useCallback(() => setNextUpOpen(false), []);
-
-  const nextUpRef = useRef(null);
-
-  //FIXME:
-  // useOnClickOutside(nextUpRef, handleClose);
-
-  return (
-    <div className="currently-playing-container">
-      <div className="currently-playing">
-        <div className="cover-image">
-          <img
-            src={currentTrack?.cover}
-            alt={currentTrack?.title}
-            height={30}
-            width={30}
-          />
-        </div>
-        <Link className="track-details" to={currentTrack?.permalink}>
-          <p className="artist">{currentTrack?.artist}</p>
-          <p className="title">{currentTrack?.title}</p>
-        </Link>
-        <div className="currently-playing-actions">
-          <button type="button" onClick={handleToggle}>
-            <MdOutlinePlaylistPlay />
-          </button>
-          <button type="button" onClick={handleToggle}>
-            <MdOutlinePlaylistPlay />
-          </button>
-          <button type="button" onClick={handleToggle}>
-            <MdOutlinePlaylistPlay />
-          </button>
-        </div>
-      </div>
-      {nextUpOpen ? (
-        <div
-          style={{
-            position: "absolute",
-            zIndex: 12,
-            background: "white",
-            bottom: "40px",
-            left: 0,
-            border: "1px solid black",
-            height: 600,
-            width: 400,
-          }}
-          ref={nextUpRef}
-        >
-          <h3>Next up</h3>
-          <ul>
-            {activePlaylist?.tracks.map((track) => (
-              <li
-                key={track.id}
-                style={{
-                  fontWeight: currentTrack.id === track.id ? "bold" : "normal",
-                }}
-              >
-                {track.artist} - {track.title}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-    </div>
-  );
-}

@@ -1,0 +1,145 @@
+.rhap_container {
+  width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 12px;
+  background-color: #f2f2f2;
+  color: #333;
+  height: 48px;
+  box-shadow: none;
+  justify-content: center;
+}
+
+.rhap_controls-section {
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rhap_main-controls > button {
+  height: 24px;
+  width: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rhap_main-controls > button > svg,
+.repeat-btn > svg {
+  height: 24px;
+  width: 100%;
+  color: #333;
+}
+
+.repeat-btn {
+  height: 20px;
+}
+
+.rhap_progress-bar {
+  height: 1px;
+  background-color: rgb(190, 190, 190);
+}
+
+.rhap_progress-indicator {
+  visibility: hidden;
+  width: 10px;
+  height: 10px;
+  top: -4.5px;
+  border-radius: 100%;
+  box-shadow: none;
+}
+
+.rhap_progress-filled {
+  background-color: var(--primary-orange);
+}
+
+.rhap_time {
+  font-size: 12px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.rhap_current-time {
+  color: var(--primary-orange);
+}
+
+.rhap_volume-container {
+  margin-left: 12px;
+}
+
+.rhap_volume-container svg {
+  color: #333;
+  height: 20px;
+}
+
+.rhap_volume-bar {
+  height: 1px;
+  background-color: rgb(190, 190, 190);
+}
+
+.rhap_volume-indicator {
+  background-color: #333;
+  box-shadow: none;
+  top: -3.3px;
+  width: 8px;
+  height: 8px;
+}
+
+.currently-playing-container {
+  position: relative;
+  height: 100%;
+  display: flex;
+  width: 280px;
+}
+
+.currently-playing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 20px;
+}
+
+.currently-playing > .cover-image {
+  height: 30px;
+  width: 30px;
+  margin-right: 14px;
+}
+.currently-playing > .cover-image > img {
+  height: 30px;
+  width: 30px;
+}
+
+.track-details {
+  font-size: 13px;
+  display: block;
+  width: 180px;
+}
+.currently-playing .artist {
+  color: #999;
+  margin-bottom: 2px;
+}
+.currently-playing .title {
+  color: #666;
+}
+
+/* TODO: */
+
+.currently-playing-actions {
+  width: 80px;
+}
+
+.currently-playing-actions > button {
+  height: 30px;
+}
+
+.next-up {
+  position: "absolute";
+  z-index: 12;
+  background: "white";
+  bottom: "40px";
+  left: 0;
+  border: "1px solid black";
+  height: 600;
+  width: 400;
+}
