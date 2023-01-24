@@ -35,8 +35,9 @@ export const trackLoaded = (sourceInfo) => ({
   payload: sourceInfo,
 });
 
-export const trackPlaying = () => ({
+export const trackPlaying = (trackId) => ({
   type: PLAY_TRACK,
+  payload: trackId,
 });
 
 export const trackPaused = () => ({

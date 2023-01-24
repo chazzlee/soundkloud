@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { selectCurrentlyPlaying } from "../../store";
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { IoMdClose, IoMdHeart } from "react-icons/io";
 import { FaUserAlt } from "react-icons/fa";
-import { selectPlaylistById } from "../../../playlists/store";
+import { playlistCleared, selectPlaylistById } from "../../../playlists/store";
 import { MdOutlinePlaylistPlay } from "react-icons/md";
 
 export function NowPlaying({ playlistId }) {
@@ -22,17 +22,19 @@ export function NowPlaying({ playlistId }) {
   return (
     <div className="currently-playing-container">
       <div className="currently-playing">
-        <div className="cover-image">
-          <img
-            src={currentTrack?.cover}
-            alt={currentTrack?.title}
-            height={30}
-            width={30}
-          />
-        </div>
-        <Link className="track-details" to={currentTrack?.permalink}>
-          <p className="artist">{currentTrack?.artist}</p>
-          <p className="title">{currentTrack?.title}</p>
+        <Link className="currently-playing-link" to={currentTrack?.permalink}>
+          <div className="cover-image">
+            <img
+              src={currentTrack?.cover}
+              alt={currentTrack?.title}
+              height={30}
+              width={30}
+            />
+          </div>
+          <div className="track-details">
+            <p className="artist">{currentTrack?.artist}</p>
+            <p className="title">{currentTrack?.title}</p>
+          </div>
         </Link>
         <div className="currently-playing-actions">
           <button type="button" onClick={() => {}}>
@@ -60,15 +62,17 @@ export function NowPlaying({ playlistId }) {
 }
 
 function NextUpModal({ activePlaylist, currentTrack, onClose }) {
+  const dispatch = useDispatch();
+  const handleClearPlaylist = useCallback(() => {
+    dispatch(playlistCleared());
+  }, [dispatch]);
+
   return (
     <div className="next-up-container">
       <header className="next-up-header">
         <h3 className="next-up-heading">Next up</h3>
         <div className="next-up-modal-actions">
-          <button
-            className="clear-btn"
-            onClick={() => console.log("TODO: MUST IMPLEMENT")}
-          >
+          <button className="clear-btn" onClick={handleClearPlaylist}>
             Clear
           </button>
           <button className="close-btn" onClick={onClose}>

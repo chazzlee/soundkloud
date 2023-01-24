@@ -76,7 +76,7 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
   const handlePlay = (event) => {
     event.preventDefault();
     if (item.id === globalSourceId) {
-      dispatch(trackPlaying());
+      dispatch(trackPlaying(item.id));
     } else {
       dispatch(trackLoaded({ id: item.id, url: item.upload, duration: null }));
     }

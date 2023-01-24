@@ -74,7 +74,7 @@ export function GlobalPlaybar() {
 
   const handlePlay = useCallback(() => {
     if (waveSourceId === globalSourceId) {
-      dispatch(trackPlaying());
+      dispatch(trackPlaying(waveSourceId));
     }
   }, [dispatch, waveSourceId, globalSourceId]);
 

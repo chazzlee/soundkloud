@@ -100,12 +100,17 @@
   margin-left: 20px;
 }
 
-.currently-playing > .cover-image {
+.currently-playing-link {
+  display: flex;
+  align-items: center;
+}
+
+.currently-playing .cover-image {
   height: 30px;
   width: 30px;
   margin-right: 14px;
 }
-.currently-playing > .cover-image > img {
+.currently-playing .cover-image > img {
   height: 30px;
   width: 30px;
 }

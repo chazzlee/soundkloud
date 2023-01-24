@@ -3,6 +3,7 @@ import { createSelector } from "reselect";
 import { PlaylistsApi } from "../../../api/playlists";
 import { PLAY_TRACK } from "../../player/store";
 
+const CLEAR_PLAYLIST = "playlists/playlistCleared";
 const PLAYLISTS_RECEIVED = "playlists/PLAYLISTS_RECEIVED";
 const PLAYLIST_RECEIVED = "playlists/PLAYLIST_RECEIVED";
 const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
@@ -28,6 +29,7 @@ export const playPrev = (previousTrack) => ({
 });
 
 export const playlistFinished = () => ({ type: PLAYLIST_FINISHED });
+export const playlistCleared = () => ({ type: CLEAR_PLAYLIST });
 
 const playlistsReceived = (playlists) => ({
   type: PLAYLISTS_RECEIVED,
@@ -183,6 +185,12 @@ export const playlistsReducer = produce((state = initialState, action) => {
     }
 
     case PLAYLIST_FINISHED: {
+      state.active.current = null;
+      state.active.next = null;
+      state.active.prev = null;
+      break;
+    }
+    case CLEAR_PLAYLIST: {
       state.active.id = null;
       state.active.trackIds = [];
       state.active.current = null;
@@ -192,7 +200,21 @@ export const playlistsReducer = produce((state = initialState, action) => {
     }
 
     case PLAY_TRACK: {
-      state.active.current = null;
+      const currentlyPlaying = state.active.trackIds.findIndex(
+        (id) => id === action.payload
+      );
+      if (currentlyPlaying >= 0) {
+        state.active.current = currentlyPlaying;
+        state.active.next =
+          state.active.current < state.active.trackIds.length - 1
+            ? state.active.current + 1
+            : null;
+        state.active.prev =
+          state.active.current > 0 ? state.active.current - 1 : null;
+      } else {
+        state.active.current = null;
+      }
+
       break;
     }
     default:

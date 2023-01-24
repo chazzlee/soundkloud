@@ -30,10 +30,13 @@ export function PlayBanner({ track }) {
   );
   const wavesurfer = useRef(null);
 
-  const handlePlay = useCallback(() => {
-    wavesurfer.current.play();
-    dispatch(trackPlaying());
-  }, [dispatch]);
+  const handlePlay = useCallback(
+    (trackId) => {
+      wavesurfer.current.play();
+      dispatch(trackPlaying(trackId));
+    },
+    [dispatch]
+  );
 
   const handlePause = useCallback(() => {
     wavesurfer.current.pause();
@@ -53,7 +56,7 @@ export function PlayBanner({ track }) {
     >
       <div className={styles.bannerHeader}>
         <ControlButton
-          onPlay={handlePlay}
+          onPlay={() => handlePlay(track.id)}
           onPause={handlePause}
           status={waveStatus}
           loaded={loaded}
