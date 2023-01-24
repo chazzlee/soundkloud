@@ -193,8 +193,8 @@ export const playlistsReducer = produce((state = initialState, action) => {
     case LOAD_TRACK: {
       state.active.id = null;
       state.active.trackIds = [];
-      state.active.current = 0;
-      state.active.next = 1;
+      state.active.current = null;
+      state.active.next = null;
       state.active.prev = null;
       break;
     }

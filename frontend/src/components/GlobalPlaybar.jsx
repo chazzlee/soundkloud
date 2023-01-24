@@ -28,6 +28,7 @@ import {
   selectPlaylistById,
 } from "../features/playlists/store";
 import { MdOutlinePlaylistPlay } from "react-icons/md";
+import useOnClickOutside from "use-onclickoutside";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -127,6 +128,7 @@ export function GlobalPlaybar() {
     currentPlaylistTrackUrl,
   ]);
 
+  //FIXME:
   // if (!globalSourceId || globalStatus === PLAYER_STATUS.IDLE) {
   //   return null;
   // }
@@ -168,7 +170,8 @@ export function GlobalPlaybar() {
         ),
       }}
       layout="horizontal-reverse"
-      showSkipControls={!!activePlaylist.id}
+      showSkipControls={true}
+      // showSkipControls={!!activePlaylist.id}
       showJumpControls={false}
       src={currentPlaylistTrackUrl ? currentPlaylistTrackUrl : globalSourceUrl}
       autoPlay={false}
@@ -200,6 +203,7 @@ export function GlobalPlaybar() {
   );
 }
 
+// TODO:
 function CurrentlyPlaying({ playlistId }) {
   const activePlaylist = useSelector(
     (state) => selectPlaylistById(state, playlistId),
@@ -209,29 +213,32 @@ function CurrentlyPlaying({ playlistId }) {
   const currentTrack = useSelector(selectCurrentlyPlaying);
   const [nextUpOpen, setNextUpOpen] = useState(false);
 
+  const handleToggle = useCallback(() => setNextUpOpen((prev) => !prev), []);
+  const handleClose = useCallback(() => setNextUpOpen(false), []);
+
+  const nextUpRef = useRef(null);
+
+  //FIXME:
+  // useOnClickOutside(nextUpRef, handleClose);
+
   return (
     <div style={{ position: "relative" }}>
-      <Link to={currentTrack?.permalink}>
-        <div className="currently-playing">
-          <div className="cover-image">
-            <img src={currentTrack?.cover} alt={currentTrack?.title} />
-          </div>
-          <div className="track-details">
-            <p className="artist">{currentTrack?.artist}</p>
-            <p className="title">{currentTrack?.title}</p>
-          </div>
-          <button
-            style={{ marginLeft: 30 }}
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              setNextUpOpen((prev) => !prev);
-            }}
-          >
+      <div className="currently-playing">
+        <div className="cover-image">
+          <img src={currentTrack?.cover} alt={currentTrack?.title} />
+        </div>
+        <Link className="track-details" to={currentTrack?.permalink}>
+          <p className="artist">{currentTrack?.artist}</p>
+          <p className="title">{currentTrack?.title}</p>
+        </Link>
+        <div>
+          <button type="button" onClick={handleToggle}>
             <MdOutlinePlaylistPlay />
           </button>
         </div>
-      </Link>
+      </div>
+      {/* <Link to={currentTrack?.permalink}>
+      </Link> */}
       {nextUpOpen ? (
         <div
           style={{
@@ -244,10 +251,11 @@ function CurrentlyPlaying({ playlistId }) {
             height: 600,
             width: 400,
           }}
+          ref={nextUpRef}
         >
           <h3>Next up</h3>
           <ul>
-            {activePlaylist.tracks.map((track) => (
+            {activePlaylist?.tracks.map((track) => (
               <li
                 key={track.id}
                 style={{
