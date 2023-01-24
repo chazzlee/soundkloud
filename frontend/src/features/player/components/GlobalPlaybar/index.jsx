@@ -13,6 +13,7 @@ import {
   progressUpdating,
   selectPlayerSource,
   updateDuration,
+  selectPlayerSourceId,
 } from "../../store";
 import {
   playlistFinished,
@@ -36,6 +37,12 @@ export function GlobalPlaybar() {
 
   const activePlaylist = useSelector(selectActivePlaylist, shallowEqual);
   const currentPlaylistTrackUrl = useSelector(selectCurrentPlaylistTrackUrl);
+  const waveSourceId = useSelector((state) =>
+    selectPlayerSourceId(state, WAVE_PLAYER)
+  );
+  const globalSourceId = useSelector((state) =>
+    selectPlayerSourceId(state, GLOBAL_PLAYER)
+  );
 
   const handlePlayNext = useCallback(() => {
     if (activePlaylist.next !== null) {
@@ -66,8 +73,10 @@ export function GlobalPlaybar() {
   );
 
   const handlePlay = useCallback(() => {
-    dispatch(trackPlaying());
-  }, [dispatch]);
+    if (waveSourceId === globalSourceId) {
+      dispatch(trackPlaying());
+    }
+  }, [dispatch, waveSourceId, globalSourceId]);
 
   const handlePause = useCallback(() => {
     dispatch(trackPaused());
@@ -161,11 +170,9 @@ export function GlobalPlaybar() {
       onClickPrevious={handlePlayPrevious}
       onLoadedMetaData={(e) => handleUpdateDurationOnLoad(e.target.duration)}
       onSeeked={(e) => handleSeek(e.target.currentTime)}
-      onListen={(e) => {
-        if (!activePlaylist.id) {
-          handleUpdateProgress(e.target.currentTime, e.target.duration);
-        }
-      }}
+      onListen={(e) =>
+        handleUpdateProgress(e.target.currentTime, e.target.duration)
+      }
       onEnded={() => {
         if (activePlaylist.id) {
           if (activePlaylist.next !== null) {
@@ -178,5 +185,3 @@ export function GlobalPlaybar() {
     />
   );
 }
-
-// TODO:

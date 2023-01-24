@@ -1,7 +1,7 @@
 import produce from "immer";
 import { createSelector } from "reselect";
 import { PlaylistsApi } from "../../../api/playlists";
-import { LOAD_TRACK } from "../../player/store";
+import { PLAY_TRACK } from "../../player/store";
 
 const PLAYLISTS_RECEIVED = "playlists/PLAYLISTS_RECEIVED";
 const PLAYLIST_RECEIVED = "playlists/PLAYLIST_RECEIVED";
@@ -191,12 +191,8 @@ export const playlistsReducer = produce((state = initialState, action) => {
       break;
     }
 
-    case LOAD_TRACK: {
-      state.active.id = null;
-      state.active.trackIds = [];
+    case PLAY_TRACK: {
       state.active.current = null;
-      state.active.next = null;
-      state.active.prev = null;
       break;
     }
     default:

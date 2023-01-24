@@ -20,7 +20,7 @@ export const PLAYER_STATUS = Object.freeze({
 
 const CLEAR_TRACK = "player/trackCleared";
 export const LOAD_TRACK = "player/trackLoaded";
-const PLAY_TRACK = "player/trackPlaying";
+export const PLAY_TRACK = "player/trackPlaying";
 const PAUSE_TRACK = "player/trackPaused";
 const SEEK_TRACK = "player/trackSeeked";
 const UPDATE_PROGRESS = "player/progressUpdating";
@@ -118,6 +118,9 @@ export const playerReducer = produce((state = initialState, action) => {
       break;
     }
     case PLAY_TRACK: {
+      if (state.wave.sourceId === state.global.sourceId) {
+        state.wave.status = PLAYER_STATUS.PLAYING;
+      }
       if (
         state.wave.sourceId &&
         state.wave.sourceId !== state.global.sourceId
@@ -127,7 +130,6 @@ export const playerReducer = produce((state = initialState, action) => {
         state.global.duration = state.wave.duration;
         state.global.progress = 0;
       }
-      state.wave.status = PLAYER_STATUS.PLAYING;
       state.global.status = PLAYER_STATUS.PLAYING;
       break;
     }
@@ -172,6 +174,9 @@ export const playerReducer = produce((state = initialState, action) => {
       state.global.sourceUrl = action.payload.upload;
       state.global.duration = 0;
       state.global.progress = 0;
+      if (state.wave.sourceId !== state.global.sourceId) {
+        state.wave.status = PLAYER_STATUS.PAUSED;
+      }
       break;
     }
     case PLAY_PREV: {
@@ -180,6 +185,10 @@ export const playerReducer = produce((state = initialState, action) => {
       state.global.sourceUrl = action.payload.upload;
       state.global.duration = 0;
       state.global.progress = 0;
+
+      if (state.wave.sourceId !== state.global.sourceId) {
+        state.wave.status = PLAYER_STATUS.PAUSED;
+      }
       break;
     }
     case PLAYLIST_FINISHED: {
