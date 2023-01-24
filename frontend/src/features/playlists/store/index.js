@@ -101,6 +101,7 @@ export const createNewPlaylistAsync = (playlist) => async (dispatch) => {
     const response = await PlaylistsApi.createNewPlaylist(playlist);
     const data = await response.json();
     dispatch(playlistReceived(data));
+    return data;
   } catch (err) {
     console.error("createNewPlaylistsAsync", err);
   }

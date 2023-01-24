@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class Playlist < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
+  validates :title, presence: true
+
   belongs_to :user
   has_many :playlist_tracks
 

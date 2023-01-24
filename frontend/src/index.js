@@ -16,14 +16,16 @@ import { DiscoverPage } from "./features/discover/pages/DiscoverPage";
 import { TrackShowPage } from "./features/tracks/pages/TrackShowPage";
 import { UploadNewTrackPage } from "./features/tracks/components/UploadNewTrackPage";
 import { UserProfilePage } from "./features/profiles/pages/UserProfilePage";
+import { PlaylistShowPage } from "./features/playlists/pages/PlaylistShowPage";
 
 const store = configureStore();
 
 // TODO:
 const Error = () => {
   return (
-    <div>
+    <div className="full-page">
       <h1>Something went wrong...</h1>
+      <a href="/">Click to refresh</a>
     </div>
   );
 };
@@ -39,6 +41,7 @@ const router = createBrowserRouter([
       { path: "/:user/:trackSlug", element: <TrackShowPage /> },
       { path: "/upload", element: <UploadNewTrackPage /> },
       { path: "/:slug", element: <UserProfilePage /> },
+      { path: "/:user/sets/:playlist", element: <PlaylistShowPage /> },
       // { path: "/logout", element: <LogoutPage /> },
     ],
   },

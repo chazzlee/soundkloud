@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../../../context/Modal";
 import {
@@ -7,120 +7,111 @@ import {
   selectPlaylists,
 } from "../../playlists/store";
 import { AddToPlaylistTab } from "./AddToPlaylistTab";
+import { CreatePlaylistTab } from "./CreatePlaylistTab";
+import { GoToPlaylistTab } from "./GoToPlaylistTab";
 import styles from "./PlaylistModal.module.css";
-import { TrackRow } from "./TrackRow";
+
+const TABS = Object.freeze({
+  ADD: "add",
+  CREATE: "create",
+  SUCCESS: "success",
+});
+
+const initialFormData = {
+  title: "",
+  privacy: "public",
+};
 
 export function PlaylistModal({ track, onClose }) {
   const dispatch = useDispatch();
-  const [playlistModalTab, setPlaylistModalTab] = useState("add");
-  const [title, setTitle] = useState("");
-  const [privacy, setPrivacy] = useState("public");
-  const [createStep, setCreateStep] = useState("initial");
-  const [trackToAdd, setTrackToAdd] = useState(track);
-  const playlists = useSelector(selectPlaylists);
+  const [playlistSlug, setPlaylistSlug] = useState("");
 
-  const handleRemove = () => {
-    setTrackToAdd(null);
+  const [playlistModalTab, setPlaylistModalTab] = useState(TABS.ADD);
+  const handleTabChange = useCallback((tab) => {
+    setPlaylistModalTab(tab);
+  }, []);
+
+  const [playlistFormData, setPlaylistFormData] = useState(initialFormData);
+
+  const handleChange = (e) => {
+    setPlaylistFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
+
+  const playlists = useSelector(selectPlaylists);
 
   const handleCreatePlaylist = (e) => {
     e.preventDefault();
+
     const playlist = {
-      title,
-      privacy,
+      title: playlistFormData.title,
+      privacy: playlistFormData.privacy,
       tracks: [track.id],
     };
 
-    dispatch(createNewPlaylistAsync(playlist));
-
-    setTitle("");
-    setPrivacy("public");
-    setCreateStep("saved");
+    dispatch(createNewPlaylistAsync(playlist)).then((data) => {
+      setPlaylistSlug(data.slug);
+      setPlaylistFormData(initialFormData);
+      setPlaylistModalTab(TABS.SUCCESS);
+    });
   };
+
+  useEffect(() => {
+    // TODO: only dispatch if playlist not yet loaded
+    dispatch(fetchPlaylistsAsync());
+  }, [dispatch]);
 
   return (
     <Modal onClose={onClose} className={styles.modal}>
-      <div className={styles.playlistHeader}>
-        <h2
-          className={`${styles.playlistHeading} ${
-            playlistModalTab === "add" ? styles.active : ""
-          }`}
-          role="button"
-          onClick={() => setPlaylistModalTab("add")}
-        >
-          Add to playlist
-        </h2>
-        <h2
-          className={`${styles.playlistHeading} ${
-            playlistModalTab === "create" ? styles.active : ""
-          }`}
-          role="button"
-          onClick={() => setPlaylistModalTab("create")}
-        >
-          Create a playlist
-        </h2>
-      </div>
+      <PlaylistModalHeader
+        activeTab={playlistModalTab}
+        onTabChange={handleTabChange}
+      />
       <div className={styles.container}>
-        {playlistModalTab === "add" ? (
+        {playlistModalTab === TABS.ADD && (
           <AddToPlaylistTab track={track} playlists={playlists} />
-        ) : createStep === "initial" ? (
-          <>
-            <label htmlFor="title" className={styles.label}>
-              Playlist title <span style={{ color: "#cf0000" }}>*</span>
-            </label>
-            <input
-              type="text"
-              className={styles.searchForPlaylists}
-              name="title"
-              value={title}
-              autoFocus
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <form className={styles.saveForm} onSubmit={handleCreatePlaylist}>
-              <div>
-                <div style={{ fontSize: "12px" }}>
-                  Privacy:{" "}
-                  <input
-                    type="radio"
-                    name="privacy"
-                    value="public"
-                    onChange={(e) => setPrivacy(e.target.value)}
-                    defaultChecked
-                  />{" "}
-                  Public{" "}
-                  <input
-                    type="radio"
-                    name="privacy"
-                    value="private"
-                    onChange={(e) => setPrivacy(e.target.value)}
-                  />{" "}
-                  Private
-                </div>
-              </div>
-              <button className={styles.saveBtn}>Save</button>
-            </form>
-            <div className={styles.tracks}>
-              <TrackRow track={trackToAdd} onRemove={handleRemove} />
-              <TrackRow />
-              <TrackRow />
-              <TrackRow />
-            </div>
-          </>
-        ) : (
-          <div>
-            <div className={styles.savedContainer}>
-              <div className={styles.coverContainer} />
-              <button className={styles.goBtn}>Go to playlist</button>
-            </div>
-            <div className={styles.tracks}>
-              <TrackRow
-                track={trackToAdd}
-                style={{ color: "#444", fontWeight: 400 }}
-              />
-            </div>
-          </div>
+        )}
+        {playlistModalTab === TABS.CREATE && (
+          <CreatePlaylistTab
+            track={track}
+            formData={playlistFormData}
+            onChange={handleChange}
+            onSubmit={handleCreatePlaylist}
+          />
+        )}
+        {playlistModalTab === TABS.SUCCESS && (
+          <GoToPlaylistTab trackToAdd={track} playlistSlug={playlistSlug} />
         )}
       </div>
     </Modal>
+  );
+}
+
+function PlaylistModalHeader({ activeTab, onTabChange }) {
+  return (
+    <div className={styles.playlistHeader}>
+      <h2
+        className={`${styles.playlistHeading} ${
+          activeTab === TABS.ADD ? styles.active : ""
+        }`}
+        role="button"
+        onClick={() => onTabChange(TABS.ADD)}
+      >
+        Add to playlist
+      </h2>
+      <h2
+        className={`${styles.playlistHeading} ${
+          activeTab === TABS.CREATE || activeTab === TABS.SUCCESS
+            ? styles.active
+            : ""
+        }`}
+        role="button"
+        onClick={() => onTabChange(TABS.CREATE)}
+      >
+        Create a playlist
+      </h2>
+    </div>
   );
 }

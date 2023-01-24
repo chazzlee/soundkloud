@@ -4,18 +4,19 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
-import { MdOutlineModeEditOutline } from "react-icons/md";
+
+import { MdOutlineModeEditOutline, MdPlaylistAdd } from "react-icons/md";
 import { BiLockAlt } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { EditTrackModal } from "./EditTrackModal";
 import WaveSurfer from "wavesurfer.js";
-// import { Wavesurfer } from "../../tracks/components/Wavesurfer";
 import { destroyTrackAsync } from "../../tracks/store";
 import { PLAYER_STATUS } from "../../player/store";
 import { useCallback } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { TrackCardSpinner } from "./TrackCardSpinner";
+import { addToPlaylistAsync } from "../../playlists/store";
 
 // TODO:
 // FIXME:fix spinner position
@@ -41,6 +42,10 @@ export function TrackCard({ track }) {
   const handlePause = useCallback(() => {
     wavesurfer.current.pause();
     setIsPlaying(false);
+  }, []);
+
+  const handleAddToPlaylist = useCallback(() => {
+    console.log("TODO: NEED TO IMPLEMENT");
   }, []);
 
   useEffect(() => {
@@ -164,6 +169,20 @@ export function TrackCard({ track }) {
                 }}
               />
               Remove
+            </button>
+            <button
+              className={styles.smBtn}
+              style={{ marginLeft: "4px" }}
+              onClick={() => handleAddToPlaylist()}
+            >
+              <MdPlaylistAdd
+                style={{
+                  verticalAlign: "sub",
+                  fontSize: "12px",
+                  marginRight: "4px",
+                }}
+              />
+              Add to playlist
             </button>
           </div>
         </div>
