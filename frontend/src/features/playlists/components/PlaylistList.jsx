@@ -1,4 +1,5 @@
 import styles from "../../profiles/pages/UserProfilePage.module.css";
+import { Link } from "react-router-dom";
 import { PlaylistTrackList } from "./PlaylistTrackList";
 
 export function PlaylistList({ playlists }) {
@@ -8,7 +9,11 @@ export function PlaylistList({ playlists }) {
       <div className={styles.trackCards}>
         {playlists?.map((playlist) => (
           <div key={playlist.id}>
-            <h3>{playlist.title}</h3>
+            <h3>
+              <Link to={`/${playlist.uploader.slug}/sets/${playlist.slug}`}>
+                {playlist.title}
+              </Link>
+            </h3>
             <PlaylistTrackList playlist={playlist} />
           </div>
         ))}

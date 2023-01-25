@@ -1,0 +1,209 @@
+.show-layout {
+  padding-top: 44px;
+  width: var(--container-width);
+  max-width: var(--container-width);
+  margin: 0 auto;
+  background-color: #fff;
+  height: 100%;
+}
+
+.show-banner-section {
+  position: relative;
+  height: 380px;
+  background-color: rgb(56, 90, 79);
+  padding-top: 30px;
+  padding-bottom: 24px;
+  padding-left: 30px;
+  padding-right: 24px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.banner-header {
+  display: flex;
+}
+
+.banner-heading {
+  margin-left: 8px;
+  margin-right: 24px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.banner-title > .title {
+  background-color: #000;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 30px;
+  padding: 6px 7px 3px;
+  width: fit-content;
+}
+
+.banner-title > .subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 4px 7px 2px;
+  line-height: 1.3;
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0.8);
+  margin-top: 4px;
+  width: fit-content;
+}
+
+.banner-title > .subtitle > a,
+.banner-title > .subtitle > a:visited,
+.banner-title > .subtitle > a:active {
+  color: inherit;
+  transition: color ease-in 100ms;
+}
+
+.banner-title > .subtitle > a:hover {
+  cursor: pointer;
+  color: rgb(224, 224, 224);
+}
+
+.playlist-cover-background {
+  height: 325px;
+  width: 325px;
+  object-fit: cover;
+  background-color: rgb(46, 46, 46);
+}
+
+.created-at {
+  color: #fff;
+  font-size: 1rem;
+  padding-bottom: 8px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+/* TODO: */
+.private-badge {
+  background-color: var(--primary-orange);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 14px;
+  text-align: center;
+  text-transform: lowercase;
+  border: 1px solid var(--primary-orange);
+}
+
+/* WAVEFORM */
+.waveform-container {
+  position: absolute;
+  background-color: transparent;
+  height: 100px;
+  width: 837px;
+  bottom: 25px;
+}
+
+/* CONTROL BUTTONS */
+.play-btn-lg {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  transition: filter ease-in 100ms;
+}
+
+.play-btn-lg:hover {
+  filter: brightness(80%);
+}
+
+.play-btn-lg > svg {
+  font-size: 30px;
+  color: #fff;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+/* FIXME: */
+.show-playlist-section {
+  display: grid;
+  grid-template-columns: 2.2fr 0.8fr;
+
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.show-playlist-tracks {
+  padding-top: 20px;
+}
+
+.show-playlist-actions {
+  padding-bottom: 8px;
+  border-bottom: 1px solid red;
+  margin-bottom: 20px;
+}
+
+/* TODO: sizing */
+.playlist-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 7fr;
+}
+
+.uploader-details {
+  width: fit-content;
+  margin-right: 30px;
+}
+
+.uploader-photo {
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  background-color: #333;
+  margin-bottom: 8px;
+}
+
+.playlist-container .uploader-name {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.playlist-tracks-list {
+}
+
+.playlist-track-row {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  height: 44px;
+  border-bottom: 1px solid #f2f2f2;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.playlist-track-row:hover {
+  background-color: var(--bg-light);
+}
+
+.playlist-track-row > .track-image {
+  height: 30px;
+  width: 30px;
+  background-color: #333;
+}
+
+.playlist-track-row > .track-order,
+.playlist-track-row > .track-uploader {
+  color: #999;
+}
+
+.playlist-track-row > .track-order {
+  margin-right: 14px;
+  margin-left: 14px;
+}
+
+.playlist-track-row > .track-title {
+  color: #333;
+}

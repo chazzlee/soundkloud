@@ -125,10 +125,9 @@ export function GlobalPlaybar() {
     currentPlaylistTrackUrl,
   ]);
 
-  //FIXME:
-  // if (!globalSourceId || globalStatus === PLAYER_STATUS.IDLE) {
-  //   return null;
-  // }
+  if (!globalSourceId) {
+    return null;
+  }
 
   return (
     <H5AudioPlayer

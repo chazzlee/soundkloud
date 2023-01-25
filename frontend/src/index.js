@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       { path: "/:user/:trackSlug", element: <TrackShowPage /> },
       { path: "/upload", element: <UploadNewTrackPage /> },
       { path: "/:slug", element: <UserProfilePage /> },
-      { path: "/:user/sets/:playlist", element: <PlaylistShowPage /> },
+      { path: "/:user/sets/:playlistSlug", element: <PlaylistShowPage /> },
       // { path: "/logout", element: <LogoutPage /> },
     ],
   },

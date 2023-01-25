@@ -89,7 +89,7 @@ function BannerHeader({ track }) {
               {track.uploader.displayName}
             </Link>
           </h2>
-          {track.private && (
+          {track.privacy === "private" && (
             <p className={`${styles.subTitle} ${styles.privateBadge}`}>
               <span>
                 <BiLockAlt style={{ verticalAlign: "middle" }} />
