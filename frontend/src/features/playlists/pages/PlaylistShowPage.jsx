@@ -1,15 +1,71 @@
 import "./PlaylistShowPage.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { IoMdPlay } from "react-icons/io";
-import { fetchPlaylistsAsync, selectPlaylistBySlug } from "../store";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { IoMdPause, IoMdPlay } from "react-icons/io";
+import {
+  fetchPlaylistsAsync,
+  playlistStarted,
+  selectActivePlaylist,
+  selectCurrentPlaylistTrack,
+  selectPlaylistBySlug,
+} from "../store";
 import { FullSpinner } from "../../../components/FullSpinner";
 import { Wavesurfer } from "../../tracks/components/Wavesurfer";
+import { BiLockAlt } from "react-icons/bi";
+import { SlPencil } from "react-icons/sl";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { formatDistanceToNow } from "date-fns";
+import { useCallback } from "react";
+import { ButtonSpinner } from "../../../components/ButtonSpinner";
+import {
+  PLAYER_STATUS,
+  selectPlayerStatus,
+  trackPaused,
+  trackPlaying,
+  WAVE_PLAYER,
+} from "../../player/store";
+import { fetchAllTracksByUserAsync } from "../../tracks/store";
 
-function PlayButton() {
+function ControlButton({ loaded, status, onPlay, onPause }) {
+  if (!loaded || status === PLAYER_STATUS.IDLE) {
+    return (
+      <div style={{ paddingRight: 18 }}>
+        <ButtonSpinner />
+      </div>
+    );
+  }
+
   return (
-    <button title="Play" aria-label="Play" className="play-btn-lg">
+    <div className="control-button">
+      {(status === PLAYER_STATUS.PAUSED || status === PLAYER_STATUS.LOADED) && (
+        <PlayButton onPlay={onPlay} />
+      )}
+      {status === PLAYER_STATUS.PLAYING && <PauseButton onPause={onPause} />}
+    </div>
+  );
+}
+
+function PauseButton({ onPause }) {
+  return (
+    <button
+      title="Pause"
+      aria-label="Pause"
+      className="control-btn-lg pause"
+      onClick={onPause}
+    >
+      <IoMdPause />
+    </button>
+  );
+}
+function PlayButton({ onPlay }) {
+  return (
+    <button
+      title="Play"
+      aria-label="Play"
+      className="control-btn-lg play"
+      onClick={onPlay}
+    >
       <IoMdPlay />
     </button>
   );
@@ -18,18 +74,48 @@ function PlayButton() {
 export function PlaylistShowPage() {
   const dispatch = useDispatch();
   const { playlistSlug } = useParams();
+  const [loaded, setLoaded] = useState(false);
+
+  const handleLoaded = useCallback((state) => setLoaded(state), []);
+  const waveStatus = useSelector((state) =>
+    selectPlayerStatus(state, WAVE_PLAYER)
+  );
   const playlist = useSelector((state) =>
     selectPlaylistBySlug(state, playlistSlug)
   );
 
+  const activePlaylist = useSelector(selectActivePlaylist, shallowEqual);
+  const currentPlaylistTrack = useSelector(
+    selectCurrentPlaylistTrack,
+    shallowEqual
+  );
+
+  const isCurrentlyPlaying = (trackId) => currentPlaylistTrack?.id === trackId;
+
+  const handleStartPlaylist = useCallback(
+    (playlist) => {
+      if (!activePlaylist.id) {
+        dispatch(playlistStarted(playlist));
+      } else {
+        dispatch(trackPlaying(currentPlaylistTrack));
+      }
+    },
+    [dispatch, activePlaylist.id, currentPlaylistTrack]
+  );
+
+  const handlePausePlaylist = useCallback(() => {
+    dispatch(trackPaused());
+  }, [dispatch]);
+
+  const handleOpenEditPlaylistModal = () => {};
+  const handleToggleLikePlaylist = () => {};
   const wavesurfer = useRef(null);
 
   useEffect(() => {
-    // TODO: only dispatch if playlists not loaded
+    // TODO: only dispatch if playlists/tracks not loaded
     dispatch(fetchPlaylistsAsync());
+    dispatch(fetchAllTracksByUserAsync());
   }, [dispatch]);
-
-  useEffect(() => {}, []);
 
   // TODO: -- error?
   if (!playlist) {
@@ -40,7 +126,12 @@ export function PlaylistShowPage() {
     <div className="show-layout">
       <section className="show-banner-section">
         <header className="banner-header">
-          <PlayButton />
+          <ControlButton
+            loaded={loaded}
+            status={waveStatus}
+            onPlay={() => handleStartPlaylist(playlist)}
+            onPause={handlePausePlaylist}
+          />
           <div className="banner-heading">
             <div className="banner-title">
               <h2 className="title">{playlist?.slug}</h2>
@@ -51,14 +142,25 @@ export function PlaylistShowPage() {
               </h3>
             </div>
             <div className="banner-details">
-              <p className="created-at">43 days ago</p>
-              <p className="private-badge">Private</p>
+              <p className="created-at">
+                {formatDistanceToNow(new Date(playlist.updatedAt), {
+                  addSuffix: true,
+                })}
+              </p>
+              {playlist.privacy === "private" && (
+                <p className="private-badge">
+                  <span className="private-icon">
+                    <BiLockAlt />
+                  </span>
+                  <span>private</span>
+                </p>
+              )}
             </div>
           </div>
           {/* TODO: set default background if no image */}
           <div className="playlist-cover-background">
             <img
-              src={playlist.tracks[0].cover}
+              src={playlist.tracks[activePlaylist.current ?? 0].cover}
               alt={playlist.title}
               width={325}
               height={325}
@@ -68,8 +170,8 @@ export function PlaylistShowPage() {
         <div className="waveform-container">
           <Wavesurfer
             ref={wavesurfer}
-            onLoaded={() => {}}
-            track={playlist.tracks[0]}
+            onLoaded={handleLoaded}
+            track={playlist.tracks[activePlaylist.current ?? 0]}
           />
         </div>
       </section>
@@ -77,8 +179,22 @@ export function PlaylistShowPage() {
       <section className="show-playlist-section">
         <div className="show-playlist-tracks">
           <div className="show-playlist-actions">
-            <button>Like</button>
-            <button>Edit</button>
+            <button
+              aria-label="Like playlist"
+              className="playlist-action-btn"
+              onClick={handleToggleLikePlaylist}
+            >
+              <AiOutlineHeart />
+              <span>Like</span>
+            </button>
+            <button
+              className="playlist-action-btn"
+              aria-label="Edit playlist"
+              onClick={handleOpenEditPlaylistModal}
+            >
+              <SlPencil />
+              <span>Edit</span>
+            </button>
           </div>
 
           <div className="playlist-container">
@@ -94,7 +210,12 @@ export function PlaylistShowPage() {
             </div>
             <div className="playlist-tracks-list">
               {playlist.tracks.map((track, index) => (
-                <div className="playlist-track-row" key={track.id}>
+                <div
+                  className={`playlist-track-row ${
+                    isCurrentlyPlaying(track.id) ? "selected" : ""
+                  }`}
+                  key={track.id}
+                >
                   <img
                     className="track-image"
                     src={track.cover}

@@ -92,5 +92,8 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
     }
   }, [ref, waveStatus]);
 
+  if (!track) {
+    return null;
+  }
   return <div id="waveform" ref={waveformRef} />;
 });

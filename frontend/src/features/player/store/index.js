@@ -4,6 +4,7 @@ import {
   PLAYLIST_FINISHED,
   PLAY_NEXT,
   PLAY_PREV,
+  PLAY_SELECTED,
   START_PLAYLIST,
 } from "../../playlists/store";
 
@@ -90,6 +91,7 @@ export const playerReducer = produce((state = initialState, action) => {
       state.wave.sourceId = action.payload.id;
       state.wave.sourceUrl = action.payload.url;
       state.wave.duration = action.payload.duration;
+      state.global.duration = action.payload.duration;
 
       if (
         state.global.status === PLAYER_STATUS.PLAYING &&
@@ -107,7 +109,6 @@ export const playerReducer = produce((state = initialState, action) => {
         state.global.status = PLAYER_STATUS.LOADED;
         state.global.sourceId = action.payload.id;
         state.global.sourceUrl = action.payload.url;
-        state.global.duration = action.payload.duration;
       }
 
       if (action.payload.duration === null) {
@@ -155,17 +156,17 @@ export const playerReducer = produce((state = initialState, action) => {
 
     // PLAYLIST
     case START_PLAYLIST: {
-      state.wave.status = PLAYER_STATUS.IDLE;
-      state.wave.sourceId = null;
-      state.wave.sourceUrl = "";
-      state.wave.duration = 0;
-      state.wave.progress = 0;
+      state.wave.status = PLAYER_STATUS.PLAYING;
+      // state.wave.sourceId = null;
+      // state.wave.sourceUrl = "";
+      // state.wave.duration = 0;
+      // state.wave.progress = 0;
 
       state.global.status = PLAYER_STATUS.PLAYING;
       state.global.sourceId = action.payload.tracks[0].id;
       state.global.sourceUrl = action.payload.tracks[0].upload;
-      state.global.duration = 0;
       state.global.progress = 0;
+      // state.global.duration = 0;
       break;
     }
 
@@ -186,7 +187,17 @@ export const playerReducer = produce((state = initialState, action) => {
       state.global.sourceUrl = action.payload.upload;
       state.global.duration = 0;
       state.global.progress = 0;
-
+      if (state.wave.sourceId !== state.global.sourceId) {
+        state.wave.status = PLAYER_STATUS.PAUSED;
+      }
+      break;
+    }
+    case PLAY_SELECTED: {
+      state.global.status = PLAYER_STATUS.PLAYING;
+      state.global.sourceId = action.payload.selectedTrack.id;
+      state.global.sourceUrl = action.payload.selectedTrack.upload;
+      state.global.duration = 0;
+      state.global.progress = 0;
       if (state.wave.sourceId !== state.global.sourceId) {
         state.wave.status = PLAYER_STATUS.PAUSED;
       }
@@ -198,6 +209,7 @@ export const playerReducer = produce((state = initialState, action) => {
       state.global.progress = 0;
       break;
     }
+
     default:
       return state;
   }

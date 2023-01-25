@@ -212,17 +212,28 @@
   margin-right: 8px;
 }
 
-.next-up-track-row p {
+.next-up-track-row a {
   font-size: 12px;
+  display: block;
 }
 
 .uploader-name {
   color: #999;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  transition: all 100ms ease-in;
+}
+
+.uploader-name:hover {
+  color: #666;
 }
 
 .track-title {
   color: #333;
+  transition: all 100ms ease-in;
+}
+
+.track-title:hover {
+  text-decoration: underline;
 }
 
 .next-up-track-row.selected {

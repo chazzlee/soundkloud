@@ -12,6 +12,12 @@ export const START_PLAYLIST = "playlists/playlistStarted";
 export const PLAY_NEXT = "playlists/nextPlaying";
 export const PLAY_PREV = "playlists/prevPlaying";
 export const PLAYLIST_FINISHED = "playlists/playlistFinished";
+export const PLAY_SELECTED = "playlists/selectedTrackPlaying";
+
+export const playSelected = (index, selectedTrack) => ({
+  type: PLAY_SELECTED,
+  payload: { index, selectedTrack },
+});
 
 export const playlistStarted = (playlist) => ({
   type: START_PLAYLIST,
@@ -184,6 +190,17 @@ export const playlistsReducer = produce((state = initialState, action) => {
       break;
     }
 
+    case PLAY_SELECTED: {
+      state.active.current = action.payload.index;
+      state.active.next =
+        state.active.current < state.active.trackIds.length - 1
+          ? state.active.current + 1
+          : null;
+      state.active.prev =
+        state.active.current >= 1 ? state.active.current - 1 : null;
+      break;
+    }
+
     case PLAYLIST_FINISHED: {
       state.active.current = null;
       state.active.next = null;
@@ -199,6 +216,7 @@ export const playlistsReducer = produce((state = initialState, action) => {
       break;
     }
 
+    // TRACKS
     case PLAY_TRACK: {
       const currentlyPlaying = state.active.trackIds.findIndex(
         (id) => id === action.payload
@@ -217,6 +235,7 @@ export const playlistsReducer = produce((state = initialState, action) => {
 
       break;
     }
+
     default:
       return state;
   }
@@ -240,6 +259,16 @@ export const selectPlaylistBySlug = (state, playlistSlug) =>
   );
 
 export const selectActivePlaylist = (state) => state.playlists.active;
+export const selectActivePlaylistCurrentIndex = (state) =>
+  state.playlists.active.current;
+
+export const selectCurrentPlaylistTrack = createSelector(
+  [(state) => state.playlists.entities, (state) => state.playlists.active],
+  (playlists, active) =>
+    playlists[active?.id]?.tracks.find(
+      (track) => track.id === active.trackIds[active?.current]
+    ) ?? undefined
+);
 
 export const selectCurrentPlaylistTrackUrl = createSelector(
   [(state) => state.playlists.entities, (state) => state.playlists.active],

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.extract! playlist, :id, :title, :privacy, :plays, :slug
+json.extract! playlist, :id, :title, :privacy, :plays, :slug, :updated_at
 json.cover playlist.cover.url
 json.uploader do
   json.id playlist.user_id
@@ -12,7 +12,7 @@ json.tracks playlist.tracks do |track|
   json.id track.id
   json.title track.title
   json.artist track.artist
-  json.permalink track.permalink
+  json.permalink URI.parse(track.permalink).path
   json.upload track.upload.url
   json.cover track.cover.url
   json.uploader do

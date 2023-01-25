@@ -89,6 +89,13 @@
   text-align: center;
   text-transform: lowercase;
   border: 1px solid var(--primary-orange);
+  display: flex;
+  padding-top: 1px;
+  justify-content: center;
+  align-items: center;
+}
+.private-icon {
+  margin-right: 2px;
 }
 
 /* WAVEFORM */
@@ -101,7 +108,7 @@
 }
 
 /* CONTROL BUTTONS */
-.play-btn-lg {
+.control-btn-lg {
   background-color: var(--primary-orange);
   border: 1px solid var(--primary-orange);
   border-radius: 50%;
@@ -110,14 +117,17 @@
   transition: filter ease-in 100ms;
 }
 
-.play-btn-lg:hover {
+.control-btn-lg:hover {
   filter: brightness(80%);
 }
 
-.play-btn-lg > svg {
+.control-btn-lg > svg {
   font-size: 30px;
   color: #fff;
   vertical-align: middle;
+}
+
+.play > svg {
   margin-left: 6px;
 }
 
@@ -138,6 +148,25 @@
   padding-bottom: 8px;
   border-bottom: 1px solid red;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.playlist-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  padding: 3px 10px 1px;
+}
+
+.playlist-action-btn > svg {
+  margin-right: 4px;
 }
 
 /* TODO: sizing */
@@ -184,7 +213,8 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-.playlist-track-row:hover {
+.playlist-track-row:hover,
+.playlist-track-row.selected {
   background-color: var(--bg-light);
 }
 
