@@ -7,6 +7,7 @@ import {
   requestSuccess as genresRequestSuccess,
 } from "../../genres/store";
 import { fetchAllTracksByUserAsync } from "../../tracks/store";
+import { PlaylistsApi } from "../../../api/playlists";
 
 export const fetchDiscoverAsync = () => async (dispatch) => {
   dispatch(requestStarted());

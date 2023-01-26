@@ -2,7 +2,6 @@ import "./PlaylistShowPage.css";
 import { useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { IoMdPause, IoMdPlay } from "react-icons/io";
 import {
   fetchPlaylistsAsync,
   playlistStarted,
@@ -14,14 +13,11 @@ import {
 } from "../store";
 import { FullSpinner } from "../../../components/FullSpinner";
 import { Wavesurfer } from "../../tracks/components/Wavesurfer";
-import { BiLockAlt } from "react-icons/bi";
 import { SlPencil } from "react-icons/sl";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { formatDistanceToNow } from "date-fns";
 import { useCallback } from "react";
-import { ButtonSpinner } from "../../../components/ButtonSpinner";
 import {
-  PLAYER_STATUS,
   selectPlayerStatus,
   trackPaused,
   trackPlaying,
@@ -33,52 +29,16 @@ import {
 } from "../../tracks/store";
 import { selectCurrentUser } from "../../auth/store";
 import { DefaultCover } from "../../../components/DefaultCover";
-import { MdPlaylistPlay } from "react-icons/md";
-import { SocialLinks } from "../../../components/SocialLinks";
-
-function ControlButton({ loaded, status, onPlay, onPause }) {
-  if (!loaded || status === PLAYER_STATUS.IDLE) {
-    return (
-      <div style={{ paddingRight: 18 }}>
-        <ButtonSpinner />
-      </div>
-    );
-  }
-
-  return (
-    <div className="control-button">
-      {(status === PLAYER_STATUS.PAUSED || status === PLAYER_STATUS.LOADED) && (
-        <PlayButton onPlay={onPlay} />
-      )}
-      {status === PLAYER_STATUS.PLAYING && <PauseButton onPause={onPause} />}
-    </div>
-  );
-}
-
-function PauseButton({ onPause }) {
-  return (
-    <button
-      title="Pause"
-      aria-label="Pause"
-      className="control-btn-lg pause"
-      onClick={onPause}
-    >
-      <IoMdPause />
-    </button>
-  );
-}
-function PlayButton({ onPlay }) {
-  return (
-    <button
-      title="Play"
-      aria-label="Play"
-      className="control-btn-lg play"
-      onClick={onPlay}
-    >
-      <IoMdPlay />
-    </button>
-  );
-}
+import { ControlButton } from "../../../components/ControlButton";
+import { PrivateBadge } from "../../../components/PrivateBadge";
+import {
+  ShowLayout,
+  ShowAside,
+  Main,
+  Banner,
+  BannerImage,
+} from "../../../components/Layouts/ShowLayout";
+import { UploaderAvatar } from "../../../components/UploaderAvatar";
 
 // TODO: continue playlist after play playlist from profile page instead of reloading
 export function PlaylistShowPage() {
@@ -108,7 +68,7 @@ export function PlaylistShowPage() {
       if (!activePlaylist.id) {
         dispatch(playlistStarted(playlist));
       } else {
-        dispatch(trackPlaying(currentPlaylistTrack));
+        dispatch(trackPlaying(currentPlaylistTrack.id));
       }
     },
     [dispatch, activePlaylist.id, currentPlaylistTrack]
@@ -148,8 +108,8 @@ export function PlaylistShowPage() {
   }
 
   return (
-    <div className="show-layout">
-      <section className="show-banner-section">
+    <ShowLayout>
+      <Banner>
         <header className="banner-header">
           <ControlButton
             loaded={loaded}
@@ -172,29 +132,12 @@ export function PlaylistShowPage() {
                   addSuffix: true,
                 })}
               </p>
-              {playlist.privacy === "private" && (
-                <p className="private-badge">
-                  <span className="private-icon">
-                    <BiLockAlt />
-                  </span>
-                  <span>private</span>
-                </p>
-              )}
+              <PrivateBadge privacy={playlist.privacy} />
             </div>
           </div>
-
-          <div className="playlist-cover-background">
-            {playlist.tracks[activePlaylist.current ?? 0].cover ? (
-              <img
-                src={playlist.tracks[activePlaylist.current ?? 0].cover}
-                alt={playlist.title}
-                width={325}
-                height={325}
-              />
-            ) : (
-              <DefaultCover size={325} />
-            )}
-          </div>
+          <BannerImage
+            imageUrl={playlist.tracks[activePlaylist.current ?? 0].cover}
+          />
         </header>
         <div className="waveform-container">
           <Wavesurfer
@@ -203,9 +146,9 @@ export function PlaylistShowPage() {
             track={playlist.tracks[activePlaylist.current ?? 0]}
           />
         </div>
-      </section>
+      </Banner>
 
-      <section className="show-playlist-section">
+      <Main>
         <div className="show-playlist-tracks">
           <div className="show-playlist-actions">
             <button
@@ -229,16 +172,13 @@ export function PlaylistShowPage() {
           </div>
 
           <div className="playlist-container">
-            <div className="uploader-details">
-              <Link to={`/${playlist.uploader.slug}`}>
-                <img
-                  className="uploader-photo"
-                  src={playlist.uploader.photo}
-                  alt={playlist.uploader.displayName}
-                />
-                <p className="uploader-name">{playlist.uploader.displayName}</p>
-              </Link>
-            </div>
+            <UploaderAvatar
+              uploader={{
+                photo: playlist.uploader.photo,
+                slug: playlist.uploader.slug,
+                displayName: playlist.uploader.displayName,
+              }}
+            />
             <div className="playlist-tracks-list">
               {playlist.tracks.map((track, index) => (
                 <div
@@ -247,15 +187,21 @@ export function PlaylistShowPage() {
                   }`}
                   key={track.id}
                   onClick={() => {
-                    if (index === 0) {
-                      handleStartPlaylist(playlist);
-                    } else {
-                      handlePlaySelected({
-                        index,
-                        selectedTrack: track,
-                        playlistId: playlist.id,
-                      });
-                    }
+                    // TODO: FIXME:!!!!
+                    handlePlaySelected({
+                      index,
+                      selectedTrack: track,
+                      playlistId: playlist.id,
+                    });
+                    // if (index === 0) {
+                    //   handleStartPlaylist(playlist);
+                    // } else {
+                    //   handlePlaySelected({
+                    //     index,
+                    //     selectedTrack: track,
+                    //     playlistId: playlist.id,
+                    //   });
+                    // }
                   }}
                 >
                   {track.cover ? (
@@ -290,48 +236,8 @@ export function PlaylistShowPage() {
             </div>
           </div>
         </div>
-        {/* ASIDE */}
-        <aside>
-          <header className="aside-header">
-            <h2 className="aside-heading">
-              <MdPlaylistPlay /> Playlists from this user
-            </h2>
-            {/* TODO: LINK to user playlists show page! */}
-            <Link to={"/"}>View all</Link>
-          </header>
-          <article className="aside-playlist-container">
-            <div className="aside-playlist-item">
-              <img
-                src="https://soundkloud-dev.s3.amazonaws.com/4g9fu9lhd52zyb1ok21lu98jo656?response-content-disposition=inline%3B%20filename%3D%22Adramelch%20-%20Irae%20Melanox%20%25281988%2529%20RM%20Front.jpg%22%3B%20filename%2A%3DUTF-8%27%27Adramelch%2520-%2520Irae%2520Melanox%2520%25281988%2529%2520RM%2520Front.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIATE7BVEO4SERJEV4V%2F20230126%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230126T161554Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=dc6f7e970732d68bbfa912245b9438a53b01e454bcb98be7900944cb420e923a"
-                alt=""
-                className="aside-playlist-item-cover"
-              />
-              <div className="aside-playlist-item-details">
-                <p className="item-details-user">APEX1</p>
-                <p className="item-details-title">playlist title</p>
-              </div>
-            </div>
-            <div className="aside-playlist-item">
-              <img
-                src="https://soundkloud-dev.s3.amazonaws.com/4g9fu9lhd52zyb1ok21lu98jo656?response-content-disposition=inline%3B%20filename%3D%22Adramelch%20-%20Irae%20Melanox%20%25281988%2529%20RM%20Front.jpg%22%3B%20filename%2A%3DUTF-8%27%27Adramelch%2520-%2520Irae%2520Melanox%2520%25281988%2529%2520RM%2520Front.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIATE7BVEO4SERJEV4V%2F20230126%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230126T161554Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=dc6f7e970732d68bbfa912245b9438a53b01e454bcb98be7900944cb420e923a"
-                alt=""
-                className="aside-playlist-item-cover"
-              />
-              <div className="aside-playlist-item-details">
-                <Link className="item-details-user" to={"/"}>
-                  APEX1
-                </Link>
-                <Link className="item-details-title" to={"/"}>
-                  playlist title
-                </Link>
-              </div>
-            </div>
-          </article>
-          <article className="social-links">
-            <SocialLinks />
-          </article>
-        </aside>
-      </section>
-    </div>
+        <ShowAside />
+      </Main>
+    </ShowLayout>
   );
 }

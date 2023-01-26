@@ -28,4 +28,18 @@ class Api::DiscoverController < ApplicationController
 
     render template: 'api/discover/index', locals: { tracks_by_genre:, recently_played_tracks:, most_played_tracks: }
   end
+
+  # def index
+  #   genres = Genre.all
+  #   tracks_by_genre = genres.map do |genre_name|
+  #     { "#{genre_name}": Genre.find_by(name: genre_name).tracks.includes({ cover_attachment: :blob }, :tags).limit(16) }
+  #   end
+
+  #   playlists = Playlist.all
+  #   user_tracks = current_user.tracks
+
+  #   render template: 'api/discover/index',
+  #          locals: { genres:, tracks_by_genre:, user_tracks:, playlists:, recently_played_tracks: [],
+  #                    most_played_tracks: [] }
+  # end
 end

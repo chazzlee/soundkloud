@@ -1,7 +1,11 @@
 import { csrfFetch } from "./csrfFetch";
 
 export const PlaylistsApi = {
+  fetchAll() {
+    return csrfFetch("/api/playlists");
+  },
   fetchUserPlaylists() {
+    // FIXME:
     return csrfFetch("/api/playlists");
   },
   addToPlaylist(playlistId, trackId) {

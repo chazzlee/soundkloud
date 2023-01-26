@@ -60,7 +60,7 @@ export function TopNavigation() {
               <a href="/">SOUNDKLOUD</a>
             </div>
             <nav className={styles.navLinksLeft}>
-              <ul>
+              <ul className="top-navigation-links">
                 <li className={styles.navBtn}>
                   <NavLink to={"/discover"} className={styles.navLink}>
                     Home
@@ -86,7 +86,7 @@ export function TopNavigation() {
 
           <div className={styles.navGroupRight}>
             <nav className={styles.navLinksRight}>
-              <ul>
+              <ul className="top-navigation-links">
                 <li className={`${styles.navBtn} ${styles.right}`}>
                   {currentUser ? (
                     <NavLink to={"/upload"} className={styles.navLink}>

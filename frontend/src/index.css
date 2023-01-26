@@ -98,23 +98,15 @@ button {
   position: relative;
 }
 
-.active {
+.top-navigation-links .active {
   background-color: var(--navBorderColor);
 }
 
-.github {
-  padding: 6px 14px;
-  background: #333;
-  color: white;
-  border-radius: 3px;
-  font-size: 14px;
-  margin-right: 4px;
-}
-
-.linkedin {
-  padding: 6px 14px;
-  background: #0073b1;
-  color: white;
-  border-radius: 3px;
-  font-size: 14px;
+/* WAVEFORM */
+.waveform-container {
+  position: absolute;
+  background-color: transparent;
+  height: 100px;
+  width: 837px;
+  bottom: 25px;
 }

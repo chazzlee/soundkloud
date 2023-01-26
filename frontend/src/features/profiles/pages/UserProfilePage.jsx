@@ -15,6 +15,7 @@ import {
   selectPlaylists,
   selectPlaylistsLoaded,
 } from "../../playlists/store";
+import { NavLink, Outlet } from "react-router-dom";
 
 export function UserProfilePage() {
   const dispatch = useDispatch();
@@ -75,28 +76,50 @@ export function UserProfilePage() {
           </div>
           <div className={styles.tabsBar}>
             <div className={styles.left}>
-              <li
-                className={`${activeTab === "all" ? styles.active : ""}`}
-                onClick={() => setActiveTab("all")}
+              <NavLink
+                // className={`${activeTab === "all" ? styles.active : ""}`}
+                // onClick={() => setActiveTab("all")}
+                to=""
               >
                 All
-              </li>
-              <li
-                className={`${activeTab === "tracks" ? styles.active : ""}`}
-                onClick={() => setActiveTab("tracks")}
+              </NavLink>
+              <NavLink
+                // className={`${activeTab === "tracks" ? styles.active : ""}`}
+                // onClick={() => setActiveTab("tracks")}
+                to="tracks"
               >
                 Tracks
-              </li>
-              <li
-                className={`${activeTab === "playlists" ? styles.active : ""}`}
-                onClick={() => setActiveTab("playlists")}
+              </NavLink>
+              <NavLink
+                // className={`${activeTab === "playlists" ? styles.active : ""}`}
+                // onClick={() => setActiveTab("playlists")}
+                to="sets"
               >
                 Playlists
-              </li>
+              </NavLink>
             </div>
           </div>
           <div className={styles.container}>
-            {activeTab === "all" && (
+            <Outlet />
+
+            <aside>
+              <div></div>
+            </aside>
+          </div>
+        </main>
+      </div>
+
+      {isProfileModalOpen && (
+        <EditProfileModal
+          currentUser={currentUser}
+          onClose={() => setIsProfileModalOpen(false)}
+        />
+      )}
+    </>
+  );
+}
+
+/* {activeTab === "all" && (
               <div>
                 <h3 className={styles.uploadedTitle}>Uploaded Tracks</h3>
                 <div className={styles.trackCards}>
@@ -118,8 +141,9 @@ export function UserProfilePage() {
                   ))}
                 </div>
               </div>
-            )}
-            {activeTab === "tracks" && (
+            )} */
+
+/* {activeTab === "tracks" && (
               <div>
                 <h3 className={styles.uploadedTitle}>Uploaded Tracks</h3>
                 <div className={styles.trackCards}>
@@ -128,22 +152,8 @@ export function UserProfilePage() {
                   ))}
                 </div>
               </div>
-            )}
-            {activeTab === "playlists" && (
+            )} */
+
+/* {activeTab === "playlists" && (
               <PlaylistList playlists={playlists} />
-            )}
-            <aside>
-              <div></div>
-            </aside>
-          </div>
-        </main>
-      </div>
-      {isProfileModalOpen && (
-        <EditProfileModal
-          currentUser={currentUser}
-          onClose={() => setIsProfileModalOpen(false)}
-        />
-      )}
-    </>
-  );
-}
+            )} */

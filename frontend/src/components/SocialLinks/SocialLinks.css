@@ -1,0 +1,15 @@
+.social-btn {
+  padding: 6px 14px;
+  color: white;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.github {
+  background-color: #333;
+  margin-right: 4px;
+}
+
+.linkedin {
+  background-color: #0073b1;
+}

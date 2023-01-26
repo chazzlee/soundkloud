@@ -1,9 +1,11 @@
+import "./SocialLinks.css";
+
 export function SocialLinks() {
   return (
     <>
       <a
         href="https://github.com/chazzlee/soundkloud"
-        className="github"
+        className="social-btn github"
         target="_blank"
         rel="noreferrer noopener"
       >
@@ -11,7 +13,7 @@ export function SocialLinks() {
       </a>
       <a
         href="https://www.linkedin.com/in/chazz-lee-016908260/"
-        className="linkedin"
+        className="social-btn linkedin"
         target="_blank"
         rel="noreferrer noopener"
       >

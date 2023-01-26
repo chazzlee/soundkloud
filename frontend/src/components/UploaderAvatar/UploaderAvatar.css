@@ -1,0 +1,22 @@
+.uploader-details {
+  width: fit-content;
+  margin-right: 30px;
+}
+
+.uploader-photo {
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  background-color: #333;
+  display: block;
+}
+
+.playlist-container .uploader-name {
+  display: block;
+  margin-top: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}

@@ -40,7 +40,15 @@ const router = createBrowserRouter([
       { path: "/discover", element: <DiscoverPage /> },
       { path: "/:user/:trackSlug", element: <TrackShowPage /> },
       { path: "/upload", element: <UploadNewTrackPage /> },
-      { path: "/:slug", element: <UserProfilePage /> },
+      {
+        path: "/:slug",
+        element: <UserProfilePage />,
+        children: [
+          { index: true, element: <div>ALL USER STUFF</div> },
+          { path: "tracks", element: <div>USER TRACKS</div> },
+          { path: "sets", element: <div>USER PLAYLISTS</div> },
+        ],
+      },
       { path: "/:user/sets/:playlistSlug", element: <PlaylistShowPage /> },
       // { path: "/logout", element: <LogoutPage /> },
     ],
