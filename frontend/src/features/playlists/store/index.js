@@ -14,9 +14,9 @@ export const PLAY_PREV = "playlists/prevPlaying";
 export const PLAYLIST_FINISHED = "playlists/playlistFinished";
 export const PLAY_SELECTED = "playlists/selectedTrackPlaying";
 
-export const playSelected = (index, selectedTrack) => ({
+export const playSelected = ({ index, selectedTrack, playlistId }) => ({
   type: PLAY_SELECTED,
-  payload: { index, selectedTrack },
+  payload: { index, selectedTrack, playlistId },
 });
 
 export const playlistStarted = (playlist) => ({
@@ -191,6 +191,13 @@ export const playlistsReducer = produce((state = initialState, action) => {
     }
 
     case PLAY_SELECTED: {
+      if (!state.active.id) {
+        state.active.id = action.payload.playlistId;
+        state.active.trackIds = Object.keys(
+          state.entities[action.payload.playlistId].tracks
+        ).map((id) => +id);
+      }
+
       state.active.current = action.payload.index;
       state.active.next =
         state.active.current < state.active.trackIds.length - 1

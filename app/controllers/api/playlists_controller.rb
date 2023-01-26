@@ -4,6 +4,7 @@ class Api::PlaylistsController < ApplicationController
   before_action :require_logged_in
 
   def index
+    # FIXME: all playlists as well as user playlists
     playlists = current_user.playlists
     render template: 'api/playlists/index', locals: { playlists: }
   end

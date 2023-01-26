@@ -37,6 +37,7 @@ export function GlobalPlaybar() {
 
   const activePlaylist = useSelector(selectActivePlaylist, shallowEqual);
   const currentPlaylistTrackUrl = useSelector(selectCurrentPlaylistTrackUrl);
+
   const waveSourceId = useSelector((state) =>
     selectPlayerSourceId(state, WAVE_PLAYER)
   );

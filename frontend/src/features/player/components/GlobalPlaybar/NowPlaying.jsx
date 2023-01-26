@@ -75,20 +75,38 @@ function NextUpModal({ activePlaylist, currentTrack, onClose }) {
   const isCurrentlyPlaying = (trackId) => currentTrack.id === trackId;
 
   const handlePlaySelected = useCallback(
-    (index, track) => {
-      dispatch(playSelected(index, track));
+    ({ index, selectedTrack, playlistId }) => {
+      dispatch(playSelected({ index, selectedTrack, playlistId }));
     },
     [dispatch]
   );
+
   return (
     <div className="next-up-container">
       <header className="next-up-header">
         <h3 className="next-up-heading">Next up</h3>
         <div className="next-up-modal-actions">
-          <button className="clear-btn" onClick={handleClearPlaylist}>
+          {activePlaylist && (
+            <Link
+              className="view-playlist-btn"
+              to={`/${activePlaylist?.uploader?.slug}/sets/${activePlaylist?.slug}`}
+              aria-label="Viwe current playlist"
+            >
+              View playlist
+            </Link>
+          )}
+          <button
+            className="clear-btn"
+            onClick={handleClearPlaylist}
+            aria-label="Clear playlist"
+          >
             Clear
           </button>
-          <button className="close-btn" onClick={onClose}>
+          <button
+            className="close-btn"
+            onClick={onClose}
+            aria-label="Close current playlist modal"
+          >
             <IoMdClose />
           </button>
         </div>
@@ -100,7 +118,13 @@ function NextUpModal({ activePlaylist, currentTrack, onClose }) {
             className={`next-up-track-row ${
               isCurrentlyPlaying(track.id) ? "selected" : ""
             }`}
-            onClick={() => handlePlaySelected(index, track)}
+            onClick={() =>
+              handlePlaySelected({
+                index,
+                selectedTrack: track,
+                playlistId: activePlaylist.id,
+              })
+            }
           >
             {/* TODO: LINK */}
             <div className="next-up-track-link">
@@ -110,7 +134,11 @@ function NextUpModal({ activePlaylist, currentTrack, onClose }) {
                 className="next-up-row-cover"
               />
               <div>
-                <Link className="uploader-name" to={`/${track.uploader.slug}`}>
+                <Link
+                  className="uploader-name"
+                  to={`/${track.uploader.slug}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {track.uploader.displayName}
                 </Link>
                 <Link

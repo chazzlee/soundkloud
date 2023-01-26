@@ -90,8 +90,13 @@ export const playerReducer = produce((state = initialState, action) => {
     case LOAD_TRACK: {
       state.wave.sourceId = action.payload.id;
       state.wave.sourceUrl = action.payload.url;
-      state.wave.duration = action.payload.duration;
-      state.global.duration = action.payload.duration;
+      if (
+        state.wave.status !== PLAYER_STATUS.IDLE &&
+        state.wave.duration >= 0
+      ) {
+        state.wave.duration = action.payload.duration;
+        state.global.duration = action.payload.duration;
+      }
 
       if (
         state.global.status === PLAYER_STATUS.PLAYING &&
@@ -157,15 +162,19 @@ export const playerReducer = produce((state = initialState, action) => {
     // PLAYLIST
     case START_PLAYLIST: {
       state.wave.status = PLAYER_STATUS.PLAYING;
-      // state.wave.sourceId = null;
-      // state.wave.sourceUrl = "";
-      // state.wave.duration = 0;
-      // state.wave.progress = 0;
+      state.wave.sourceId = action.payload.tracks[0].id;
+      state.wave.sourceUrl = action.payload.tracks[0].upload;
+      state.wave.progress = 0;
 
       state.global.status = PLAYER_STATUS.PLAYING;
       state.global.sourceId = action.payload.tracks[0].id;
       state.global.sourceUrl = action.payload.tracks[0].upload;
       state.global.progress = 0;
+
+      // state.wave.sourceId = null;
+      // state.wave.sourceUrl = "";
+      // state.wave.duration = 0;
+      // state.wave.progress = 0;
       // state.global.duration = 0;
       break;
     }

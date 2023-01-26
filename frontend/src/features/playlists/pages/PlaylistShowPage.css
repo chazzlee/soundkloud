@@ -146,7 +146,7 @@
 
 .show-playlist-actions {
   padding-bottom: 8px;
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid #e7e7e7;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -227,6 +227,12 @@
 .playlist-track-row > .track-order,
 .playlist-track-row > .track-uploader {
   color: #999;
+  transition: all 120ms ease-in;
+}
+
+.playlist-track-row > .track-order:hover,
+.playlist-track-row > .track-uploader:hover {
+  text-decoration: underline;
 }
 
 .playlist-track-row > .track-order {

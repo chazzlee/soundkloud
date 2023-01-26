@@ -6,9 +6,11 @@ import { IoMdPause, IoMdPlay } from "react-icons/io";
 import {
   fetchPlaylistsAsync,
   playlistStarted,
+  playSelected,
   selectActivePlaylist,
   selectCurrentPlaylistTrack,
   selectPlaylistBySlug,
+  selectPlaylistsLoaded,
 } from "../store";
 import { FullSpinner } from "../../../components/FullSpinner";
 import { Wavesurfer } from "../../tracks/components/Wavesurfer";
@@ -25,7 +27,11 @@ import {
   trackPlaying,
   WAVE_PLAYER,
 } from "../../player/store";
-import { fetchAllTracksByUserAsync } from "../../tracks/store";
+import {
+  fetchAllTracksByUserAsync,
+  selectHasTracksLoaded,
+} from "../../tracks/store";
+import { selectCurrentUser } from "../../auth/store";
 
 function ControlButton({ loaded, status, onPlay, onPause }) {
   if (!loaded || status === PLAYER_STATUS.IDLE) {
@@ -71,7 +77,9 @@ function PlayButton({ onPlay }) {
   );
 }
 
+// TODO: continue playlist after play playlist from profile page instead of reloading
 export function PlaylistShowPage() {
+  const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const { playlistSlug } = useParams();
   const [loaded, setLoaded] = useState(false);
@@ -107,15 +115,29 @@ export function PlaylistShowPage() {
     dispatch(trackPaused());
   }, [dispatch]);
 
+  const handlePlaySelected = useCallback(
+    ({ index, selectedTrack, playlistId }) => {
+      dispatch(playSelected({ index, selectedTrack, playlistId }));
+    },
+    [dispatch]
+  );
+
   const handleOpenEditPlaylistModal = () => {};
   const handleToggleLikePlaylist = () => {};
   const wavesurfer = useRef(null);
 
+  const tracksLoaded = useSelector(selectHasTracksLoaded);
+  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
+
   useEffect(() => {
     // TODO: only dispatch if playlists/tracks not loaded
-    dispatch(fetchPlaylistsAsync());
-    dispatch(fetchAllTracksByUserAsync());
-  }, [dispatch]);
+    if (!tracksLoaded) {
+      dispatch(fetchAllTracksByUserAsync());
+    }
+    if (!playlistsLoaded) {
+      dispatch(fetchPlaylistsAsync());
+    }
+  }, [dispatch, tracksLoaded, playlistsLoaded]);
 
   // TODO: -- error?
   if (!playlist) {
@@ -187,14 +209,16 @@ export function PlaylistShowPage() {
               <AiOutlineHeart />
               <span>Like</span>
             </button>
-            <button
-              className="playlist-action-btn"
-              aria-label="Edit playlist"
-              onClick={handleOpenEditPlaylistModal}
-            >
-              <SlPencil />
-              <span>Edit</span>
-            </button>
+            {playlist.uploader.id === currentUser.id && (
+              <button
+                className="playlist-action-btn"
+                aria-label="Edit playlist"
+                onClick={handleOpenEditPlaylistModal}
+              >
+                <SlPencil />
+                <span>Edit</span>
+              </button>
+            )}
           </div>
 
           <div className="playlist-container">
@@ -215,6 +239,17 @@ export function PlaylistShowPage() {
                     isCurrentlyPlaying(track.id) ? "selected" : ""
                   }`}
                   key={track.id}
+                  onClick={() => {
+                    if (index === 0) {
+                      handleStartPlaylist(playlist);
+                    } else {
+                      handlePlaySelected({
+                        index,
+                        selectedTrack: track,
+                        playlistId: playlist.id,
+                      });
+                    }
+                  }}
                 >
                   <img
                     className="track-image"
@@ -225,11 +260,20 @@ export function PlaylistShowPage() {
                   <Link
                     className="track-uploader"
                     to={`/${track.uploader.slug}`}
+                    aria-label="View uploader"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     {track.uploader.displayName}
                   </Link>
                   <span style={{ marginRight: 4, marginLeft: 4 }}>-</span>
-                  <p className="track-title">{track.title}</p>
+                  <Link
+                    className="track-title"
+                    to={track.permalink}
+                    aria-label="View track"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    [{track.artist}] {track.title}
+                  </Link>
                 </div>
               ))}
             </div>

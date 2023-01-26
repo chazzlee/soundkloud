@@ -80,7 +80,7 @@
 .rhap_volume-indicator {
   background-color: #333;
   box-shadow: none;
-  top: -3.3px;
+  top: -3.05px;
   width: 8px;
   height: 8px;
 }
@@ -167,6 +167,22 @@
 .next-up-modal-actions {
   display: flex;
   align-items: center;
+}
+
+.view-playlist-btn {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  color: #fff;
+  margin-right: 1rem;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 2px 11px 2px 10px;
+  transition: all 120ms ease-in;
+}
+
+.view-playlist-btn:hover {
+  background-color: rgb(207, 70, 1);
+  border-color: rgb(207, 70, 1);
 }
 
 .next-up-modal-actions > .clear-btn {
