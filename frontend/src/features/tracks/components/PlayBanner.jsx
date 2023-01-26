@@ -15,6 +15,7 @@ import {
   trackPaused,
 } from "../../player/store";
 import { ButtonSpinner } from "../../../components/ButtonSpinner";
+import { DefaultCover } from "../../../components/DefaultCover";
 
 const MAX_LENGTH = 49;
 const headerFontSize = (track, length = MAX_LENGTH) =>
@@ -154,13 +155,17 @@ function PauseButton({ onPause }) {
 function CoverImage({ coverUrl }) {
   return (
     <div className={styles.coverImage}>
-      <img
-        src={coverUrl}
-        style={{ objectFit: "cover" }}
-        alt="cover"
-        height="100%"
-        width="100%"
-      />
+      {coverUrl ? (
+        <img
+          src={coverUrl}
+          style={{ objectFit: "cover" }}
+          alt="cover"
+          height="100%"
+          width="100%"
+        />
+      ) : (
+        <DefaultCover size={"100%"} />
+      )}
     </div>
   );
 }

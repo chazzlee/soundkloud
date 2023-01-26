@@ -110,6 +110,7 @@
   width: 30px;
   margin-right: 14px;
 }
+
 .currently-playing .cover-image > img {
   height: 30px;
   width: 30px;
@@ -225,7 +226,10 @@
   height: 32px;
   width: 32px;
   object-fit: cover;
-  margin-right: 8px;
+}
+
+.next-up-item-details {
+  margin-left: 8px;
 }
 
 .next-up-track-row a {

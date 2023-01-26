@@ -2,6 +2,7 @@ import styles from "../pages/DiscoverPage.module.css";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
 import { GrRefresh } from "react-icons/gr";
 import { artistsToFollow, newTracks } from "../data";
+import { SocialLinks } from "../../../components/SocialLinks";
 
 export function DiscoverAside() {
   return (
@@ -81,35 +82,7 @@ export function DiscoverAside() {
           </div>
         ))}
         <div style={{ paddingTop: "20px" }}>
-          <a
-            href="https://github.com/chazzlee/soundkloud"
-            style={{
-              padding: "6px 14px",
-              background: "#333",
-              color: "white",
-              borderRadius: "3px",
-              fontSize: "14px",
-              marginRight: "4px",
-            }}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Github
-          </a>
-          <a
-            href="https://www.linkedin.com/in/chazz-lee-016908260/"
-            style={{
-              padding: "6px 14px",
-              background: "#0073b1",
-              color: "white",
-              borderRadius: "3px",
-              fontSize: "14px",
-            }}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            LinkedIn
-          </a>
+          <SocialLinks />
         </div>
       </div>
     </div>

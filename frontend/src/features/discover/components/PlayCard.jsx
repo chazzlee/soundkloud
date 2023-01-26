@@ -12,6 +12,7 @@ import {
   trackPaused,
   trackPlaying,
 } from "../../player/store";
+import { DefaultCover } from "../../../components/DefaultCover";
 
 // const sampleCovers = [
 //   "https://soundkloud-seeds.s3.amazonaws.com/Blind+Guardian+-+2010+-+At+The+Edge+Of+Time.jpg",
@@ -47,7 +48,6 @@ import {
 // ];
 
 // TODO: PLAY from playcard
-// FIXME: styles ---pause button ICON
 export function PlayCard({ item, subcaption = "Related tracks" }) {
   const [showControl, setShowControl] = useState(false);
   const dispatch = useDispatch();
@@ -90,11 +90,15 @@ export function PlayCard({ item, subcaption = "Related tracks" }) {
         onMouseEnter={() => setShowControl(true)}
         onMouseLeave={() => setShowControl(false)}
       >
-        <Image
-          src={item.cover}
-          className={styles.coverImage}
-          style={{ filter: showControl ? "brightness(90%)" : "none" }}
-        />
+        {item.cover ? (
+          <Image
+            src={item.cover}
+            className={styles.coverImage}
+            style={{ filter: showControl ? "brightness(90%)" : "none" }}
+          />
+        ) : (
+          <DefaultCover size={174} />
+        )}
         {showControl ? (
           <div className={styles.playOverlay}>
             {(isNotPlaying || isNotSame) && (

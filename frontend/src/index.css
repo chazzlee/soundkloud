@@ -14,6 +14,8 @@
 html,
 body {
   height: 100%;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 li {
@@ -66,6 +68,12 @@ button {
   vertical-align: baseline;
 }
 
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .landing-page {
   background-color: var(--bg-light);
   color: var(--black);
@@ -92,4 +100,21 @@ button {
 
 .active {
   background-color: var(--navBorderColor);
+}
+
+.github {
+  padding: 6px 14px;
+  background: #333;
+  color: white;
+  border-radius: 3px;
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.linkedin {
+  padding: 6px 14px;
+  background: #0073b1;
+  color: white;
+  border-radius: 3px;
+  font-size: 14px;
 }

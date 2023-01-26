@@ -11,6 +11,7 @@ import {
   selectPlaylistById,
 } from "../../../playlists/store";
 import { MdOutlinePlaylistPlay } from "react-icons/md";
+import { DefaultCover } from "../../../../components/DefaultCover";
 
 export function NowPlaying({ playlistId }) {
   const [nextUpOpen, setNextUpOpen] = useState(false);
@@ -28,16 +29,20 @@ export function NowPlaying({ playlistId }) {
       <div className="currently-playing">
         <Link className="currently-playing-link" to={currentTrack?.permalink}>
           <div className="cover-image">
-            <img
-              src={currentTrack?.cover}
-              alt={currentTrack?.title}
-              height={30}
-              width={30}
-            />
+            {currentTrack?.cover ? (
+              <img
+                src={currentTrack?.cover}
+                alt={currentTrack?.title}
+                height={30}
+                width={30}
+              />
+            ) : (
+              <DefaultCover size={30} />
+            )}
           </div>
           <div className="track-details">
-            <p className="artist">{currentTrack?.artist}</p>
-            <p className="title">{currentTrack?.title}</p>
+            <p className="artist truncate">{currentTrack?.artist}</p>
+            <p className="title truncate">{currentTrack?.title}</p>
           </div>
         </Link>
         <div className="currently-playing-actions">
@@ -128,12 +133,16 @@ function NextUpModal({ activePlaylist, currentTrack, onClose }) {
           >
             {/* TODO: LINK */}
             <div className="next-up-track-link">
-              <img
-                src={track.cover}
-                alt="Track Cover"
-                className="next-up-row-cover"
-              />
-              <div>
+              {track.cover ? (
+                <img
+                  src={track.cover}
+                  alt={track.title}
+                  className="next-up-row-cover"
+                />
+              ) : (
+                <DefaultCover size={32} />
+              )}
+              <div className="next-up-item-details">
                 <Link
                   className="uploader-name"
                   to={`/${track.uploader.slug}`}

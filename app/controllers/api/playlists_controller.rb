@@ -5,7 +5,7 @@ class Api::PlaylistsController < ApplicationController
 
   def index
     # FIXME: all playlists as well as user playlists
-    playlists = current_user.playlists
+    playlists = Playlist.all
     render template: 'api/playlists/index', locals: { playlists: }
   end
 
