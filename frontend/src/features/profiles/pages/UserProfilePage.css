@@ -1,0 +1,79 @@
+.profile-avatar-large {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+}
+
+.extend-padding-left {
+  padding-left: 1rem;
+}
+
+.remove-margin-right {
+  margin-right: 6px;
+}
+
+.update-profile-btn {
+  background-color: hsla(0, 0%, 100%, 0.788);
+  border-color: rgba(0, 0, 0, 0.1);
+  background-clip: padding-box;
+  height: 26px;
+  padding: 4px 18px 3px 18px;
+  border-radius: 3px;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
+  transition: all 80ms ease-in;
+  display: flex;
+  align-items: center;
+}
+
+.update-profile-btn > svg {
+  margin-right: 4px;
+}
+
+.update-profile-btn:hover {
+  background-color: hsla(0, 0%, 100%, 0.897);
+}
+
+.tabs-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-left {
+  display: flex;
+  gap: 2rem;
+}
+
+.tabs-nav a {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  border-bottom: 3px solid white;
+  padding-bottom: 5px;
+  transition: all ease-in 120ms;
+}
+
+.tabs-nav a.active {
+  border-color: var(--primary-orange);
+  color: var(--primary-orange);
+}
+
+/* TODO: */
+.tabs-nav a:hover {
+  border-color: #333;
+  color: #333;
+}
+
+.nav-left {
+}
+
+.nav-right {
+}
+
+.user-main-container {
+  padding: 20px 0;
+}

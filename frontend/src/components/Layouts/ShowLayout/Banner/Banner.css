@@ -52,8 +52,11 @@
 .cover-background {
   height: 325px;
   width: 325px;
-  object-fit: cover;
   background-color: rgb(46, 46, 46);
+}
+
+.cover-background > img {
+  object-fit: cover;
 }
 
 .banner-title > .subtitle > a:hover {

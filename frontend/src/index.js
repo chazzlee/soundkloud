@@ -17,6 +17,11 @@ import { TrackShowPage } from "./features/tracks/pages/TrackShowPage";
 import { UploadNewTrackPage } from "./features/tracks/components/UploadNewTrackPage";
 import { UserProfilePage } from "./features/profiles/pages/UserProfilePage";
 import { PlaylistShowPage } from "./features/playlists/pages/PlaylistShowPage";
+import {
+  UserAll,
+  UserPlaylists,
+  UserTracks,
+} from "./features/profiles/components/UserProfileTabsPage";
 
 const store = configureStore();
 
@@ -44,9 +49,9 @@ const router = createBrowserRouter([
         path: "/:slug",
         element: <UserProfilePage />,
         children: [
-          { index: true, element: <div>ALL USER STUFF</div> },
-          { path: "tracks", element: <div>USER TRACKS</div> },
-          { path: "sets", element: <div>USER PLAYLISTS</div> },
+          { index: true, element: <UserAll /> },
+          { path: "tracks", element: <UserTracks /> },
+          { path: "sets", element: <UserPlaylists /> },
         ],
       },
       { path: "/:user/sets/:playlistSlug", element: <PlaylistShowPage /> },

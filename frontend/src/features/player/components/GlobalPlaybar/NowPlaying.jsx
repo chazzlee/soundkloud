@@ -144,7 +144,7 @@ function NextUpModal({ activePlaylist, currentTrack, onClose }) {
               )}
               <div className="next-up-item-details">
                 <Link
-                  className="uploader-name"
+                  className="next-up-uploader-name"
                   to={`/${track.uploader.slug}`}
                   onClick={(e) => e.stopPropagation()}
                 >

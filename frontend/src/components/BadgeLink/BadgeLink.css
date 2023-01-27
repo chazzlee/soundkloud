@@ -1,4 +1,9 @@
 .badge-link {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.badge-link-text {
   color: #fff;
   font-size: 14px;
   background-color: #999;

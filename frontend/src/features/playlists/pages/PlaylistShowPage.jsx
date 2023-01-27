@@ -27,7 +27,6 @@ import { ControlButton } from "../../../components/ControlButton";
 import { PrivateBadge } from "../../../components/PrivateBadge";
 import {
   ShowLayout,
-  ShowAside,
   ShowMain,
   Banner,
   BannerImage,
@@ -38,7 +37,6 @@ import { TimeAgo } from "../../../components/TimeAgo";
 import { ShowActions } from "../../../components/Layouts/ShowLayout/ShowActions";
 import { PlaylistTracksList } from "../components/PlaylistTracksList";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
-import { MdPlaylistPlay } from "react-icons/md";
 import { PlaylistAside } from "../components/PlaylistAside";
 
 // TODO: continue playlist after play playlist from profile page instead of reloading

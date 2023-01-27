@@ -237,13 +237,13 @@
   display: block;
 }
 
-.uploader-name {
+.next-up-uploader-name {
   color: #999;
   margin-bottom: 4px;
   transition: all 100ms ease-in;
 }
 
-.uploader-name:hover {
+.next-up-uploader-name:hover {
   color: #666;
 }
 

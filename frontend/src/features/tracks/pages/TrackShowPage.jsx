@@ -19,7 +19,6 @@ import "./TrackShowPage.css";
 
 import {
   ShowLayout,
-  ShowAside,
   Banner,
   BannerImage,
   ShowMain,
@@ -42,7 +41,6 @@ import { CommentForm } from "../../replies/components/CommentForm";
 import { TrackDetails } from "../components/TrackDetails";
 import { CommentFeed } from "../../replies/components/CommentFeed";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
-import { MdOutlineLibraryMusic } from "react-icons/md";
 import { TrackAside } from "../components/TrackAside";
 
 export function TrackShowPage() {

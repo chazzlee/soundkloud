@@ -7,10 +7,7 @@
   text-align: center;
   text-transform: lowercase;
   border: 1px solid var(--primary-orange);
-  display: flex;
   padding-top: 1px;
-  justify-content: center;
-  align-items: center;
 }
 .private-icon {
   margin-right: 2px;

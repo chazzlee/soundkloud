@@ -3,8 +3,12 @@ import "./BadgeLink.css";
 
 export function BadgeLink({ to, label }) {
   return (
-    <Link to={to}>
-      <p className="badge-link">
+    <Link
+      to={to}
+      style={{ display: "flex", justifyContent: "flex-end" }}
+      className="badge-link"
+    >
+      <p className="badge-link-text">
         <span className="sharp">#</span>
         {label}
       </p>
