@@ -36,6 +36,8 @@ import { UploaderAvatar } from "../../../components/UploaderAvatar";
 import { TimeAgo } from "../../../components/TimeAgo";
 import { ShowActions } from "../../../components/Layouts/ShowLayout/ShowActions";
 import { PlaylistTracksList } from "../components/PlaylistTracksList";
+import { bannerTitleFontSize } from "../../../utils/bannerTitleFontSize";
+import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
 
 // TODO: continue playlist after play playlist from profile page instead of reloading
 export function PlaylistShowPage() {
@@ -105,7 +107,7 @@ export function PlaylistShowPage() {
             />
             <div className="banner-heading">
               <div className="banner-title">
-                <h2 className="title">{playlist?.slug}</h2>
+                <BannerTitleHeading title={playlist.slug} />
                 <h3 className="subtitle">
                   <Link to={`/${playlist.uploader.slug}`}>
                     {playlist.uploader.displayName}

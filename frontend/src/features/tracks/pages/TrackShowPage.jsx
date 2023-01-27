@@ -5,18 +5,15 @@ import { selectCurrentUser } from "../../auth/store";
 import {
   fetchTrackAsync,
   removeCurrentTrack,
-  replyToTrackAsync,
   selectCurrentTrack,
 } from "../store";
-import { FaCommentAlt } from "react-icons/fa";
+
 import { ImUsers, ImUserPlus } from "react-icons/im";
 import { BsSoundwave } from "react-icons/bs";
 import { EditTrackModal } from "../../profiles/components/EditTrackModal";
 import { FullSpinner } from "../../../components/FullSpinner";
-import { PlayBanner } from "../components/PlayBanner";
 import { TrackActions } from "../components/TrackActions";
 import { fetchPlaylistsAsync } from "../../playlists/store";
-import { ReplyCard } from "../components/ReplyCard";
 import "./TrackShowPage.css";
 
 import {
@@ -42,8 +39,8 @@ import { TimeAgo } from "../../../components/TimeAgo";
 import { UploaderAvatar } from "../../../components/UploaderAvatar";
 import { CommentForm } from "../../replies/components/CommentForm";
 import { TrackDetails } from "../components/TrackDetails";
-import { CommentAvatar } from "../../replies/components/CommentAvatar";
 import { CommentFeed } from "../../replies/components/CommentFeed";
+import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
 
 export function TrackShowPage() {
   const dispatch = useDispatch();
@@ -60,22 +57,6 @@ export function TrackShowPage() {
     };
   }, [dispatch, user, trackSlug]);
 
-  const [replyBody, setReplyBody] = useState("");
-
-  const handleReplyToTrack = (e) => {
-    e.preventDefault();
-    const reply = { body: replyBody };
-    dispatch(replyToTrackAsync(trackSlug, reply));
-    setReplyBody("");
-  };
-
-  const [following, setFollowing] = useState(false);
-  const handleFollow = () => {
-    setFollowing((prev) => !prev);
-  };
-
-  // --------------PLAY BANNER STUFF---FIXME://
-  // const rgbBackground = useRef(getRandomRGB());
   const [loaded, setLoaded] = useState(false);
 
   const waveStatus = useSelector((state) =>
@@ -123,9 +104,9 @@ export function TrackShowPage() {
               />
               <div className="banner-heading">
                 <div className="banner-title">
-                  <h2 className="title">
-                    {track.artist} - {track.title}
-                  </h2>
+                  <BannerTitleHeading
+                    title={`${track.artist} - ${track.title}`}
+                  />
                   <h3 className="subtitle">
                     <Link to={`/${track.uploader.slug}`}>
                       {track.uploader.displayName}

@@ -5,9 +5,10 @@ export function FixedBottomAudioContainer({ children }) {
         position: "fixed",
         bottom: 0,
         width: "100%",
-        zIndex: 14,
+        zIndex: 16,
         padding: 0,
         borderTop: "1px solid #cecece",
+        backgroundColor: "var(--bg-light)",
       }}
     >
       {children}
