@@ -1,0 +1,23 @@
+.track-details-container {
+  font-size: 13px;
+  color: #333;
+}
+
+.track-description {
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.track-dt-group {
+  padding-bottom: 4px;
+}
+
+.track-details-label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: 0.2px;
+}
+
+.track-details-content {
+  margin-bottom: 8px;
+}

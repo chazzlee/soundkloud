@@ -1,6 +1,7 @@
 import { IoMdPause, IoMdPlay } from "react-icons/io";
-import { PLAYER_STATUS } from "../features/player/store";
-import { ButtonSpinner } from "./ButtonSpinner";
+import { PLAYER_STATUS } from "../../features/player/store";
+import { ButtonSpinner } from "../ButtonSpinner";
+import "./ControlButton.css";
 
 export function ControlButton({ loaded, status, onPlay, onPause }) {
   if (!loaded || status === PLAYER_STATUS.IDLE) {

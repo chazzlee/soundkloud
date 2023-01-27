@@ -1,0 +1,24 @@
+.comment-feed-container {
+  grid-column-start: 2;
+}
+
+.comment-feed-header {
+  width: 100%;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  color: #999;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 8px;
+}
+
+.comment-count {
+  margin-left: 4px;
+}
+
+.comment-feed-list {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}

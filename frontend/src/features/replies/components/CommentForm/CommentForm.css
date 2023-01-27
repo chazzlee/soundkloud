@@ -1,0 +1,35 @@
+.comment-form-container {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  margin-bottom: 14px;
+  background-color: var(--bg-light);
+  border-top: 1px solid #e5e5e5;
+  border-right: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.comment-form {
+  padding: 0 9px;
+  width: 100%;
+}
+
+.comment-input {
+  width: 100%;
+  font-size: 14px;
+  height: 28px;
+  padding: 0 9px;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+
+.comment-input:focus {
+  border-color: #999;
+  outline: 0;
+}
+
+.comment-form-container:focus-within {
+  background-color: rgb(226, 226, 226);
+}

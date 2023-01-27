@@ -1,0 +1,22 @@
+.control-btn-lg {
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  transition: filter ease-in 100ms;
+}
+
+.control-btn-lg:hover {
+  filter: brightness(80%);
+}
+
+.control-btn-lg > svg {
+  font-size: 30px;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.play > svg {
+  margin-left: 6px;
+}

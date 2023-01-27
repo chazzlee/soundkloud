@@ -10,7 +10,7 @@ class Api::RepliesController < ApplicationController
   end
 
   def create
-    track = Track.friendly.find(params[:track_id])
+    track = Track.find(params[:track_id])
 
     if track
       reply = Reply.new(reply_params)

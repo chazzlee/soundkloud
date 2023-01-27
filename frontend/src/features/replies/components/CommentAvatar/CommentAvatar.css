@@ -1,0 +1,9 @@
+.avatar {
+  display: block;
+  flex-shrink: 0;
+  outline: 1px solid #e5e5e5;
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  background-color: rgb(85, 85, 85);
+}

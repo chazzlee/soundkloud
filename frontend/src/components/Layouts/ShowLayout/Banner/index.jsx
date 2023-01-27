@@ -1,9 +1,11 @@
 import { DefaultCover } from "../../../DefaultCover";
+import "./Banner.css";
 
-export function Banner({ children, height = 380 }) {
+export function Banner({ children, header, height = 380 }) {
   return (
     <section className="banner-section" style={{ height }}>
-      {children}
+      <header className="banner-header">{header}</header>
+      <div className="waveform-container">{children}</div>
     </section>
   );
 }
