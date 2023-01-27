@@ -88,6 +88,10 @@ export const playerReducer = produce((state = initialState, action) => {
       break;
     }
     case LOAD_TRACK: {
+      if (action.payload.location === "profile") {
+        break;
+      }
+
       state.wave.sourceId = action.payload.id;
       state.wave.sourceUrl = action.payload.url;
       if (
@@ -121,7 +125,6 @@ export const playerReducer = produce((state = initialState, action) => {
         state.global.sourceId = action.payload.id;
         state.global.sourceUrl = action.payload.url;
       }
-
       break;
     }
     case PLAY_TRACK: {

@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
-import { TrackCard } from "../components/TrackCard";
 import {
   fetchAllTracksByUserAsync,
   selectHasTracksLoaded,
@@ -18,7 +17,6 @@ import {
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import {
   Banner,
-  BannerImage,
   ShowLayout,
   ShowMain,
 } from "../../../components/Layouts/ShowLayout";
@@ -37,7 +35,6 @@ export function UserProfilePage() {
   const playlistsLoaded = useSelector(selectPlaylistsLoaded);
   const playlists = useSelector(selectPlaylists);
 
-  const [activeTab, setActiveTab] = useState("all");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const location = useLocation();
@@ -74,7 +71,7 @@ export function UserProfilePage() {
               <div className="banner-heading">
                 <div className="banner-title extend-padding-left">
                   <BannerTitleHeading title={user.displayName} />
-                  <h3 className="subtitle">REAL NAME</h3>
+                  <h3 className="subtitle">{user.email}</h3>
                   <h3 className="subtitle">
                     {user.location || "United States"}
                   </h3>
@@ -129,46 +126,6 @@ export function UserProfilePage() {
   );
 }
 
-/* {activeTab === "all" && (
-              <div>
-                <h3 className={styles.uploadedTitle}>Uploaded Tracks</h3>
-                <div className={styles.trackCards}>
-                  {uploadedTracks?.map((track) => (
-                    <TrackCard key={track.id} track={track} />
-                  ))}
-                </div>
-                <h3 className={styles.uploadedTitle}>Playlists</h3>
-                <div className={styles.trackCards}>
-                  {playlists?.map((playlist) => (
-                    <div key={playlist.id}>
-                      <h3>{playlist.title}</h3>
-                      <ul>
-                        {playlist.tracks.map((track) => (
-                          <li key={track.id}>{track.title}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )} */
-
-/* {activeTab === "tracks" && (
-              <div>
-                <h3 className={styles.uploadedTitle}>Uploaded Tracks</h3>
-                <div className={styles.trackCards}>
-                  {uploadedTracks?.map((track) => (
-                    <TrackCard key={track.id} track={track} />
-                  ))}
-                </div>
-              </div>
-            )} */
-
-/* {activeTab === "playlists" && (
-              <PlaylistList playlists={playlists} />
-            )} */
-
-//       <div className="full-page">
 //   <main className="page-container">
 //     <div className={styles.bannerPlayerContainer}>
 //       <div className={styles.avatar}>
@@ -198,44 +155,3 @@ export function UserProfilePage() {
 //         </h2>
 //       </div>
 //     </div>
-//     <div className={styles.tabsBar}>
-//       <div className={styles.left}>
-//         <NavLink
-//           // className={`${activeTab === "all" ? styles.active : ""}`}
-//           // onClick={() => setActiveTab("all")}
-//           to=""
-//         >
-//           All
-//         </NavLink>
-//         <NavLink
-//           // className={`${activeTab === "tracks" ? styles.active : ""}`}
-//           // onClick={() => setActiveTab("tracks")}
-//           to="tracks"
-//         >
-//           Tracks
-//         </NavLink>
-//         <NavLink
-//           // className={`${activeTab === "playlists" ? styles.active : ""}`}
-//           // onClick={() => setActiveTab("playlists")}
-//           to="sets"
-//         >
-//           Playlists
-//         </NavLink>
-//       </div>
-//     </div>
-//     <div className={styles.container}>
-//       <Outlet />
-
-//       <aside>
-//         <div></div>
-//       </aside>
-//     </div>
-//   </main>
-// </div>
-
-// {isProfileModalOpen && (
-//   <EditProfileModal
-//     currentUser={currentUser}
-//     onClose={() => setIsProfileModalOpen(false)}
-//   />
-// )}

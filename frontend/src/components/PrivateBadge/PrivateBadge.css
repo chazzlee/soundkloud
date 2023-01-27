@@ -2,7 +2,7 @@
 .private-badge {
   background-color: var(--primary-orange);
   color: #fff;
-  border-radius: 12px;
+  border-radius: 4px;
   font-size: 14px;
   text-align: center;
   text-transform: lowercase;
@@ -14,4 +14,11 @@
 }
 .private-icon {
   margin-right: 2px;
+}
+
+.private-badge.small {
+  font-size: 11px;
+  border-radius: 4px;
+  height: 18px;
+  margin-top: 2px;
 }

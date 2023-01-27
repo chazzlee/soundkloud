@@ -38,6 +38,7 @@
 }
 
 .tabs-nav {
+  padding-bottom: 2rem;
   display: flex;
   justify-content: space-between;
 }
