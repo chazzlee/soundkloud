@@ -6,6 +6,7 @@ import {
   fetchTrackAsync,
   removeCurrentTrack,
   selectCurrentTrack,
+  selectUserTracks,
 } from "../store";
 
 import { ImUsers, ImUserPlus } from "react-icons/im";
@@ -41,6 +42,8 @@ import { CommentForm } from "../../replies/components/CommentForm";
 import { TrackDetails } from "../components/TrackDetails";
 import { CommentFeed } from "../../replies/components/CommentFeed";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
+import { MdOutlineLibraryMusic } from "react-icons/md";
+import { TrackAside } from "../components/TrackAside";
 
 export function TrackShowPage() {
   const dispatch = useDispatch();
@@ -126,7 +129,13 @@ export function TrackShowPage() {
           <Wavesurfer track={track} ref={wavesurfer} onLoaded={handleLoaded} />
         </Banner>
 
-        <ShowMain aside={<ShowAside />}>
+        <ShowMain
+          aside={
+            <TrackAside
+              user={{ id: track.uploader.id, slug: track.uploader.slug }}
+            />
+          }
+        >
           <CommentForm avatar={currentUser.photo} trackId={track.id} />
           <ShowActions />
           <GridContainer>

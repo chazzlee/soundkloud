@@ -8,6 +8,7 @@ import {
   selectActivePlaylist,
   selectCurrentPlaylistTrack,
   selectPlaylistBySlug,
+  selectPlaylists,
   selectPlaylistsLoaded,
 } from "../store";
 import { FullSpinner } from "../../../components/FullSpinner";
@@ -36,8 +37,9 @@ import { UploaderAvatar } from "../../../components/UploaderAvatar";
 import { TimeAgo } from "../../../components/TimeAgo";
 import { ShowActions } from "../../../components/Layouts/ShowLayout/ShowActions";
 import { PlaylistTracksList } from "../components/PlaylistTracksList";
-import { bannerTitleFontSize } from "../../../utils/bannerTitleFontSize";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
+import { MdPlaylistPlay } from "react-icons/md";
+import { PlaylistAside } from "../components/PlaylistAside";
 
 // TODO: continue playlist after play playlist from profile page instead of reloading
 export function PlaylistShowPage() {
@@ -78,6 +80,8 @@ export function PlaylistShowPage() {
 
   const tracksLoaded = useSelector(selectHasTracksLoaded);
   const playlistsLoaded = useSelector(selectPlaylistsLoaded);
+
+  // TODO: FIX -- just sample data for now (also need to fetch all user playlists)
 
   useEffect(() => {
     // TODO: only dispatch if playlists/tracks not loaded
@@ -132,7 +136,13 @@ export function PlaylistShowPage() {
         />
       </Banner>
 
-      <ShowMain aside={<ShowAside />}>
+      <ShowMain
+        aside={
+          <PlaylistAside
+            user={{ id: playlist.uploader.id, slug: playlist.uploader.slug }}
+          />
+        }
+      >
         <ShowActions />
 
         <GridContainer>
