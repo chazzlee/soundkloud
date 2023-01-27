@@ -1,4 +1,5 @@
 .comment-feed-container {
+  padding-top: 8px;
   grid-column-start: 2;
 }
 

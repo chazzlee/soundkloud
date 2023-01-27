@@ -15,8 +15,10 @@
   padding-left: 24px;
   padding-right: 24px;
   column-gap: 24px;
+  background-color: #fff;
 }
 
 .main-inner {
+  background-color: #fff;
   padding-top: 20px;
 }

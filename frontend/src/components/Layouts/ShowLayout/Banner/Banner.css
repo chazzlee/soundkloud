@@ -63,3 +63,9 @@
   cursor: pointer;
   color: rgb(224, 224, 224);
 }
+
+.banner-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

@@ -143,7 +143,6 @@ export function TrackShowPage() {
               displayName={track.uploader.displayName}
             />
             <TrackDetails description={track.description} />
-
             <CommentFeed comments={track.replies} />
           </GridContainer>
         </ShowMain>

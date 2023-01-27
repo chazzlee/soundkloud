@@ -8,6 +8,9 @@
   text-transform: lowercase;
   border: 1px solid var(--primary-orange);
   padding-top: 1px;
+  display: flex;
+  align-items: center;
+  padding: 3px 12px 2px 12px;
 }
 .private-icon {
   margin-right: 2px;

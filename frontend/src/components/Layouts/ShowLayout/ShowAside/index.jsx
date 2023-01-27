@@ -10,7 +10,7 @@ export function ShowAside({
   viewUrl = "/",
 }) {
   return (
-    <aside>
+    <aside className="aside-root-container">
       <header className="aside-header">
         <h2 className="aside-heading">
           {headingIcon} {heading}

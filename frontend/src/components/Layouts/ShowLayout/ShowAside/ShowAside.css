@@ -1,3 +1,7 @@
+.aside-root-container {
+  background-color: #fff;
+}
+
 .aside-header {
   display: flex;
   justify-content: space-between;

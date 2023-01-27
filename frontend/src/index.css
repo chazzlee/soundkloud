@@ -11,11 +11,20 @@
   --playbar-height: 48px;
 }
 
-html,
+html {
+  height: 100%;
+}
+
 body {
   height: 100%;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  background-color: var(--bg-light);
+}
+
+#root {
+  height: 100%;
+  background-color: var(--bg-light);
 }
 
 li {
@@ -37,11 +46,6 @@ li {
 .carousel__slide-focus-ring:focus-within {
   outline: none !important;
   border: none !important;
-}
-
-#root {
-  height: 100%;
-  background-color: var(--bg-light);
 }
 
 h1,

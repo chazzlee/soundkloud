@@ -1,6 +1,7 @@
 .track-details-container {
   font-size: 13px;
   color: #333;
+  margin-top: -8px;
 }
 
 .track-description {

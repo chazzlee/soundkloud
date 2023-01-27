@@ -142,7 +142,6 @@ export function PlaylistShowPage() {
         }
       >
         <ShowActions />
-
         <GridContainer>
           <UploaderAvatar
             photo={playlist.uploader.photo}

@@ -1,8 +1,3 @@
-.badge-link {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .badge-link-text {
   color: #fff;
   font-size: 14px;
@@ -14,6 +9,6 @@
   margin-bottom: 8px;
 }
 
-.badge-link > .sharp {
+.badge-link-text > .sharp {
   margin-right: 4px;
 }
