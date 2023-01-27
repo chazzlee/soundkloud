@@ -13,14 +13,7 @@ import { useState } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { trackPlaying } from "../../../player/store";
-/* <Wavesurfer
-    ref={wavesurfer}
-    track={item}
-    onLoaded={handleLoaded}
-    waveHeight={60}
-    waveColor="#555"
-    location="profile"
-  /> */
+
 export function ProfileItemCard({ item }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
