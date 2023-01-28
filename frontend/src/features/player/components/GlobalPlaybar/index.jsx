@@ -115,7 +115,10 @@ export function GlobalPlaybar() {
         (globalSourceUrl || currentPlaylistTrackUrl))
     ) {
       playerRef.current?.audio.current.play();
-    } else if (waveStatus === PLAYER_STATUS.PAUSED) {
+    } else if (
+      waveStatus === PLAYER_STATUS.PAUSED ||
+      globalStatus === PLAYER_STATUS.PAUSED
+    ) {
       playerRef.current?.audio.current.pause();
     }
   }, [

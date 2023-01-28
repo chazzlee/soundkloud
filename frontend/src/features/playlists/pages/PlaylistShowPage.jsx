@@ -38,9 +38,11 @@ import { ShowActions } from "../../../components/Layouts/ShowLayout/ShowActions"
 import { PlaylistTracksList } from "../components/PlaylistTracksList";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
 import { PlaylistAside } from "../components/PlaylistAside";
+import { selectCurrentUser } from "../../auth/store";
 
 // TODO: continue playlist after play playlist from profile page instead of reloading
 export function PlaylistShowPage() {
+  const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const { playlistSlug } = useParams();
   const [loaded, setLoaded] = useState(false);
@@ -58,6 +60,8 @@ export function PlaylistShowPage() {
     selectCurrentPlaylistTrack,
     shallowEqual
   );
+
+  const isCurrentUserUploader = currentUser?.id === playlist?.uploader?.id;
 
   const handleStartPlaylist = useCallback(
     (playlist) => {
@@ -141,7 +145,11 @@ export function PlaylistShowPage() {
           />
         }
       >
-        <ShowActions />
+        <ShowActions
+          isCurrentUserUploader={isCurrentUserUploader}
+          type="playlist"
+          item={playlist}
+        />
         <GridContainer>
           <UploaderAvatar
             photo={playlist.uploader.photo}

@@ -30,6 +30,7 @@ export function UserProfilePage() {
 
   // TODO: find user by id/slug instead of current user
   const user = useSelector(selectCurrentUser);
+
   const tracksLoaded = useSelector(selectHasTracksLoaded);
   const uploadedTracks = useSelector(selectUserTracks);
   const playlistsLoaded = useSelector(selectPlaylistsLoaded);
@@ -63,11 +64,19 @@ export function UserProfilePage() {
           height={260}
           header={
             <>
-              <img
-                className="profile-avatar-large"
-                src={user.photo}
-                alt={user.displayName}
-              />
+              {user.photo ? (
+                <img
+                  className="profile-avatar-large"
+                  src={user.photo}
+                  alt={user.displayName}
+                />
+              ) : (
+                <div
+                  className="profile-avatar-large"
+                  // TODO:
+                  style={{ backgroundColor: "black" }}
+                />
+              )}
               <div className="banner-heading">
                 <div className="banner-title extend-padding-left">
                   <BannerTitleHeading title={user.displayName} />

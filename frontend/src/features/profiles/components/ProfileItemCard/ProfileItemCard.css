@@ -31,24 +31,6 @@
   flex-basis: 100%;
 }
 
-.control-btn-sm {
-  margin-right: 10px;
-  height: 40px;
-  width: 40px;
-  background-color: var(--primary-orange);
-  border: 1px solid var(--primary-orange);
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-}
-
-.control-btn-sm > svg {
-  margin-left: 3px;
-}
-
 .card-heading {
   margin-top: 4px;
   width: 100%;
@@ -81,7 +63,7 @@
   justify-content: space-between;
 }
 
-.profile-item-card .wavesurfer-container {
+.card-body {
   position: absolute;
   padding: 0 1rem;
   width: 100%;

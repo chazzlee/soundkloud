@@ -27,6 +27,20 @@ const SEEK_TRACK = "player/trackSeeked";
 const UPDATE_PROGRESS = "player/progressUpdating";
 const UPDATE_DURATION = "player/durationUpdated";
 
+// FROM PROFILE
+const LOAD_TRACK_FROM_PROFILE = "player/trackLoadedFromProfile";
+const PLAY_TRACK_FROM_PROFILE = "player/trackPlayingFromProfile";
+const PAUSE_TRACK_FROM_PROFILE = "player/trackPausedFromProfile";
+
+export const trackPlayingFromProfile = (sourceInfo) => ({
+  type: PLAY_TRACK_FROM_PROFILE,
+  payload: sourceInfo,
+});
+
+export const trackPausedFromProfile = () => ({
+  type: PAUSE_TRACK_FROM_PROFILE,
+});
+
 export const trackCleared = () => ({
   type: CLEAR_TRACK,
 });
@@ -155,6 +169,21 @@ export const playerReducer = produce((state = initialState, action) => {
     case UPDATE_DURATION: {
       state.global.duration = action.payload;
       state.wave.duration = action.payload;
+      break;
+    }
+
+    // FROM PROFILE
+    case PLAY_TRACK_FROM_PROFILE: {
+      state.global.status = PLAYER_STATUS.PLAYING;
+      state.global.sourceId = action.payload.id;
+      state.global.sourceUrl = action.payload.upload;
+      state.global.duration = action.payload.duration;
+      state.global.progress = 0;
+      break;
+    }
+
+    case PAUSE_TRACK_FROM_PROFILE: {
+      state.global.status = PLAYER_STATUS.PAUSED;
       break;
     }
 
