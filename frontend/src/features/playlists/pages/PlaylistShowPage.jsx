@@ -34,7 +34,7 @@ import {
 } from "../../../components/Layouts/ShowLayout";
 import { UploaderAvatar } from "../../../components/UploaderAvatar";
 import { TimeAgo } from "../../../components/TimeAgo";
-import { ShowActions } from "../../../components/Layouts/ShowLayout/ShowActions";
+import { ItemActionGroup } from "../../../components/ItemActionGoup";
 import { PlaylistTracksList } from "../components/PlaylistTracksList";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
 import { PlaylistAside } from "../components/PlaylistAside";
@@ -145,7 +145,7 @@ export function PlaylistShowPage() {
           />
         }
       >
-        <ShowActions
+        <ItemActionGroup
           isCurrentUserUploader={isCurrentUserUploader}
           type="playlist"
           item={playlist}

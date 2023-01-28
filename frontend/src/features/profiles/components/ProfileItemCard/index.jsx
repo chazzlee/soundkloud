@@ -18,6 +18,8 @@ import {
   trackPausedFromProfile,
 } from "../../../player/store";
 import { ControlButton } from "../../../../components/ControlButton";
+import { ItemActionGroup } from "../../../../components/ItemActionGoup";
+import { selectCurrentUser } from "../../../auth/store";
 
 export function ProfileItemCard({ item, type = "track" }) {
   const dispatch = useDispatch();
@@ -25,6 +27,8 @@ export function ProfileItemCard({ item, type = "track" }) {
   const wavesurfer = useRef(null);
   const [loaded, setLoaded] = useState(true);
   const [status, setStatus] = useState(PLAYER_STATUS.LOADED);
+  const currentUser = useSelector(selectCurrentUser);
+  const isCurrentUserUploader = currentUser?.id === item.uploader.id;
 
   const globalStatus = useSelector((state) =>
     selectPlayerStatus(state, GLOBAL_PLAYER)
@@ -131,14 +135,14 @@ export function ProfileItemCard({ item, type = "track" }) {
 
   return (
     <div className="profile-item-card">
-      <div className="profile-item-image">
+      <Link className="profile-item-image" to={item.permalink}>
         {/* TODO: default...if no cover */}
         {item.cover ? (
           <img src={item.cover} alt={item.title} />
         ) : (
           <DefaultCover size={160} />
         )}
-      </div>
+      </Link>
       <div className="inner-card-container">
         <div className="card-header">
           <ControlButton
@@ -171,41 +175,20 @@ export function ProfileItemCard({ item, type = "track" }) {
               <Link to={item.permalink} className="card-link">
                 {item.title}
               </Link>
-              <PrivateBadge privacy={"private"} small={true} />
+              <PrivateBadge privacy={item.privacy} small={true} />
             </div>
           </div>
         </div>
         <div className="card-body">
           <div id="waveform" ref={waveformRef} />
         </div>
-        <CardFooterActions type={type} />
+        <ItemActionGroup
+          type={type}
+          item={item}
+          isCurrentUserUploader={isCurrentUserUploader}
+          size="sm"
+        />
       </div>
-    </div>
-  );
-}
-
-// TODO:
-function CardHeader() {
-  return <div />;
-}
-
-function CardFooterActions({ type }) {
-  return (
-    <div className="card-actions-footer">
-      {type === "track" && (
-        <button className="card-action-btn" onClick={() => {}}>
-          <MdPlaylistAdd />
-          Add to playlist
-        </button>
-      )}
-      <button className="card-action-btn" onClick={() => {}}>
-        <MdOutlineEdit />
-        Edit
-      </button>
-      <button className="card-action-btn" onClick={() => {}}>
-        <IoTrashBinOutline />
-        Remove
-      </button>
     </div>
   );
 }

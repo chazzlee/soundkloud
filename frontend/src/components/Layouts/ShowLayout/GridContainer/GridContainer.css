@@ -3,4 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 7fr;
   grid-template-rows: auto;
+  border-top: 1px solid #e7e7e7;
+  margin-top: 8px;
+  padding-top: 20px;
 }

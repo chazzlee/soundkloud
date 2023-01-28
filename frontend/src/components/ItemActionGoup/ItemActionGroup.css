@@ -1,24 +1,28 @@
-.show-actions {
-  padding-bottom: 8px;
-  margin-bottom: 20px;
+.item-actions {
   display: flex;
   align-items: center;
+  justify-self: flex-start;
   gap: 6px;
-  border-bottom: 1px solid #e7e7e7;
 }
 
-.show-action-btn {
-  display: flex;
+.item-action-btn {
+  text-transform: capitalize;
   align-items: center;
   justify-content: center;
-  height: 26px;
   font-size: 14px;
+  display: flex;
   color: #333;
   border: 1px solid #e5e5e5;
   background-color: #fff;
   padding: 3px 10px 1px;
+  transition: all 100ms ease-in;
 }
 
-.show-action-btn > svg {
+.item-action-btn:hover {
+  border-color: #ccc;
+  filter: brightness(96%);
+}
+
+.item-action-btn > svg {
   margin-right: 4px;
 }

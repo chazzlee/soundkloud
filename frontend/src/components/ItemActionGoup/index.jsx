@@ -4,14 +4,18 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { SlPencil } from "react-icons/sl";
 import { MdPlaylistAdd } from "react-icons/md";
-import { EditTrackModal } from "../../../../features/profiles/components/EditTrackModal";
-import { PlaylistModal } from "../../../../features/tracks/components/PlaylistModal";
-import { destroyTrackAsync } from "../../../../features/tracks/store";
-import "./ShowActions.css";
+import { EditTrackModal } from "../../features/profiles/components/EditTrackModal";
+import { PlaylistModal } from "../../features/tracks/components/PlaylistModal";
+import { destroyTrackAsync } from "../../features/tracks/store";
+import "./ItemActionGroup.css";
 
 // TODO: need to complete
-export function ShowActions({ item, type, isCurrentUserUploader = false }) {
-  console.log(item);
+export function ItemActionGroup({
+  item,
+  type,
+  size = "lg",
+  isCurrentUserUploader = false,
+}) {
   const dispatch = useDispatch();
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [playlistModalOpen, setPlaylistModalOpen] = useState(false);
@@ -37,17 +41,19 @@ export function ShowActions({ item, type, isCurrentUserUploader = false }) {
 
   return (
     <>
-      <div className="show-actions">
+      <div className="item-actions">
         <ActionButton
           icon={<AiOutlineHeart />}
           label="Like"
           onClick={() => console.log("LIKE: TODO MUST IMPLEMENT")}
+          size={size}
         />
         {type === "track" && (
           <ActionButton
             icon={<MdPlaylistAdd />}
             label="Add to playlist"
             onClick={handleTogglePlaylistModal}
+            size={size}
           />
         )}
         {isCurrentUserUploader ? (
@@ -56,11 +62,13 @@ export function ShowActions({ item, type, isCurrentUserUploader = false }) {
               icon={<SlPencil />}
               label="Edit"
               onClick={handleToggleEditModal}
+              size={size}
             />
             <ActionButton
               icon={<IoTrashBinOutline />}
               label="Remove"
               onClick={() => handleRemoveItem(item.id)}
+              size={size}
             />
           </>
         ) : null}
@@ -81,13 +89,14 @@ export function ShowActions({ item, type, isCurrentUserUploader = false }) {
   );
 }
 
-function ActionButton({ icon, label, onClick }) {
+function ActionButton({ icon, label, onClick, size }) {
   return (
     <button
       type="button"
       aria-label={label}
-      className="show-action-btn"
+      className="item-action-btn"
       onClick={onClick}
+      style={{ fontSize: size === "lg" ? 14 : 11 }}
     >
       {icon} <span>{label}</span>
     </button>

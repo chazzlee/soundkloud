@@ -22,7 +22,6 @@ import {
   Banner,
   BannerImage,
   ShowMain,
-  ShowActions,
   GridContainer,
 } from "../../../components/Layouts/ShowLayout";
 import { ControlButton } from "../../../components/ControlButton";
@@ -42,6 +41,7 @@ import { TrackDetails } from "../components/TrackDetails";
 import { CommentFeed } from "../../replies/components/CommentFeed";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
 import { TrackAside } from "../components/TrackAside";
+import { ItemActionGroup } from "../../../components/ItemActionGoup";
 
 export function TrackShowPage() {
   const dispatch = useDispatch();
@@ -134,7 +134,7 @@ export function TrackShowPage() {
         }
       >
         <CommentForm avatar={currentUser.photo} trackId={track.id} />
-        <ShowActions
+        <ItemActionGroup
           type="track"
           item={track}
           isCurrentUserUploader={isCurrentUserUploader}

@@ -5,6 +5,7 @@
 }
 
 .profile-item-image {
+  display: block;
   height: 160px;
   width: 160px;
   flex-shrink: 0;
@@ -19,7 +20,7 @@
 
 .inner-card-container {
   width: 100%;
-  padding: 6px 12px 6px 12px;
+  padding: 8px 12px 4px 12px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -74,26 +75,4 @@
 .card-actions-footer {
   display: flex;
   gap: 4px;
-}
-
-.card-action-btn {
-  text-transform: capitalize;
-  border: 1px solid #e5e5e5;
-  background-color: #fff;
-  border-radius: 3px;
-  font-size: 11px;
-  padding: 4px 9px 3px 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all ease-in 120ms;
-}
-
-.card-action-btn > svg {
-  margin-right: 4px;
-}
-
-.card-action-btn:hover {
-  border-color: #ccc;
-  filter: brightness(96%);
 }
