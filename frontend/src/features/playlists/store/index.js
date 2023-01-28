@@ -145,6 +145,9 @@ export const playlistsReducer = produce((state = initialState, action) => {
     }
     case TRACK_ADDED_TO_PLAYLIST: {
       state.entities[action.payload.id].tracks.push(action.payload.track);
+      if (state.active.id) {
+        state.active.trackIds.push(action.payload.id);
+      }
       break;
     }
     case TRACK_REMOVED_FROM_PLAYLIST: {

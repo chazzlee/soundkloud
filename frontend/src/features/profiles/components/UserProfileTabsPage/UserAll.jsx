@@ -9,7 +9,7 @@ export function UserAll() {
   return (
     <div className="user-profile-tab-page">
       {userTracks.map((track) => (
-        <ProfileItemCard key={track.id} item={track} />
+        <ProfileItemCard key={track.id} item={track} type={"track"} />
       ))}
     </div>
   );

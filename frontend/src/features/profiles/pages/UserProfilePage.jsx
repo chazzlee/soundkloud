@@ -64,19 +64,7 @@ export function UserProfilePage() {
           height={260}
           header={
             <>
-              {user.photo ? (
-                <img
-                  className="profile-avatar-large"
-                  src={user.photo}
-                  alt={user.displayName}
-                />
-              ) : (
-                <div
-                  className="profile-avatar-large"
-                  // TODO:
-                  style={{ backgroundColor: "black" }}
-                />
-              )}
+              <ProfileBannerAvatar photoUrl={user.photo} />
               <div className="banner-heading">
                 <div className="banner-title extend-padding-left">
                   <BannerTitleHeading title={user.displayName} />
@@ -135,32 +123,18 @@ export function UserProfilePage() {
   );
 }
 
-//   <main className="page-container">
-//     <div className={styles.bannerPlayerContainer}>
-//       <div className={styles.avatar}>
-//         <img
-//           src={currentUser.photo}
-//           height="100%"
-//           width="100%"
-//           style={{ borderRadius: "50%", objectFit: "cover" }}
-//           alt={currentUser.displayName}
-//         />
-//       </div>
-//       <div>
-//         <div className={styles.title}>
-//           <h1 className={styles.displayName}>
-//             {currentUser.displayName}
-//           </h1>
-//           <button
-//             onClick={() => setIsProfileModalOpen(true)}
-//             className={styles.updateBtn}
-//           >
-//             Update profile
-//           </button>
-//         </div>
-//         <h2 className={styles.subtitle}>{currentUser.email}</h2>
-//         <h2 className={styles.subtitle}>
-//           {currentUser.location || "United States"}
-//         </h2>
-//       </div>
-//     </div>
+// TODO:
+function ProfileBannerAvatar({ photoUrl }) {
+  return photoUrl ? (
+    <img
+      className="profile-avatar-large"
+      src={photoUrl}
+      alt="Profile banner avatar"
+    />
+  ) : (
+    <div
+      className="profile-avatar-large"
+      style={{ backgroundColor: "black" }}
+    />
+  );
+}

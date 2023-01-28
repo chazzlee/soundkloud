@@ -4,9 +4,11 @@ import "./TimeAgo.css";
 export function TimeAgo({ date }) {
   return (
     <p className="created-at">
-      {formatDistanceToNow(new Date(date), {
-        addSuffix: true,
-      })}
+      <time>
+        {formatDistanceToNow(new Date(date), {
+          addSuffix: true,
+        })}
+      </time>
     </p>
   );
 }

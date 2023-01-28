@@ -2,7 +2,8 @@
 
 playlists.each do |playlist|
   json.set! playlist.id do
-    json.extract! playlist, :id, :title, :privacy, :plays, :slug, :updated_at
+    json.extract! playlist, :id, :title, :privacy, :plays, :slug
+    json.created_at playlist.updated_at
     json.cover playlist.cover.url
     json.uploader do
       json.id playlist.user_id

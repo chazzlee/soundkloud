@@ -1,7 +1,16 @@
+import { useSelector } from "react-redux";
+import { selectUserTracks } from "../../../tracks/store";
+import { ProfileItemCard } from "../ProfileItemCard";
+
 export function UserTracks() {
+  // TODO: FIXME: currentUser...needs to be user by id/slug
+  const userTracks = useSelector(selectUserTracks);
+
   return (
-    <div>
-      <h1>USER TRACKS</h1>
+    <div className="user-profile-tab-page">
+      {userTracks.map((track) => (
+        <ProfileItemCard key={track.id} item={track} type={"track"} />
+      ))}
     </div>
   );
 }

@@ -58,6 +58,7 @@
   transition: all ease-in 120ms;
 }
 
+.tabs-nav a:active,
 .tabs-nav a.active {
   border-color: var(--primary-orange);
   color: var(--primary-orange);

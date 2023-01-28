@@ -121,7 +121,7 @@ export function PlaylistShowPage() {
                 </h3>
               </div>
               <div className="banner-details">
-                <TimeAgo date={playlist.updatedAt} />
+                <TimeAgo date={playlist.createdAt} />
                 <PrivateBadge privacy={playlist.privacy} />
               </div>
             </div>

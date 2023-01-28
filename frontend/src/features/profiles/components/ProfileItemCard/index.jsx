@@ -19,7 +19,7 @@ import {
 } from "../../../player/store";
 import { ControlButton } from "../../../../components/ControlButton";
 
-export function ProfileItemCard({ item }) {
+export function ProfileItemCard({ item, type = "track" }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
@@ -33,29 +33,33 @@ export function ProfileItemCard({ item }) {
     selectPlayerSourceId(state, GLOBAL_PLAYER)
   );
 
-  console.log("globalSourceId", globalSourceId);
-  console.log("globalStatus", globalStatus);
+  // console.log("globalSourceId", globalSourceId);
+  // console.log("globalStatus", globalStatus);
 
-  console.log("item id ", item.id);
-  console.log("card status", status);
-
+  // console.log("item id ", item.id);
+  // console.log("card status", status);
   const handlePlay = useCallback(() => {
-    wavesurfer.current?.play();
-    setStatus(PLAYER_STATUS.PLAYING);
-    dispatch(
-      trackPlayingFromProfile({
-        id: item.id,
-        upload: item.upload,
-        duration: wavesurfer.current.getDuration(),
-      })
-    );
-  }, [dispatch, item.id, item.upload]);
+    // TODO:
+    if (type === "track") {
+      wavesurfer.current?.play();
+      setStatus(PLAYER_STATUS.PLAYING);
+      dispatch(
+        trackPlayingFromProfile({
+          id: item.id,
+          upload: item.upload,
+          duration: wavesurfer.current.getDuration(),
+        })
+      );
+    }
+  }, [dispatch, type, item.id, item.upload]);
 
   const handlePause = useCallback(() => {
-    wavesurfer.current?.pause();
-    setStatus(PLAYER_STATUS.PAUSED);
-    dispatch(trackPausedFromProfile());
-  }, [dispatch]);
+    if (type === "track") {
+      wavesurfer.current?.pause();
+      setStatus(PLAYER_STATUS.PAUSED);
+      dispatch(trackPausedFromProfile());
+    }
+  }, [dispatch, type]);
 
   // useEffect(() => {
   //   // console.clear();
@@ -174,7 +178,7 @@ export function ProfileItemCard({ item }) {
         <div className="card-body">
           <div id="waveform" ref={waveformRef} />
         </div>
-        <CardFooterActions />
+        <CardFooterActions type={type} />
       </div>
     </div>
   );
@@ -185,13 +189,15 @@ function CardHeader() {
   return <div />;
 }
 
-function CardFooterActions() {
+function CardFooterActions({ type }) {
   return (
     <div className="card-actions-footer">
-      <button className="card-action-btn" onClick={() => {}}>
-        <MdPlaylistAdd />
-        Add to playlist
-      </button>
+      {type === "track" && (
+        <button className="card-action-btn" onClick={() => {}}>
+          <MdPlaylistAdd />
+          Add to playlist
+        </button>
+      )}
       <button className="card-action-btn" onClick={() => {}}>
         <MdOutlineEdit />
         Edit
