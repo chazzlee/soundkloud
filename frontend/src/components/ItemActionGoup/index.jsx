@@ -7,6 +7,7 @@ import { MdPlaylistAdd } from "react-icons/md";
 import { EditTrackModal } from "../../features/profiles/components/EditTrackModal";
 import { PlaylistModal } from "../../features/tracks/components/PlaylistModal";
 import { destroyTrackAsync } from "../../features/tracks/store";
+import { ItemActionButton } from "./ItemActionButton";
 import "./ItemActionGroup.css";
 
 // TODO: need to complete
@@ -42,14 +43,14 @@ export function ItemActionGroup({
   return (
     <>
       <div className="item-actions">
-        <ActionButton
+        <ItemActionButton
           icon={<AiOutlineHeart />}
           label="Like"
           onClick={() => console.log("LIKE: TODO MUST IMPLEMENT")}
           size={size}
         />
         {type === "track" && (
-          <ActionButton
+          <ItemActionButton
             icon={<MdPlaylistAdd />}
             label="Add to playlist"
             onClick={handleTogglePlaylistModal}
@@ -58,13 +59,13 @@ export function ItemActionGroup({
         )}
         {isCurrentUserUploader ? (
           <>
-            <ActionButton
+            <ItemActionButton
               icon={<SlPencil />}
               label="Edit"
               onClick={handleToggleEditModal}
               size={size}
             />
-            <ActionButton
+            <ItemActionButton
               icon={<IoTrashBinOutline />}
               label="Remove"
               onClick={() => handleRemoveItem(item.id)}
@@ -86,19 +87,5 @@ export function ItemActionGroup({
         <PlaylistModal track={item} onClose={handleTogglePlaylistModal} />
       ) : null}
     </>
-  );
-}
-
-function ActionButton({ icon, label, onClick, size }) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      className="item-action-btn"
-      onClick={onClick}
-      style={{ fontSize: size === "lg" ? 14 : 11 }}
-    >
-      {icon} <span>{label}</span>
-    </button>
   );
 }

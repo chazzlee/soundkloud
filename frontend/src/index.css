@@ -31,6 +31,13 @@ li {
   list-style-type: none;
 }
 
+a,
+a:visited,
+a:active {
+  color: #333;
+  text-decoration: none;
+}
+
 .carousel__slide-focus-ring {
   outline: none !important;
   border: none !important;
@@ -57,10 +64,6 @@ h6,
 dd,
 p {
   margin: 0;
-}
-
-a {
-  text-decoration: none;
 }
 
 button {

@@ -4,25 +4,3 @@
   justify-self: flex-start;
   gap: 6px;
 }
-
-.item-action-btn {
-  text-transform: capitalize;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  display: flex;
-  color: #333;
-  border: 1px solid #e5e5e5;
-  background-color: #fff;
-  padding: 3px 10px 1px;
-  transition: all 100ms ease-in;
-}
-
-.item-action-btn:hover {
-  border-color: #ccc;
-  filter: brightness(96%);
-}
-
-.item-action-btn > svg {
-  margin-right: 4px;
-}

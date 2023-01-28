@@ -3,7 +3,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { TrackCover } from "../../../../components/TrackCover";
 import { playSelected, selectCurrentPlaylistTrack } from "../../store";
+import "./PlaylistTracksListItem.css";
 
+//TODO: refactor with ProfileItemCard
 export function PlaylistTracksListItem({ playlistId, order, track }) {
   const dispatch = useDispatch();
 
@@ -52,7 +54,7 @@ export function PlaylistTracksListItem({ playlistId, order, track }) {
       >
         {track.uploader.displayName}
       </Link>
-      <span style={{ marginRight: 4, marginLeft: 4 }}>-</span>
+      <span style={{ margin: "0 4px", color: "#333" }}>-</span>
       <Link
         className="track-title"
         to={track.permalink}

@@ -97,12 +97,12 @@ export function UserProfilePage() {
             </div>
             <div className="nav-right">
               <button
-                className="show-action-btn"
+                className="item-action-btn"
                 aria-label="Edit profile"
                 onClick={() => setIsProfileModalOpen(true)}
               >
                 <ImProfile />
-                <span>Edit</span>
+                <span>Edit profile</span>
               </button>
             </div>
           </div>

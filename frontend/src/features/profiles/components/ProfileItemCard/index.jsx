@@ -21,7 +21,7 @@ import { ControlButton } from "../../../../components/ControlButton";
 import { ItemActionGroup } from "../../../../components/ItemActionGoup";
 import { selectCurrentUser } from "../../../auth/store";
 
-export function ProfileItemCard({ item, type = "track" }) {
+export function ProfileItemCard({ item, children, type = "track" }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
@@ -152,14 +152,6 @@ export function ProfileItemCard({ item, type = "track" }) {
             onPlay={handlePlay}
             onPause={handlePause}
           />
-          {/* <button
-            className="control-btn-sm"
-            title="Play"
-            aria-label="Play track"
-            onClick={handlePlay}
-          >
-            <IoMdPlay />
-          </button> */}
           <div className="card-heading">
             <div className="card-details">
               <p className="card-user">{item.uploader.displayName}</p>
@@ -179,9 +171,13 @@ export function ProfileItemCard({ item, type = "track" }) {
             </div>
           </div>
         </div>
-        <div className="card-body">
+        <div
+          className="card-body"
+          style={{ backgroundColor: "lightseagreen", height: 60 }}
+        >
           <div id="waveform" ref={waveformRef} />
         </div>
+        {children}
         <ItemActionGroup
           type={type}
           item={item}

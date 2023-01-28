@@ -8,9 +8,11 @@ export function UserTracks() {
 
   return (
     <div className="user-profile-tab-page">
-      {userTracks.map((track) => (
-        <ProfileItemCard key={track.id} item={track} type={"track"} />
-      ))}
+      <div className="user-tracks-list">
+        {userTracks.map((track) => (
+          <ProfileItemCard key={track.id} item={track} type={"track"} />
+        ))}
+      </div>
     </div>
   );
 }
