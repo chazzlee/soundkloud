@@ -16,6 +16,7 @@ import {
   EditPlaylistModal,
 } from "../../features/profiles/components/EditPlaylist";
 import "./ItemActionGroup.css";
+import { EditTrack } from "../../features/profiles/components/EditTrack";
 
 // TODO: need to complete
 export function ItemActionGroup({ item, type, size = "lg" }) {
@@ -73,14 +74,7 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
             )}
 
             {/* TODO: */}
-            {type === "track" && (
-              <ItemActionButton
-                icon={<SlPencil />}
-                label="Edit"
-                onClick={handleToggleEditModal}
-                size={size}
-              />
-            )}
+            {type === "track" && <EditTrack triggerSize={size} track={item} />}
 
             <ItemActionButton
               icon={<IoTrashBinOutline />}

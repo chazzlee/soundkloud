@@ -82,7 +82,7 @@ export function TrackCard({ track }) {
   return (
     <>
       <div className={styles.trackCard}>
-        <Link to={`${track.permalink}`}>
+        <Link to={track.permalink}>
           <div style={{ height: "100%", width: "100%" }}>
             <img
               src={track.cover}

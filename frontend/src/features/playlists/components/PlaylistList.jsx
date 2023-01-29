@@ -10,9 +10,7 @@ export function PlaylistList({ playlists }) {
         {playlists?.map((playlist) => (
           <div key={playlist.id}>
             <h3>
-              <Link to={`/${playlist.uploader.slug}/sets/${playlist.slug}`}>
-                {playlist.title}
-              </Link>
+              <Link to={playlist.permalink}>{playlist.title}</Link>
             </h3>
             <PlaylistTrackList playlist={playlist} />
           </div>

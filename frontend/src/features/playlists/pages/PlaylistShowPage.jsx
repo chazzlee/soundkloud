@@ -126,7 +126,10 @@ export function PlaylistShowPage() {
               </div>
             </div>
             <BannerImage
-              imageUrl={playlist.tracks[activePlaylist.current ?? 0].cover}
+              imageUrl={
+                playlist.cover ||
+                playlist.tracks[activePlaylist.current ?? 0].cover
+              }
             />
           </>
         }

@@ -1,17 +1,15 @@
 import { useCallback, useState } from "react";
 import { EditTrigger } from "../EditTrigger";
-import { EditPlaylistModal } from "./EditPlaylistModal";
+import { EditTrackModal } from "./EditTrackModal";
 
-export function EditPlaylist({ triggerSize, playlist }) {
+export function EditTrack({ triggerSize, track }) {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
   return (
     <>
       <EditTrigger onToggle={handleToggle} size={triggerSize} />
-      {isOpen ? (
-        <EditPlaylistModal playlist={playlist} onClose={handleToggle} />
-      ) : null}
+      {isOpen ? <EditTrackModal track={track} onClose={handleToggle} /> : null}
     </>
   );
 }

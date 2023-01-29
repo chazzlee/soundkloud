@@ -3,7 +3,7 @@
 json.extract! track, :id, :title, :artist, :privacy, :caption, :description, :created_at, :tags
 json.permalink URI.parse(track.permalink).path
 
-json.genre track.genre.label
+json.genre track.genre_id
 json.uploader do
   json.id track.user_id
   json.slug track.user.profile.slug

@@ -1,29 +1,25 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { MdCameraAlt } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import slug from "slug";
 import { Modal } from "../../../../context/Modal";
 import {
   fetchGenresAsync,
   selectGenres,
   selectGenresLoaded,
 } from "../../../genres/store";
-import { useEffect } from "react";
-import slug from "slug";
-import { updatePlaylistAsync } from "../../../playlists/store";
-
+import { updateTrackAsync } from "../../../tracks/store";
 import "../EditModal/EditModal.css";
-
 function fullPermalink(permalink) {
   return `localhost:3000${permalink}`;
 }
 
 function generatePermalink(uploader, title) {
-  return fullPermalink(`/${uploader}/sets/${slug(title)}`);
+  return fullPermalink(`/${uploader}/${slug(title)}`);
 }
-
-// TODO: default date on load
-export function EditPlaylistModal({ playlist, onClose }) {
-  const [uploader] = playlist.permalink.split("/").slice(1);
+export function EditTrackModal({ track, onClose }) {
+  const [uploader] = track.permalink.split("/").slice(1);
 
   const {
     register,
@@ -39,23 +35,22 @@ export function EditPlaylistModal({ playlist, onClose }) {
     },
   } = useForm({
     defaultValues: {
-      id: playlist.id,
-      title: playlist.title,
-      permalink: fullPermalink(playlist.permalink),
-      releaseDate: playlist.releaseDate,
-      genre_id: playlist.genre,
-      description: playlist.description,
-      privacy: playlist.privacy,
-      cover: playlist.cover,
+      id: track.id,
+      title: track.title,
+      artist: track.artist,
+      permalink: fullPermalink(track.permalink),
+      releaseDate: track.releaseDate,
+      genre_id: track.genre,
+      description: track.description,
+      privacy: track.privacy,
+      cover: track.cover,
     },
   });
-
   const dispatch = useDispatch();
   const title = watch("title");
-  const previewImage = watch("cover", playlist.cover);
+  const previewImage = watch("cover", track.cover);
   const genresLoaded = useSelector(selectGenresLoaded);
   const genres = useSelector(selectGenres);
-
   const onSubmit = (data) => {
     if (isValid) {
       const formData = new FormData();
@@ -73,7 +68,7 @@ export function EditPlaylistModal({ playlist, onClose }) {
       }
 
       // TODO:
-      dispatch(updatePlaylistAsync(formData));
+      dispatch(updateTrackAsync(formData));
       console.log(isSubmitSuccessful);
       if (isSubmitSuccessful) {
         onClose();
@@ -98,7 +93,6 @@ export function EditPlaylistModal({ playlist, onClose }) {
           <nav>
             <ul className="edit-modal-tabs">
               <li className="edit-modal-tab selected">Basic info</li>
-              <li className="edit-modal-tab">Tracks</li>
             </ul>
           </nav>
         </header>
@@ -111,7 +105,7 @@ export function EditPlaylistModal({ playlist, onClose }) {
                 backgroundPosition: "center center",
                 backgroundImage:
                   typeof previewImage?.[0] === "string"
-                    ? `url(${playlist.cover})`
+                    ? `url(${track.cover})`
                     : previewImage?.[0] instanceof Blob
                     ? `url(${URL.createObjectURL(previewImage?.[0])})`
                     : "linear-gradient(135deg, #846170, #70929c)",
@@ -143,13 +137,31 @@ export function EditPlaylistModal({ playlist, onClose }) {
                   type="text"
                   name="title"
                   id="title"
-                  placeholder="Name your playlist"
+                  placeholder="Name your track"
                   {...register("title", {
                     required: { value: true, message: "Enter a title." },
                   })}
                 />
                 <span className="input-error-message">
-                  {errors.title && errors.title.message}
+                  {errors?.title?.message}
+                </span>
+              </div>
+              <div className="form-control sm">
+                <label htmlFor="artist">
+                  Artist <span className="required">*</span>
+                </label>
+                <input
+                  className={`input-full ${errors.artist ? "invalid" : ""}`}
+                  type="text"
+                  name="artist"
+                  id="artist"
+                  placeholder="Name the artist"
+                  {...register("artist", {
+                    required: { value: true, message: "Enter an artist." },
+                  })}
+                />
+                <span className="input-error-message">
+                  {errors?.artist?.message}
                 </span>
               </div>
               <div className="form-control sm">

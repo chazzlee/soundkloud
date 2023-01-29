@@ -1,15 +1,15 @@
-.edit-playlist-modal-container {
+.edit-modal-container {
   width: 865px;
   height: 100%;
 }
 
-.edit-playlist-modal-header {
+.edit-modal-header {
   padding-top: 14px;
   padding-left: 25px;
   padding-right: 25px;
 }
 
-.edit-playlist-modal-tabs {
+.edit-modal-tabs {
   display: flex;
   align-items: center;
   gap: 24px;
@@ -19,14 +19,14 @@
   margin-bottom: 25px;
 }
 
-.edit-playlist-modal-tab {
+.edit-modal-tab {
   color: #333;
   font-weight: 600;
   cursor: pointer;
   border-bottom: 2px solid transparent;
 }
 
-.edit-playlist-modal-tab.selected {
+.edit-modal-tab.selected {
   color: var(--primary-orange);
   border-color: var(--primary-orange);
 }
@@ -41,7 +41,7 @@
 }
 
 /* Playlist Image Preview/Input */
-.playlist-cover {
+.edit-cover {
   height: 260px;
   width: 260px;
   background: linear-gradient(135deg, #846170, #70929c);
@@ -52,7 +52,7 @@
   background-size: cover;
 }
 
-.playlist-cover-trigger {
+.cover-trigger {
   background-color: rgba(255, 255, 255, 0.836);
   font-size: 13px;
   height: 26px;
@@ -68,15 +68,15 @@
   margin-bottom: 24px;
 }
 
-.playlist-cover-trigger > input {
+.cover-trigger > input {
   display: none;
 }
 
-.playlist-cover-trigger > svg {
+.cover-trigger > svg {
   margin-bottom: 2px;
 }
 
-.playlist-cover-trigger:hover {
+.cover-trigger:hover {
   color: #333;
   background-color: rgba(255, 255, 255, 1);
 }
