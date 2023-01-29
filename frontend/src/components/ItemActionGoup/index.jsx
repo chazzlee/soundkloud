@@ -67,7 +67,7 @@ export function ItemActionGroup({
             />
             <ItemActionButton
               icon={<IoTrashBinOutline />}
-              label="Remove"
+              label={`Delete ${type}`}
               onClick={() => handleRemoveItem(item.id)}
               size={size}
             />

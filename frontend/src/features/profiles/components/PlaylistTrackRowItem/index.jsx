@@ -6,7 +6,14 @@ import "./PlaylistTrackRowItem.css";
 export function PlaylistTrackRowItem({ track, order }) {
   return (
     <div className="profile-playlist-track-row-item" key={track.id}>
-      <TrackCover coverUrl={track.cover} alt={track.title} size={20} />
+      <Link
+        to={track.permalink}
+        aria-label="View track"
+        className="track-cover-link"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <TrackCover coverUrl={track.cover} alt={track.title} size={20} />
+      </Link>
       <p className="track-order">{order}</p>
       <Link
         className="track-uploader"

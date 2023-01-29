@@ -9,13 +9,10 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-/* TODO: review padding/gap */
 .show-main-section {
   display: grid;
-  grid-template-columns: 2.1fr 0.8fr;
+  grid-template-columns: 2.1fr 0.9fr;
   padding-left: 30px;
-  padding-right: 30px;
-  column-gap: 30px;
   background-color: #fff;
 }
 

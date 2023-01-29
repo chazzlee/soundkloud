@@ -95,7 +95,7 @@
   font-size: 18px;
   width: 164px;
   padding: 12px 15px 10px 15px;
-  color: #fff;
+  color: #fff !important;
   background-color: transparent;
   border: 1px solid #fff;
   border-radius: 4px;
@@ -105,7 +105,7 @@
   display: block;
   font-size: 18px;
   padding: 12px 15px 10px 15px;
-  color: #fff;
+  color: #fff !important;
   background-color: var(--primary-orange);
   border: 1px solid var(--primary-orange);
   border-radius: 4px;
@@ -268,7 +268,7 @@
   display: block;
   font-size: 16px;
   padding: 13px 26px;
-  color: #fff;
+  color: #fff !important;
   background-color: var(--primary-orange);
   border: 1px solid var(--primary-orange);
   border-radius: 4px;

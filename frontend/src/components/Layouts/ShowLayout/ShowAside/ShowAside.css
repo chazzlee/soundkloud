@@ -1,5 +1,9 @@
 .aside-root-container {
+  border-left: 1px solid #e7e7e7;
   background-color: #fff;
+  margin-left: 16px;
+  padding-left: 7px;
+  padding-right: 24px;
 }
 
 .aside-header {

@@ -29,6 +29,7 @@ export function ProfileItemCard({ item, children, type = "track" }) {
   const [status, setStatus] = useState(PLAYER_STATUS.LOADED);
   const currentUser = useSelector(selectCurrentUser);
   const isCurrentUserUploader = currentUser?.id === item.uploader.id;
+  const isEmptyPlaylist = type === "playlist" && item.tracks.length === 0;
 
   const globalStatus = useSelector((state) =>
     selectPlayerStatus(state, GLOBAL_PLAYER)
@@ -42,6 +43,7 @@ export function ProfileItemCard({ item, children, type = "track" }) {
 
   // console.log("item id ", item.id);
   // console.log("card status", status);
+
   const handlePlay = useCallback(() => {
     // TODO:
     if (type === "track") {
@@ -65,41 +67,49 @@ export function ProfileItemCard({ item, children, type = "track" }) {
     }
   }, [dispatch, type]);
 
-  // useEffect(() => {
-  //   // console.clear();
-  //   const waveOptions = {
-  //     waveColor: "#555",
-  //     progressColor: "#f50",
-  //     cursorColor: "transparent",
-  //     barWidth: 1,
-  //     barRadius: 2,
-  //     responsive: true,
-  //     normalize: true,
-  //     height: 60,
-  //     interact: false,
-  //     container: waveformRef.current,
-  //   };
-  //   wavesurfer.current = WaveSurfer.create(waveOptions);
-  //   wavesurfer.current.setMute(true);
-  //   wavesurfer.current.load(item.upload);
+  useEffect(() => {
+    // console.clear();
+    const waveOptions = {
+      waveColor: "#555",
+      progressColor: "#f50",
+      cursorColor: "transparent",
+      barWidth: 1,
+      barRadius: 2,
+      responsive: true,
+      normalize: true,
+      height: 80,
+      interact: false,
+      container: waveformRef.current,
+    };
 
-  //   wavesurfer.current.on("ready", () => {
-  //     setLoaded(true);
-  //     setStatus(PLAYER_STATUS.LOADED);
-  //   });
+    if (isEmptyPlaylist) {
+      // Don't load wavesurfer if playlist has no tracks
+      return;
+    }
 
-  //   wavesurfer.current.on("finish", () => {
-  //     console.log("WAVE FINISHED");
-  //   });
+    wavesurfer.current = WaveSurfer.create(waveOptions);
+    wavesurfer.current.setMute(true);
+    wavesurfer.current.load(
+      type === "playlist" ? item.tracks[0].upload : item.upload
+    );
 
-  //   return () => {
-  //     console.log("destroying");
-  //     wavesurfer.current.cancelAjax();
-  //     wavesurfer.current.unAll();
-  //     wavesurfer.current.destroy();
-  //     wavesurfer.current = null;
-  //   };
-  // }, [dispatch, item.id, item.upload]);
+    wavesurfer.current.on("ready", () => {
+      setLoaded(true);
+      setStatus(PLAYER_STATUS.LOADED);
+    });
+
+    wavesurfer.current.on("finish", () => {
+      console.log("WAVE FINISHED");
+    });
+
+    return () => {
+      console.log("destroying");
+      wavesurfer.current.cancelAjax();
+      wavesurfer.current.unAll();
+      wavesurfer.current.destroy();
+      wavesurfer.current = null;
+    };
+  }, [dispatch, item?.id, type, item.tracks, item.upload, isEmptyPlaylist]);
 
   // TODO:!!!
   // useEffect(() => {
@@ -136,18 +146,13 @@ export function ProfileItemCard({ item, children, type = "track" }) {
   return (
     <div className="profile-item-card">
       <Link className="profile-item-image" to={item.permalink}>
-        {/* TODO: default...if no cover */}
-        {item.cover ? (
-          <img src={item.cover} alt={item.title} />
-        ) : (
-          <DefaultCover size={160} />
-        )}
+        <ProfileItemCover coverUrl={item.cover} title={item.title} />
       </Link>
       <div className="inner-card-container">
         <div className="card-header">
           <ControlButton
             size={"sm"}
-            loaded={loaded}
+            loaded={isEmptyPlaylist ? false : loaded}
             status={status}
             onPlay={handlePlay}
             onPause={handlePause}
@@ -171,11 +176,14 @@ export function ProfileItemCard({ item, children, type = "track" }) {
             </div>
           </div>
         </div>
-        <div
-          className="card-body"
-          style={{ backgroundColor: "lightseagreen", height: 60 }}
-        >
-          <div id="waveform" ref={waveformRef} />
+        <div className="card-body">
+          {isEmptyPlaylist ? (
+            <div className="empty-playlist-container">
+              <p>This playlist has no tracks yet</p>
+            </div>
+          ) : (
+            <div id="waveform" ref={waveformRef} />
+          )}
         </div>
         {children}
         <ItemActionGroup
@@ -195,3 +203,10 @@ export function ProfileItemCard({ item, children, type = "track" }) {
 
 //   return <div id="waveform" ref={waveformRef} />;
 // }
+function ProfileItemCover({ coverUrl, title = "Cover" }) {
+  return coverUrl ? (
+    <img src={coverUrl} alt={title} />
+  ) : (
+    <DefaultCover size={160} />
+  );
+}

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectPlaylists } from "../../../playlists/store";
 import { selectUserTracks } from "../../../tracks/store";
+import { PlaylistTrackList } from "../PlaylistTrackList";
 import { ProfileItemCard } from "../ProfileItemCard";
 
 export function UserAll() {
@@ -19,11 +20,9 @@ export function UserAll() {
       </div>
       <div className="user-playlists-list">
         {userPlaylists.map((playlist) => (
-          <ProfileItemCard
-            key={playlist.id}
-            item={playlist}
-            type={"playlist"}
-          />
+          <ProfileItemCard key={playlist.id} item={playlist} type={"playlist"}>
+            <PlaylistTrackList tracks={playlist.tracks} />
+          </ProfileItemCard>
         ))}
       </div>
     </div>

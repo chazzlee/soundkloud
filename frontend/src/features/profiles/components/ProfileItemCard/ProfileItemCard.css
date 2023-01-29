@@ -1,6 +1,6 @@
 .profile-item-card {
   display: flex;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .profile-item-image {
@@ -19,7 +19,7 @@
 
 .inner-card-container {
   width: 100%;
-  padding: 4px 12px;
+  padding: 4px 12px 0 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -63,9 +63,8 @@
 }
 
 .card-body {
-  flex-grow: 1;
-  padding: 0 1rem;
   width: 100%;
+  background-color: #fff;
 }
 
 .card-actions-footer {

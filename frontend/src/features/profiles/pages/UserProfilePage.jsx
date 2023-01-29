@@ -86,7 +86,7 @@ export function UserProfilePage() {
             </>
           }
         />
-        <ShowMain aside={<div style={{ paddingTop: 20 }}>ASIDE TODO:</div>}>
+        <ShowMain aside={<UserProfileAside />}>
           <div className="tabs-nav">
             <div className="nav-left">
               <Link to="" className={isRoot ? "active" : ""}>
@@ -136,5 +136,82 @@ function ProfileBannerAvatar({ photoUrl }) {
       className="profile-avatar-large"
       style={{ backgroundColor: "black" }}
     />
+  );
+}
+
+function UserProfileAside() {
+  return (
+    <aside
+      className="aside-root-container"
+      style={{
+        marginTop: 48.69,
+        borderTop: "1px solid #f2f2f2",
+        paddingTop: 12,
+      }}
+    >
+      <div
+        className="profile-aside-header"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 22,
+        }}
+      >
+        <div
+          className="insight-box"
+          style={{ borderRight: "1px solid #f2f2f2", paddingRight: 40 }}
+        >
+          <h3
+            style={{
+              fontSize: 13,
+              color: "#999",
+              fontWeight: 400,
+              paddingBottom: 2,
+            }}
+            className="insight-heading"
+          >
+            Followers
+          </h3>
+          <p style={{ color: "#999", fontSize: 20 }} className="insight-stat">
+            35
+          </p>
+        </div>
+        <div
+          className="insight-box"
+          style={{ borderRight: "1px solid #f2f2f2", paddingRight: 40 }}
+        >
+          <h3
+            style={{
+              fontSize: 13,
+              color: "#999",
+              fontWeight: 400,
+              paddingBottom: 2,
+            }}
+            className="insight-heading"
+          >
+            Following
+          </h3>
+          <p className="insight-stat" style={{ color: "#999", fontSize: 20 }}>
+            35
+          </p>
+        </div>
+        <div className="insight-box">
+          <h3
+            style={{
+              fontSize: 13,
+              color: "#999",
+              fontWeight: 400,
+              paddingBottom: 2,
+            }}
+            className="insight-heading"
+          >
+            Tracks
+          </h3>
+          <p className="insight-stat" style={{ color: "#999", fontSize: 20 }}>
+            9
+          </p>
+        </div>
+      </div>
+    </aside>
   );
 }
