@@ -12,7 +12,7 @@ class Api::PlaylistsController < ApplicationController
   def create
     playlist = current_user.playlists.build
     playlist.title = params[:title]
-    playlist.permalink = "#{request.protocol}#{request.host_with_port}/#{current_user.slug}/#{params[:permalink]}"
+    playlist.permalink = "#{request.protocol}#{request.host_with_port}/#{current_user.slug}/sets/#{params[:permalink]}"
     playlist.privacy = params[:privacy]
     playlist.track_ids = params[:tracks]
 
@@ -33,5 +33,13 @@ class Api::PlaylistsController < ApplicationController
     render template: 'api/playlists/show', locals: { playlist: }
   end
 
-  def destroy; end
+  def destroy
+    playlist = Playlist.find(params[:id])
+    if playlist.user_id == current_user.id
+      playlist.destroy!
+      head :no_content
+    else
+      render json: { message: 'Cannot perform this action.' }, status: :forbidden
+    end
+  end
 end

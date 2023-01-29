@@ -8,6 +8,9 @@ export const PlaylistsApi = {
     // FIXME:
     return csrfFetch("/api/playlists");
   },
+  destroy(playlistId) {
+    return csrfFetch(`/api/playlists/${playlistId}`, { method: "DELETE" });
+  },
   addToPlaylist(playlistId, trackId) {
     return csrfFetch(`/api/playlists/${playlistId}`, {
       method: "PATCH",

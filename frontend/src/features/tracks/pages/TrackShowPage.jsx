@@ -134,11 +134,7 @@ export function TrackShowPage() {
         }
       >
         <CommentForm avatar={currentUser.photo} trackId={track.id} />
-        <ItemActionGroup
-          type="track"
-          item={track}
-          isCurrentUserUploader={isCurrentUserUploader}
-        />
+        <ItemActionGroup type="track" item={track} />
         <GridContainer>
           <UploaderAvatar
             photo={track.uploader.photo}

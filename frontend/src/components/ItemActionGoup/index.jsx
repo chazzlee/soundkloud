@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { SlPencil } from "react-icons/sl";
@@ -8,16 +8,18 @@ import { EditTrackModal } from "../../features/profiles/components/EditTrackModa
 import { PlaylistModal } from "../../features/tracks/components/PlaylistModal";
 import { destroyTrackAsync } from "../../features/tracks/store";
 import { ItemActionButton } from "./ItemActionButton";
+import { destroyPlaylistAsync } from "../../features/playlists/store";
+import { useNavigate } from "react-router-dom";
+import { selectCurrentUser } from "../../features/auth/store";
 import "./ItemActionGroup.css";
 
 // TODO: need to complete
-export function ItemActionGroup({
-  item,
-  type,
-  size = "lg",
-  isCurrentUserUploader = false,
-}) {
+export function ItemActionGroup({ item, type, size = "lg" }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const currentUser = useSelector(selectCurrentUser);
+  const isCurrentUserUploader = currentUser?.id === item.uploader.id;
+
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [playlistModalOpen, setPlaylistModalOpen] = useState(false);
 
@@ -35,9 +37,12 @@ export function ItemActionGroup({
     (itemId) => {
       if (type === "track") {
         dispatch(destroyTrackAsync(itemId));
+      } else {
+        dispatch(destroyPlaylistAsync(itemId));
       }
+      navigate(`/${currentUser.slug}`);
     },
-    [dispatch, type]
+    [dispatch, type, navigate, currentUser.slug]
   );
 
   return (

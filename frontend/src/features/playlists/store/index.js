@@ -8,6 +8,8 @@ const PLAYLISTS_RECEIVED = "playlists/PLAYLISTS_RECEIVED";
 const PLAYLIST_RECEIVED = "playlists/PLAYLIST_RECEIVED";
 const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
 const TRACK_REMOVED_FROM_PLAYLIST = "playlists/TRACK_REMOVED_FROM_PLAYLIST";
+const DELETE_PLAYLIST = "playlists/playlistDeleted";
+
 export const START_PLAYLIST = "playlists/playlistStarted";
 export const PLAY_NEXT = "playlists/nextPlaying";
 export const PLAY_PREV = "playlists/prevPlaying";
@@ -32,6 +34,11 @@ export const playNext = (nextTrack) => ({
 export const playPrev = (previousTrack) => ({
   type: PLAY_PREV,
   payload: previousTrack,
+});
+
+export const playlistRemoved = (playlistId) => ({
+  type: DELETE_PLAYLIST,
+  payload: playlistId,
 });
 
 export const playlistFinished = () => ({ type: PLAYLIST_FINISHED });
@@ -115,6 +122,11 @@ export const createNewPlaylistAsync = (playlist) => async (dispatch) => {
   }
 };
 
+export const destroyPlaylistAsync = (playlistId) => async (dispatch) => {
+  dispatch(playlistRemoved(playlistId));
+  await PlaylistsApi.destroy(playlistId);
+};
+
 const initialState = {
   loaded: false,
   loading: false,
@@ -131,6 +143,13 @@ const initialState = {
 
 export const playlistsReducer = produce((state = initialState, action) => {
   switch (action.type) {
+    case DELETE_PLAYLIST: {
+      if (state.active.id !== action.payload) {
+        delete state.entities[action.payload];
+      }
+      break;
+    }
+
     case PLAYLISTS_RECEIVED: {
       state.loaded = true;
       state.loading = false;

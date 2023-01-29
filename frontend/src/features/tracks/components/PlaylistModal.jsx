@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import slug from "slug";
 import { Modal } from "../../../context/Modal";
 import {
   createNewPlaylistAsync,
@@ -49,6 +50,7 @@ export function PlaylistModal({ track, onClose }) {
       title: playlistFormData.title,
       privacy: playlistFormData.privacy,
       tracks: [track.id],
+      permalink: slug(playlistFormData.title),
     };
 
     dispatch(createNewPlaylistAsync(playlist)).then((data) => {

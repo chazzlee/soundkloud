@@ -7,16 +7,21 @@
   padding-top: 12px;
 }
 
+/* Insight Box */
 .insight-box {
-  border-right: 1px solid #f2f2f2;
+  border-right: 1px solid #ececec;
   padding-right: 40px;
+}
+
+.insight-box:last-child {
+  border-right: none;
 }
 
 .insight-heading {
   font-size: 13px;
   color: #999;
   font-weight: 400;
-  padding-bottom: 2px;
+  padding-bottom: 4px;
 }
 
 .insight-stat {

@@ -1,0 +1,8 @@
+.start-uploading-btn-lg {
+  font-size: 1rem;
+  color: #fff;
+  padding: 4px 16px;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 4px;
+}

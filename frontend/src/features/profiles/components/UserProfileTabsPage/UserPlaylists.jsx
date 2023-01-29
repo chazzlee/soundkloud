@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import { selectPlaylists } from "../../../playlists/store";
 import { ProfileItemCard } from "../ProfileItemCard";
 import { PlaylistTrackList } from "../PlaylistTrackList";
+import { Link } from "react-router-dom";
+import { StartUploadingButton } from "../StartUploadingButton";
 
 // TODO: only show 5 tracks
 export function UserPlaylists() {
@@ -10,6 +12,7 @@ export function UserPlaylists() {
 
   return (
     <div className="user-profile-tab-page">
+      <StartUploadingButton hasUploads={!!userPlaylists.length} />
       <div className="user-playlists-list">
         {userPlaylists.map((playlist) => (
           <ProfileItemCard key={playlist.id} item={playlist} type={"playlist"}>

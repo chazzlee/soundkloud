@@ -9,13 +9,14 @@ class Playlist < ApplicationRecord
   validates :privacy, inclusion: %w[public private]
 
   belongs_to :user
-  has_many :playlist_tracks
+  has_many :playlist_tracks, dependent: :destroy
 
   has_many :tracks,
            through: :playlist_tracks,
-           source: :track
+           source: :track,
+           dependent: :destroy
 
-  has_one_attached :cover
+  has_one_attached :cover, dependent: :destroy
 
   def add_track!(track)
     tracks << track

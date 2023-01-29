@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 28px;
+  padding-top: 14px;
   padding-bottom: 10px;
   margin-bottom: 4px;
   border-bottom: 1px solid #e7e7e7;
@@ -44,7 +44,7 @@
   object-fit: cover;
   height: 50px;
   width: 50px;
-  box-shadow: 0px 0px 7px 1px rgba(17, 17, 26, 0.18);
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.18);
 }
 
 .aside-item-details {

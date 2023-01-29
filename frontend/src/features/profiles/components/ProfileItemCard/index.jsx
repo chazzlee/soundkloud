@@ -19,7 +19,6 @@ import {
 } from "../../../player/store";
 import { ControlButton } from "../../../../components/ControlButton";
 import { ItemActionGroup } from "../../../../components/ItemActionGoup";
-import { selectCurrentUser } from "../../../auth/store";
 
 export function ProfileItemCard({ item, children, type = "track" }) {
   const dispatch = useDispatch();
@@ -27,8 +26,6 @@ export function ProfileItemCard({ item, children, type = "track" }) {
   const wavesurfer = useRef(null);
   const [loaded, setLoaded] = useState(true);
   const [status, setStatus] = useState(PLAYER_STATUS.LOADED);
-  const currentUser = useSelector(selectCurrentUser);
-  const isCurrentUserUploader = currentUser?.id === item.uploader.id;
   const isEmptyPlaylist = type === "playlist" && item.tracks.length === 0;
 
   const globalStatus = useSelector((state) =>
@@ -186,12 +183,7 @@ export function ProfileItemCard({ item, children, type = "track" }) {
           )}
         </div>
         {children}
-        <ItemActionGroup
-          type={type}
-          item={item}
-          isCurrentUserUploader={isCurrentUserUploader}
-          size="sm"
-        />
+        <ItemActionGroup type={type} item={item} size="sm" />
       </div>
     </div>
   );
