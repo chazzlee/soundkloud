@@ -4,7 +4,9 @@ class Playlist < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  validates :title, presence: true
+  validates :title, presence: true, uniqueness: { scope: :user }
+  validates :permalink, presence: true, allow_nil: true
+  validates :privacy, inclusion: %w[public private]
 
   belongs_to :user
   has_many :playlist_tracks

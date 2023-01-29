@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Aside } from "../../../Aside";
 import { DefaultCover } from "../../../DefaultCover";
 import { SocialLinks } from "../../../SocialLinks";
 import "./ShowAside.css";
@@ -10,7 +11,7 @@ export function ShowAside({
   viewUrl = "/",
 }) {
   return (
-    <aside className="aside-root-container">
+    <Aside>
       <header className="aside-header">
         <h2 className="aside-heading">
           {headingIcon} {heading}
@@ -32,7 +33,7 @@ export function ShowAside({
       <article className="social-links">
         <SocialLinks />
       </article>
-    </aside>
+    </Aside>
   );
 }
 

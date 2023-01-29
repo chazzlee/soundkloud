@@ -12,6 +12,7 @@ class Api::PlaylistsController < ApplicationController
   def create
     playlist = current_user.playlists.build
     playlist.title = params[:title]
+    playlist.permalink = "#{request.protocol}#{request.host_with_port}/#{current_user.slug}/#{params[:permalink]}"
     playlist.privacy = params[:privacy]
     playlist.track_ids = params[:tracks]
     playlist.save!

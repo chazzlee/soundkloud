@@ -19,7 +19,6 @@ class Api::TracksController < ApplicationController
   end
 
   def create
-    p request.protocol
     track = current_user.tracks.build
     track.title = params[:title]
     track.artist = params[:artist]

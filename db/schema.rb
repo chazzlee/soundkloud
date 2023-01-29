@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_24_163018) do
 
   create_table "playlists", force: :cascade do |t|
     t.string "title", null: false
+    t.string "permalink", null: false
     t.integer "plays", default: 0, null: false
     t.string "privacy", default: "public", null: false
     t.bigint "user_id", null: false

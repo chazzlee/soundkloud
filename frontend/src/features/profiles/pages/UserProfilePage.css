@@ -39,12 +39,16 @@
 
 .tabs-nav {
   display: flex;
+  height: 30px;
   justify-content: space-between;
+  align-items: center;
+  height: fit-content;
   border-bottom: 1px solid #f2f2f2;
 }
 
 .nav-left {
   display: flex;
+  align-items: center;
   gap: 2rem;
 }
 

@@ -3,6 +3,7 @@
 json.extract! playlist, :id, :title, :privacy, :plays, :slug
 json.created_at playlist.updated_at
 json.cover playlist.cover.url
+json.permalink URI.parse(playlist.permalink).path
 json.uploader do
   json.id playlist.user_id
   json.slug playlist.user.slug
