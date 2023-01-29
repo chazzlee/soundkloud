@@ -113,7 +113,7 @@ export function PlaylistShowPage() {
             />
             <div className="banner-heading">
               <div className="banner-title">
-                <BannerTitleHeading title={playlist.slug} />
+                <BannerTitleHeading title={playlist.title} />
                 <h3 className="subtitle">
                   <Link to={`/${playlist.uploader.slug}`}>
                     {playlist.uploader.displayName}

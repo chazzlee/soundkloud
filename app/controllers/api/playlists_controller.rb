@@ -27,10 +27,23 @@ class Api::PlaylistsController < ApplicationController
 
   def update
     playlist = Playlist.find(params[:id])
-    track = Track.find(params[:track])
-    playlist.add_track!(track) if playlist.user_id == current_user.id
+    if current_user.id == playlist.user_id
+      playlist.title = params[:title]
+      playlist.description = params[:description]
+      playlist.privacy = params[:privacy]
+      playlist.genre_id = params[:genre_id].to_i
+      playlist.permalink = "#{request.protocol}#{request.host_with_port}/#{current_user.slug}/sets/#{params[:permalink]}"
+      playlist.slug = params[:permalink]
+      playlist.cover.attach(params[:cover]) if params[:cover]
 
-    render template: 'api/playlists/show', locals: { playlist: }
+      if playlist.save
+        render template: 'api/playlists/show', locals: { playlist: }
+      else
+        render json: { errors: playlist.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { errors: 'Cannot perform this action.' }, status: :forbidden
+    end
   end
 
   def destroy

@@ -9,7 +9,7 @@ class Playlist < ApplicationRecord
   validates :privacy, inclusion: %w[public private]
 
   belongs_to :user
-  belongs_to :genre, optional: true
+  belongs_to :genre, default: -> { Genre.first }
 
   has_many :playlist_tracks, dependent: :destroy
 

@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     resources :discover, only: [:index]
     resources :genres, only: [:index]
     resources :playlists, only: %i[index create show update destroy] do
-      resources :playlist_tracks, only: [:destroy]
+      resources :playlist_tracks, only: %i[create destroy]
     end
     resources :searches, only: [:index]
   end

@@ -10,9 +10,10 @@ import {
 } from "../../../genres/store";
 import { useEffect } from "react";
 import slug from "slug";
+import { updatePlaylistAsync } from "../../../playlists/store";
 
 function fullPermalink(permalink) {
-  return `http://localhost:3000${permalink}`;
+  return `localhost:3000${permalink}`;
 }
 
 function generatePermalink(uploader, title) {
@@ -28,9 +29,16 @@ export function EditPlaylistModal({ playlist, onClose }) {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
+    formState: {
+      errors,
+      isValid,
+      isSubmitting,
+      isSubmitted,
+      isSubmitSuccessful,
+    },
   } = useForm({
     defaultValues: {
+      id: playlist.id,
       title: playlist.title,
       permalink: fullPermalink(playlist.permalink),
       releaseDate: playlist.releaseDate,
@@ -43,10 +51,34 @@ export function EditPlaylistModal({ playlist, onClose }) {
 
   const dispatch = useDispatch();
   const title = watch("title");
-  const previewImage = watch("cover");
+  const previewImage = watch("cover", playlist.cover);
   const genresLoaded = useSelector(selectGenresLoaded);
   const genres = useSelector(selectGenres);
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = (data) => {
+    if (isValid) {
+      const formData = new FormData();
+
+      for (let key of Object.keys(data)) {
+        if (key === "cover") {
+          if (data.cover) {
+            if (data.cover instanceof Blob) {
+              formData.set(key, data[key][0], data[key][0].name);
+            }
+          }
+        } else if (key === "permalink") {
+          formData.set(key, slug(data.title));
+        } else {
+          formData.set(key, data[key]);
+        }
+      }
+
+      dispatch(updatePlaylistAsync(formData));
+      if (isSubmitSuccessful) {
+        onClose();
+      }
+    }
+  };
 
   useEffect(() => {
     setValue("permalink", generatePermalink(uploader, title));
@@ -57,7 +89,7 @@ export function EditPlaylistModal({ playlist, onClose }) {
       dispatch(fetchGenresAsync());
     }
   }, [dispatch, genresLoaded]);
-  console.log(errors.title);
+
   return (
     <Modal onClose={onClose}>
       <div className="edit-playlist-modal-container">
@@ -76,11 +108,17 @@ export function EditPlaylistModal({ playlist, onClose }) {
               style={{
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
-                backgroundImage: previewImage?.[0]
-                  ? `url(${URL.createObjectURL(previewImage?.[0])})`
-                  : "linear-gradient(135deg, #846170, #70929c)",
+                backgroundImage:
+                  typeof previewImage?.[0] === "string"
+                    ? `url(${playlist.cover})`
+                    : previewImage?.[0] instanceof Blob
+                    ? `url(${URL.createObjectURL(previewImage?.[0])})`
+                    : "linear-gradient(135deg, #846170, #70929c)",
               }}
-              onLoad={() => URL.revokeObjectURL(previewImage?.[0])}
+              onLoad={() =>
+                previewImage?.[0] instanceof Blob &&
+                URL.revokeObjectURL(previewImage?.[0])
+              }
             >
               <label
                 htmlFor="cover"

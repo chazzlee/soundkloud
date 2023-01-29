@@ -12,7 +12,7 @@ export const PlaylistsApi = {
     return csrfFetch(`/api/playlists/${playlistId}`, { method: "DELETE" });
   },
   addToPlaylist(playlistId, trackId) {
-    return csrfFetch(`/api/playlists/${playlistId}`, {
+    return csrfFetch(`/api/playlists/${playlistId}/playlist_tracks`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -35,6 +35,12 @@ export const PlaylistsApi = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(playlist),
+    });
+  },
+  updatePlaylist(playlist) {
+    return csrfFetch(`/api/playlists/${playlist.get("id")}`, {
+      method: "PUT",
+      body: playlist,
     });
   },
 };

@@ -9,12 +9,18 @@ const PLAYLIST_RECEIVED = "playlists/PLAYLIST_RECEIVED";
 const TRACK_ADDED_TO_PLAYLIST = "playlists/TRACK_ADDED_TO_PLAYLIST";
 const TRACK_REMOVED_FROM_PLAYLIST = "playlists/TRACK_REMOVED_FROM_PLAYLIST";
 const DELETE_PLAYLIST = "playlists/playlistDeleted";
+const UPDATE_PLAYLIST = "playlists/playlistUpdated";
 
 export const START_PLAYLIST = "playlists/playlistStarted";
 export const PLAY_NEXT = "playlists/nextPlaying";
 export const PLAY_PREV = "playlists/prevPlaying";
 export const PLAYLIST_FINISHED = "playlists/playlistFinished";
 export const PLAY_SELECTED = "playlists/selectedTrackPlaying";
+
+const updatePlaylist = (playlist) => ({
+  type: UPDATE_PLAYLIST,
+  payload: playlist,
+});
 
 export const playSelected = ({ index, selectedTrack, playlistId }) => ({
   type: PLAY_SELECTED,
@@ -63,6 +69,12 @@ const trackRemovedFromPlaylist = ({ id, trackId }) => ({
   type: TRACK_REMOVED_FROM_PLAYLIST,
   payload: { id, trackId },
 });
+
+export const updatePlaylistAsync = (playlist) => async (dispatch) => {
+  const response = await PlaylistsApi.updatePlaylist(playlist);
+  const data = await response.json();
+  dispatch(updatePlaylist(data));
+};
 
 export const playNextTrack = () => (dispatch, getState) => {
   const state = getState();
@@ -147,6 +159,10 @@ export const playlistsReducer = produce((state = initialState, action) => {
       if (state.active.id !== action.payload) {
         delete state.entities[action.payload];
       }
+      break;
+    }
+    case UPDATE_PLAYLIST: {
+      state.entities[action.payload.id] = action.payload;
       break;
     }
 
