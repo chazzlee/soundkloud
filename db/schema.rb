@@ -73,12 +73,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_24_163018) do
   create_table "playlists", force: :cascade do |t|
     t.string "title", null: false
     t.string "permalink", null: false
-    t.integer "plays", default: 0, null: false
     t.string "privacy", default: "public", null: false
+    t.text "description"
+    t.datetime "release_date"
+    t.integer "plays", default: 0, null: false
     t.bigint "user_id", null: false
+    t.bigint "genre_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.index ["genre_id"], name: "index_playlists_on_genre_id"
     t.index ["slug"], name: "index_playlists_on_slug", unique: true
     t.index ["user_id"], name: "index_playlists_on_user_id"
   end
@@ -165,6 +169,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_24_163018) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "playlists", "genres"
   add_foreign_key "playlists", "users"
   add_foreign_key "popular_plays", "tracks"
   add_foreign_key "popular_plays", "users"

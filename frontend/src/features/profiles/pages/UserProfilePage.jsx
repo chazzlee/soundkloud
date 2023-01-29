@@ -1,4 +1,3 @@
-// import styles from "./UserProfilePage.module.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
@@ -66,7 +65,7 @@ export function UserProfilePage() {
           header={
             <>
               <ProfileBannerAvatar photoUrl={user.photo} />
-              <div className="banner-heading">
+              <div className="banner-heading remove-margin-right">
                 <div className="banner-title extend-padding-left">
                   <BannerTitleHeading title={user.displayName} />
                   <h3 className="subtitle">{user.email}</h3>
@@ -78,7 +77,7 @@ export function UserProfilePage() {
                   <button
                     className="update-profile-btn"
                     aria-label="Update header image"
-                    onClick={() => console.log("TODO: IMPLEMENT")}
+                    onClick={() => console.log("TODO")}
                   >
                     <MdCameraAlt /> Update header image
                   </button>

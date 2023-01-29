@@ -11,6 +11,10 @@ import { ItemActionButton } from "./ItemActionButton";
 import { destroyPlaylistAsync } from "../../features/playlists/store";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../features/auth/store";
+import {
+  EditPlaylist,
+  EditPlaylistModal,
+} from "../../features/profiles/components/EditPlaylist";
 import "./ItemActionGroup.css";
 
 // TODO: need to complete
@@ -64,12 +68,20 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
         )}
         {isCurrentUserUploader ? (
           <>
-            <ItemActionButton
-              icon={<SlPencil />}
-              label="Edit"
-              onClick={handleToggleEditModal}
-              size={size}
-            />
+            {type === "playlist" && (
+              <EditPlaylist triggerSize={size} playlist={item} />
+            )}
+
+            {/* TODO: */}
+            {type === "track" && (
+              <ItemActionButton
+                icon={<SlPencil />}
+                label="Edit"
+                onClick={handleToggleEditModal}
+                size={size}
+              />
+            )}
+
             <ItemActionButton
               icon={<IoTrashBinOutline />}
               label={`Delete ${type}`}
@@ -89,9 +101,6 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
         />
       ) : null}
       {/* TODO: make track modal generic -- edit both tracks and playlists */}
-      {editModalOpen && type === "playlist" ? (
-        <EditTrackModal track={item} />
-      ) : null}
       {playlistModalOpen ? (
         <PlaylistModal track={item} onClose={handleTogglePlaylistModal} />
       ) : null}

@@ -5,6 +5,9 @@ playlists.each do |playlist|
     json.extract! playlist, :id, :title, :privacy, :plays, :slug
     json.created_at playlist.updated_at
     json.cover playlist.cover.url
+    json.description playlist.description
+    json.genre playlist.genre_id
+    json.release_date playlist.release_date
     json.permalink URI.parse(playlist.permalink).path
     json.uploader do
       json.id playlist.user_id

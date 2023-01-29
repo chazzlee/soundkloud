@@ -51,8 +51,14 @@ h4,
 h5,
 h6,
 dd,
+ul,
 p {
   margin: 0;
+  padding: 0;
+}
+
+label {
+  display: block;
 }
 
 li {
@@ -73,6 +79,11 @@ button {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #999;
 }
 
 .truncate {

@@ -9,6 +9,8 @@ class Playlist < ApplicationRecord
   validates :privacy, inclusion: %w[public private]
 
   belongs_to :user
+  belongs_to :genre, optional: true
+
   has_many :playlist_tracks, dependent: :destroy
 
   has_many :tracks,
