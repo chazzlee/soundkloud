@@ -15,9 +15,12 @@ class Api::PlaylistsController < ApplicationController
     playlist.permalink = "#{request.protocol}#{request.host_with_port}/#{current_user.slug}/#{params[:permalink]}"
     playlist.privacy = params[:privacy]
     playlist.track_ids = params[:tracks]
-    playlist.save!
 
-    render template: 'api/playlists/show', locals: { playlist: }
+    if playlist.save
+      render template: 'api/playlists/show', locals: { playlist: }
+    else
+      render json: { errors: playlist.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def show; end
