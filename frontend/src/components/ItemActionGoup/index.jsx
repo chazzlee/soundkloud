@@ -88,6 +88,10 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
           onSuccess={handleToggleEditModal}
         />
       ) : null}
+      {/* TODO: make track modal generic -- edit both tracks and playlists */}
+      {editModalOpen && type === "playlist" ? (
+        <EditTrackModal track={item} />
+      ) : null}
       {playlistModalOpen ? (
         <PlaylistModal track={item} onClose={handleTogglePlaylistModal} />
       ) : null}

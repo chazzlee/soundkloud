@@ -2,8 +2,6 @@ import WaveSurfer from "wavesurfer.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { MdOutlineEdit, MdPlaylistAdd } from "react-icons/md";
-import { IoTrashBinOutline } from "react-icons/io5";
 import { formatDistanceToNow } from "date-fns";
 import { PrivateBadge } from "../../../../components/PrivateBadge";
 import { DefaultCover } from "../../../../components/DefaultCover";
@@ -156,7 +154,9 @@ export function ProfileItemCard({ item, children, type = "track" }) {
           />
           <div className="card-heading">
             <div className="card-details">
-              <p className="card-user">{item.uploader.displayName}</p>
+              <Link className="card-user" to={`/${item.uploader.slug}`}>
+                {item.uploader.displayName}
+              </Link>
               <p className="card-time">
                 <time>
                   {formatDistanceToNow(new Date(item.createdAt), {

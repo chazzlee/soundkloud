@@ -4,19 +4,17 @@ import { selectPlaylists } from "../../../playlists/store";
 import { selectUserTracks } from "../../../tracks/store";
 import { PlaylistTrackList } from "../PlaylistTrackList";
 import { ProfileItemCard } from "../ProfileItemCard";
-import { StartUploadingButton } from "../StartUploadingButton";
+import { StartButton } from "../StartButton";
 
 export function UserAll() {
   // TODO: FIXME: currentUser...needs to be user by id/slug
   const userTracks = useSelector(selectUserTracks);
   // TODO: selecting all playlists for now...need to select by user id/slug
   const userPlaylists = useSelector(selectPlaylists);
-  console.log(!userTracks.length && !userPlaylists.length);
+
   return (
     <div className="user-profile-tab-page">
-      <StartUploadingButton
-        hasUploads={userTracks.length && userPlaylists.length}
-      />
+      <StartButton hasUploads={!!userTracks.length} />
       {userTracks.length && userPlaylists.length ? (
         <h2 className="user-profile-tab-heading">Recent</h2>
       ) : null}
