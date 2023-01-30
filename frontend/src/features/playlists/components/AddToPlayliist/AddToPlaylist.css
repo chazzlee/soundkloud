@@ -1,6 +1,8 @@
+/* Add to playlist */
 .add-to-playlist-container {
   width: 550px;
   height: 100%;
+  padding-bottom: 25px;
 }
 
 .add-to-playlist-header {
@@ -36,18 +38,54 @@
   padding-right: 25px;
 }
 
-.playlist-search-input {
-  width: 100%;
-  font-size: 13px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  line-height: 20px;
-  color: #333;
-  margin-bottom: 4px;
+.playlist-list {
+  padding-top: 12px;
+}
+/* Create a playlist */
+
+.privacy-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  height: 26px;
 }
 
-.playlist-search-input:focus {
+.track-list {
+  border: 1px solid #f2f2f2;
+}
+
+/* Go to playlist */
+.go-to-playlist-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 24px 0;
+}
+
+.new-playlist-cover {
+  border: 1px solid rgb(175, 175, 175);
+  height: 50px;
+  width: 50px;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+.go-to-playlist-link {
+  font-size: 13px;
+  color: rgb(61, 61, 61);
+  border: 1px solid #e5e5e5;
+  padding: 2px 11px 2px 10px;
+  line-height: 20px;
+  border-radius: 3px;
+  height: 26px;
+  transition: all 100ms ease-in;
+}
+
+.go-to-playlist-link:hover {
+  border-color: #ccc;
+  color: #333;
   outline: 0;
-  border-color: #999;
 }

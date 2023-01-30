@@ -1,11 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoTrashBinOutline } from "react-icons/io5";
-
-import { MdPlaylistAdd } from "react-icons/md";
-
-import { PlaylistModal } from "../../features/tracks/components/PlaylistModal";
 import { destroyTrackAsync } from "../../features/tracks/store";
 import { ItemActionButton } from "./ItemActionButton";
 import { destroyPlaylistAsync } from "../../features/playlists/store";

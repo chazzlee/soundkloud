@@ -6,14 +6,12 @@ import {
   fetchTrackAsync,
   removeCurrentTrack,
   selectCurrentTrack,
-  selectUserTracks,
+  // selectUserTracks,
 } from "../store";
 
-import { ImUsers, ImUserPlus } from "react-icons/im";
-import { BsSoundwave } from "react-icons/bs";
+// import { ImUsers, ImUserPlus } from "react-icons/im";
+// import { BsSoundwave } from "react-icons/bs";
 import { FullSpinner } from "../../../components/FullSpinner";
-import { TrackActions } from "../components/TrackActions";
-import { fetchPlaylistsAsync } from "../../playlists/store";
 import "./TrackShowPage.css";
 
 import {
@@ -46,6 +44,10 @@ import {
   selectGenresLoaded,
 } from "../../genres/store/selectors";
 import { fetchGenresAsync } from "../../genres/store";
+import {
+  fetchPlaylistsAsync,
+  selectPlaylistsLoaded,
+} from "../../playlists/store";
 
 // TODO: load genres if not loaded
 export function TrackShowPage() {
@@ -96,10 +98,13 @@ export function TrackShowPage() {
     setLoaded(loaded);
   }, []);
 
-  // TODO:
-  // useEffect(() => {
-  //   dispatch(fetchPlaylistsAsync());
-  // }, [dispatch]);
+  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
+
+  useEffect(() => {
+    if (!playlistsLoaded) {
+      dispatch(fetchPlaylistsAsync());
+    }
+  }, [dispatch, playlistsLoaded]);
 
   if (!track) {
     return <FullSpinner />;

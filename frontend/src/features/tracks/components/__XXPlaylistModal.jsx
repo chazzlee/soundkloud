@@ -7,9 +7,9 @@ import {
   fetchPlaylistsAsync,
   selectPlaylists,
 } from "../../playlists/store";
-import { AddToPlaylistTab } from "./AddToPlaylistTab";
-import { CreatePlaylistTab } from "./CreatePlaylistTab";
-import { GoToPlaylistTab } from "./GoToPlaylistTab";
+// import { AddToPlaylistTab } from "./AddToPlaylistTab";
+// import { CreatePlaylistTab } from "./CreatePlaylistTab";
+// import { GoToPlaylistTab } from "./GoToPlaylistTab";
 import styles from "./PlaylistModal.module.css";
 
 const TABS = Object.freeze({
@@ -71,7 +71,7 @@ export function PlaylistModal({ track, onClose }) {
         activeTab={playlistModalTab}
         onTabChange={handleTabChange}
       />
-      <div className={styles.container}>
+      {/* <div className={styles.container}>
         {playlistModalTab === TABS.ADD && (
           <AddToPlaylistTab track={track} playlists={playlists} />
         )}
@@ -85,8 +85,8 @@ export function PlaylistModal({ track, onClose }) {
         )}
         {playlistModalTab === TABS.SUCCESS && (
           <GoToPlaylistTab trackToAdd={track} playlistSlug={playlistSlug} />
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
     </Modal>
   );
 }

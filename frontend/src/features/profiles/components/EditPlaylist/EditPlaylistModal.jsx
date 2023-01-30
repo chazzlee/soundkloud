@@ -231,7 +231,7 @@ export function EditPlaylistModal({ playlist, onClose }) {
                     id="private"
                     name="privacy"
                     value="private"
-                    {...register("privacy", { required: true })}
+                    {...register("privacy")}
                   />
                   <label htmlFor="private">Private</label>
                 </div>

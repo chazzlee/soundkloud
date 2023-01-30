@@ -1,91 +1,43 @@
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useState } from "react";
 import { Modal } from "../../../../context/Modal";
-import { PlaylistRow } from "../../../tracks/components/PlaylistRow";
-import {
-  fetchPlaylistsAsync,
-  selectPlaylists,
-  selectPlaylistsLoaded,
-} from "../../store";
+import { AddToPlaylistHeader } from "./AddToPlaylistHeader";
+import { AddToPlaylistTab } from "./Tabs/AddToPlaylistTab";
+import { CreatePlaylistTab } from "./Tabs/CreatePlaylistTab";
+import { GoToPlaylistTab } from "./Tabs/GoToPlaylistTab";
 import "./AddToPlaylist.css";
 
-const TABS = Object.freeze({
+export const TABS = Object.freeze({
   ADD: "add",
   CREATE: "create",
   SUCCESS: "success",
 });
 
 export function AddToPlaylistModal({ track, onClose }) {
-  console.log(track);
-  const dispatch = useDispatch();
   const [tab, setTab] = useState(TABS.ADD);
-
   const handleTabChange = useCallback((tab) => {
     setTab(tab);
   }, []);
 
-  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
-  // TODO: only playlists by current user
-  const playlists = useSelector(selectPlaylists);
+  const [permalink, setPermalink] = useState("");
 
-  useEffect(() => {
-    if (!playlistsLoaded) {
-      dispatch(fetchPlaylistsAsync());
-    }
-  }, [dispatch, playlistsLoaded]);
+  const handleSuccess = useCallback((link) => {
+    setTab(TABS.SUCCESS);
+    setPermalink(link);
+  }, []);
 
   return (
     <Modal onClose={onClose}>
       <div className="add-to-playlist-container">
-        <header className="add-to-playlist-header">
-          <nav>
-            <ul className="add-to-playlist-modal-tabs">
-              <li
-                className={`add-to-playlist-tab ${
-                  tab === TABS.ADD ? "selected" : ""
-                }`}
-                role="button"
-                onClick={() => handleTabChange(TABS.ADD)}
-              >
-                Add to playlist
-              </li>
-              <li
-                className={`add-to-playlist-tab ${
-                  tab === TABS.CREATE ? "selected" : ""
-                }`}
-                role="button"
-                onClick={() => handleTabChange(TABS.CREATE)}
-              >
-                Create a playlist
-              </li>
-            </ul>
-          </nav>
-        </header>
-        {tab === TABS.ADD && (
-          <section className="add-to-playlist-section">
-            <input
-              type="search"
-              placeholder="Filter playlists"
-              className="playlist-search-input"
-              name="filter"
-              autoFocus
-            />
-            <div className="playlist-list">
-              {playlists.map((playlist) => (
-                <PlaylistRow
-                  key={playlist.id}
-                  track={track}
-                  playlist={playlist}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-        {tab === TABS.CREATE && (
-          <section className="add-to-playlist-section">
-            <h2>CREATE</h2>
-          </section>
-        )}
+        <AddToPlaylistHeader tab={tab} onTabChange={handleTabChange} />
+        <section className="add-to-playlist-section">
+          {tab === TABS.ADD && <AddToPlaylistTab track={track} />}
+          {tab === TABS.CREATE && (
+            <CreatePlaylistTab track={track} onSuccess={handleSuccess} />
+          )}
+          {tab === TABS.SUCCESS && (
+            <GoToPlaylistTab track={track} permalink={permalink} />
+          )}
+        </section>
       </div>
     </Modal>
   );

@@ -6,7 +6,7 @@ import {
   removeFromPlaylistAsync,
   selectIsTrackInPlaylist,
 } from "../../playlists/store";
-import styles from "./PlaylistModal.module.css";
+import styles from "./__XXPlaylistModal.module.css";
 
 // TODO: FIXME: REFACTOR and move
 

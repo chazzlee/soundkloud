@@ -68,12 +68,12 @@ export const playlistRemoved = (playlistId) => ({
 export const playlistFinished = () => ({ type: PLAYLIST_FINISHED });
 export const playlistCleared = () => ({ type: CLEAR_PLAYLIST });
 
-const playlistsReceived = (playlists) => ({
+export const playlistsReceived = (playlists) => ({
   type: PLAYLISTS_RECEIVED,
   payload: playlists,
 });
 
-const playlistReceived = (playlist) => ({
+export const playlistReceived = (playlist) => ({
   type: PLAYLIST_RECEIVED,
   payload: playlist,
 });

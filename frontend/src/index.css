@@ -128,3 +128,147 @@ textarea::placeholder {
   width: 837px;
   bottom: 25px;
 }
+
+/* Modal form */
+.form-control.sm {
+  margin-bottom: 24px;
+}
+
+.form-control.sm .disabled {
+  border: none;
+  outline: none;
+}
+
+.helper-text,
+.form-control.sm label {
+  font-size: 12px;
+  color: #333;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-control-input,
+.form-control.sm input,
+.form-control.sm select,
+.form-control.sm textarea {
+  height: 26px;
+  padding: 2px 7px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #333;
+}
+
+.form-control.sm .textarea {
+  resize: vertical;
+  height: 130px;
+  padding: 7px;
+}
+
+.form-control-input:focus,
+.form-control.sm input:focus,
+.form-control.sm select:focus,
+.form-control.sm textarea:focus {
+  outline: none;
+  border: 1px solid rgb(165, 165, 165);
+}
+
+.form-control.sm .invalid {
+  border: 1px solid var(--error-red);
+}
+
+.input-error-message {
+  display: block;
+  color: var(--error-red);
+  margin: 8px 1px 0;
+  font-size: 12px;
+  transition: margin ease-in 100ms;
+}
+
+.input-full {
+  width: 100%;
+}
+
+.input-sm {
+  width: 50%;
+}
+
+.radio-labels {
+  display: flex;
+  align-items: center;
+}
+
+.mr-label {
+  margin-right: 12px;
+}
+
+.inline-radio {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.mt-radio {
+  margin-top: -8px;
+  margin-right: 4px;
+}
+
+/* TODO: == fix alignment */
+.input-radio-container {
+  display: flex;
+  align-items: center;
+}
+
+.radio {
+  margin-right: 12px;
+}
+
+.required {
+  color: #cf0000;
+  font-size: 12px;
+}
+
+.form-footer {
+  border-top: 1px solid #f2f2f2;
+  padding: 23px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-footer-button-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.required-helper-text {
+  font-size: 12px;
+  color: #333;
+  font-weight: 400;
+}
+
+.cancel-btn {
+  font-size: 13px;
+  color: #333;
+  background-color: transparent;
+  border: 1px solid #fff;
+}
+
+.submit-btn {
+  font-size: 13px;
+  color: #fff;
+  padding: 2px 11px 2px 10px;
+  height: 26px;
+  background-color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+  border-radius: 3px;
+  transition: all 80ms ease-in;
+}
+
+.submit-btn:disabled {
+  background-color: #f2f2f2;
+  border: 1px solid #e5e5e5;
+  color: #ccc;
+  cursor: default;
+}
