@@ -116,9 +116,9 @@ textarea::placeholder {
   position: relative;
 }
 
-.top-navigation-links .active {
+/* .top-navigation-links .active {
   background-color: var(--navBorderColor);
-}
+} */
 
 /* WAVEFORM */
 .waveform-container {
