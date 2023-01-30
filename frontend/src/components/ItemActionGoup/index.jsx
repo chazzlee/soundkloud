@@ -14,6 +14,7 @@ import { selectCurrentUser } from "../../features/auth/store";
 import { EditPlaylist } from "../../features/profiles/components/EditPlaylist";
 import "./ItemActionGroup.css";
 import { EditTrack } from "../../features/profiles/components/EditTrack";
+import { AddToPlaylist } from "../../features/playlists/components/AddToPlayliist/AddToPlaylist";
 
 // TODO: need to complete
 export function ItemActionGroup({ item, type, size = "lg" }) {
@@ -21,13 +22,6 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
   const isCurrentUserUploader = currentUser?.id === item.uploader.id;
-
-  const [playlistModalOpen, setPlaylistModalOpen] = useState(false);
-
-  const handleTogglePlaylistModal = useCallback(
-    () => setPlaylistModalOpen((prev) => !prev),
-    []
-  );
 
   const handleRemoveItem = useCallback(
     (itemId) => {
@@ -42,44 +36,30 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
   );
 
   return (
-    <>
-      <div className="item-actions">
-        <ItemActionButton
-          icon={<AiOutlineHeart />}
-          label="Like"
-          onClick={() => console.log("LIKE: TODO MUST IMPLEMENT")}
-          size={size}
-        />
-        {type === "track" && (
+    <div className="item-actions">
+      <ItemActionButton
+        icon={<AiOutlineHeart />}
+        label="Like"
+        onClick={() => console.log("LIKE: TODO MUST IMPLEMENT")}
+        size={size}
+      />
+      {type === "track" && <AddToPlaylist triggerSize={size} track={item} />}
+      {isCurrentUserUploader ? (
+        <>
+          {type === "playlist" && (
+            <EditPlaylist triggerSize={size} playlist={item} />
+          )}
+
+          {type === "track" && <EditTrack triggerSize={size} track={item} />}
+
           <ItemActionButton
-            icon={<MdPlaylistAdd />}
-            label="Add to playlist"
-            onClick={handleTogglePlaylistModal}
+            icon={<IoTrashBinOutline />}
+            label={`Delete ${type}`}
+            onClick={() => handleRemoveItem(item.id)}
             size={size}
           />
-        )}
-        {isCurrentUserUploader ? (
-          <>
-            {type === "playlist" && (
-              <EditPlaylist triggerSize={size} playlist={item} />
-            )}
-
-            {type === "track" && <EditTrack triggerSize={size} track={item} />}
-
-            <ItemActionButton
-              icon={<IoTrashBinOutline />}
-              label={`Delete ${type}`}
-              onClick={() => handleRemoveItem(item.id)}
-              size={size}
-            />
-          </>
-        ) : null}
-      </div>
-      {/* TODO: make track modal generic -- edit both tracks and playlists */}
-      {/* Create new playlist...add to playlist */}
-      {playlistModalOpen ? (
-        <PlaylistModal track={item} onClose={handleTogglePlaylistModal} />
+        </>
       ) : null}
-    </>
+    </div>
   );
 }

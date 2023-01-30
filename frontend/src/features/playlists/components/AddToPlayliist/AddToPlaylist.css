@@ -1,0 +1,53 @@
+.add-to-playlist-container {
+  width: 550px;
+  height: 100%;
+}
+
+.add-to-playlist-header {
+  padding-top: 16px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.add-to-playlist-modal-tabs {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 22px;
+  line-height: 1.6;
+  border-bottom: 1px solid #f2f2f2;
+  margin-bottom: 25px;
+}
+
+.add-to-playlist-tab {
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.add-to-playlist-tab.selected {
+  color: var(--primary-orange);
+  border-color: var(--primary-orange);
+}
+
+.add-to-playlist-section {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.playlist-search-input {
+  width: 100%;
+  font-size: 13px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  line-height: 20px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.playlist-search-input:focus {
+  outline: 0;
+  border-color: #999;
+}
