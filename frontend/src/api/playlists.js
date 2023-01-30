@@ -13,7 +13,7 @@ export const PlaylistsApi = {
   },
   addToPlaylist(playlistId, trackId) {
     return csrfFetch(`/api/playlists/${playlistId}/playlist_tracks`, {
-      method: "PATCH",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

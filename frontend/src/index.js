@@ -42,9 +42,6 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       { index: true, element: <LandingPage /> },
-      { path: "/discover", element: <DiscoverPage /> },
-      { path: "/:user/:trackSlug", element: <TrackShowPage /> },
-      { path: "/upload", element: <UploadNewTrackPage /> },
       {
         path: "/:slug",
         element: <UserProfilePage />,
@@ -54,6 +51,9 @@ const router = createBrowserRouter([
           { path: "sets", element: <UserPlaylists /> },
         ],
       },
+      { path: "/discover", element: <DiscoverPage /> },
+      { path: "/:user/:trackSlug", element: <TrackShowPage /> },
+      { path: "/upload", element: <UploadNewTrackPage /> },
       { path: "/:user/sets/:playlistSlug", element: <PlaylistShowPage /> },
       // { path: "/logout", element: <LogoutPage /> },
     ],

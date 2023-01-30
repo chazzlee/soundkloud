@@ -2,19 +2,16 @@ import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoTrashBinOutline } from "react-icons/io5";
-import { SlPencil } from "react-icons/sl";
+
 import { MdPlaylistAdd } from "react-icons/md";
-import { EditTrackModal } from "../../features/profiles/components/EditTrackModal";
+
 import { PlaylistModal } from "../../features/tracks/components/PlaylistModal";
 import { destroyTrackAsync } from "../../features/tracks/store";
 import { ItemActionButton } from "./ItemActionButton";
 import { destroyPlaylistAsync } from "../../features/playlists/store";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../features/auth/store";
-import {
-  EditPlaylist,
-  EditPlaylistModal,
-} from "../../features/profiles/components/EditPlaylist";
+import { EditPlaylist } from "../../features/profiles/components/EditPlaylist";
 import "./ItemActionGroup.css";
 import { EditTrack } from "../../features/profiles/components/EditTrack";
 
@@ -25,19 +22,13 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
   const currentUser = useSelector(selectCurrentUser);
   const isCurrentUserUploader = currentUser?.id === item.uploader.id;
 
-  const [editModalOpen, setEditModalOpen] = useState(false);
   const [playlistModalOpen, setPlaylistModalOpen] = useState(false);
 
-  const handleToggleEditModal = useCallback(
-    () => setEditModalOpen((prev) => !prev),
-    []
-  );
   const handleTogglePlaylistModal = useCallback(
     () => setPlaylistModalOpen((prev) => !prev),
     []
   );
 
-  // TODO: only for track...need to delete from playlist
   const handleRemoveItem = useCallback(
     (itemId) => {
       if (type === "track") {
@@ -73,7 +64,6 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
               <EditPlaylist triggerSize={size} playlist={item} />
             )}
 
-            {/* TODO: */}
             {type === "track" && <EditTrack triggerSize={size} track={item} />}
 
             <ItemActionButton
@@ -85,16 +75,8 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
           </>
         ) : null}
       </div>
-      {/* TODO: redesign/onSuccess -- fixFIXME: */}
-      {/* TODO: need to make modal for updating playlist */}
-      {editModalOpen && type === "track" ? (
-        <EditTrackModal
-          track={item}
-          onClose={handleToggleEditModal}
-          onSuccess={handleToggleEditModal}
-        />
-      ) : null}
       {/* TODO: make track modal generic -- edit both tracks and playlists */}
+      {/* Create new playlist...add to playlist */}
       {playlistModalOpen ? (
         <PlaylistModal track={item} onClose={handleTogglePlaylistModal} />
       ) : null}

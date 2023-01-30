@@ -7,6 +7,7 @@ import {
   PLAY_SELECTED,
   START_PLAYLIST,
 } from "../../playlists/store";
+import { DESTROY_TRACK_SUCCESS } from "../../tracks/store";
 
 export const WAVE_PLAYER = "wave";
 export const GLOBAL_PLAYER = "global";
@@ -244,6 +245,18 @@ export const playerReducer = produce((state = initialState, action) => {
       state.global.status = PLAYER_STATUS.PAUSED;
       state.global.duration = 0;
       state.global.progress = 0;
+      break;
+    }
+
+    // Tracks
+    case DESTROY_TRACK_SUCCESS: {
+      if (state.global.sourceId === action.payload) {
+        state.global.status = PLAYER_STATUS.IDLE;
+        state.global.sourceId = null;
+        state.global.sourceUrl = null;
+        state.global.duration = 0;
+        state.global.progress = 0;
+      }
       break;
     }
 

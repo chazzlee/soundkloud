@@ -2,6 +2,7 @@ import produce from "immer";
 import { createSelector } from "reselect";
 import { PlaylistsApi } from "../../../api/playlists";
 import { PLAY_TRACK } from "../../player/store";
+import { DESTROY_TRACK_SUCCESS } from "../../tracks/store";
 
 const CLEAR_PLAYLIST = "playlists/playlistCleared";
 const PLAYLISTS_RECEIVED = "playlists/PLAYLISTS_RECEIVED";
@@ -16,6 +17,22 @@ export const PLAY_NEXT = "playlists/nextPlaying";
 export const PLAY_PREV = "playlists/prevPlaying";
 export const PLAYLIST_FINISHED = "playlists/playlistFinished";
 export const PLAY_SELECTED = "playlists/selectedTrackPlaying";
+
+const UPDATE_PLAYLIST_START = "playlists/updateInitiate";
+const UPDATE_PLAYLIST_SUCCESS = "playlists/updatekSuccess";
+const UPDATE_PLAYLIST_FAILED = "playlists/updateFailed";
+
+export const updatePlaylistInitiate = () => ({
+  type: UPDATE_PLAYLIST_START,
+});
+export const updatePlaylistSuccess = (playlist) => ({
+  type: UPDATE_PLAYLIST_SUCCESS,
+  payload: playlist,
+});
+export const updatePlaylistFailed = (error) => ({
+  type: UPDATE_PLAYLIST_FAILED,
+  payload: error,
+});
 
 const updatePlaylist = (playlist) => ({
   type: UPDATE_PLAYLIST,
@@ -161,11 +178,24 @@ export const playlistsReducer = produce((state = initialState, action) => {
       }
       break;
     }
-    case UPDATE_PLAYLIST: {
-      state.entities[action.payload.id] = action.payload;
+    case UPDATE_PLAYLIST_START: {
+      state.loading = true;
+      state.errors = null;
       break;
     }
-
+    case UPDATE_PLAYLIST_SUCCESS: {
+      state.entities[action.payload.id] = action.payload;
+      state.loaded = false;
+      state.loading = false;
+      state.errors = null;
+      break;
+    }
+    case UPDATE_PLAYLIST_FAILED: {
+      state.loaded = false;
+      state.loading = false;
+      state.errors = action.payload;
+      break;
+    }
     case PLAYLISTS_RECEIVED: {
       state.loaded = true;
       state.loading = false;
@@ -278,6 +308,18 @@ export const playlistsReducer = produce((state = initialState, action) => {
         state.active.current = null;
       }
 
+      break;
+    }
+    case DESTROY_TRACK_SUCCESS: {
+      // TODO: remove track from playlist after delete
+      Object.values(state.entities).forEach((playlist) => {
+        const index = playlist.tracks.findIndex(
+          (track) => track.id === action.payload
+        );
+        if (index > -1) {
+          playlist.tracks.splice(index, 1);
+        }
+      });
       break;
     }
 

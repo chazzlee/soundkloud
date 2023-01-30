@@ -9,9 +9,16 @@ import {
 } from "../../../genres/store";
 import { useEffect } from "react";
 import slug from "slug";
-import { updatePlaylistAsync } from "../../../playlists/store";
+import {
+  updatePlaylistAsync,
+  updatePlaylistFailed,
+  updatePlaylistInitiate,
+  updatePlaylistSuccess,
+} from "../../../playlists/store";
 
 import "../EditModal/EditModal.css";
+import { PlaylistsApi } from "../../../../api/playlists";
+import { useNavigate } from "react-router-dom";
 
 function fullPermalink(permalink) {
   return `localhost:3000${permalink}`;
@@ -24,19 +31,15 @@ function generatePermalink(uploader, title) {
 // TODO: default date on load
 export function EditPlaylistModal({ playlist, onClose }) {
   const [uploader] = playlist.permalink.split("/").slice(1);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    formState: {
-      errors,
-      isValid,
-      isSubmitting,
-      isSubmitted,
-      isSubmitSuccessful,
-    },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       id: playlist.id,
@@ -50,13 +53,12 @@ export function EditPlaylistModal({ playlist, onClose }) {
     },
   });
 
-  const dispatch = useDispatch();
   const title = watch("title");
   const previewImage = watch("cover", playlist.cover);
   const genresLoaded = useSelector(selectGenresLoaded);
   const genres = useSelector(selectGenres);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (isValid) {
       const formData = new FormData();
 
@@ -72,11 +74,17 @@ export function EditPlaylistModal({ playlist, onClose }) {
         }
       }
 
-      // TODO:
-      dispatch(updatePlaylistAsync(formData));
-      console.log(isSubmitSuccessful);
-      if (isSubmitSuccessful) {
-        onClose();
+      dispatch(updatePlaylistInitiate());
+      try {
+        const response = await PlaylistsApi.updatePlaylist(formData);
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(updatePlaylistSuccess(data));
+          onClose();
+          navigate(data.permalink);
+        }
+      } catch (ex) {
+        dispatch(updatePlaylistFailed(ex.message));
       }
     }
   };

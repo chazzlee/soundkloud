@@ -17,8 +17,9 @@ const UPLOAD_TRACK_FAILED = "tracks/uploadTrackFailed";
 
 const UPDATE_TRACK_START = "tracks/updateTrackInitiate";
 const UPDATE_TRACK_SUCCESS = "tracks/updateTrackSuccess";
+const UPDATE_TRACK_FAILED = "tracks/updateTrackFailed";
 
-const DESTROY_TRACK_SUCCESS = "tracks/destroyTrackSuccess";
+export const DESTROY_TRACK_SUCCESS = "tracks/destroyTrackSuccess";
 const REMOVE_CURRENT_TRACK = "tracks/currentTrackRemoved";
 
 const REPLY_TO_TRACK_SUCCESS = "replies/replyToTrackSuccess";
@@ -52,12 +53,16 @@ const uploadTrackSuccess = (track) => ({
   payload: track,
 });
 
-const updateTrackInitiate = () => ({
+export const updateTrackInitiate = () => ({
   type: UPDATE_TRACK_START,
 });
-const updateTrackSuccess = (track) => ({
+export const updateTrackSuccess = (track) => ({
   type: UPDATE_TRACK_SUCCESS,
   payload: track,
+});
+export const updateTrackFailed = (error) => ({
+  type: UPDATE_TRACK_FAILED,
+  payload: error,
 });
 
 const destroyTrackSuccess = (trackId) => ({
@@ -238,6 +243,7 @@ export const tracksReducer = produce((state = initialState, action) => {
     }
     case DESTROY_TRACK_SUCCESS: {
       delete state.entities[action.payload];
+      state.ids = state.ids.filter((id) => id !== action.payload);
       state.current = null;
       break;
     }

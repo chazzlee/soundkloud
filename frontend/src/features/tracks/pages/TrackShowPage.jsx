@@ -11,7 +11,6 @@ import {
 
 import { ImUsers, ImUserPlus } from "react-icons/im";
 import { BsSoundwave } from "react-icons/bs";
-import { EditTrackModal } from "../../profiles/components/EditTrackModal";
 import { FullSpinner } from "../../../components/FullSpinner";
 import { TrackActions } from "../components/TrackActions";
 import { fetchPlaylistsAsync } from "../../playlists/store";
@@ -42,21 +41,36 @@ import { CommentFeed } from "../../replies/components/CommentFeed";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
 import { TrackAside } from "../components/TrackAside";
 import { ItemActionGroup } from "../../../components/ItemActionGoup";
+import {
+  selectGenreLabelById,
+  selectGenresLoaded,
+} from "../../genres/store/selectors";
+import { fetchGenresAsync } from "../../genres/store";
 
+// TODO: load genres if not loaded
 export function TrackShowPage() {
   const dispatch = useDispatch();
   const { user, trackSlug } = useParams();
   const currentUser = useSelector(selectCurrentUser);
   const track = useSelector(selectCurrentTrack);
+
+  const genresLoaded = useSelector(selectGenresLoaded);
+  const genreLabel = useSelector((state) =>
+    selectGenreLabelById(state, track?.genre)
+  );
+
   const isCurrentUserUploader = track?.uploader?.id === currentUser?.id;
 
   useEffect(() => {
     dispatch(fetchTrackAsync(user, trackSlug));
+    if (!genresLoaded) {
+      dispatch(fetchGenresAsync());
+    }
 
     return () => {
       dispatch(removeCurrentTrack());
     };
-  }, [dispatch, user, trackSlug]);
+  }, [dispatch, user, trackSlug, genresLoaded]);
 
   const [loaded, setLoaded] = useState(false);
 
@@ -115,7 +129,7 @@ export function TrackShowPage() {
               </div>
               <div className="banner-details">
                 <TimeAgo date={track.createdAt} />
-                <BadgeLink to="/discover" label={track.genre} />
+                <BadgeLink to="/discover" label={genreLabel} />
                 <PrivateBadge privacy={track.privacy} />
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { MdCameraAlt } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import slug from "slug";
@@ -9,8 +10,14 @@ import {
   selectGenres,
   selectGenresLoaded,
 } from "../../../genres/store";
-import { updateTrackAsync } from "../../../tracks/store";
+import {
+  updateTrackFailed,
+  updateTrackInitiate,
+  updateTrackSuccess,
+} from "../../../tracks/store";
 import "../EditModal/EditModal.css";
+import { TracksApi } from "../../../../api/tracks";
+
 function fullPermalink(permalink) {
   return `localhost:3000${permalink}`;
 }
@@ -20,19 +27,14 @@ function generatePermalink(uploader, title) {
 }
 export function EditTrackModal({ track, onClose }) {
   const [uploader] = track.permalink.split("/").slice(1);
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    formState: {
-      errors,
-      isValid,
-      isSubmitting,
-      isSubmitted,
-      isSubmitSuccessful,
-    },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       id: track.id,
@@ -51,7 +53,7 @@ export function EditTrackModal({ track, onClose }) {
   const previewImage = watch("cover", track.cover);
   const genresLoaded = useSelector(selectGenresLoaded);
   const genres = useSelector(selectGenres);
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (isValid) {
       const formData = new FormData();
 
@@ -67,11 +69,17 @@ export function EditTrackModal({ track, onClose }) {
         }
       }
 
-      // TODO:
-      dispatch(updateTrackAsync(formData));
-      console.log(isSubmitSuccessful);
-      if (isSubmitSuccessful) {
-        onClose();
+      dispatch(updateTrackInitiate());
+      try {
+        const response = await TracksApi.updateOne(formData);
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(updateTrackSuccess(data));
+          onClose();
+          navigate(data.permalink);
+        }
+      } catch (ex) {
+        dispatch(updateTrackFailed(ex.message));
       }
     }
   };
