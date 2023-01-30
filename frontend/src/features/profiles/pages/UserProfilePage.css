@@ -74,10 +74,8 @@
   color: #333;
 }
 
-.nav-left {
-}
-
 .nav-right {
+  margin-top: -12px;
 }
 
 .user-main-container {

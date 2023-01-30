@@ -1,9 +1,11 @@
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { MdCameraAlt } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { MdCameraAlt } from "react-icons/md";
 import { ProfilesApi } from "../../../../api/profiles";
 import { Modal } from "../../../../context/Modal";
+import { ButtonSpinner } from "../../../../components/ButtonSpinner";
 import { profileUpdatedSuccess, profileUpdateFailed } from "../../store";
 import "../EditModal/EditModal.css";
 
@@ -16,7 +18,7 @@ export function EditProfileModal({ onClose, profile }) {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     defaultValues: {
       id: profile.id,
@@ -30,32 +32,38 @@ export function EditProfileModal({ onClose, profile }) {
 
   const previewImage = watch("photo", profile.photo);
 
-  const onSubmit = async (data) => {
-    const formData = new FormData();
-    for (let key of Object.keys(data)) {
-      if (key === "photo") {
-        if (data?.photo instanceof FileList) {
-          formData.set(key, data[key][0], data[key][0].name);
-        } else {
-          formData.delete("photo");
+  const onSubmit = useCallback(
+    async (data) => {
+      if (isValid) {
+        const formData = new FormData();
+        for (let key of Object.keys(data)) {
+          if (key === "photo") {
+            if (data?.photo instanceof FileList) {
+              formData.set(key, data[key][0], data[key][0].name);
+            } else {
+              formData.delete("photo");
+            }
+          } else {
+            formData.set(key, data[key]);
+          }
         }
-      } else {
-        formData.set(key, data[key]);
-      }
-    }
 
-    try {
-      const response = await ProfilesApi.update(formData);
-      if (response.ok) {
-        const data = await response.json();
-        dispatch(profileUpdatedSuccess(data.user));
-        onClose();
-        navigate(`/${data.user.slug}`);
+        try {
+          const response = await ProfilesApi.update(formData);
+          if (response.ok) {
+            const data = await response.json();
+            dispatch(profileUpdatedSuccess(data.user));
+
+            onClose();
+            navigate(`/${data.user.slug}`);
+          }
+        } catch (ex) {
+          dispatch(profileUpdateFailed(ex.message));
+        }
       }
-    } catch (ex) {
-      dispatch(profileUpdateFailed(ex.message));
-    }
-  };
+    },
+    [dispatch, isValid, onClose, navigate]
+  );
 
   return (
     <Modal onClose={onClose}>
@@ -64,6 +72,8 @@ export function EditProfileModal({ onClose, profile }) {
           <nav>
             <ul className="edit-modal-tabs">
               <li className="edit-modal-tab">Edit your Profile</li>
+              {/* TODO: style and position... */}
+              <div>{isSubmitting && <ButtonSpinner />}</div>
             </ul>
           </nav>
         </header>
@@ -162,7 +172,11 @@ export function EditProfileModal({ onClose, profile }) {
               <button type="button" className="cancel-btn" onClick={onClose}>
                 Cancel
               </button>
-              <button type="submit" className="submit-btn" disabled={!isValid}>
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={!isValid || isSubmitting}
+              >
                 Save changes
               </button>
             </div>

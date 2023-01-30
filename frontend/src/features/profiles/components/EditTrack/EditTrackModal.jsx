@@ -34,7 +34,7 @@ export function EditTrackModal({ track, onClose }) {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     defaultValues: {
       id: track.id,
@@ -260,7 +260,11 @@ export function EditTrackModal({ track, onClose }) {
               <button type="button" className="cancel-btn" onClick={onClose}>
                 Cancel
               </button>
-              <button type="submit" className="submit-btn" disabled={!isValid}>
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={!isValid || isSubmitting}
+              >
                 Save changes
               </button>
             </div>
