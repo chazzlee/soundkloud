@@ -25,17 +25,27 @@ export function AddToPlaylistModal({ track, onClose }) {
     setPermalink(link);
   }, []);
 
+  const [trackToAdd, setTrackToAdd] = useState(track);
+  const handleRemoveTrackFromPlaylist = useCallback(
+    () => setTrackToAdd(null),
+    []
+  );
+
   return (
     <Modal onClose={onClose}>
       <div className="add-to-playlist-container">
         <AddToPlaylistHeader tab={tab} onTabChange={handleTabChange} />
         <section className="add-to-playlist-section">
-          {tab === TABS.ADD && <AddToPlaylistTab track={track} />}
+          {tab === TABS.ADD && <AddToPlaylistTab track={trackToAdd} />}
           {tab === TABS.CREATE && (
-            <CreatePlaylistTab track={track} onSuccess={handleSuccess} />
+            <CreatePlaylistTab
+              track={trackToAdd}
+              onSuccess={handleSuccess}
+              onRemove={handleRemoveTrackFromPlaylist}
+            />
           )}
           {tab === TABS.SUCCESS && (
-            <GoToPlaylistTab track={track} permalink={permalink} />
+            <GoToPlaylistTab track={trackToAdd} permalink={permalink} />
           )}
         </section>
       </div>

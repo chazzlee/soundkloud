@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
 import {
@@ -6,8 +6,6 @@ import {
   selectHasTracksLoaded,
   selectUserTracks,
 } from "../../tracks/store";
-// import { EditProfileModal } from "../components/EditProfileModal";
-// import { PlaylistList } from "../../playlists/components/PlaylistList";
 import {
   fetchPlaylistsAsync,
   selectPlaylists,
@@ -24,19 +22,35 @@ import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banne
 import { MdCameraAlt } from "react-icons/md";
 import { UserProfileAside } from "../components/UserProfileAside";
 import { EditProfile } from "../components/EditProfile/EditProfile";
+import { useState } from "react";
+import { useCallback } from "react";
+import { ProfilesApi } from "../../../api/profiles";
+import { headerCoverUpdatedSuccess } from "../store";
 
 export function UserProfilePage() {
   const dispatch = useDispatch();
 
   // TODO: find user by id/slug instead of current user
   const user = useSelector(selectCurrentUser);
+  const [headerCover] = useState("");
+
+  const handleUpdateHeaderCover = useCallback(
+    async (e) => {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.set("header_image", file, file.name);
+
+      const response = await ProfilesApi.updateHeaderCover(user.id, formData);
+      if (response.ok) {
+        const data = await response.json();
+        dispatch(headerCoverUpdatedSuccess(data.user));
+      }
+    },
+    [dispatch, user.id]
+  );
 
   const tracksLoaded = useSelector(selectHasTracksLoaded);
   const playlistsLoaded = useSelector(selectPlaylistsLoaded);
-
-  // const uploadedTracks = useSelector(selectUserTracks);
-  // const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  // const playlists = useSelector(selectPlaylists);
 
   const location = useLocation();
 
@@ -62,6 +76,7 @@ export function UserProfilePage() {
       <ShowLayout>
         <Banner
           height={260}
+          headerUrl={user.headerCover}
           header={
             <>
               <ProfileBannerAvatar photoUrl={user.photo} />
@@ -74,13 +89,23 @@ export function UserProfilePage() {
                   </h3>
                 </div>
                 <div className="banner-details remove-margin-right">
-                  <button
-                    className="update-profile-btn"
+                  <label
+                    htmlFor="headerCover"
+                    role="button"
                     aria-label="Update header image"
-                    onClick={() => console.log("TODO")}
+                    className="cover-trigger update-profile-btn"
                   >
-                    <MdCameraAlt /> Update header image
-                  </button>
+                    <input
+                      type="file"
+                      id="headerCover"
+                      name="headerCover"
+                      accept="image/*"
+                      value={headerCover}
+                      onChange={handleUpdateHeaderCover}
+                    />
+                    <MdCameraAlt />
+                    Update header image
+                  </label>
                 </div>
               </div>
             </>
@@ -104,14 +129,6 @@ export function UserProfilePage() {
           </div>
         </ShowMain>
       </ShowLayout>
-
-      {/* TODO:FIXME: auth check?
-      {isProfileModalOpen && (
-        <EditProfileModal
-          currentUser={user}
-          onClose={() => setIsProfileModalOpen(false)}
-        />
-      )} */}
     </>
   );
 }

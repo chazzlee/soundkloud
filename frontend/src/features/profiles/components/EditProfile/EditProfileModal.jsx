@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { MdCameraAlt } from "react-icons/md";
 import { ProfilesApi } from "../../../../api/profiles";

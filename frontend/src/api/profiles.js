@@ -7,4 +7,10 @@ export const ProfilesApi = {
       body: profile,
     });
   },
+  updateHeaderCover(profileId, cover) {
+    return csrfFetch(`/api/profiles/${profileId}/cover`, {
+      method: "PATCH",
+      body: cover,
+    });
+  },
 };

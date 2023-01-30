@@ -1,6 +1,9 @@
 import produce from "immer";
 import { csrfFetch } from "../../../api/csrfFetch";
-import { UPDATE_PROFILE_SUCCESS } from "../../profiles/store";
+import {
+  UPDATE_PROFILE_HEADER_COVER_SUCCESS,
+  UPDATE_PROFILE_SUCCESS,
+} from "../../profiles/store";
 
 const AUTHENTICATE_USER = "auth/authenticatedAsUser";
 const AUTHENTICATE_GUEST = "auth/authenticatedAsGuest";
@@ -94,6 +97,10 @@ export const authReducer = produce((state = initialState, action) => {
     }
     case LOGOUT_USER: {
       state.current = null;
+      break;
+    }
+    case UPDATE_PROFILE_HEADER_COVER_SUCCESS: {
+      state.current = action.payload;
       break;
     }
     case UPDATE_PROFILE_SUCCESS: {

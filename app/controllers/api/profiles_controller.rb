@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::ProfilesController < ApplicationController
-  before_action :require_logged_in, only: [:update]
+  before_action :require_logged_in, only: %i[update header_cover]
 
   def update
     user = User.find(params[:id].to_i)
@@ -25,6 +25,21 @@ class Api::ProfilesController < ApplicationController
       render 'api/users/show', locals: { user: }, status: :created
     else
       render json: profile.errors.full_messages, status: :unprocessable_entity
+    end
+  end
+
+  def header_cover
+    user = User.find(params[:id].to_i)
+    if user.id == current_user.id
+      profile = user.profile
+      profile.header_cover.attach(params[:header_image]) if params[:header_image]
+      if profile.save
+        render 'api/users/show', locals: { user: }, status: :created
+      else
+        render json: profile.errors.full_messages, status: :unprocessable_entity
+      end
+    else
+      render json: { errors: 'Cannot perform this action.' }, status: :forbidden
     end
   end
 end

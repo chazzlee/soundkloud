@@ -95,6 +95,7 @@ export function PlaylistShowPage() {
     }
   }, [dispatch, tracksLoaded, playlistsLoaded]);
 
+  console.log(playlist);
   // TODO: -- error?
   if (!playlist) {
     return <FullSpinner />;
@@ -128,17 +129,19 @@ export function PlaylistShowPage() {
             <BannerImage
               imageUrl={
                 playlist.cover ||
-                playlist.tracks[activePlaylist.current ?? 0].cover
+                playlist.tracks[activePlaylist.current ?? 0]?.cover
               }
             />
           </>
         }
       >
-        <Wavesurfer
-          ref={wavesurfer}
-          onLoaded={handleLoaded}
-          track={playlist.tracks[activePlaylist.current ?? 0]}
-        />
+        {playlist.tracks.length ? (
+          <Wavesurfer
+            ref={wavesurfer}
+            onLoaded={handleLoaded}
+            track={playlist.tracks[activePlaylist.current ?? 0]}
+          />
+        ) : null}
       </Banner>
 
       <ShowMain

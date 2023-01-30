@@ -3,6 +3,9 @@ import produce from "immer";
 export const UPDATE_PROFILE_SUCCESS = "profiles/profileUpdatedSucess";
 export const UPDATE_PROFILE_FAILED = "profiles/updateProfileFailed";
 
+export const UPDATE_PROFILE_HEADER_COVER_SUCCESS =
+  "profiles/headerCoverUpdated";
+
 export const profileUpdatedSuccess = (profile) => ({
   type: UPDATE_PROFILE_SUCCESS,
   payload: profile,
@@ -11,6 +14,11 @@ export const profileUpdatedSuccess = (profile) => ({
 export const profileUpdateFailed = (error) => ({
   type: UPDATE_PROFILE_FAILED,
   payload: error,
+});
+
+export const headerCoverUpdatedSuccess = (profile) => ({
+  type: UPDATE_PROFILE_HEADER_COVER_SUCCESS,
+  payload: profile,
 });
 
 const initialState = {

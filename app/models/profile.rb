@@ -11,4 +11,5 @@ class Profile < ApplicationRecord
   validates :gender, presence: true # TODO: (enum 4 choices --male,female,custom,none)
 
   has_one_attached :photo, dependent: :destroy
+  has_one_attached :header_cover, dependent: :destroy
 end

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPlaylistsAsync,
@@ -10,8 +9,8 @@ import { Playlist } from "../ListItems/Playlist";
 
 export function AddToPlaylistTab({ track }) {
   const dispatch = useDispatch();
-  const { register, watch } = useForm({ defaultValues: { filter: "" } });
   const playlists = useSelector(selectPlaylists);
+  const [filter, setFilter] = useState("");
 
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists);
   const playlistsLoaded = useSelector(selectPlaylistsLoaded);
@@ -22,18 +21,13 @@ export function AddToPlaylistTab({ track }) {
     }
   }, [dispatch, playlistsLoaded]);
 
-  // TODO: deleting filter should show whole playlist list
   useEffect(() => {
-    const subscription = watch(({ filter }) =>
-      setFilteredPlaylists((playlists) =>
-        playlists.filter((playlist) =>
-          playlist.title.toLowerCase().includes(filter.toLowerCase())
-        )
+    setFilteredPlaylists(
+      playlists.filter((playlist) =>
+        playlist.title.toLowerCase().includes(filter.toLowerCase())
       )
     );
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [filter, playlists]);
 
   return (
     <>
@@ -43,7 +37,8 @@ export function AddToPlaylistTab({ track }) {
         placeholder="Filter playlists"
         autoFocus
         name="filter"
-        {...register("filter")}
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
       />
       <div className="playlist-list">
         {filteredPlaylists.map((playlist) => (

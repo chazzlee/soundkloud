@@ -4,7 +4,7 @@ import { DefaultCover } from "../../../DefaultCover";
 import { bannerTitleFontSize } from "../../../../utils/bannerTitleFontSize";
 import "./Banner.css";
 
-export function Banner({ children, header, height = 380 }) {
+export function Banner({ children, header, height = 380, headerUrl = "" }) {
   const rgbBackground = useRef(getRandomRGB());
 
   return (
@@ -12,7 +12,11 @@ export function Banner({ children, header, height = 380 }) {
       className="banner-section"
       style={{
         height,
-        background: `linear-gradient(135deg, ${rgbBackground.current} 0%, rgb(11, 10, 10) 100%)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        backgroundImage: headerUrl
+          ? `url(${headerUrl})`
+          : `linear-gradient(135deg, ${rgbBackground.current} 0%, rgb(11, 10, 10) 100%)`,
       }}
     >
       <header className="banner-header">{header}</header>

@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import slug from "slug";
 import { PlaylistsApi } from "../../../../../api/playlists";
-import { TrackRow } from "../../../../tracks/components/TrackRow";
 import { playlistReceived } from "../../../store";
+import { Track } from "../ListItems/Track";
 
-export function CreatePlaylistTab({ track, onSuccess }) {
+export function CreatePlaylistTab({ track, onSuccess, onRemove }) {
   const dispatch = useDispatch();
 
   const {
@@ -22,7 +23,7 @@ export function CreatePlaylistTab({ track, onSuccess }) {
       const newPlaylist = {
         title: data.title,
         privacy: data.privacy,
-        tracks: [track.id],
+        tracks: [track?.id],
         permalink: slug(data.title),
       };
 
@@ -37,7 +38,7 @@ export function CreatePlaylistTab({ track, onSuccess }) {
         console.error(ex.message);
       }
     },
-    [track.id, dispatch, onSuccess]
+    [track?.id, dispatch, onSuccess]
   );
 
   return (
@@ -93,15 +94,10 @@ export function CreatePlaylistTab({ track, onSuccess }) {
         </div>
       </form>
       <div className="track-list">
-        <TrackRow
-          track={track}
-          onRemove={() => {
-            console.log("TODO: MUST IMPLEMENT");
-          }}
-        />
-        <TrackRow />
-        <TrackRow />
-        <TrackRow />
+        <Track track={track} onRemove={onRemove} />
+        <Track />
+        <Track />
+        <Track />
       </div>
     </>
   );

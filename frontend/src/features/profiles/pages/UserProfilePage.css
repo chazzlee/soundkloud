@@ -39,7 +39,6 @@
 
 .tabs-nav {
   display: flex;
-  height: 30px;
   justify-content: space-between;
   align-items: center;
   height: fit-content;

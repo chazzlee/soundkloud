@@ -279,3 +279,11 @@
   padding-bottom: 6px;
   cursor: pointer;
 }
+
+.searchItem:first-child:hover {
+  filter: none;
+}
+
+.searchItem:hover {
+  filter: brightness(110%);
+}

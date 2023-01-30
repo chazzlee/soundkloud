@@ -1,3 +1,4 @@
+/* Playlist Item */
 .playlist-row-container {
   display: flex;
   align-items: center;
@@ -73,7 +74,45 @@
 }
 
 .added:hover {
-  border-color: rgb(226, 124, 8);
-  color: rgb(226, 124, 8);
+  border-color: rgb(248, 139, 15);
+  color: rgb(248, 139, 15);
   outline: 0;
+}
+
+/* Track Item */
+.create-playlist-track-row {
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary-orange);
+  border-bottom: 1px solid #f2f2f2;
+  height: 33px;
+}
+
+.create-playlist-track-row:last-child {
+  border-bottom: none;
+}
+
+.playlist-track-row-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.playlist-track-row-details {
+  display: block;
+  margin-left: 6px;
+}
+
+.remove-track-btn {
+  font-size: 18px;
+  color: rgb(119, 119, 119);
+  background-color: transparent;
+}
+
+.remove-track-btn:hover {
+  color: var(--error-red);
 }
