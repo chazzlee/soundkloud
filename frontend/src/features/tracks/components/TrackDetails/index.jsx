@@ -14,8 +14,8 @@ export function TrackDetails({ description = "" }) {
         <dd className="track-details-content">21 October 2022</dd>
       </div>
       <div className="track-dt-group">
-        <dt className="track-details-label">Release date:</dt>
-        <dd className="track-details-content">21 October 2022</dd>
+        <dt className="track-details-label"></dt>
+        <dd className="track-details-content"></dd>
       </div>
     </div>
   );

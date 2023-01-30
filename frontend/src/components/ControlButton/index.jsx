@@ -42,7 +42,7 @@ function PauseButton({ onPause, size }) {
     </button>
   );
 }
-function PlayButton({ onPlay, size }) {
+export function PlayButton({ onPlay, size }) {
   return (
     <button
       title="Play"

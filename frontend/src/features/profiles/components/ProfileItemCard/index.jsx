@@ -1,66 +1,49 @@
 import WaveSurfer from "wavesurfer.js";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { PrivateBadge } from "../../../../components/PrivateBadge";
 import { DefaultCover } from "../../../../components/DefaultCover";
 import "./ProfileItemCard.css";
-
+import { PLAYER_STATUS } from "../../../player/store";
 import {
-  PLAYER_STATUS,
-  GLOBAL_PLAYER,
-  selectPlayerStatus,
-  selectPlayerSourceId,
-  trackPlayingFromProfile,
-  trackPausedFromProfile,
-} from "../../../player/store";
-import { ControlButton } from "../../../../components/ControlButton";
+  ControlButton,
+  PlayButton,
+} from "../../../../components/ControlButton";
 import { ItemActionGroup } from "../../../../components/ItemActionGoup";
 
-export function ProfileItemCard({ item, children, type = "track" }) {
+export function ProfileItemCard({
+  item,
+  children,
+  playingId,
+  isPlaying,
+  onPlaying,
+  type = "track",
+}) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
   const [loaded, setLoaded] = useState(true);
   const [status, setStatus] = useState(PLAYER_STATUS.LOADED);
+  const navigate = useNavigate();
   const isEmptyPlaylist = type === "playlist" && item.tracks.length === 0;
 
-  const globalStatus = useSelector((state) =>
-    selectPlayerStatus(state, GLOBAL_PLAYER)
-  );
-  const globalSourceId = useSelector((state) =>
-    selectPlayerSourceId(state, GLOBAL_PLAYER)
-  );
-
-  // console.log("globalSourceId", globalSourceId);
-  // console.log("globalStatus", globalStatus);
-
-  // console.log("item id ", item.id);
-  // console.log("card status", status);
-
   const handlePlay = useCallback(() => {
-    // TODO:
     if (type === "track") {
       wavesurfer.current?.play();
       setStatus(PLAYER_STATUS.PLAYING);
-      dispatch(
-        trackPlayingFromProfile({
-          id: item.id,
-          upload: item.upload,
-          duration: wavesurfer.current.getDuration(),
-        })
-      );
+      onPlaying({ isPlaying: true, playingId: item.id });
     }
-  }, [dispatch, type, item.id, item.upload]);
+  }, [type, onPlaying, item.id]);
 
   const handlePause = useCallback(() => {
     if (type === "track") {
       wavesurfer.current?.pause();
       setStatus(PLAYER_STATUS.PAUSED);
-      dispatch(trackPausedFromProfile());
+      onPlaying({ isPlaying: false, playingId: item.id });
     }
-  }, [dispatch, type]);
+  }, [type, onPlaying, item.id]);
 
   useEffect(() => {
     // console.clear();
@@ -73,7 +56,7 @@ export function ProfileItemCard({ item, children, type = "track" }) {
       responsive: true,
       normalize: true,
       height: 80,
-      interact: false,
+      interact: true,
       container: waveformRef.current,
     };
 
@@ -83,7 +66,6 @@ export function ProfileItemCard({ item, children, type = "track" }) {
     }
 
     wavesurfer.current = WaveSurfer.create(waveOptions);
-    wavesurfer.current.setMute(true);
     wavesurfer.current.load(
       type === "playlist" ? item.tracks[0].upload : item.upload
     );
@@ -93,12 +75,7 @@ export function ProfileItemCard({ item, children, type = "track" }) {
       setStatus(PLAYER_STATUS.LOADED);
     });
 
-    wavesurfer.current.on("finish", () => {
-      console.log("WAVE FINISHED");
-    });
-
     return () => {
-      console.log("destroying");
       wavesurfer.current.cancelAjax();
       wavesurfer.current.unAll();
       wavesurfer.current.destroy();
@@ -106,37 +83,12 @@ export function ProfileItemCard({ item, children, type = "track" }) {
     };
   }, [dispatch, item?.id, type, item.tracks, item.upload, isEmptyPlaylist]);
 
-  // TODO:!!!
-  // useEffect(() => {
-  //   if (item.id === globalSourceId) {
-  //     if (
-
-  //       globalStatus === PLAYER_STATUS.PLAYING
-  //     ) {
-  //       wavesurfer.current.play();
-  //       setStatus(PLAYER_STATUS.PLAYING);
-  //     } else if (
-
-  //       globalStatus === PLAYER_STATUS.PAUSED
-  //     ) {
-  //       wavesurfer.current.pause();
-  //       setStatus(PLAYER_STATUS.PAUSED);
-  //     }
-  //   }
-  // }, [item.id, globalSourceId, globalStatus]);
-
-  // useEffect(() => {
-  //   // Trigered from global playbar
-  //   if (item.id === globalSourceId) {
-  //     if (globalStatus === PLAYER_STATUS.PLAYING) {
-  //       wavesurfer.current.play();
-  //       setStatus(PLAYER_STATUS.PLAYING);
-  //     } else if (globalStatus === PLAYER_STATUS.PAUSED) {
-  //       wavesurfer.current.pause();
-  //       setStatus(PLAYER_STATUS.PAUSED);
-  //     }
-  //   }
-  // }, [item.id, globalStatus, globalSourceId]);
+  useEffect(() => {
+    if (isPlaying && playingId !== item.id) {
+      wavesurfer.current.pause();
+      setStatus(PLAYER_STATUS.PAUSED);
+    }
+  }, [isPlaying, item.id, playingId]);
 
   return (
     <div className="profile-item-card">
@@ -145,13 +97,17 @@ export function ProfileItemCard({ item, children, type = "track" }) {
       </Link>
       <div className="inner-card-container">
         <div className="card-header">
-          <ControlButton
-            size={"sm"}
-            loaded={isEmptyPlaylist ? false : loaded}
-            status={status}
-            onPlay={handlePlay}
-            onPause={handlePause}
-          />
+          {type === "track" ? (
+            <ControlButton
+              size={"sm"}
+              loaded={isEmptyPlaylist ? false : loaded}
+              status={status}
+              onPlay={handlePlay}
+              onPause={handlePause}
+            />
+          ) : (
+            <PlaylistPlayDemoButton permalink={item.permalink} />
+          )}
           <div className="card-heading">
             <div className="card-details">
               <Link className="card-user" to={`/${item.uploader.slug}`}>
@@ -189,16 +145,24 @@ export function ProfileItemCard({ item, children, type = "track" }) {
   );
 }
 
-// function CardWavesurfer() {
-//   const waveformRef = useRef(null);
-//   const wavesurfer = useRef(null);
-
-//   return <div id="waveform" ref={waveformRef} />;
-// }
 function ProfileItemCover({ coverUrl, title = "Cover" }) {
   return coverUrl ? (
     <img src={coverUrl} alt={title} />
   ) : (
     <DefaultCover size={160} />
+  );
+}
+
+function PlaylistPlayDemoButton({ permalink }) {
+  const navigate = useNavigate();
+  const handleNavigateToPlaylist = useCallback(
+    () => navigate(permalink),
+    [permalink, navigate]
+  );
+
+  return (
+    <div className="control-button">
+      <PlayButton size={"sm"} onPlay={handleNavigateToPlaylist} />
+    </div>
   );
 }

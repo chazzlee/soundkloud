@@ -104,7 +104,8 @@ export function EditPlaylistModal({ playlist, onClose }) {
           <nav>
             <ul className="edit-modal-tabs">
               <li className="edit-modal-tab selected">Basic info</li>
-              <li className="edit-modal-tab">Tracks</li>
+              {/* TODO: */}
+              {/* <li className="edit-modal-tab">Tracks</li> */}
             </ul>
           </nav>
         </header>
