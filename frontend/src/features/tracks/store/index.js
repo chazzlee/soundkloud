@@ -1,7 +1,7 @@
 import produce from "immer";
 import { RepliesApi } from "../../../api/replies";
 import { TracksApi } from "../../../api/tracks";
-import { UPDATE_PROFILE } from "../../profiles/store";
+import { UPDATE_PROFILE_SUCCESS } from "../../profiles/store";
 
 const FETCH_TRACKS_START = "tracks/tracksStart";
 const FETCH_TRACKS_SUCCESS = "tracks/tracksSuccess";
@@ -261,7 +261,7 @@ export const tracksReducer = produce((state = initialState, action) => {
       );
       break;
     }
-    case UPDATE_PROFILE: {
+    case UPDATE_PROFILE_SUCCESS: {
       state.loaded = false;
 
       const updatedTracks = Object.values(state.entities)

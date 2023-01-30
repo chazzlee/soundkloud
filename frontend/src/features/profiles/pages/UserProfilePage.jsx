@@ -6,8 +6,8 @@ import {
   selectHasTracksLoaded,
   selectUserTracks,
 } from "../../tracks/store";
-import { EditProfileModal } from "../components/EditProfileModal";
-import { PlaylistList } from "../../playlists/components/PlaylistList";
+// import { EditProfileModal } from "../components/EditProfileModal";
+// import { PlaylistList } from "../../playlists/components/PlaylistList";
 import {
   fetchPlaylistsAsync,
   selectPlaylists,
@@ -21,9 +21,9 @@ import {
 } from "../../../components/Layouts/ShowLayout";
 import "./UserProfilePage.css";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
-import { ImProfile } from "react-icons/im";
 import { MdCameraAlt } from "react-icons/md";
 import { UserProfileAside } from "../components/UserProfileAside";
+import { EditProfile } from "../components/EditProfile/EditProfile";
 
 export function UserProfilePage() {
   const dispatch = useDispatch();
@@ -32,11 +32,11 @@ export function UserProfilePage() {
   const user = useSelector(selectCurrentUser);
 
   const tracksLoaded = useSelector(selectHasTracksLoaded);
-  const uploadedTracks = useSelector(selectUserTracks);
   const playlistsLoaded = useSelector(selectPlaylistsLoaded);
-  const playlists = useSelector(selectPlaylists);
 
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  // const uploadedTracks = useSelector(selectUserTracks);
+  // const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  // const playlists = useSelector(selectPlaylists);
 
   const location = useLocation();
 
@@ -96,14 +96,7 @@ export function UserProfilePage() {
               <NavLink to="sets">Playlists</NavLink>
             </div>
             <div className="nav-right">
-              <button
-                className="item-action-btn"
-                aria-label="Edit profile"
-                onClick={() => setIsProfileModalOpen(true)}
-              >
-                <ImProfile />
-                <span>Edit profile</span>
-              </button>
+              <EditProfile triggerSize="lg" profile={user} />
             </div>
           </div>
           <div className="user-main-container">
@@ -112,13 +105,13 @@ export function UserProfilePage() {
         </ShowMain>
       </ShowLayout>
 
-      {/* TODO:FIXME: auth check? */}
+      {/* TODO:FIXME: auth check?
       {isProfileModalOpen && (
         <EditProfileModal
           currentUser={user}
           onClose={() => setIsProfileModalOpen(false)}
         />
-      )}
+      )} */}
     </>
   );
 }

@@ -260,7 +260,7 @@ export function EditTrackModal({ track, onClose }) {
               <button type="button" className="cancel-btn" onClick={onClose}>
                 Cancel
               </button>
-              <button type="submit" className="submit-btn">
+              <button type="submit" className="submit-btn" disabled={!isValid}>
                 Save changes
               </button>
             </div>

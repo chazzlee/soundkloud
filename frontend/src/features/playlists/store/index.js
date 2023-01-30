@@ -2,6 +2,7 @@ import produce from "immer";
 import { createSelector } from "reselect";
 import { PlaylistsApi } from "../../../api/playlists";
 import { PLAY_TRACK } from "../../player/store";
+import { UPDATE_PROFILE_SUCCESS } from "../../profiles/store";
 import { DESTROY_TRACK_SUCCESS } from "../../tracks/store";
 
 const CLEAR_PLAYLIST = "playlists/playlistCleared";
@@ -320,6 +321,32 @@ export const playlistsReducer = produce((state = initialState, action) => {
           playlist.tracks.splice(index, 1);
         }
       });
+      break;
+    }
+
+    // Profile
+    case UPDATE_PROFILE_SUCCESS: {
+      state.loaded = false;
+      const updatedPlaylists = Object.values(state.entities)
+        .map((playlist) =>
+          playlist.uploader.id === action.payload.id
+            ? {
+                ...playlist,
+                uploader: {
+                  id: action.payload.id,
+                  displayName: action.payload.displayName,
+                  slug: action.payload.slug,
+                  photo: action.payload.photo,
+                },
+              }
+            : playlist
+        )
+        .reduce((curr, prev) => {
+          curr[prev.id] = prev;
+          return curr;
+        }, {});
+
+      state.entities = updatedPlaylists;
       break;
     }
 

@@ -1,10 +1,10 @@
 import produce from "immer";
 
-export const UPDATE_PROFILE = "profiles/profileUpdated";
+export const UPDATE_PROFILE_SUCCESS = "profiles/profileUpdatedSucess";
 export const UPDATE_PROFILE_FAILED = "profiles/updateProfileFailed";
 
-export const profileUpdated = (profile) => ({
-  type: UPDATE_PROFILE,
+export const profileUpdatedSuccess = (profile) => ({
+  type: UPDATE_PROFILE_SUCCESS,
   payload: profile,
 });
 
@@ -18,7 +18,7 @@ const initialState = {
 };
 export const profilesReducer = produce((state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_PROFILE: {
+    case UPDATE_PROFILE_SUCCESS: {
       state.errors = [];
       break;
     }

@@ -1,24 +1,22 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { MdCameraAlt } from "react-icons/md";
+import slug from "slug";
 import { Modal } from "../../../../context/Modal";
 import {
   fetchGenresAsync,
   selectGenres,
   selectGenresLoaded,
 } from "../../../genres/store";
-import { useEffect } from "react";
-import slug from "slug";
 import {
-  updatePlaylistAsync,
   updatePlaylistFailed,
   updatePlaylistInitiate,
   updatePlaylistSuccess,
 } from "../../../playlists/store";
-
-import "../EditModal/EditModal.css";
 import { PlaylistsApi } from "../../../../api/playlists";
-import { useNavigate } from "react-router-dom";
+import "../EditModal/EditModal.css";
 
 function fullPermalink(permalink) {
   return `localhost:3000${permalink}`;
@@ -248,7 +246,7 @@ export function EditPlaylistModal({ playlist, onClose }) {
               <button type="button" className="cancel-btn" onClick={onClose}>
                 Cancel
               </button>
-              <button type="submit" className="submit-btn">
+              <button type="submit" className="submit-btn" disabled={!isValid}>
                 Save changes
               </button>
             </div>

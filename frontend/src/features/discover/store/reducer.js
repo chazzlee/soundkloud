@@ -1,5 +1,5 @@
 import produce from "immer";
-import { UPDATE_PROFILE } from "../../profiles/store";
+import { UPDATE_PROFILE_SUCCESS } from "../../profiles/store";
 import {
   FETCH_DISCOVER_FAIL,
   FETCH_DISCOVER_START,
@@ -38,7 +38,7 @@ export const discoverReducer = produce((state = initialState, action) => {
       state.ids = [];
       break;
     }
-    case UPDATE_PROFILE: {
+    case UPDATE_PROFILE_SUCCESS: {
       state.loaded = false;
       break;
     }
