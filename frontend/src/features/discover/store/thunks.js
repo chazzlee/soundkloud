@@ -7,7 +7,8 @@ import {
   requestSuccess as genresRequestSuccess,
 } from "../../genres/store";
 import { fetchAllTracksByUserAsync } from "../../tracks/store";
-import { PlaylistsApi } from "../../../api/playlists";
+import { ProfilesApi } from "../../../api/profiles";
+import { allProfilesFetched } from "../../profiles/store";
 
 export const fetchDiscoverAsync = () => async (dispatch) => {
   dispatch(requestStarted());
@@ -19,25 +20,24 @@ export const fetchDiscoverAsync = () => async (dispatch) => {
 
 export const fetchDiscoverPageAsync = () => async (dispatch, getState) => {
   const state = getState();
-  if (state.auth.current && !state.tracks.loaded) {
+  if (state.auth.current) {
     dispatch(fetchAllTracksByUserAsync(state.auth.current.id));
   }
 
-  if (!state.genres.loaded && !state.discover.loaded) {
-    dispatch(requestStarted());
-    dispatch(genresRequestStarted());
-    Promise.all([TracksApi.fetchDiscover(), GenresApi.fetchAll()]).then(
-      async ([tracks, genres]) => {
-        dispatch(requestSuccess(await tracks.json()));
-        dispatch(genresRequestSuccess(await genres.json()));
-      },
-      (error) => {
-        dispatch(requestFailed(error.error));
-      }
-    );
-  } else if (!state.genres.loaded) {
-    dispatch(fetchGenresAsync());
-  } else if (!state.discover.loaded) {
-    dispatch(fetchDiscoverAsync());
-  }
+  dispatch(requestStarted());
+  dispatch(genresRequestStarted());
+  Promise.all([
+    TracksApi.fetchDiscover(),
+    GenresApi.fetchAll(),
+    ProfilesApi.fetchAll(),
+  ]).then(
+    async ([tracks, genres, profiles]) => {
+      dispatch(requestSuccess(await tracks.json()));
+      dispatch(genresRequestSuccess(await genres.json()));
+      dispatch(allProfilesFetched(await profiles.json()));
+    },
+    (error) => {
+      dispatch(requestFailed(error.error));
+    }
+  );
 };

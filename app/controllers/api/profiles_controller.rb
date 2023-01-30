@@ -3,8 +3,13 @@
 class Api::ProfilesController < ApplicationController
   before_action :require_logged_in, only: %i[update header_cover]
 
+  def index
+    users = User.includes(:profile).all
+    render 'api/users/index', locals: { users: }
+  end
+
   def update
-    user = User.find(params[:id].to_i)
+    user = User.includes(:profile).find(params[:id].to_i)
     profile = user.profile
     profile.display_name = params[:display_name] || profile.display_name
     profile.age = params[:age].to_i || profile.age

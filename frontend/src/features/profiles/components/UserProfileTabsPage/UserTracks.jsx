@@ -1,12 +1,20 @@
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectUserTracks } from "../../../tracks/store";
+import { useParams } from "react-router-dom";
+import { selectCurrentUser } from "../../../auth/store";
+import { selectUserTracksBySlug } from "../../../tracks/store";
 import { ProfileItemCard } from "../ProfileItemCard";
 import { StartButton } from "../StartButton";
 
 export function UserTracks() {
-  // TODO: FIXME: currentUser...needs to be user by id/slug
-  const userTracks = useSelector(selectUserTracks);
+  const currentUser = useSelector(selectCurrentUser);
+  const { slug } = useParams();
+  const isOwner = slug === currentUser.slug;
+
+  const userTracks = useSelector((state) =>
+    selectUserTracksBySlug(state, slug)
+  );
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingId, setPlayingId] = useState(null);
   const handleIsPlaying = useCallback((state) => {
@@ -16,7 +24,7 @@ export function UserTracks() {
 
   return (
     <div className="user-profile-tab-page">
-      <StartButton hasUploads={!!userTracks.length} />
+      {isOwner ? <StartButton hasUploads={!!userTracks.length} /> : null}
       <div className="user-tracks-list">
         {userTracks.map((track) => (
           <ProfileItemCard

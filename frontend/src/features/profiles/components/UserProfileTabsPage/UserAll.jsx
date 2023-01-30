@@ -1,17 +1,22 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { selectCurrentUser } from "../../../auth/store";
 import { selectPlaylists } from "../../../playlists/store";
-import { selectUserTracks } from "../../../tracks/store";
+import { selectUserTracksBySlug } from "../../../tracks/store";
 import { PlaylistTrackList } from "../PlaylistTrackList";
 import { ProfileItemCard } from "../ProfileItemCard";
 import { StartButton } from "../StartButton";
 
 export function UserAll() {
-  // TODO: FIXME: currentUser...needs to be user by id/slug
-  const userTracks = useSelector(selectUserTracks);
-  // TODO: selecting all playlists for now...need to select by user id/slug
+  const { slug } = useParams();
+  const currentUser = useSelector(selectCurrentUser);
+  const isOwner = slug === currentUser.slug;
+
+  const userTracks = useSelector((state) =>
+    selectUserTracksBySlug(state, slug)
+  );
   const userPlaylists = useSelector(selectPlaylists);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,7 +28,7 @@ export function UserAll() {
 
   return (
     <div className="user-profile-tab-page">
-      <StartButton hasUploads={!!userTracks.length} />
+      {isOwner ? <StartButton hasUploads={!!userTracks.length} /> : null}
       {userTracks.length && userPlaylists.length ? (
         <h2 className="user-profile-tab-heading">Recent</h2>
       ) : null}

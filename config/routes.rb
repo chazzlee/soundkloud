@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
     patch '/profiles/:id/cover', to: 'profiles#header_cover'
     # TODO: move to users/...
-    resources :profiles, only: %i[update] do
+    resources :profiles, only: %i[index update] do
       get '/tracks/:id', to: 'tracks#show'
     end
 

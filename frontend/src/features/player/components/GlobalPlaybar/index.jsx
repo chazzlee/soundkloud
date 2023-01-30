@@ -24,8 +24,8 @@ import {
 } from "../../../playlists/store";
 import { IoMdPlay, IoMdPause } from "react-icons/io";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import { BiRepeat } from "react-icons/bi";
 import { NowPlaying } from "./NowPlaying";
+// import { BiRepeat } from "react-icons/bi";
 
 function calculateProgress(current, total) {
   return current / total ?? 0;
@@ -137,12 +137,7 @@ export function GlobalPlaybar() {
     <H5AudioPlayer
       className="GlobalPlaybar"
       ref={playerRef}
-      customControlsSection={[
-        RHAP_UI.MAIN_CONTROLS,
-        <button className="repeat-btn" onClick={() => console.log("repeat!!!")}>
-          <BiRepeat />
-        </button>,
-      ]}
+      customControlsSection={[RHAP_UI.MAIN_CONTROLS]}
       showDownloadProgress={false}
       customProgressBarSection={[
         RHAP_UI.CURRENT_TIME,
@@ -153,8 +148,8 @@ export function GlobalPlaybar() {
       ]}
       customAdditionalControls={[]}
       customIcons={{
-        play: <IoMdPlay style={{ height: 15, marginLeft: 4 }} />,
-        pause: <IoMdPause style={{ height: 15, marginLeft: 4 }} />,
+        play: <IoMdPlay style={{ height: 15, marginRight: -4 }} />,
+        pause: <IoMdPause style={{ height: 15 }} />,
         previous: <MdSkipPrevious />,
         next: <MdSkipNext />,
       }}

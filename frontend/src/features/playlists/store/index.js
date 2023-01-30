@@ -110,10 +110,9 @@ export const playPreviousTrack = () => (dispatch, getState) => {
   dispatch(playPrev(previousTrack));
 };
 
-// TODO: loading and error
-export const fetchPlaylistsAsync = () => async (dispatch) => {
+export const fetchPlaylistsAsync = (userId) => async (dispatch) => {
   try {
-    const response = await PlaylistsApi.fetchUserPlaylists();
+    const response = await PlaylistsApi.fetchUserPlaylists(userId);
     const data = await response.json();
     dispatch(playlistsReceived(data));
   } catch (err) {
@@ -360,7 +359,7 @@ export const selectPlaylists = (state) =>
   Object.values(state.playlists?.entities ?? {});
 
 export const selectIsTrackInPlaylist = (state, { playlistId, trackId }) =>
-  !!state.playlists?.entities[playlistId].tracks.find(
+  !!state.playlists?.entities[playlistId]?.tracks.find(
     (track) => track.id === trackId
   );
 

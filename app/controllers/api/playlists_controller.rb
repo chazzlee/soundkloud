@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class Api::PlaylistsController < ApplicationController
-  before_action :require_logged_in
+  before_action :require_logged_in, only: %i[create update destroy]
 
   def index
-    # FIXME: all playlists as well as user playlists
-    playlists = Playlist.all
+    playlists = params[:user_id] ? Playlist.includes(:user).where(user_id: params[:user_id]) : Playlist.all
     render template: 'api/playlists/index', locals: { playlists: }
   end
 

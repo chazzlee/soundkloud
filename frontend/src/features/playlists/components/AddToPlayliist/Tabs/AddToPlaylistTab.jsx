@@ -1,25 +1,22 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchPlaylistsAsync,
-  selectPlaylists,
-  selectPlaylistsLoaded,
-} from "../../../store";
+import { selectCurrentUser } from "../../../../auth/store";
+import { fetchPlaylistsAsync, selectPlaylists } from "../../../store";
 import { Playlist } from "../ListItems/Playlist";
 
 export function AddToPlaylistTab({ track }) {
+  const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const playlists = useSelector(selectPlaylists);
   const [filter, setFilter] = useState("");
 
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists);
-  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
 
   useEffect(() => {
-    if (!playlistsLoaded) {
-      dispatch(fetchPlaylistsAsync());
+    if (currentUser?.id) {
+      dispatch(fetchPlaylistsAsync(currentUser?.id));
     }
-  }, [dispatch, playlistsLoaded]);
+  }, [dispatch, currentUser?.id]);
 
   useEffect(() => {
     setFilteredPlaylists(

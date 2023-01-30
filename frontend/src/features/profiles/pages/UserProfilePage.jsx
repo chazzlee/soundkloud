@@ -1,17 +1,15 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
+import { fetchAllTracksByUserAsync } from "../../tracks/store";
+import { fetchPlaylistsAsync } from "../../playlists/store";
 import {
-  fetchAllTracksByUserAsync,
-  selectHasTracksLoaded,
-  selectUserTracks,
-} from "../../tracks/store";
-import {
-  fetchPlaylistsAsync,
-  selectPlaylists,
-  selectPlaylistsLoaded,
-} from "../../playlists/store";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import {
   Banner,
   ShowLayout,
@@ -25,14 +23,27 @@ import { EditProfile } from "../components/EditProfile/EditProfile";
 import { useState } from "react";
 import { useCallback } from "react";
 import { ProfilesApi } from "../../../api/profiles";
-import { headerCoverUpdatedSuccess } from "../store";
+import {
+  fetchProfilesAsync,
+  headerCoverUpdatedSuccess,
+  selectProfileBySlug,
+  selectProfilesLoaded,
+} from "../store";
 
 export function UserProfilePage() {
+  const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
-
-  // TODO: find user by id/slug instead of current user
-  const user = useSelector(selectCurrentUser);
+  const location = useLocation();
+  const { slug } = useParams();
+  const user = useSelector((state) => selectProfileBySlug(state, slug));
+  const isOwner = currentUser?.id === user?.id;
   const [headerCover] = useState("");
+
+  const profilesLoaded = useSelector(selectProfilesLoaded);
+
+  const isRoot =
+    !location.pathname.includes("tracks") &&
+    !location.pathname.includes("sets");
 
   const handleUpdateHeaderCover = useCallback(
     async (e) => {
@@ -46,29 +57,27 @@ export function UserProfilePage() {
         dispatch(headerCoverUpdatedSuccess(data.user));
       }
     },
-    [dispatch, user.id]
+    [dispatch, user?.id]
   );
 
-  const tracksLoaded = useSelector(selectHasTracksLoaded);
-  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
-
-  const location = useLocation();
-
-  const isRoot =
-    !location.pathname.includes("tracks") &&
-    !location.pathname.includes("sets");
-
   useEffect(() => {
-    if (!tracksLoaded) {
-      dispatch(fetchAllTracksByUserAsync(user.id));
+    if (!profilesLoaded) {
+      dispatch(fetchProfilesAsync());
     }
-    if (!playlistsLoaded) {
-      dispatch(fetchPlaylistsAsync());
+
+    if (user?.id) {
+      dispatch(fetchAllTracksByUserAsync(user?.id));
+      dispatch(fetchPlaylistsAsync(user?.id));
     }
-  }, [dispatch, tracksLoaded, playlistsLoaded, user.id]);
+  }, [dispatch, profilesLoaded, user?.id]);
 
   if (!user) {
-    return <h1>FORBIDDEN TODO:</h1>;
+    return (
+      // TODO:
+      <div className="show-main-section">
+        <h2>Nothing here</h2>
+      </div>
+    );
   }
 
   return (
@@ -88,25 +97,27 @@ export function UserProfilePage() {
                     {user.location || "United States"}
                   </h3>
                 </div>
-                <div className="banner-details remove-margin-right">
-                  <label
-                    htmlFor="headerCover"
-                    role="button"
-                    aria-label="Update header image"
-                    className="cover-trigger update-profile-btn"
-                  >
-                    <input
-                      type="file"
-                      id="headerCover"
-                      name="headerCover"
-                      accept="image/*"
-                      value={headerCover}
-                      onChange={handleUpdateHeaderCover}
-                    />
-                    <MdCameraAlt />
-                    Update header image
-                  </label>
-                </div>
+                {isOwner && (
+                  <div className="banner-details remove-margin-right">
+                    <label
+                      htmlFor="headerCover"
+                      role="button"
+                      aria-label="Update header image"
+                      className="cover-trigger update-profile-btn"
+                    >
+                      <input
+                        type="file"
+                        id="headerCover"
+                        name="headerCover"
+                        accept="image/*"
+                        value={headerCover}
+                        onChange={handleUpdateHeaderCover}
+                      />
+                      <MdCameraAlt />
+                      Update header image
+                    </label>
+                  </div>
+                )}
               </div>
             </>
           }
@@ -121,7 +132,7 @@ export function UserProfilePage() {
               <NavLink to="sets">Playlists</NavLink>
             </div>
             <div className="nav-right">
-              <EditProfile triggerSize="lg" profile={user} />
+              {isOwner && <EditProfile triggerSize="lg" profile={user} />}
             </div>
           </div>
           <div className="user-main-container">

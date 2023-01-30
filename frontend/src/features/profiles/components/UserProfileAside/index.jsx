@@ -1,11 +1,16 @@
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { Aside } from "../../../../components/Aside";
 import { selectPlaylists } from "../../../playlists/store";
-import { selectUserTracks } from "../../../tracks/store";
+import { selectUserTracksBySlug } from "../../../tracks/store";
 import "./UserProfileAside.css";
 
 export function UserProfileAside() {
-  const tracksCount = useSelector(selectUserTracks).length;
+  const { slug } = useParams();
+  const tracksCount = useSelector((state) =>
+    selectUserTracksBySlug(state, slug)
+  ).length;
+
   // TODO: only user playlists
   const playlistsCount = useSelector(selectPlaylists).length;
 

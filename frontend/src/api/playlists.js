@@ -4,9 +4,9 @@ export const PlaylistsApi = {
   fetchAll() {
     return csrfFetch("/api/playlists");
   },
-  fetchUserPlaylists() {
+  fetchUserPlaylists(userId) {
     // FIXME:
-    return csrfFetch("/api/playlists");
+    return csrfFetch(`/api/playlists?user_id=${userId}`);
   },
   destroy(playlistId) {
     return csrfFetch(`/api/playlists/${playlistId}`, { method: "DELETE" });

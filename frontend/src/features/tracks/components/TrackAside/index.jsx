@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
 import { MdOutlineLibraryMusic } from "react-icons/md";
-import { selectUserTracks } from "../../store";
+import { selectUserTracksBySlug } from "../../store";
 import { ShowAside } from "../../../../components/Layouts/ShowLayout";
 
 export function TrackAside({ user }) {
   // TODO: FIX -- just sample data for now (also need to fetch all user tracks)
-  const asideItems = useSelector(selectUserTracks).map((item) => ({
+  const asideItems = useSelector((state) =>
+    selectUserTracksBySlug(state, user.slug)
+  ).map((item) => ({
     id: item.id,
     user: { displayName: item.uploader.displayName, slug: item.uploader.slug },
     title: item.title,

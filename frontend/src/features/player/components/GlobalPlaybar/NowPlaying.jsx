@@ -46,15 +46,28 @@ export function NowPlaying({ playlistId }) {
           </div>
         </Link>
         <div className="currently-playing-actions">
-          <button type="button" onClick={() => {}}>
+          <button
+            type="button"
+            onClick={() => {}}
+            style={{ visibility: "hidden" }}
+          >
             <IoMdHeart />
           </button>
-          <button type="button" onClick={() => {}}>
+          <button
+            type="button"
+            onClick={() => {}}
+            style={{ visibility: "hidden" }}
+          >
             <FaUserAlt />
           </button>
-          <button type="button" onClick={handleToggle}>
+          <button
+            type="button"
+            onClick={handleToggle}
+            style={{ marginLeft: -10, marginTop: 4 }}
+          >
             <MdOutlinePlaylistPlay
               color={nextUpOpen ? "var(--primary-orange)" : "#333"}
+              fontSize={22}
             />
           </button>
         </div>

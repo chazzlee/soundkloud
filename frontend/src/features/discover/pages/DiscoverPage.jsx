@@ -25,7 +25,9 @@ export function DiscoverPage() {
   const recentlyPlayed = useSelector((state) =>
     selectDiscoverListByType(state, "recentlyPlayed")
   );
-  const userTracks = useSelector(selectUserTracks);
+  const userTracks = useSelector((state) =>
+    selectUserTracks(state, currentUser.id)
+  );
 
   useEffect(() => {
     dispatch(fetchDiscoverPageAsync());

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -18,6 +18,7 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
   const isCurrentUserUploader = currentUser?.id === item.uploader.id;
+  const [liked, setLiked] = useState(false);
 
   const handleRemoveItem = useCallback(
     (itemId) => {
@@ -34,9 +35,11 @@ export function ItemActionGroup({ item, type, size = "lg" }) {
   return (
     <div className="item-actions">
       <ItemActionButton
-        icon={<AiOutlineHeart />}
+        icon={
+          <AiOutlineHeart color={liked ? "var(--primary-orange)" : "inherit"} />
+        }
         label="Like"
-        onClick={() => console.log("LIKE: TODO MUST IMPLEMENT")}
+        onClick={() => setLiked((prev) => !prev)}
         size={size}
       />
       {type === "track" && <AddToPlaylist triggerSize={size} track={item} />}

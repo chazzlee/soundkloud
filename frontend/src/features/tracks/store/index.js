@@ -296,7 +296,12 @@ export const selectTracksLoading = (state) => state.tracks.loading;
 export const selectHasTracksLoaded = (state) => state.tracks.loaded;
 
 export const selectCurrentTrack = (state) => state.tracks.current;
-export const selectUserTracks = (state) =>
-  Object.values(state.tracks.entities ?? {}).sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
+export const selectUserTracks = (state, userId) =>
+  Object.values(state.tracks.entities ?? {})
+    .filter((track) => track.uploader.id === userId)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+export const selectUserTracksBySlug = (state, slug) =>
+  Object.values(state.tracks.entities ?? {})
+    .filter((track) => track.uploader.slug === slug)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

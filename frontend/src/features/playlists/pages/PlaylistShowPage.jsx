@@ -39,15 +39,16 @@ import { PlaylistTracksList } from "../components/PlaylistTracksList";
 import { BannerTitleHeading } from "../../../components/Layouts/ShowLayout/Banner";
 import { PlaylistAside } from "../components/PlaylistAside";
 import { selectCurrentUser } from "../../auth/store";
+import { fetchProfilesAsync, selectProfileBySlug } from "../../profiles/store";
 
-// TODO: continue playlist after play playlist from profile page instead of reloading
 export function PlaylistShowPage() {
   const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
-  const { playlistSlug } = useParams();
+  const { user, playlistSlug } = useParams();
+  const playlistUser = useSelector((state) => selectProfileBySlug(state, user));
   const [loaded, setLoaded] = useState(false);
-
   const handleLoaded = useCallback((state) => setLoaded(state), []);
+
   const waveStatus = useSelector((state) =>
     selectPlayerStatus(state, WAVE_PLAYER)
   );
@@ -80,22 +81,17 @@ export function PlaylistShowPage() {
 
   const wavesurfer = useRef(null);
 
-  const tracksLoaded = useSelector(selectHasTracksLoaded);
-  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
-
-  // TODO: FIX -- just sample data for now (also need to fetch all user playlists)
+  useEffect(() => {
+    dispatch(fetchProfilesAsync());
+  }, [dispatch]);
 
   useEffect(() => {
-    // TODO: only dispatch if playlists/tracks not loaded
-    if (!tracksLoaded) {
-      dispatch(fetchAllTracksByUserAsync());
+    if (playlistUser?.id) {
+      dispatch(fetchAllTracksByUserAsync(playlistUser?.id));
+      dispatch(fetchPlaylistsAsync(playlistUser?.id));
     }
-    if (!playlistsLoaded) {
-      dispatch(fetchPlaylistsAsync());
-    }
-  }, [dispatch, tracksLoaded, playlistsLoaded]);
+  }, [dispatch, playlistUser?.id]);
 
-  console.log(playlist);
   // TODO: -- error?
   if (!playlist) {
     return <FullSpinner />;

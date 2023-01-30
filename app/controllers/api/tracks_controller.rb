@@ -2,10 +2,12 @@
 
 class Api::TracksController < ApplicationController
   include Rails.application.routes.url_helpers
-  before_action :require_logged_in, only: %i[index create update destroy]
+  before_action :require_logged_in, only: %i[create update destroy]
 
   def index
-    tracks = current_user.tracks.order(updated_at: :desc).limit(16)
+    # user = User.includes(:tracks).find_by(id: params[:user_id])
+    # tracks = user.tracks
+    tracks = Track.all
     render template: 'api/tracks/index', locals: { tracks: }
   end
 
