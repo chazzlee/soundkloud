@@ -143,10 +143,7 @@ genres = create_genres
   )
 
   upload_track = random_tracks.sample
-  track.upload.attach(
-    io: URI.open(upload_track),
-    filename: "upload_#{n + 1}.mp3"
-  )
+  track.upload.attach(io: URI.open(upload_track), filename: "upload_#{n + 1}.mp3")
   track.user = user
   track.genre = genres.sample
 
@@ -159,7 +156,6 @@ end
   reply.track = Track.all.sample
   reply.save!
 end
-
 
 # 100.times do |_n|
 #   user = User.all.sample
