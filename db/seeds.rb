@@ -122,7 +122,7 @@ random_tracks = [
   profile.save!
 end
 
-genres = create_genres
+genres = Genre.all
 
 20.times do |n|
   user = User.all.sample
