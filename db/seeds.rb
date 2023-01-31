@@ -125,7 +125,7 @@ random_tracks = [
   profile.save!
 end
 
-30.times do |n|
+20.times do |n|
   user = User.all.sample
   title = Faker::Music::RockBand.song
   artist = Faker::Music.band
