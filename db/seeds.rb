@@ -1,41 +1,36 @@
 # frozen_string_literal: true
 
-def create_genres
-  genres = [
-    { name: 'none', label: 'None' },
-    { name: 'custom', label: 'Custom' },
-    { name: 'metal', label: 'Metal' },
-    { name: 'pop', label: 'Pop' },
-    { name: 'r&b', label: 'R&B & Soul' },
-    { name: 'techno', label: 'Techno' },
-    { name: 'classical', label: 'Classical' },
-    { name: 'ambient', label: 'Ambient' },
-    { name: 'deep_house', label: 'Deep House' },
-    { name: 'dubstep', label: 'Dubstep' },
-    { name: 'trance', label: 'Trance' },
-    { name: 'trap', label: 'Trap' },
-    { name: 'drum_n_bass', label: 'Drum & Bass' },
-    { name: 'dance_edm', label: 'Dance & EDM' },
-    { name: 'piano', label: 'Piano' },
-    { name: 'alternative_rock', label: 'Alternative Rock' },
-    { name: 'country', label: 'Country' },
-    { name: 'dancehall', label: 'Dancehall' },
-    { name: 'folk', label: 'Folk & Singer-Songwriter' },
-    { name: 'hip_hop', label: 'Hip-hop & Rap' },
-    { name: 'house', label: 'House' },
-    { name: 'jazz_blues', label: 'Jazz & Blues' },
-    { name: 'latin', label: 'Latin' },
-    { name: 'reggae', label: 'Reggae' },
-    { name: 'reggaeton', label: 'Reggaeton' },
-    { name: 'rock', label: 'Rock' },
-    { name: 'soundtrack', label: 'Soundtrack' },
-    { name: 'triphop', label: 'Triphop' },
-    { name: 'world', label: 'World' }
-  ]
-  genres.each do |genre|
-    Genre.create!(name: genre[:name], label: genre[:label])
-  end
-end
+genres = [
+  { name: 'none', label: 'None' },
+  { name: 'custom', label: 'Custom' },
+  { name: 'metal', label: 'Metal' },
+  { name: 'pop', label: 'Pop' },
+  { name: 'r&b', label: 'R&B & Soul' },
+  { name: 'techno', label: 'Techno' },
+  { name: 'classical', label: 'Classical' },
+  { name: 'ambient', label: 'Ambient' },
+  { name: 'deep_house', label: 'Deep House' },
+  { name: 'dubstep', label: 'Dubstep' },
+  { name: 'trance', label: 'Trance' },
+  { name: 'trap', label: 'Trap' },
+  { name: 'drum_n_bass', label: 'Drum & Bass' },
+  { name: 'dance_edm', label: 'Dance & EDM' },
+  { name: 'piano', label: 'Piano' },
+  { name: 'alternative_rock', label: 'Alternative Rock' },
+  { name: 'country', label: 'Country' },
+  { name: 'dancehall', label: 'Dancehall' },
+  { name: 'folk', label: 'Folk & Singer-Songwriter' },
+  { name: 'hip_hop', label: 'Hip-hop & Rap' },
+  { name: 'house', label: 'House' },
+  { name: 'jazz_blues', label: 'Jazz & Blues' },
+  { name: 'latin', label: 'Latin' },
+  { name: 'reggae', label: 'Reggae' },
+  { name: 'reggaeton', label: 'Reggaeton' },
+  { name: 'rock', label: 'Rock' },
+  { name: 'soundtrack', label: 'Soundtrack' },
+  { name: 'triphop', label: 'Triphop' },
+  { name: 'world', label: 'World' }
+]
 
 puts 'Destroying tables...'
 
@@ -51,11 +46,16 @@ Playlist.destroy_all
 Tag.destroy_all
 
 puts 'Resetting primary keys...'
-%w[tags recent_plays popular_plays genres replies users profiles tracks playlists playlist_tracks].each do |table_name|
+%w[tags recent_plays popular_plays genres replies users profiles tracks playlists
+   playlist_tracks].each do |table_name|
   ApplicationRecord.connection.reset_pk_sequence!(table_name)
 end
 
 puts 'Creating seed data...'
+
+genres.each do |genre|
+  Genre.create!(name: genre[:name], label: genre[:label])
+end
 
 genders = %w[male female custom none]
 demo_user = User.create!(email: 'demo@demo.com', password: 'password')
@@ -124,7 +124,7 @@ random_tracks = [
   profile.save!
 end
 
-10.times do |n|
+30.times do |n|
   user = User.all.sample
   title = Faker::Music::RockBand.song
   artist = Faker::Music.band
