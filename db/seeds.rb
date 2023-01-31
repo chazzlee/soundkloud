@@ -124,9 +124,7 @@ random_tracks = [
   profile.save!
 end
 
-genres = Genre.all
-
-20.times do |n|
+10.times do |n|
   user = User.all.sample
   title = Faker::Music::RockBand.song
   artist = Faker::Music.band
@@ -147,7 +145,7 @@ genres = Genre.all
   upload_track = random_tracks.sample
   track.upload.attach(io: URI.open(upload_track), filename: "upload_#{n + 1}")
   track.user = user
-  track.genre = genres.sample
+  track.genre_id = Genre.all.sample.id
 
   track.save!
 end
