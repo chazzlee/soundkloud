@@ -1,10 +1,15 @@
+import { useSelector } from "react-redux";
 import styles from "../pages/DiscoverPage.module.css";
 import { ImSoundcloud, ImUsers } from "react-icons/im";
 import { GrRefresh } from "react-icons/gr";
-import { artistsToFollow, newTracks } from "../data";
+import { newTracks } from "../data";
 import { SocialLinks } from "../../../components/SocialLinks";
+import { selectAllProfiles } from "../../profiles/store";
+import { Link } from "react-router-dom";
 
 export function DiscoverAside() {
+  const users = useSelector(selectAllProfiles);
+
   return (
     <div className={styles.relative}>
       <div className={styles.columnAside}>
@@ -27,7 +32,7 @@ export function DiscoverAside() {
                   background: `center / cover no-repeat url(${artist.avatar})`,
                 }}
               />
-              <p style={{ fontSize: "12px" }}>{artist.name}</p>
+              <p style={{ fontSize: "12px", color: "#333" }}>{artist.name}</p>
             </div>
           ))}
         </div>
@@ -47,7 +52,7 @@ export function DiscoverAside() {
                 marginRight: "4px",
               }}
             />
-            Artists you should follow
+            Users you should follow
           </div>
           <div style={{ visibility: "hidden" }}>
             <GrRefresh
@@ -60,26 +65,37 @@ export function DiscoverAside() {
             Refresh list
           </div>
         </h3>
-        {artistsToFollow.map((artist) => (
-          <div className={styles.artistCardHorizontal} key={artist.id}>
+        {users.slice(0, 8).map((user) => (
+          <Link
+            className={styles.artistCardHorizontal}
+            key={user.id}
+            to={`/${user.slug}`}
+          >
             <div
               className={styles.artistAvatar}
               style={{
-                background: `center / cover no-repeat url(${artist.avatar})`,
+                flexShrink: 0,
+                background: user.photo
+                  ? `center / cover no-repeat url(${user.photo})`
+                  : "linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%)",
               }}
             />
             <div className={styles.cardContent}>
-              <p className={styles.artistName}>{artist.name}</p>
+              <p className={styles.artistName} style={{ color: "#333" }}>
+                {user.displayName}
+              </p>
               <div className={styles.cardFooter}>
                 {/* TODO: */}
                 <div className={styles.insights}>
-                  <p style={{ marginRight: "4px" }}>Likes: {artist.likes}</p>
-                  <p>Follows: {artist.follows}</p>
+                  <p style={{ marginRight: "4px" }}>
+                    Likes: {Math.floor(Math.random() * 1000)}
+                  </p>
+                  <p>Follows: {Math.floor(Math.random() * 1000)}</p>
                 </div>
                 {/* <p className={styles.followBtn}>follow</p> */}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
         <div style={{ paddingTop: "20px" }}>
           <SocialLinks />

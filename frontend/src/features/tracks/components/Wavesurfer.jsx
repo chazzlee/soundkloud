@@ -34,7 +34,7 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
   const isSameAsGlobalTrack = waveSourceId === globalSourceId;
 
   useEffect(() => {
-    // console.clear();
+    console.clear();
     const waveOptions = {
       waveColor: "#eee",
       progressColor: "#f50",
@@ -69,7 +69,6 @@ export const Wavesurfer = forwardRef(({ track, onLoaded }, ref) => {
     });
 
     return () => {
-      console.log("destroying");
       ref.current.cancelAjax();
       ref.current.unAll();
       ref.current.destroy();

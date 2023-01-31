@@ -17,7 +17,7 @@ export function PlaylistAside({ user }) {
       headingIcon={<MdPlaylistPlay />}
       heading="Playlists from this user"
       viewUrl={`/${user.slug}/sets`}
-      asideItems={asideItems}
+      asideItems={asideItems.slice(0, 4)}
     />
   );
 }

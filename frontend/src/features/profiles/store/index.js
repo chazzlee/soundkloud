@@ -69,3 +69,6 @@ export const selectProfileBySlug = (state, slug) =>
   Object.values(state.profiles.entities).find(
     (profile) => profile.slug === slug
   );
+
+export const selectAllProfiles = (state) =>
+  Object.values(state.profiles.entities ?? {});

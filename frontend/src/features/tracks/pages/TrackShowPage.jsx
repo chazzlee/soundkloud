@@ -60,9 +60,6 @@ export function TrackShowPage() {
   const genreLabel = useSelector((state) =>
     selectGenreLabelById(state, track?.genre)
   );
-
-  const isCurrentUserUploader = track?.uploader?.id === currentUser?.id;
-
   useEffect(() => {
     dispatch(fetchTrackAsync(user, trackSlug));
     if (!genresLoaded) {
@@ -97,14 +94,6 @@ export function TrackShowPage() {
   const handleLoaded = useCallback((loaded) => {
     setLoaded(loaded);
   }, []);
-
-  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
-
-  useEffect(() => {
-    if (!playlistsLoaded) {
-      dispatch(fetchPlaylistsAsync());
-    }
-  }, [dispatch, playlistsLoaded]);
 
   if (!track) {
     return <FullSpinner />;

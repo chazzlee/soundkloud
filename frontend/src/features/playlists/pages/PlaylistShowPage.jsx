@@ -87,7 +87,6 @@ export function PlaylistShowPage() {
 
   useEffect(() => {
     if (playlistUser?.id) {
-      dispatch(fetchAllTracksByUserAsync(playlistUser?.id));
       dispatch(fetchPlaylistsAsync(playlistUser?.id));
     }
   }, [dispatch, playlistUser?.id]);

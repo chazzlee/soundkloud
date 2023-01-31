@@ -1,10 +1,12 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MdOutlineLibraryMusic } from "react-icons/md";
-import { selectUserTracksBySlug } from "../../store";
+import { fetchAllTracksByUserAsync, selectUserTracksBySlug } from "../../store";
 import { ShowAside } from "../../../../components/Layouts/ShowLayout";
+import { useEffect } from "react";
 
 export function TrackAside({ user }) {
-  // TODO: FIX -- just sample data for now (also need to fetch all user tracks)
+  const dispatch = useDispatch();
+
   const asideItems = useSelector((state) =>
     selectUserTracksBySlug(state, user.slug)
   ).map((item) => ({
@@ -15,11 +17,15 @@ export function TrackAside({ user }) {
     coverUrl: item.cover,
   }));
 
+  useEffect(() => {
+    dispatch(fetchAllTracksByUserAsync(user?.id));
+  }, [dispatch, user?.id]);
+
   return (
     <ShowAside
       headingIcon={<MdOutlineLibraryMusic />}
       heading="Tracks from this user"
-      asideItems={asideItems}
+      asideItems={asideItems.slice(0, 4)}
       viewUrl={`/${user.slug}/tracks`}
     />
   );

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::RepliesController < ApplicationController
-  before_action :require_logged_in, only: %i[create destroy]
+  before_action :require_logged_in, only: %i[create update destroy]
 
   def index
     track = Track.preload(:replies).find_by(id: params[:track_id])

@@ -55,36 +55,112 @@ end
 
 puts 'Creating seed data...'
 
-def create_users
-  genders = %w[male female custom none]
-  demo_user = User.create!(email: 'demo@demo.com', password: 'password')
-  demo_profile = Profile.create!(age: 100, gender: genders.sample, display_name: 'Demo User', user: demo_user)
-  demo_profile.photo.attach(
-    io: URI.open('https://soundkloud-seeds.s3.amazonaws.com/apex1.jpg'),
-    filename: 'demo_cover.jpg'
-  )
-  other_user = User.create!(email: 'jane@demo.com', password: 'password')
-  Profile.create!(age: 34, gender: genders.sample, display_name: 'Jane Doe', user: other_user)
+genders = %w[male female custom none]
+demo_user = User.create!(email: 'demo@demo.com', password: 'password')
+demo_profile = Profile.create!(age: 100, gender: genders.sample, display_name: 'Demo User', user: demo_user)
+demo_profile.photo.attach(
+  io: URI.open('https://soundkloud-seeds.s3.amazonaws.com/apex1.jpg'),
+  filename: 'demo_cover.jpg'
+)
 
-  # 10.times do |n|
-  #   user = User.create!(email: Faker::Internet.email, password: 'password')
-  #   profile = Profile.create!(
-  #     age: rand(100),
-  #     gender: genders.sample,
-  #     display_name: Faker::Internet.username(specifier: 3..12),
-  #     user:
-  #   )
-  #   profile.photo.attach(
-  #     io: URI.open('https://www.metal-archives.com/images/4/4/1/2/441258.jpg'),
-  #     filename: "cover_#{n + 1}.jpg"
-  #   )
-  # end
+links = [
+  'https://soundkloud-seeds.s3.amazonaws.com/(2002)+When+Dream+and+Day+Unite+%5BRemastered%5D.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/00-atrox-orgasm-2003-(front)-butt.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/1985+-+Fear+of+Tomorrow.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/1999+-+The+Power+Cosmic.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/2007+-+Paradise+Lost+(Promo)_a.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Adramelch+-+Irae+Melanox+(1988)+RM+Front.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/anata-dismay.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Artillery+Terror+Squad--f.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Annihilator++-+Annihilator+%5B2010%5D.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/at-the-gate-redsky.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Celtic+Frost+-+Morbid+Tales+(Front).jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Decapitated+-+Winds+Of+Creation+-+Front.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Blind+Guardian+-+2010+-+At+The+Edge+Of+Time.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Behemoth+-+Evangelion.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Bolt_Thrower_-_Realm_Of_Chaos-front.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Cryptopsy+-+None+So+Vile.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Death_-_Symbolic_-_Front.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Soulside_Journey-Cover.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/sauron.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Morbid+Angel+-+Blessed+Are+The+Sick+-+Frontal.jpeg',
+  'https://soundkloud-seeds.s3.amazonaws.com/The+Crown+-+Crowned+In+Terror+(2002).jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Cryptopsy-Blasphemy+Made+Flesh.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Opeth+-+My+Arms%2C+Your+Hearse.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Death_-_Individual_Thought_Patterns_-_Front.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Anthrax+-+Among+The+Living.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Blood_Stain_Child_Mozaiq.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Kreator+-+1986+-+Pleasure+To+Kill-a.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Morbid+Angel+-+Covenant+-+Frontal.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/Angra.jpg',
+  'https://soundkloud-seeds.s3.amazonaws.com/cvr.jpg'
+]
 
-  { demo: demo_user, other: other_user }
+random_tracks = [
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Demonic+Incarnate.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/(03)+%5Bmekong+delta%5D+a+certain+fool+(+le+fou+)++movement+1.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Ad+Infinitum.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+Into+The+Infinity+Of+Thoughts.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01.+Wolf.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/(06)+%5Bmekong+delta%5D+interlude+2+-+group.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/03+-+Dissection+-+Crimson+Towers.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/03+Ana.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01+-+Foul+Body+Autopsy.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/01-Jag_Panzer-Ample_Destruction-Licensed_to_Kill.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/03+-+Mutilate+the+Stillborn.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/04+-+Phantasm.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/05-Jag_Panzer-Ample_Destruction-Generally_Hostile.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/02+-+Emaciated+Holy+Figure.mp3',
+  'https://soundkloud-seeds.s3.amazonaws.com/tracks/04+-+Essence+Ablaze.mp3'
+]
+
+10.times do |n|
+  user = User.create!(email: Faker::Internet.unique.email, password: 'password')
+  profile = Profile.new(age: rand(18...40), gender: genders.sample,
+                        display_name: Faker::Internet.unique.username(specifier: 6..12), user:)
+  profile.photo.attach(io: URI.open('https://i.pravatar.cc/300', filename: "cover_#{n + 1}"))
+  profile.save!
 end
 
-create_users
 genres = create_genres
+
+30.times do |n|
+  user = User.all.sample
+  title = Faker::Music::RockBand.song
+  artist = Faker::Music.band
+
+  track = Track.new(
+    title:,
+    artist:,
+    permalink: "https://soundkloud-rails.onrender.com/#{user.slug}/#{title.parameterize}",
+    description: Faker::Quote.famous_last_words,
+    caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
+    privacy: %w[public private].sample
+  )
+  track.cover.attach(
+    io: URI.open(links[n]),
+    filename: "cover_#{n + 1}"
+  )
+
+  upload_track = random_tracks.sample
+  track.upload.attach(
+    io: URI.open(upload_track),
+    filename: "upload_#{n + 1}.mp3"
+  )
+  track.user = user
+  track.genre = genres.sample
+
+  track.save!
+end
+
+50.times do
+  reply = Reply.new(body: Faker::Quote.matz)
+  reply.user = User.all.sample
+  reply.track = Track.all.sample
+  reply.save!
+end
+
+
 # 100.times do |_n|
 #   user = User.all.sample
 #   title = Faker::Music::PearlJam.song

@@ -3,9 +3,9 @@ export function DefaultCover({ size }) {
     <div
       className="default-cover"
       style={{
-        backgroundColor: "#141414",
+        backgroundColor: "#711003",
         backgroundImage:
-          "linear-gradient(315deg, #141414 31%, #582605 73%, #ff5600 100%)",
+          "linear-gradient(43deg, #711003 0%, #c74f0f 46%, #f0c25e 100%)",
         width: size,
         height: size,
       }}

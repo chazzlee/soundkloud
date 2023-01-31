@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::PlaylistTracksController < ApplicationController
+  before_action :require_logged_in, only: %i[create destroy]
+
   def create
     playlist = Playlist.find(params[:playlist_id])
     track = Track.find(params[:track])
