@@ -32,7 +32,9 @@ def create_genres
     { name: 'triphop', label: 'Triphop' },
     { name: 'world', label: 'World' }
   ]
-  Genre.insert_all(genres)
+  genres.each do |genre|
+    Genre.create!(name: genre[:name], label: genre[:label])
+  end
 end
 
 puts 'Destroying tables...'
