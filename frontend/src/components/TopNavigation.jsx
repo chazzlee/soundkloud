@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logoutUser, selectCurrentUser } from "../features/auth/store";
 import { AuthModal } from "../features/auth/components/AuthModal";
 import styles from "./TopNavigation.module.css";
@@ -57,7 +57,7 @@ export function TopNavigation() {
         <div className={styles.navContainer}>
           <div className={styles.navGroupLeft}>
             <div className={styles.navLogo}>
-              <a href="/">SOUNDKLOUD</a>
+              <Link to="/">SOUNDKLOUD</Link>
             </div>
             <nav className={styles.navLinksLeft}>
               <ul className="top-navigation-links">

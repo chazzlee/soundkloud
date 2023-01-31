@@ -7,7 +7,7 @@ class Api::TracksController < ApplicationController
   def index
     # user = User.includes(:tracks).find_by(id: params[:user_id])
     # tracks = user.tracks
-    tracks = Track.all
+    tracks = Track.includes([{ cover_attachment: :blob }, { upload_attachment: :blob }, :user]).all
     render template: 'api/tracks/index', locals: { tracks: }
   end
 

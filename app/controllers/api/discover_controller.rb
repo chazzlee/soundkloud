@@ -2,7 +2,7 @@
 
 class Api::DiscoverController < ApplicationController
   def index
-    tracks_by_genre = Genre.joins(:tracks)
+    tracks_by_genre = Genre.includes(:tracks).joins(:tracks)
     recently_played_tracks = if current_user
                                current_user
                                  .recently_played_tracks

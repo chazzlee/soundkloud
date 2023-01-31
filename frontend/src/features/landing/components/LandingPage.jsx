@@ -10,6 +10,7 @@ import { TrendingSection } from "./TrendingSection";
 import { Banner } from "./Banner";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../auth/store";
+import { useEffect } from "react";
 
 //TODO: combine modals/break out into components/banner slider transitions/login modal dropin transition
 export function LandingPage() {
@@ -19,6 +20,12 @@ export function LandingPage() {
 
   const [search, setSearch] = useState("");
   const [from, setFrom] = useState("/discover");
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      navigate("/discover", { replace: true });
+    }
+  }, [currentUser?.id, navigate]);
 
   return (
     <>
