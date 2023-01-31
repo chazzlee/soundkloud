@@ -1,11 +1,7 @@
 import { requestFailed, requestStarted, requestSuccess } from "./actions";
 import { GenresApi } from "../../../api/genres";
 import { TracksApi } from "../../../api/tracks";
-import {
-  fetchGenresAsync,
-  requestStarted as genresRequestStarted,
-  requestSuccess as genresRequestSuccess,
-} from "../../genres/store";
+import { requestSuccess as genresRequestSuccess } from "../../genres/store";
 import { fetchAllTracksByUserAsync } from "../../tracks/store";
 import { ProfilesApi } from "../../../api/profiles";
 import { allProfilesFetched } from "../../profiles/store";
@@ -18,6 +14,18 @@ export const fetchDiscoverAsync = () => async (dispatch) => {
   );
 };
 
+export const fetchD = () => async (dispatch, getState) => {
+  dispatch(requestStarted());
+
+  const state = getState();
+  if (state.auth.current) {
+    // TODO: fetch uploaded tracks by auth user
+    dispatch(() => {});
+  }
+
+  Promise.all([]);
+};
+
 export const fetchDiscoverPageAsync = () => async (dispatch, getState) => {
   const state = getState();
   if (state.auth.current) {
@@ -25,7 +33,6 @@ export const fetchDiscoverPageAsync = () => async (dispatch, getState) => {
   }
 
   dispatch(requestStarted());
-  dispatch(genresRequestStarted());
   Promise.all([
     TracksApi.fetchDiscover(),
     GenresApi.fetchAll(),

@@ -12,8 +12,8 @@ export const TABS = Object.freeze({
   SUCCESS: "success",
 });
 
-export function AddToPlaylistModal({ track, onClose }) {
-  const [tab, setTab] = useState(TABS.ADD);
+export function AddToPlaylistModal({ onClose, track, initialStep = TABS.ADD }) {
+  const [tab, setTab] = useState(initialStep);
   const handleTabChange = useCallback((tab) => {
     setTab(tab);
   }, []);

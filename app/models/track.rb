@@ -14,7 +14,7 @@ class Track < ApplicationRecord
   has_one_attached :cover, dependent: :destroy
   has_one_attached :upload, dependent: :destroy
 
-  has_many :tags, as: :taggable, dependent: :destroy
+  # has_many :tags, as: :taggable, dependent: :destroy
   has_many :replies, dependent: :destroy
 
   validates :title, presence: true, uniqueness: { scope: :artist }

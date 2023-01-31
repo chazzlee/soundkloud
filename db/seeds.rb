@@ -117,7 +117,7 @@ random_tracks = [
   'https://soundkloud-seeds.s3.amazonaws.com/tracks/04+-+Essence+Ablaze.mp3'
 ]
 
-10.times do |n|
+20.times do |n|
   user = User.create!(email: Faker::Internet.unique.email, password: 'password')
   profile = Profile.new(age: rand(18...40), gender: genders.sample,
                         display_name: Faker::Internet.unique.username(specifier: 6..12), user:)
@@ -125,7 +125,7 @@ random_tracks = [
   profile.save!
 end
 
-30.times do |n|
+50.times do |n|
   user = User.all.sample
   title = Faker::Music::RockBand.song
   artist = Faker::Music.band
@@ -138,25 +138,30 @@ end
     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
     privacy: %w[public private].sample
   )
-  track.cover.attach(
-    io: URI.open(links[n]),
-    filename: "cover_#{n + 1}"
-  )
-
-  upload_track = random_tracks.sample
-  track.upload.attach(io: URI.open(upload_track), filename: "upload_#{n + 1}")
-  track.user = user
-  track.genre_id = Genre.all.sample.id
-
+  track.upload.attach(io: URI.open(random_tracks.sample), filename: "track_#{n + 1}")
+  track.cover.attach(io: URI.open(links[n]), filename: "cover_#{n + 1}")
   track.save!
 end
 
-50.times do
+100.times do
   reply = Reply.new(body: Faker::Quote.matz)
   reply.user = User.all.sample
   reply.track = Track.all.sample
   reply.save!
 end
+
+20.times do
+  demo_user.play_track(Track.all.sample)
+  User.all.sample.play_track(Track.all.sample)
+end
+
+# 10.times do
+#   Track.all.each do |track|
+#     User.all.each do |user|
+#       user.play_track(track)
+#     end
+#   end
+# end
 
 # End seed
 
@@ -218,19 +223,6 @@ end
 #   track.save!
 # end
 
-20.times do
-  demo_user.play_track(Track.all.sample)
-  User.all.sample.play_track(Track.all.sample)
-end
-
-10.times do
-  Track.all.each do |track|
-    User.all.each do |user|
-      user.play_track(track)
-    end
-  end
-end
-
 # 100.times do
 #   reply = Reply.new(body: Faker::Quote.matz)
 #   reply.user = User.all.sample
@@ -238,4 +230,4 @@ end
 #   reply.save!
 # end
 
-puts 'Finished'
+puts 'Finished seeding!'

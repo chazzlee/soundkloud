@@ -358,6 +358,11 @@ export const selectPlaylistsLoaded = (state) => state.playlists.loaded;
 export const selectPlaylists = (state) =>
   Object.values(state.playlists?.entities ?? {});
 
+export const selectUserPlaylists = (state, slug) =>
+  Object.values(state.playlists?.entities ?? {}).filter(
+    (playlist) => playlist.uploader.slug === slug
+  );
+
 export const selectIsTrackInPlaylist = (state, { playlistId, trackId }) =>
   !!state.playlists?.entities[playlistId]?.tracks.find(
     (track) => track.id === trackId

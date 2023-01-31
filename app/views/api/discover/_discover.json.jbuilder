@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.set! track.id do
-  json.extract! track, :id, :title, :artist, :privacy, :tags
+  json.extract! track, :id, :title, :artist, :privacy
   json.cover track.cover.url
   json.upload track.upload.url
   json.genre_id track.genre_id

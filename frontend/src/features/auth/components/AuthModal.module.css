@@ -3,19 +3,11 @@
 }
 
 .modalForm {
-  padding: 12px 20px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.closeBtn {
-  align-self: flex-end;
-  padding: 12px;
-  padding-bottom: 36px;
-  font-size: 22px;
-  background-color: transparent;
 }
 
 .or {

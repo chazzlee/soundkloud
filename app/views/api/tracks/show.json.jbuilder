@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.extract! track, :id, :title, :artist, :privacy, :caption, :description, :tags
+json.extract! track, :id, :title, :artist, :privacy, :caption, :description
 json.created_at track.updated_at
 json.permalink URI.parse(track.permalink).path
 

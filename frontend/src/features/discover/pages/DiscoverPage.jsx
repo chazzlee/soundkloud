@@ -7,6 +7,7 @@ import {
   selectDiscoverListByType,
   selectDiscoverLoading,
   selectDiscoverGroupedByGenres,
+  selectDiscoverLoaded,
 } from "../store";
 import { selectUserTracks } from "../../tracks/store";
 import { CarouselSlider } from "../components/CarouselSlider";
@@ -17,6 +18,7 @@ export function DiscoverPage() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const discoverLoading = useSelector(selectDiscoverLoading);
+  const discoverLoaded = useSelector(selectDiscoverLoaded);
   const discoverGroupedByGenres = useSelector(selectDiscoverGroupedByGenres);
 
   const mostPlayed = useSelector((state) =>
@@ -30,8 +32,10 @@ export function DiscoverPage() {
   );
 
   useEffect(() => {
-    dispatch(fetchDiscoverPageAsync());
-  }, [dispatch]);
+    if (!discoverLoaded) {
+      dispatch(fetchDiscoverPageAsync());
+    }
+  }, [dispatch, discoverLoaded]);
 
   if (discoverLoading) {
     return <FullSpinner />;
