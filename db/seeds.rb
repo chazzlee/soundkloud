@@ -117,7 +117,7 @@ random_tracks = [
   'https://soundkloud-seeds.s3.amazonaws.com/tracks/04+-+Essence+Ablaze.mp3'
 ]
 
-15.times do |n|
+10.times do |n|
   user = User.create!(email: Faker::Internet.unique.email, password: 'password')
   profile = Profile.new(age: rand(18...40), gender: genders.sample,
                         display_name: Faker::Internet.unique.username(specifier: 6..12), user:)
