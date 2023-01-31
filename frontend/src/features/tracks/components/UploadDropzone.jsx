@@ -51,8 +51,8 @@ export function UploadDropzone() {
   const [success, setSuccess] = useState(false);
   const [originalFilename, setOriginalFilename] = useState("");
 
-  const [tagInput, setTagInput] = useState("");
-  const [tagsDisplay, setTagsDisplay] = useState([]);
+  // const [tagInput, setTagInput] = useState("");
+  // const [tagsDisplay, setTagsDisplay] = useState([]);
   const [showCopyHelper, setShowCopyHelper] = useState(false);
 
   let timeoutRef = useRef();
@@ -99,15 +99,15 @@ export function UploadDropzone() {
     setReadyText("");
     setCoverImage(null);
     setDropped(false);
-    setTagInput("");
-    setTagsDisplay([]);
+    // setTagInput("");
+    // setTagsDisplay([]);
     setSubmitted(false);
     setFormValues(initialValues);
   };
 
-  const addTag = (tagList) => {
-    setTagsDisplay(tagList.split(" "));
-  };
+  // const addTag = (tagList) => {
+  //   setTagsDisplay(tagList.split(" "));
+  // };
 
   const [readyText, setReadyText] = useState("");
 
@@ -125,7 +125,7 @@ export function UploadDropzone() {
     formData.set("privacy", formValues.privacy.trim());
     formData.set("genre_id", parseInt(formValues.genre_id || "1", 10));
     formData.set("upload", file, file.name);
-    formData.set("tags", JSON.stringify(tagsDisplay));
+    // formData.set("tags", JSON.stringify(tagsDisplay));
 
     coverImage && formData.set("cover", coverImage, coverImage.name);
     dispatch(uploadNewTrack(formData));
@@ -277,7 +277,7 @@ export function UploadDropzone() {
                     >
                       {uploadedTrack?.caption}
                     </p>
-                    <div
+                    {/* <div
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -285,7 +285,7 @@ export function UploadDropzone() {
                         marginBottom: "4px",
                       }}
                     >
-                      {uploadedTrack?.tags.slice(0, 4).map((tag) => (
+                      {uploadedTrack?.tags?.slice(0, 4).map((tag) => (
                         <p
                           key={tag.id}
                           style={{
@@ -302,7 +302,7 @@ export function UploadDropzone() {
                           #{tag.label}
                         </p>
                       ))}
-                    </div>
+                    </div> */}
                     <p
                       style={{
                         fontSize: "14px",
@@ -521,7 +521,7 @@ export function UploadDropzone() {
                       ))}
                     </select>
                   </div>
-                  <div
+                  {/* <div
                     className={styles.formControl}
                     style={{ position: "relative" }}
                   >
@@ -543,7 +543,7 @@ export function UploadDropzone() {
                         }
                       }}
                     />
-                  </div>
+                  </div> */}
                   <div className={styles.formControl}>
                     <label className={styles.label} htmlFor="description">
                       Description
