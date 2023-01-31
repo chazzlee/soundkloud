@@ -118,7 +118,7 @@ random_tracks = [
   user = User.create!(email: Faker::Internet.unique.email, password: 'password')
   profile = Profile.new(age: rand(18...40), gender: genders.sample,
                         display_name: Faker::Internet.unique.username(specifier: 6..12), user:)
-  profile.photo.attach(io: URI.open('https://i.pravatar.cc/300', filename: "cover_#{n + 1}"))
+  profile.photo.attach(io: URI.open('https://i.pravatar.cc/300'), filename: "cover_#{n + 1}")
   profile.save!
 end
 
