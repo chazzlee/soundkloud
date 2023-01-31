@@ -28,7 +28,7 @@ export function DiscoverPage() {
     selectDiscoverListByType(state, "recentlyPlayed")
   );
   const userTracks = useSelector((state) =>
-    selectUserTracks(state, currentUser.id)
+    selectUserTracks(state, currentUser?.id)
   );
 
   useEffect(() => {
