@@ -7,6 +7,9 @@ import { SocialLinks } from "../../../components/SocialLinks";
 import { selectAllProfiles } from "../../profiles/store";
 import { Link } from "react-router-dom";
 
+const randomLikeCount = Math.floor(Math.random() * 1000);
+const randomFollowCount = Math.floor(Math.random() * 1000);
+
 export function DiscoverAside() {
   const users = useSelector(selectAllProfiles);
 
@@ -87,10 +90,8 @@ export function DiscoverAside() {
               <div className={styles.cardFooter}>
                 {/* TODO: */}
                 <div className={styles.insights}>
-                  <p style={{ marginRight: "4px" }}>
-                    Likes: {Math.floor(Math.random() * 1000)}
-                  </p>
-                  <p>Follows: {Math.floor(Math.random() * 1000)}</p>
+                  <p style={{ marginRight: "4px" }}>Likes: {randomLikeCount}</p>
+                  <p>Follows: {randomFollowCount}</p>
                 </div>
                 {/* <p className={styles.followBtn}>follow</p> */}
               </div>
