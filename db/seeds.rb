@@ -117,7 +117,7 @@ random_tracks = [
   'https://soundkloud-seeds.s3.amazonaws.com/tracks/04+-+Essence+Ablaze.mp3'
 ]
 
-10.times do |n|
+8.times do |n|
   user = User.create!(email: Faker::Internet.unique.email, password: 'password')
   profile = Profile.new(age: rand(18...40), gender: genders.sample,
                         display_name: Faker::Internet.unique.username(specifier: 6..12), user:)
@@ -127,7 +127,7 @@ end
 
 20.times do |n|
   user = User.all.sample
-  title = Faker::Music::RockBand.song
+  title = Faker::Music::RockBand.unique.song
   artist = Faker::Music.band
 
   track = Track.new(
@@ -138,6 +138,8 @@ end
     caption: Faker::Quotes::Shakespeare.romeo_and_juliet_quote,
     privacy: %w[public private].sample
   )
+  track.user = user
+  track.genre = Genre.all.sample
   track.upload.attach(io: URI.open(random_tracks.sample), filename: "track_#{n + 1}")
   track.cover.attach(io: URI.open(links[n]), filename: "cover_#{n + 1}")
   track.save!
