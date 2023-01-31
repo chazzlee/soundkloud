@@ -124,7 +124,7 @@ end
 
 genres = create_genres
 
-30.times do |n|
+20.times do |n|
   user = User.all.sample
   title = Faker::Music::RockBand.song
   artist = Faker::Music.band
@@ -143,7 +143,7 @@ genres = create_genres
   )
 
   upload_track = random_tracks.sample
-  track.upload.attach(io: URI.open(upload_track), filename: "upload_#{n + 1}.mp3")
+  track.upload.attach(io: URI.open(upload_track), filename: "upload_#{n + 1}")
   track.user = user
   track.genre = genres.sample
 
