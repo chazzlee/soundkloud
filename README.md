@@ -2,6 +2,8 @@
 
 # SoundKloud - Soundcloud clone
 
+[Live](https://soundkloud-rails.onrender.com/)
+
 SoundKloud is a fullstack clone of Soundcloud, a social media app where users can share their music.
 SoundKloud is built with RubyOnRails, Postgresql, AWS S3, and ReactJS.
 Users are able to upload tracks, edit track data, browse tracks, and remove an uploaded track.
